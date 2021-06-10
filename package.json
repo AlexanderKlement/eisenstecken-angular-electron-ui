@@ -52,6 +52,7 @@
     "@angular/router": "12.0.2",
     "@electron/remote": "1.0.4",
     "core-js": "3.6.5",
+    "eisenstecken-openapi-angular-library": ">6.9.1",
     "rxjs": "6.6.6",
     "tslib": "2.1.0",
     "zone.js": "~0.11.4"
@@ -67,6 +68,7 @@
     "@angular/cli": "12.0.2",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
+    "@openapitools/openapi-generator-cli": "2.3.3",
     "@types/jasmine": "3.7.6",
     "@types/jasminewd2": "2.0.9",
     "@types/mocha": "8.2.2",
