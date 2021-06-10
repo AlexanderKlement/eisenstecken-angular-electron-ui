@@ -22,7 +22,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 
 export function apiConfigFactory (): Configuration {
   const params: ConfigurationParameters = {
-    // set configuration parameters here.
+    basePath:  "https://eisenstecken.kivi.bz.it",//BASE_PATH.toString(),
   };
   return new Configuration(params);
 }
