@@ -42,7 +42,7 @@ export class AuthService {
       next: event => {
         console.log('Login Success!');
         this.setToken(event.access_token);
-        this.router.navigate(['login']);
+        this.router.navigate(['home']);
       },
       error: msg => {
         console.log('Error logging in: ', msg);
