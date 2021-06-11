@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {Configuration, DefaultService} from "eisenstecken-openapi-angular-library";
+import {Injectable, Injector} from '@angular/core';
+import {DefaultService} from "eisenstecken-openapi-angular-library";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ export class AuthService {
 
   static accessTokenKey = "access_token";
 
-  constructor(private api: DefaultService, private apiConfiguration: Configuration) { }
+  constructor(private injector: Injector) { }
 
   getToken() : string{
     return localStorage.getItem(AuthService.accessTokenKey);
@@ -16,12 +16,12 @@ export class AuthService {
 
   setToken(token: string) :void {
     localStorage.setItem(AuthService.accessTokenKey, token);
-    this.apiConfiguration.credentials["OAuth2PasswordBearer"] = token;
+    this.injector.get<DefaultService>(DefaultService).configuration.credentials["OAuth2PasswordBearer"] = token;
   }
 
   removeToken() : void {
     localStorage.removeItem(AuthService.accessTokenKey);
-    this.apiConfiguration.credentials["OAuth2PasswordBearer"] = null;
+    this.injector.get<DefaultService>(DefaultService).configuration.credentials["OAuth2PasswordBearer"] = null;
   }
 
   isLoggedIn(): boolean {
@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   login(username: string, password: string) :void{
-    const tokenObservable = this.api.loginForAccessTokenTokenPost(username, password);
+    const tokenObservable = this.injector.get<DefaultService>(DefaultService).loginForAccessTokenTokenPost(username, password);
     tokenObservable.subscribe({
       next(token) {
         console.log('Login Success!');

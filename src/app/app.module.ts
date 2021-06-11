@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 // NG Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { ApiModule, Configuration, ConfigurationParameters, BASE_PATH } from 'eisenstecken-openapi-angular-library';
+import { ApiModule, Configuration, ConfigurationParameters} from 'eisenstecken-openapi-angular-library';
 import { HomeModule } from './home/home.module';
 import { DetailModule } from './detail/detail.module';
 import { AppConfig } from 'environments/environment';
@@ -24,7 +24,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 
 export function apiConfigFactory (): Configuration {
   const params: ConfigurationParameters = {
-    basePath:  "https://eisenstecken.kivi.bz.it",//BASE_PATH.toString(),
+    basePath: AppConfig.API_BASE_PATH,
   };
   return new Configuration(params);
 }
@@ -40,7 +40,7 @@ export function apiConfigFactory (): Configuration {
     HomeModule,
     DetailModule,
     AppRoutingModule,
-    ApiModule, //.forRoot(apiConfigFactory),
+    ApiModule.forRoot(apiConfigFactory),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -55,7 +55,6 @@ export function apiConfigFactory (): Configuration {
         provide: Configuration,
         useFactory: (authService: AuthService) => new Configuration(
           {
-            basePath: AppConfig.API_BASE_PATH,
             accessToken: authService.getToken.bind(authService)
           }
         ),
