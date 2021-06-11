@@ -14,6 +14,8 @@ import { DetailModule } from './detail/detail.module';
 import { AppConfig } from 'environments/environment';
 
 import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+import { AuthService } from "./shared/auth.service";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -28,7 +30,7 @@ export function apiConfigFactory (): Configuration {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LoginComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -38,7 +40,7 @@ export function apiConfigFactory (): Configuration {
     HomeModule,
     DetailModule,
     AppRoutingModule,
-    ApiModule.forRoot(apiConfigFactory),
+    ApiModule, //.forRoot(apiConfigFactory),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -47,7 +49,20 @@ export function apiConfigFactory (): Configuration {
       }
     })
   ],
-  providers: [{ provide: BASE_PATH, useValue: AppConfig.API_BASE_PATH }],
+  providers:
+    [
+      {
+        provide: Configuration,
+        useFactory: (authService: AuthService) => new Configuration(
+          {
+            basePath: AppConfig.API_BASE_PATH,
+            accessToken: authService.getToken.bind(authService)
+          }
+        ),
+        deps: [AuthService],
+        multi: false
+      }
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
