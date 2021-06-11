@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router,  private localStorageService: LocalStorageService) { }
 
   ngOnInit(): void {
-    const keyName = "bearer-key"; //TODO: after testing move this to a separate file, that gets loaded on every route change/load (for web)
+    const keyName = "bearer-key"; //TODO: after testing move this to a separate file, that gets loaded on every route change/load (for web) -> wrong! use a directive or a routing option
     if (this.localStorageService.getItem(keyName) != null){
       if(!this.checkLogin()){
         this.routeLogin();

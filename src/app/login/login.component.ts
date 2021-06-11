@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from "@angular/forms";
+import {AuthService} from "../shared/auth.service";
 import {DefaultService} from "eisenstecken-openapi-angular-library";
 
 @Component({
@@ -8,21 +10,22 @@ import {DefaultService} from "eisenstecken-openapi-angular-library";
 })
 export class LoginComponent implements OnInit {
 
+  loginForm = new FormGroup({
+    username: new FormControl(),
+    password: new FormControl(),
+  });
 
-  constructor(private api: DefaultService) {
-    const tokenObservable = this.api.loginForAccessTokenTokenPost("alexander.klement@gmail.com", "Hallo123");
-    const locationsSubscription = tokenObservable.subscribe({
-      next(position) {
-        console.log('Current Position: ', position.access_token);
-      },
-      error(msg) {
-        console.log('Error Getting Location: ', msg);
-      }
-    });
+  constructor(private authService: AuthService, private api: DefaultService) {
+    console.log(this.api.readUnitsUnitGet());
   }
 
   ngOnInit(): void {
   }
 
+  onSubmit(): void {
+    console.info("Login Button clicked");
+    console.log(this.loginForm.value);
+    this.authService.login(this.loginForm.value.username, this.loginForm.value.password);
+  }
 }
 

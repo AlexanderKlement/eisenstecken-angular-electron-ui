@@ -1,5 +1,6 @@
 import {Injectable, Injector} from '@angular/core';
 import {DefaultService} from "eisenstecken-openapi-angular-library";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ export class AuthService {
 
   static accessTokenKey = "access_token";
 
-  constructor(private injector: Injector) { }
+  constructor(private injector: Injector, private router: Router) { }
 
   getToken() : string{
     return localStorage.getItem(AuthService.accessTokenKey);
@@ -38,14 +39,14 @@ export class AuthService {
   login(username: string, password: string) :void{
     const tokenObservable = this.injector.get<DefaultService>(DefaultService).loginForAccessTokenTokenPost(username, password);
     tokenObservable.subscribe({
-      next(token) {
+      next: event => {
         console.log('Login Success!');
-        this.setToken(token.access_token);
-        //TODO: move to /home??
+        this.setToken(event.access_token);
+        this.router.navigate(['login']);
       },
-      error(msg) {
-        console.log('Error Getting Location: ', msg);
-        //TODO: do something if no success
+      error: msg => {
+        console.log('Error logging in: ', msg);
+        //TODO: do something if no success -> error msg? Too extract login, maybe do a callback?
       }
     });
   }
