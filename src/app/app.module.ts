@@ -17,6 +17,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from "./shared/auth.service";
 import { AccessGuard } from "./shared/access-guard.service";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -49,7 +51,9 @@ export function apiConfigFactory (): Configuration {
         deps: [HttpClient]
       }
     }),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatCheckboxModule
   ],
   providers:
     [
