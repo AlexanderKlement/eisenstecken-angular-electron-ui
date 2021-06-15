@@ -16,6 +16,7 @@ import { AppConfig } from 'environments/environment';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from "./shared/auth.service";
+import { AccessGuard } from "./shared/access-guard.service";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -39,8 +40,8 @@ export function apiConfigFactory (): Configuration {
     SharedModule,
     HomeModule,
     DetailModule,
-    AppRoutingModule,
     ApiModule.forRoot(apiConfigFactory),
+    AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -62,7 +63,7 @@ export function apiConfigFactory (): Configuration {
         ),
         deps: [AuthService],
         multi: false
-      }
+      }, AccessGuard
     ],
   bootstrap: [AppComponent]
 })
