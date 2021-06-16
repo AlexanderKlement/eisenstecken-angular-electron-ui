@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {ChatMessage} from "eisenstecken-openapi-angular-library";
 
 @Component({
   selector: 'app-chat-message',
@@ -6,9 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat-message.component.scss']
 })
 export class ChatMessageComponent implements OnInit {
-  sender: string;
-  sendtime: string;
-  message: string;
+
+  @Input() message: ChatMessage;
 
   constructor() { }
 

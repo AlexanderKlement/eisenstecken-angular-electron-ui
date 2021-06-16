@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {DefaultService, ChatMessageCreate, ChatMessage} from "eisenstecken-openapi-angular-library";
-import {Observable, Subscriber} from "rxjs";
+import {DefaultService, ChatMessageCreate, ChatMessage, ChatRecipient} from "eisenstecken-openapi-angular-library";
+import {Observable, Observer, Subscriber} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -8,39 +8,26 @@ import {Observable, Subscriber} from "rxjs";
 export class ChatService {
 
   lastId = 0;
+  messageObserver:Observable<ChatMessage>;
 
-  constructor(private api: DefaultService) { }
-
-  public sendMessage(message: string, sendTo: number): void {
-    const chatMessage:ChatMessageCreate = {text:message};
-    this.api.createChatMessageChatsUserIdPost(sendTo, chatMessage);
-    // TODO: maybe show something if the chat Message could not be sent
-  }
-
-  public getMessages () : Observable<ChatMessage>{
-    return new Observable((observer) => {
+  constructor(private api: DefaultService) {
+    this.messageObserver = new Observable((observer) => {
       setInterval(() => {
-        this.doMessageStuff(observer);
-        this.trySomething();
+        this.check4Messages(observer);
       }, 5000);
     });
   }
 
-  public trySomething(): void {
-    const new_messages = this.api.readUsersMeUsersMeGet();
-    new_messages.subscribe({
-      next: messages => {
-        console.log(messages);
-      },
-      error: msg => {
-        console.log('Error logging in: ', msg);
-        //TODO: do something if no success -> display message chat service not available at the moment
-      }
-    });
+  public sendMessage(message: string, sendTo: number): Observable<ChatMessage> {
+    const chatMessage:ChatMessageCreate = {text:message};
+    return this.api.createChatMessageChatsUserIdPost(sendTo, chatMessage);
   }
 
+  public getMessages () : Observable<ChatMessage>{
+    return this.messageObserver;
+  }
 
-  private doMessageStuff(observer: Subscriber<ChatMessage>) {
+  private check4Messages(observer: Subscriber<ChatMessage>) {
     const new_messages = this.api.readChatMessagesSinceIdChatsLastIdGet(this.lastId);
     new_messages.subscribe({
       next: messages => {
@@ -56,5 +43,9 @@ export class ChatService {
         //TODO: do something if no success -> display message chat service not available at the moment
       }
     });
+  }
+
+  public getRecipients(): Observable<ChatRecipient[]>{
+    return this.api.readChatRecipientsChatsRecipientsGet();
   }
 }
