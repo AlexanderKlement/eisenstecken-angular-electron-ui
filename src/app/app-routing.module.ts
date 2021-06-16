@@ -6,7 +6,7 @@ import { HomeRoutingModule } from './home/home-routing.module';
 import { DetailRoutingModule } from './detail/detail-routing.module';
 import { LoginRoutingModule } from './login/login-routing.module';
 import { AccessGuard } from "./shared/access-guard.service";
-import {HomeComponent} from "./home/home.component";
+import { HomeComponent } from "./home/home.component";
 
 const routes: Routes = [
   {

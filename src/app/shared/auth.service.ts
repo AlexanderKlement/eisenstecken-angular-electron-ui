@@ -1,5 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
-import {DefaultService} from "eisenstecken-openapi-angular-library";
+import {DefaultService, Right} from "eisenstecken-openapi-angular-library";
 import {Router} from "@angular/router";
 
 @Injectable({
@@ -36,8 +36,21 @@ export class AuthService {
     //TODO: move to loginpage!?
   }
 
-  login(username: string, password: string) :void{
-    const tokenObservable = this.injector.get<DefaultService>(DefaultService).loginForAccessTokenTokenPost(username, password);
+  async getScopeString() : Promise<string> {
+    const rights = await this.getRights();
+    const rightArray:string[] = rights.map((elem) => elem.key);
+    const scope = rightArray.join(" ");
+    console.log("Using scope:" + scope);
+    return scope;
+  }
+
+  async getRights() : Promise<Right[]> {
+    const rights = this.injector.get<DefaultService>(DefaultService).getRightsRightsGet();
+    return await rights.toPromise();
+  }
+
+  async login(username: string, password: string) : Promise<void>{
+    const tokenObservable = this.injector.get<DefaultService>(DefaultService).loginForAccessTokenTokenPost(username, password, "password", await this.getScopeString());
     tokenObservable.subscribe({
       next: event => {
         console.log('Login Success!');

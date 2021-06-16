@@ -19,6 +19,8 @@ import { AuthService } from "./shared/auth.service";
 import { AccessGuard } from "./shared/access-guard.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {ChatService} from "./home/chat/chat.service";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -44,6 +46,7 @@ export function apiConfigFactory (): Configuration {
     DetailModule,
     ApiModule.forRoot(apiConfigFactory),
     AppRoutingModule,
+    FlexLayoutModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -67,7 +70,7 @@ export function apiConfigFactory (): Configuration {
         ),
         deps: [AuthService],
         multi: false
-      }, AccessGuard
+      }, AccessGuard, ChatService
     ],
   bootstrap: [AppComponent]
 })
