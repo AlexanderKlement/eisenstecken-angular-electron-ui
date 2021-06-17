@@ -30,7 +30,7 @@ export class ChatService {
   private check4Messages(observer: Subscriber<ChatMessage>) {
     const new_messages = this.api.readChatMessagesSinceIdChatsLastIdGet(this.lastId);
     new_messages.subscribe({
-      next: messages => {
+      next: messages => {//TODO: check if this could be a bad idea and a lot of overheat
         messages.forEach((message) => {
           if(this.lastId < message.id){
             this.lastId = message.id;

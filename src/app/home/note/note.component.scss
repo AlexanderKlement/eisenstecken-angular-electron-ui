@@ -1,0 +1,9 @@
+.note{
+  border: 1px solid black;
+}
+
+.note-box {
+  overflow: auto; // you can use 'overflow: scroll;' and always have reserved space for scrollabar
+  height: 60vh;
+  //border: 1px solid black;
+}

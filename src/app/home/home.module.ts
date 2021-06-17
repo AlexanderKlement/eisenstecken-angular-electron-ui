@@ -14,9 +14,11 @@ import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {MatButtonModule} from "@angular/material/button";
 import {ReactiveFormsModule} from "@angular/forms";
+import { NoteComponent } from './note/note.component';
+import { SingleNoteComponent } from './note/single-note/single-note.component';
 
 @NgModule({
-  declarations: [HomeComponent, ChatComponent, ChatMessageComponent],
+  declarations: [HomeComponent, ChatComponent, ChatMessageComponent, NoteComponent, SingleNoteComponent],
   imports: [CommonModule, SharedModule, HomeRoutingModule, MatCardModule, FlexLayoutModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, ReactiveFormsModule]
 })
 export class HomeModule {}
