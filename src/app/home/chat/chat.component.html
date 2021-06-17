@@ -1,16 +1,18 @@
-<div fxLayout="column" fxLayoutAlign="stretch">
-  <div class="chat-message-box chat">
-    <app-chat-message *ngFor="let message of messages" [message]="message"></app-chat-message>
+<div fxLayout="column" fxLayoutAlign="stretch" class="chat">
+  <div class="chat-message-box" #chatMsgBox>
+    <app-chat-message *ngFor="let message of messages; let last = last" [message]="message">
+      {{last ? scrollToBottom() : ''}}
+    </app-chat-message>
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-evenly center" class="chat">
+  <div fxLayout="row" fxLayoutAlign="space-evenly center" >
     <form [formGroup]="chatGroup" (ngSubmit)="send()">
       <mat-form-field appearance="fill">
         <mat-label>Nachricht</mat-label>
-        <input id="message" class="form-control" formControlName="message" required matInput>
+        <input id="message-input" class="form-control" formControlName="messageInput" matInput>
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Empfänger</mat-label>
-        <mat-select formControlName="recipient" [(ngModel)]="recipients[0].id">
+        <mat-select formControlName="recipientSelect" [(ngModel)]="recipients[0].id">
           <mat-option *ngFor="let recipient of recipients" [value]="recipient.id">
             {{recipient.firstname}}
           </mat-option>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ChatService} from "./chat.service";
 import {ChatMessage, ChatRecipient} from "eisenstecken-openapi-angular-library";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -14,10 +14,8 @@ export class ChatComponent implements OnInit {
   recipients: ChatRecipient[] = [];
 
   chatGroup: FormGroup = new FormGroup({
-    message : new FormControl( "",[
-      Validators.minLength(1)
-    ]),
-    recipient : new FormControl()
+    messageInput : new FormControl( ),
+    recipientSelect : new FormControl()
   });
 
   buttonLocked = false;
@@ -36,9 +34,21 @@ export class ChatComponent implements OnInit {
     });
   }
 
+  @ViewChild('chatMsgBox') chatMsgBox: ElementRef;
+
+  public scrollToBottom(): void {
+    try {
+      this.chatMsgBox.nativeElement.scrollTop = this.chatMsgBox.nativeElement.scrollHeight;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   public send() : void{
-    this.lockSendButton(); //TODO: validate message and recipient
-    const chatMessageObservable = this.chatService.sendMessage(this.chatGroup.value.message, this.chatGroup.value.recipient);
+    if(this.chatGroup.value.messageInput == null || this.chatGroup.value.messageInput.length == 0)
+      return;
+    this.lockSendButton();
+    const chatMessageObservable = this.chatService.sendMessage(this.chatGroup.value.messageInput, this.chatGroup.value.recipientSelect);
     chatMessageObservable.subscribe(() => {
       this.resetChatControl();
     }, (message) => {
@@ -53,8 +63,8 @@ export class ChatComponent implements OnInit {
   private resetChatControl() {
     console.log("clearing");
     this.chatGroup.reset({
-      "message" : "",
-      "recipient" : 0
+      "messageInput" : "",
+      "recipientSelect" : 0
     });
   }
 
