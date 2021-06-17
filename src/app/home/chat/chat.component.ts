@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ChatService} from "./chat.service";
 import {ChatMessage, ChatRecipient} from "eisenstecken-openapi-angular-library";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-chat',
@@ -14,14 +14,16 @@ export class ChatComponent implements OnInit {
   recipients: ChatRecipient[] = [];
 
   chatGroup: FormGroup = new FormGroup({
-    message : new FormControl(),
+    message : new FormControl( "",[
+      Validators.minLength(1)
+    ]),
     recipient : new FormControl()
   });
 
   buttonLocked = false;
 
-
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService) {
+  }
 
   ngOnInit(): void {
     this.chatService
@@ -35,7 +37,7 @@ export class ChatComponent implements OnInit {
   }
 
   public send() : void{
-    this.lockSendButton();
+    this.lockSendButton(); //TODO: validate message and recipient
     const chatMessageObservable = this.chatService.sendMessage(this.chatGroup.value.message, this.chatGroup.value.recipient);
     chatMessageObservable.subscribe(() => {
       this.resetChatControl();
@@ -50,7 +52,10 @@ export class ChatComponent implements OnInit {
 
   private resetChatControl() {
     console.log("clearing");
-    this.chatGroup.reset();
+    this.chatGroup.reset({
+      "message" : "",
+      "recipient" : 0
+    });
   }
 
   private lockSendButton() {

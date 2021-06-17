@@ -1,0 +1,15 @@
+.chat-message-box {
+  overflow: auto; // you can use 'overflow: scroll;' and always have reserved space for scrollabar
+  height: 60vh;
+  border: 1px solid black;
+  //margin: auto;
+  //position: absolute;
+  //top: 0;
+  //left: 0;
+  //bottom: 0;
+  //right: 0;
+}
+
+.chat {
+  width: 40vw;
+}

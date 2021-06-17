@@ -1,16 +1,16 @@
 <div fxLayout="column" fxLayoutAlign="stretch">
-  <div>
+  <div class="chat-message-box chat">
     <app-chat-message *ngFor="let message of messages" [message]="message"></app-chat-message>
   </div>
-  <div fxLayout="row">
+  <div fxLayout="row" fxLayoutAlign="space-evenly center" class="chat">
     <form [formGroup]="chatGroup" (ngSubmit)="send()">
       <mat-form-field appearance="fill">
         <mat-label>Nachricht</mat-label>
-        <input formControlName="message" matInput>
+        <input id="message" class="form-control" formControlName="message" required matInput>
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Empfänger</mat-label>
-        <mat-select formControlName="recipient">
+        <mat-select formControlName="recipient" [(ngModel)]="recipients[0].id">
           <mat-option *ngFor="let recipient of recipients" [value]="recipient.id">
             {{recipient.firstname}}
           </mat-option>

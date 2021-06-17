@@ -9,7 +9,8 @@ export class AuthService {
 
   static accessTokenKey = "access_token";
 
-  constructor(private injector: Injector, private router: Router) { }
+  constructor(private injector: Injector, private router: Router) {
+  }
 
   getToken() : string{
     return localStorage.getItem(AuthService.accessTokenKey);
@@ -29,6 +30,7 @@ export class AuthService {
     const authToken = this.getToken();
     return (authToken !== null);
   }
+
 
   doLogout() : void {
     this.removeToken();

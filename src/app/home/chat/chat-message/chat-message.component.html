@@ -1,4 +1,4 @@
-<mat-card class="chat-message">
+<mat-card class="chat-message" [ngClass]= "message.own ? 'sent' : 'received'">
   <mat-card-header>
     <mat-card-title>{{ message.sender.firstname }}</mat-card-title>
     <mat-card-subtitle> {{ message.timestamp }}</mat-card-subtitle>
