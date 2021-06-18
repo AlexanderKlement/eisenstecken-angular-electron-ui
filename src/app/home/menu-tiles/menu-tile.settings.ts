@@ -12,7 +12,7 @@ export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
   rights.forEach((right) => {
     switch(right.key) {
       case "jobs:all":
-        menuTileArray.push({title:"Job", image:"001-shopping-cart.png", link:"/"});
+        menuTileArray.push({title:"Kunden", image:"001-shopping-cart.png", link:"/client"});
         return;
       case "calendar:all":
         menuTileArray.push({title:"Job", image:"001-shopping-cart.png", link:"/"});
