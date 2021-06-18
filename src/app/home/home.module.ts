@@ -17,9 +17,11 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { NoteComponent } from './note/note.component';
 import { SingleNoteComponent } from './note/single-note/single-note.component';
 import {MenuTilesComponent} from "./menu-tiles/menu-tiles.component";
+import {MatGridListModule} from "@angular/material/grid-list";
+import { SingleMenuTileComponent } from './menu-tiles/single-menu-tile/single-menu-tile.component';
 
 @NgModule({
-  declarations: [HomeComponent, ChatComponent, ChatMessageComponent, NoteComponent, SingleNoteComponent, MenuTilesComponent],
-  imports: [CommonModule, SharedModule, HomeRoutingModule, MatCardModule, FlexLayoutModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, ReactiveFormsModule]
+  declarations: [HomeComponent, ChatComponent, ChatMessageComponent, NoteComponent, SingleNoteComponent, MenuTilesComponent, SingleMenuTileComponent],
+  imports: [CommonModule, SharedModule, HomeRoutingModule, MatCardModule, FlexLayoutModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, ReactiveFormsModule, MatGridListModule]
 })
 export class HomeModule {}
