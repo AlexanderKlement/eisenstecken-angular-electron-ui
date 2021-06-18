@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {MenuTileDetail} from "../menu-tile.settings";
 
 @Component({
   selector: 'app-single-menu-tile',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SingleMenuTileComponent implements OnInit {
 
+  @Input() tile: MenuTileDetail;
+
   constructor() { }
 
   ngOnInit(): void {
   }
+
 
 }

@@ -10,7 +10,7 @@ describe('SingleMenuTileComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ SingleMenuTileComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

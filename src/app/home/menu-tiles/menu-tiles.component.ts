@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {DefaultService, Right} from "eisenstecken-openapi-angular-library";
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
+import {matchRightsToMenuTiles, MenuTileDetail} from "./menu-tile.settings";
 
 @Component({
   selector: 'app-menu-tiles',
@@ -7,8 +11,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuTilesComponent implements OnInit {
 
-  constructor() { }
+  menuTiles$: Observable<MenuTileDetail[]>;
+
+  constructor(private api: DefaultService) { }
 
   ngOnInit(): void {
+    const userObservable = this.api.readUsersMeUsersMeGet();
+    this.menuTiles$ = userObservable.pipe(
+      map( user => matchRightsToMenuTiles(user.rights))
+    );
   }
 }

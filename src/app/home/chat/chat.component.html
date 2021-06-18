@@ -5,7 +5,7 @@
     </app-chat-message>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-evenly center" >
-    <form [formGroup]="chatGroup" (ngSubmit)="send()">
+    <form [formGroup]="chatGroup" (ngSubmit)="send()" *ngIf="recipients$ | async as recipients">
       <mat-form-field appearance="fill">
         <mat-label>Nachricht</mat-label>
         <input id="message-input" class="form-control" formControlName="messageInput" matInput>

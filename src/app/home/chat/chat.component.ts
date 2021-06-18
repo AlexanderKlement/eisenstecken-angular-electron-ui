@@ -2,6 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ChatService} from "./chat.service";
 import {ChatMessage, ChatRecipient} from "eisenstecken-openapi-angular-library";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-chat',
@@ -10,8 +11,9 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class ChatComponent implements OnInit {
 
+  messages$ : Observable<ChatMessage[]>;
   messages: ChatMessage[] = [];
-  recipients: ChatRecipient[] = [];
+  recipients$ : Observable<ChatRecipient[]>;
 
   chatGroup: FormGroup = new FormGroup({
     messageInput : new FormControl( ),
@@ -24,14 +26,11 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chatService
-      .getMessages()
+    this.chatService.getMessages()
       .subscribe((message: ChatMessage) => {
         this.messages.push(message);
       });
-    this.chatService.getRecipients().subscribe((recipients) => {
-      this.recipients = recipients;
-    });
+    this.recipients$ =  this.chatService.getRecipients();
   }
 
   @ViewChild('chatMsgBox') chatMsgBox: ElementRef;
