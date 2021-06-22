@@ -19,17 +19,14 @@ export class ClientComponent implements OnInit {
     this.clientDataSource = new GeneralDataSource(
       this.api,
       ( api, filter, sortDirection, pageIndex, pageSize) => {
-        console.log(filter);
-        console.log(sortDirection);
-        console.log(pageIndex);
-        console.log(pageSize);
-        return api.readClientsClientGet(); //TODO: modify this to enable filtering and sorting
+        const skip = pageSize * (pageIndex - 1);
+        const limit = pageSize * pageIndex;
+        return api.readClientsClientGet(skip, limit, filter);
       },
       (dataSourceClasses) => {
         const rows = [];
         dataSourceClasses.forEach((dataSource) => {
           rows.push(
-
             {
               values: {
                 id: dataSource.id,
@@ -45,7 +42,10 @@ export class ClientComponent implements OnInit {
         {name: "id", headerName: "ID"},
         {name: "name", headerName: "Name"},
         {name: "lastname", headerName: "Nachname"}
-      ]
+      ],
+      (api) => {
+        return api.readClientCountClientCountGet();
+      }
     );
     this.clientDataSource.loadData();
   }

@@ -17,4 +17,6 @@
     <mat-header-row *matHeaderRowDef="dataSource.columnNames; sticky: true"></mat-header-row>
     <mat-row *matRowDef="let row; columns: dataSource.columnNames"></mat-row>
   </mat-table>
+  <mat-paginator [length]="(dataSource.amount$ | async)" [pageSize]="25"
+                 [pageSizeOptions]="[25, 50, 100]"></mat-paginator>
 </div>

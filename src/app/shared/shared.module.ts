@@ -11,10 +11,11 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import { TableBuilderComponent } from './components/table-builder/table-builder.component';
 import {MatTableModule} from "@angular/material/table";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent],
-  imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule],
+  imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule],
   exports: [TranslateModule, WebviewDirective, FormsModule, TestComponent, TableBuilderComponent]
 })
 export class SharedModule {}

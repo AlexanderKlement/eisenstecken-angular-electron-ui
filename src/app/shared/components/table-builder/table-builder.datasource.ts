@@ -29,23 +29,29 @@ export type LoadFunction<T> = (api: DefaultService, filter: string, sortDirectio
 
 export type ParseFunction<T extends DataSourceClass> = (dataSourceClasses: T[]) => Row<T>[];
 
+export type AmountFunction = (api:DefaultService) => Observable<number>;
+
 
 export class GeneralDataSource<T extends DataSourceClass> extends DataSource<Row<T>> {
 
   public readonly columns: Column<T>[];
   public readonly columnNames: string[];
-  private dataSubject = new BehaviorSubject<Row<T>[]>([]);
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  public loading$ = this.loadingSubject.asObservable();
   private readonly loadFunction: LoadFunction<T>;
   private readonly parseFunction: ParseFunction<T>;
 
-  constructor(private api: DefaultService, loadFunction: LoadFunction<T>, parseFunction: ParseFunction<T>, columns: Column<T>[]) {
+  private dataSubject = new BehaviorSubject<Row<T>[]>([]);
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  public loading$ = this.loadingSubject.asObservable();
+  public amount$: Observable<number>;
+
+
+  constructor(private api: DefaultService, loadFunction: LoadFunction<T>, parseFunction: ParseFunction<T>, columns: Column<T>[], amountFunction: AmountFunction) {
     super();
     this.loadFunction = loadFunction;
     this.parseFunction = parseFunction;
     this.columns = columns;
     this.columnNames = this.columns.map((column) => column.name.toString());
+    this.amount$ = amountFunction(api);
   }
 
   public connect(collectionViewer: CollectionViewer): Observable<Row<T>[]> {
@@ -67,13 +73,11 @@ export class GeneralDataSource<T extends DataSourceClass> extends DataSource<Row
       finalize(() => this.loadingSubject.next(false)),
       map(row => this.parseFunction(row))
     ).subscribe(data => this.dataSubject.next(data));
-
   }
 
   private findData(filter: string, sortDirection: string, pageIndex: number, pageSize: number): Observable<T[]> {
     return this.loadFunction(this.api, filter, sortDirection, pageIndex, pageSize);
   }
-
 }
 
 
