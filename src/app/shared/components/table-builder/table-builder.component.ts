@@ -12,7 +12,6 @@ import {fromEvent} from "rxjs";
 export class TableBuilderComponent<T extends DataSourceClass> implements OnInit, AfterViewInit {
 
   @Input() dataSource: GeneralDataSource<T>;
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('input') input: ElementRef;
 

@@ -1,9 +1,7 @@
-<p>hallo i bims 1 dem Table</p>
 <div class="table">
-
-  <mat-input-container>
+  <mat-form-field>
     <input matInput placeholder="Suchen" #input>
-  </mat-input-container>
+  </mat-form-field>
   <div class="spinner-container" *ngIf="dataSource.loading$ | async">
     <mat-spinner></mat-spinner>
   </div>
