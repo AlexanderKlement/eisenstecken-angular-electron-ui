@@ -1,0 +1,20 @@
+<p>hallo i bims 1 dem Table</p>
+<div class="table">
+
+  <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container [matColumnDef]="column.name" *ngFor="let column of dataSource.columns">
+      <mat-header-cell *matHeaderCellDef>
+        {{ column.name }}
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.values[column.name] }}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="dataSource.columnNames; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: dataSource.columnNames"></mat-row>
+  </mat-table>
+</div>

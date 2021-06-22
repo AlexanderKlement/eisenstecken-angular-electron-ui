@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {DataSourceClass, GeneralDataSource, Row} from "../shared/table-builder/table-builder.datasource";
+import {GeneralDataSource} from "../shared/components/table-builder/table-builder.datasource";
 import {DefaultService, Client} from "eisenstecken-openapi-angular-library";
-import {Observable} from "rxjs";
-import {type} from "os";
 
 @Component({
   selector: 'app-client',
@@ -13,18 +11,14 @@ import {type} from "os";
 
 export class ClientComponent implements OnInit {
 
-  private client:Client;
-
   public clientDataSource: GeneralDataSource<Client>;
 
-  constructor(private api: DefaultService) {
-
-
-  }
+  constructor(private api: DefaultService) {}
 
   ngOnInit(): void {
     this.clientDataSource = new GeneralDataSource(
-      this.api, ( api, filter, sortDirection, pageIndex, pageSize) => {
+      this.api,
+      ( api, filter, sortDirection, pageIndex, pageSize) => {
         console.log(filter);
         console.log(sortDirection);
         console.log(pageIndex);
@@ -34,12 +28,17 @@ export class ClientComponent implements OnInit {
       (dataSourceClasses) => {
         const rows = [];
         dataSourceClasses.forEach((dataSource) => {
-          rows.push({
-            id: dataSource.id,
-            name: dataSource.name,
-            lastname: dataSource.lastname
-          });
+          rows.push(
+
+            {
+              values: {
+                id: dataSource.id,
+                name: dataSource.name,
+                lastname: dataSource.lastname
+              }
+            });
         });
+        console.log(rows);
         return rows;
       },
       [

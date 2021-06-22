@@ -32,7 +32,7 @@ export type ParseFunction<T extends DataSourceClass> = (dataSourceClasses: T[]) 
 
 export class GeneralDataSource<T extends DataSourceClass> extends DataSource<Row<T>> {
 
-  private readonly columns: Column<T>[];
+  public readonly columns: Column<T>[];
   public readonly columnNames: string[];
   private dataSubject = new BehaviorSubject<Row<T>[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -45,11 +45,7 @@ export class GeneralDataSource<T extends DataSourceClass> extends DataSource<Row
     this.loadFunction = loadFunction;
     this.parseFunction = parseFunction;
     this.columns = columns;
-    this.columnNames = this.columns.map((column) => column.headerName); //TODO: change this with header name
-  }
-
-  public getColumns(): Column<T>[] {
-    return this.columns;
+    this.columnNames = this.columns.map((column) => column.name.toString());
   }
 
   public connect(collectionViewer: CollectionViewer): Observable<Row<T>[]> {

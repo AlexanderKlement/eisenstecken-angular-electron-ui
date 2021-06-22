@@ -10,9 +10,12 @@ export class TableBuilderComponent<T extends DataSourceClass> implements OnInit 
 
   @Input() dataSource: GeneralDataSource<T>;
 
-  constructor() { }
+  constructor() {
+    console.log("hi");
+  }
 
   ngOnInit(): void {
-
+    console.log("TableBuilder initilized");
+    console.log(this.dataSource);
   }
 }

@@ -7,21 +7,13 @@ import { DetailRoutingModule } from './detail/detail-routing.module';
 import { LoginRoutingModule } from './login/login-routing.module';
 import { AccessGuard } from "./shared/access-guard.service";
 import { HomeComponent } from "./home/home.component";
-import {ClientComponent} from "./client/client.component";
+import {ClientRoutingModule} from "./client/client-routing.module";
 
 const routes: Routes = [
   {
     path: '',
     //redirectTo: 'home',
     component: HomeComponent,
-    pathMatch: 'full',
-    //data: { requiresLogin: true },
-    canActivate: [ AccessGuard ]
-  },
-  {
-    path: 'client',
-    //redirectTo: 'home',
-    component: ClientComponent,
     pathMatch: 'full',
     //data: { requiresLogin: true },
     canActivate: [ AccessGuard ]
@@ -38,6 +30,7 @@ const routes: Routes = [
     HomeRoutingModule,
     DetailRoutingModule,
     LoginRoutingModule,
+    ClientRoutingModule
   ],
   exports: [RouterModule]
 })

@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ChatService} from "./chat.service";
 import {ChatMessage, ChatRecipient} from "eisenstecken-openapi-angular-library";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {Observable} from "rxjs";
 
 @Component({
@@ -11,7 +11,6 @@ import {Observable} from "rxjs";
 })
 export class ChatComponent implements OnInit {
 
-  messages$ : Observable<ChatMessage[]>;
   messages: ChatMessage[] = [];
   recipients$ : Observable<ChatRecipient[]>;
 
