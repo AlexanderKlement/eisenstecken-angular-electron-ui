@@ -21,6 +21,11 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {ChatService} from "./home/chat/chat.service";
+import {MatInputModule} from "@angular/material/input";
+import {MatTableModule} from "@angular/material/table";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatSortModule} from "@angular/material/sort";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -56,7 +61,12 @@ export function apiConfigFactory (): Configuration {
     }),
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule
   ],
   providers:
     [
