@@ -35,7 +35,6 @@ export class ClientComponent implements OnInit {
               }
             });
         });
-        console.log(rows);
         return rows;
       },
       [

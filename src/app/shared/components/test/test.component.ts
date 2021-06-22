@@ -14,9 +14,6 @@ export class TestComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("loaded");
-    console.log(this.units$);
-    console.log("What this shit?");
   }
 
 }

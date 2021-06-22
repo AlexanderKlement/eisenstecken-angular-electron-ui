@@ -12,10 +12,11 @@ import { TableBuilderComponent } from './components/table-builder/table-builder.
 import {MatTableModule} from "@angular/material/table";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent],
-  imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule],
+  imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule, MatInputModule],
   exports: [TranslateModule, WebviewDirective, FormsModule, TestComponent, TableBuilderComponent]
 })
 export class SharedModule {}

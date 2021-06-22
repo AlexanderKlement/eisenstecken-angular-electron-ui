@@ -55,7 +55,7 @@ export class GeneralDataSource<T extends DataSourceClass> extends DataSource<Row
   }
 
   public connect(collectionViewer: CollectionViewer): Observable<Row<T>[]> {
-    console.log("Connecting data source");
+    console.log("Connecting data source to table");
     return this.dataSubject.asObservable();
   }
 
