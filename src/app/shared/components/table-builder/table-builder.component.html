@@ -19,5 +19,5 @@
     <mat-row *matRowDef="let row; columns: dataSource.columnIdentifiers" (click)="rowClicked(row.route)"></mat-row>
   </mat-table>
   <mat-paginator [length]="(dataSource.amount$ | async)" [pageSize]="dataSource.pageSize"
-                 [pageSizeOptions]="[25, 50, 100]"></mat-paginator>
+                 [pageSizeOptions]="dataSource.pageSizeOptions"></mat-paginator>
 </div>

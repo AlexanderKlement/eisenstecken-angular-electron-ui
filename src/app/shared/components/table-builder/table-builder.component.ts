@@ -34,7 +34,6 @@ export class TableBuilderComponent<T extends DataSourceClass> implements OnInit,
       )
       .subscribe();
 
-    // on sort or paginate events, load a new page
     this.paginator.page
       .pipe(
         tap(() => this.loadDataPage())

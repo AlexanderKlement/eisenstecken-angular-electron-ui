@@ -18,9 +18,7 @@ export class ClientComponent implements OnInit {
   ngOnInit(): void {
     this.clientDataSource = new GeneralDataSource(
       this.api,
-      ( api, filter, sortDirection, pageIndex, pageSize) => {
-        const skip = pageSize * (pageIndex - 1);
-        const limit = pageSize * pageIndex;
+      ( api, filter, sortDirection, skip, limit) => {
         return api.readClientsClientGet(skip, limit, filter);
       },
       (dataSourceClasses) => {

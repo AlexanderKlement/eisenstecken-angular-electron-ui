@@ -9,8 +9,6 @@ export interface Column<T> {
   name: keyof T;
   sortable?: boolean;
   headerName: string;
-  // TODO: add filtering target here
-  // TODO: add header name
 }
 
 export interface Row<T> {
@@ -22,10 +20,15 @@ export const defaultValues = {
   filter: "",
   sortDirection: "ASC",
   pageIndex: 1,
-  pageSize: 25
+  pageSize: 25,
+  pageSizeOptions: [
+    25,
+    50,
+    100
+  ]
 };
 
-export type LoadFunction<T> = (api: DefaultService, filter: string, sortDirection: string, pageIndex: number, pageSize: number) => Observable<T[]>;
+export type LoadFunction<T> = (api: DefaultService, filter: string, sortDirection: string, skip: number, limit: number) => Observable<T[]>;
 
 export type ParseFunction<T extends DataSourceClass> = (dataSourceClasses: T[]) => Row<T>[];
 
@@ -35,7 +38,6 @@ export class GeneralDataSource<T extends DataSourceClass> extends DataSource<Row
 
   public readonly columns: Column<T>[];
   public readonly columnIdentifiers: string[];
-  public readonly headerNames: string[];
   private readonly loadFunction: LoadFunction<T>;
   private readonly parseFunction: ParseFunction<T>;
 
@@ -45,6 +47,7 @@ export class GeneralDataSource<T extends DataSourceClass> extends DataSource<Row
   public amount$: Observable<number>;
 
   public pageSize = defaultValues.pageSize;
+  public pageSizeOptions = defaultValues.pageSizeOptions;
 
 
   constructor(private api: DefaultService, loadFunction: LoadFunction<T>, parseFunction: ParseFunction<T>, columns: Column<T>[], amountFunction: AmountFunction) {
@@ -56,11 +59,13 @@ export class GeneralDataSource<T extends DataSourceClass> extends DataSource<Row
     this.amount$ = amountFunction(api);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public connect(collectionViewer: CollectionViewer): Observable<Row<T>[]> {
     console.log("Connecting data source to table");
     return this.dataSubject.asObservable();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public disconnect(collectionViewer: CollectionViewer): void {
     this.dataSubject.complete();
     this.loadingSubject.complete();
@@ -71,14 +76,16 @@ export class GeneralDataSource<T extends DataSourceClass> extends DataSource<Row
     this.loadingSubject.next(true);
 
     this.findData(filter || defaultValues.filter, sortDirection || defaultValues.sortDirection, pageIndex || defaultValues.pageIndex, pageSize || defaultValues.pageSize).pipe(
-      catchError(() => of([])), // TODO implement error function
+      catchError(() => of([])), // TODO implement error function -> Leaving this for the moment, because i dont know if connection errors may be handled by the route
       finalize(() => this.loadingSubject.next(false)),
       map(row => this.parseFunction(row))
     ).subscribe(data => this.dataSubject.next(data));
   }
 
   private findData(filter: string, sortDirection: string, pageIndex: number, pageSize: number): Observable<T[]> {
-    return this.loadFunction(this.api, filter, sortDirection, pageIndex, pageSize);
+    const skip = pageSize * (pageIndex - 1);
+    const limit = pageSize * pageIndex;
+    return this.loadFunction(this.api, filter, sortDirection, skip, limit);
   }
 }
 
