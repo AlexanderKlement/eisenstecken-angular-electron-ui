@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {DataSourceClass, GeneralDataSource} from "./table-builder.datasource";
+import {DataSourceClass, TableDataSource} from "./table-builder.datasource";
 import {MatPaginator} from "@angular/material/paginator";
 import {debounceTime, distinctUntilChanged, tap} from "rxjs/operators";
 import {fromEvent} from "rxjs";
@@ -11,7 +11,7 @@ import {fromEvent} from "rxjs";
 })
 export class TableBuilderComponent<T extends DataSourceClass> implements OnInit, AfterViewInit {
 
-  @Input() dataSource: GeneralDataSource<T>;
+  @Input() dataSource: TableDataSource<T>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('input') input: ElementRef;
 

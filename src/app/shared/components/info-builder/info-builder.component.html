@@ -1,0 +1,30 @@
+<mat-grid-list cols="{{dataSource.numberOfRows}}" *ngIf="dataSource.data$ | async as data">
+  <mat-grid-tile>
+    <mat-list>
+      <ng-container *ngFor="let info of dataSource.mapping; let i=index">
+        <mat-list-item *ngIf="i%2 == 0">
+          <div class="info-key">
+            {{ info.name}}
+          </div>
+          <div class="info-value">
+            {{ data[info.property]}}
+          </div>
+          </mat-list-item>
+      </ng-container>
+    </mat-list>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-list>
+      <ng-container *ngFor="let info of dataSource.mapping; let i=index">
+        <mat-list-item *ngIf="i%2 != 0">
+          <div class="info-key">
+            {{ info.name}}
+          </div>
+          <div class="info-value">
+            {{ data[info.property]}}
+          </div>
+        </mat-list-item>
+      </ng-container>
+    </mat-list>
+  </mat-grid-tile>
+</mat-grid-list>

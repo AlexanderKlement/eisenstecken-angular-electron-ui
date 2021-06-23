@@ -27,6 +27,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatSortModule} from "@angular/material/sort";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {ClientComponent} from "./client/client.component";
+import { ClientDetailComponent } from './client/client-detail/client-detail.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -41,7 +42,7 @@ export function apiConfigFactory (): Configuration {
 }
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, ClientComponent],
+  declarations: [AppComponent, LoginComponent, ClientComponent, ClientDetailComponent],
   imports: [
     BrowserModule,
     FormsModule,

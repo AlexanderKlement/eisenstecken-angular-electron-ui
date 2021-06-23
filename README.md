@@ -170,3 +170,14 @@ Please note that Hot reload is only available in Renderer process.
 [github-star]: https://github.com/maximegris/angular-electron/stargazers
 [twitter]: https://twitter.com/intent/tweet?text=Check%20out%20angular-electron!%20https://github.com/maximegris/angular-electron%20%F0%9F%91%8D
 [twitter-badge]: https://img.shields.io/twitter/url/https/github.com/maximegris/angular-electron.svg?style=social
+
+
+Reminder to add new module with a component:
+1. ng generate module MODULEPATH/NAME --routing
+2. ng generate component MODULEPATH/NAME --routing
+3. add routing information to routing module:
+   {
+   path: 'NAME',
+   component: NAMEComponent,
+   data:{requiresLogin: true}
+   }

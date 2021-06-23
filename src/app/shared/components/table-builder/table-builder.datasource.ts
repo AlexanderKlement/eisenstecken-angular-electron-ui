@@ -34,7 +34,7 @@ export type ParseFunction<T extends DataSourceClass> = (dataSourceClasses: T[]) 
 
 export type AmountFunction = (api:DefaultService) => Observable<number>;
 
-export class GeneralDataSource<T extends DataSourceClass> extends DataSource<Row<T>> {
+export class TableDataSource<T extends DataSourceClass> extends DataSource<Row<T>> {
 
   public readonly columns: Column<T>[];
   public readonly columnIdentifiers: string[];

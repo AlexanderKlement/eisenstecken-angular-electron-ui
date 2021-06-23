@@ -25,8 +25,8 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chatService.getMessages()
-      .subscribe((message: ChatMessage) => {
+    this.chatService.getMessages() //TODO: moving this to the constructor should load messages even though the component is not loaded sometimes
+      .subscribe((message: ChatMessage) => { //TODO: maybe we could reset the index when lifecycle has ended
         this.messages.push(message);
       });
     this.recipients$ =  this.chatService.getRecipients();
