@@ -1,4 +1,4 @@
-<mat-grid-list cols="{{dataSource.numberOfRows}}" *ngIf="dataSource.data$ | async as data">
+<mat-grid-list cols="2" *ngIf="dataSource.data$ | async as data">
   <mat-grid-tile>
     <mat-list>
       <ng-container *ngFor="let info of dataSource.mapping; let i=index">

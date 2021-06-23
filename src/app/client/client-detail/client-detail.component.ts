@@ -19,7 +19,7 @@ export class ClientDetailComponent implements OnInit {
       try{
         id = parseInt(params.id);
       } catch {
-        console.log("Cannot parse given id");
+        console.error("Cannot parse given id");
         this.router.navigate(['client']);
         return;
       }
@@ -42,8 +42,7 @@ export class ClientDetailComponent implements OnInit {
             property: "mail2",
             name: "Mail"
           }
-        ],
-        2
+        ]
       );
     });
   }
