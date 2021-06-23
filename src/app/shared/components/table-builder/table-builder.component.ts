@@ -17,7 +17,6 @@ export class TableBuilderComponent<T extends DataSourceClass> implements OnInit,
 
 
   constructor() {
-    console.log("hi");
   }
 
   ngOnInit(): void {
@@ -45,5 +44,9 @@ export class TableBuilderComponent<T extends DataSourceClass> implements OnInit,
 
   private loadDataPage() {
     this.dataSource.loadData(this.input.nativeElement.value, "", this.paginator.pageIndex, this.paginator.pageSize);
+  }
+
+  public rowClicked(route: VoidFunction) :void {
+    route();
   }
 }

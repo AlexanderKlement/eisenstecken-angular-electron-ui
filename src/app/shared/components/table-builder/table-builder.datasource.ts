@@ -15,14 +15,14 @@ export interface Column<T> {
 
 export interface Row<T> {
   values: T;
-  // TODO: add navigation Target here
+  route: VoidFunction;
 }
 
 export const defaultValues = {
   filter: "",
   sortDirection: "ASC",
   pageIndex: 1,
-  pageSize: 100
+  pageSize: 25
 };
 
 export type LoadFunction<T> = (api: DefaultService, filter: string, sortDirection: string, pageIndex: number, pageSize: number) => Observable<T[]>;
@@ -31,11 +31,11 @@ export type ParseFunction<T extends DataSourceClass> = (dataSourceClasses: T[]) 
 
 export type AmountFunction = (api:DefaultService) => Observable<number>;
 
-
 export class GeneralDataSource<T extends DataSourceClass> extends DataSource<Row<T>> {
 
   public readonly columns: Column<T>[];
-  public readonly columnNames: string[];
+  public readonly columnIdentifiers: string[];
+  public readonly headerNames: string[];
   private readonly loadFunction: LoadFunction<T>;
   private readonly parseFunction: ParseFunction<T>;
 
@@ -44,13 +44,15 @@ export class GeneralDataSource<T extends DataSourceClass> extends DataSource<Row
   public loading$ = this.loadingSubject.asObservable();
   public amount$: Observable<number>;
 
+  public pageSize = defaultValues.pageSize;
+
 
   constructor(private api: DefaultService, loadFunction: LoadFunction<T>, parseFunction: ParseFunction<T>, columns: Column<T>[], amountFunction: AmountFunction) {
     super();
     this.loadFunction = loadFunction;
     this.parseFunction = parseFunction;
     this.columns = columns;
-    this.columnNames = this.columns.map((column) => column.name.toString());
+    this.columnIdentifiers = this.columns.map((column) => column.name.toString());
     this.amount$ = amountFunction(api);
   }
 

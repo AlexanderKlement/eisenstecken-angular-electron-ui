@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {GeneralDataSource} from "../shared/components/table-builder/table-builder.datasource";
 import {DefaultService, Client} from "eisenstecken-openapi-angular-library";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-client',
@@ -8,12 +9,11 @@ import {DefaultService, Client} from "eisenstecken-openapi-angular-library";
   styleUrls: ['./client.component.scss']
 })
 
-
 export class ClientComponent implements OnInit {
 
   public clientDataSource: GeneralDataSource<Client>;
 
-  constructor(private api: DefaultService) {}
+  constructor(private api: DefaultService, private router: Router) {}
 
   ngOnInit(): void {
     this.clientDataSource = new GeneralDataSource(
@@ -32,6 +32,10 @@ export class ClientComponent implements OnInit {
                 id: dataSource.id,
                 name: dataSource.name,
                 lastname: dataSource.lastname
+              },
+              route : () => {
+                console.log("Routing");
+                this.router.navigateByUrl('/client-detail', { state: { id:dataSource.id} });
               }
             });
         });
