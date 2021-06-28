@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Client, DefaultService} from "eisenstecken-openapi-angular-library";
+import {Client, DefaultService, Job} from "eisenstecken-openapi-angular-library";
 import {InfoDataSource} from "../../shared/components/info-builder/info-builder.datasource";
 import {ActivatedRoute, Router} from "@angular/router";
+import {TableDataSource} from "../../shared/components/table-builder/table-builder.datasource";
 
 @Component({
   selector: 'app-client-detail',
@@ -10,7 +11,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class ClientDetailComponent implements OnInit {
 
-  public dataSource: InfoDataSource<Client>;
+  public infoDataSource: InfoDataSource<Client>;
+  public tableDataSource: TableDataSource<Job>;
   constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -23,7 +25,7 @@ export class ClientDetailComponent implements OnInit {
         this.router.navigate(['client']);
         return;
       }
-      this.dataSource = new InfoDataSource<Client>(
+      this.infoDataSource = new InfoDataSource<Client>(
         this.api.readClientClientClientIdGet(id),
         [
           {
@@ -44,7 +46,38 @@ export class ClientDetailComponent implements OnInit {
           }
         ]
       );
+      this.tableDataSource = new TableDataSource(
+        this.api,
+        ( api, filter, sortDirection, skip, limit) => {
+          return api.readJobsByClientJobClientClientIdGet(id, filter, skip, limit);
+        },
+        (dataSourceClasses) => {
+          const rows = [];
+          dataSourceClasses.forEach((dataSource) => {
+            rows.push(
+              {
+                values: {
+                  id: dataSource.id,
+                  "orderable.name" : dataSource.orderable.name,
+                  description: dataSource.description
+                },
+                route : () => {
+                  this.router.navigateByUrl('/job/' +dataSource.id.toString());
+                }
+              });
+          });
+          return rows;
+        },
+        [
+          {name: "id", headerName: "ID"},
+          {name: "orderable.name", headerName: "Name"},
+          {name: "description", headerName: "Beschreibung"}
+        ],
+        (api) => {
+          return api.readClientCountClientCountGet();
+        }
+      );
+      this.tableDataSource.loadData();
     });
   }
-
 }

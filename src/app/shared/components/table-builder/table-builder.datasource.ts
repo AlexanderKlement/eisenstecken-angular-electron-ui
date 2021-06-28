@@ -1,12 +1,21 @@
 import {CollectionViewer, DataSource} from "@angular/cdk/collections";
 import {BehaviorSubject, Observable, of} from "rxjs";
-import {Calendar, Client, DefaultService, User} from "eisenstecken-openapi-angular-library";
+import {Calendar, Client, DefaultService, Job, User} from "eisenstecken-openapi-angular-library";
 import {catchError, finalize, map} from "rxjs/operators";
 
-export type DataSourceClass = Client | User | Calendar;
+export type DataSourceClass = Client | User | Calendar | Job;
+
+type RecursiveKeyOf<T, Prefix extends string = never> =
+  T extends string | number | bigint | boolean
+  | null | undefined | ((...args: any) => any ) ? never : {
+      [K in keyof T & string]: [Prefix] extends [never]
+        ? K | `['${K}']` | RecursiveKeyOf<T[K], K>
+        : `${Prefix}.${K}` | `${Prefix}['${K}']` | RecursiveKeyOf<T[K],`${Prefix}.${K}` | `${Prefix}['${K}']`>
+    }[keyof T & string];
+//I did not come up with this myself: https://stackoverflow.com/questions/65332597/typescript-is-there-a-recursive-keyof
 
 export interface Column<T> {
-  name: keyof T;
+  name: RecursiveKeyOf<T>;
   sortable?: boolean;
   headerName: string;
 }
