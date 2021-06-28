@@ -8,6 +8,7 @@ import { LoginRoutingModule } from './login/login-routing.module';
 import { AccessGuard } from "./shared/access-guard.service";
 import { HomeComponent } from "./home/home.component";
 import {ClientRoutingModule} from "./client/client-routing.module";
+import {JobRoutingModule} from "./job/job-routing.module";
 
 const routes: Routes = [
   {
@@ -30,7 +31,8 @@ const routes: Routes = [
     HomeRoutingModule,
     DetailRoutingModule,
     LoginRoutingModule,
-    ClientRoutingModule
+    ClientRoutingModule,
+    JobRoutingModule
   ],
   exports: [RouterModule]
 })

@@ -1,8 +1,9 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {DataSourceClass, TableDataSource} from "./table-builder.datasource";
+import {TableDataSource} from "./table-builder.datasource";
 import {MatPaginator} from "@angular/material/paginator";
 import {debounceTime, distinctUntilChanged, tap} from "rxjs/operators";
 import {fromEvent} from "rxjs";
+import {DataSourceClass} from "../../types";
 
 @Component({
   selector: 'app-table-builder',

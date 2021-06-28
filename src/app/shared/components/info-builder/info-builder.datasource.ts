@@ -1,8 +1,8 @@
-import {DataSourceClass} from "../table-builder/table-builder.datasource";
 import {Observable} from "rxjs";
+import {DataSourceClass, RecursiveKeyOf} from "../../types";
 
 export interface Mapping<T> {
-  property: keyof T;
+  property: RecursiveKeyOf<T>;
   name: string;
 }
 

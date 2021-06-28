@@ -174,10 +174,13 @@ Please note that Hot reload is only available in Renderer process.
 
 Reminder to add new module with a component:
 1. ng generate module MODULEPATH/NAME --routing
-2. ng generate component MODULEPATH/NAME --routing
+2. ng generate component MODULEPATH/NAME 
 3. add routing information to routing module:
    {
    path: 'NAME',
    component: NAMEComponent,
    data:{requiresLogin: true}
    }
+4. add routing module to app-routing.module.ts
+5. import module to app-module.ts
+6. click on the right symbol and don't fuck around an hour clicking the wrong link

@@ -28,6 +28,7 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {ClientComponent} from "./client/client.component";
 import { ClientDetailComponent } from './client/client-detail/client-detail.component';
+import {JobModule} from "./job/job.module";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -42,7 +43,7 @@ export function apiConfigFactory (): Configuration {
 }
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, ClientComponent, ClientDetailComponent],
+  declarations: [AppComponent, LoginComponent, ClientComponent, ClientDetailComponent], //TODO: move components to theirs respective modules
   imports: [
     BrowserModule,
     FormsModule,
@@ -51,6 +52,7 @@ export function apiConfigFactory (): Configuration {
     SharedModule,
     HomeModule,
     DetailModule,
+    JobModule,
     ApiModule.forRoot(apiConfigFactory),
     AppRoutingModule,
     FlexLayoutModule,

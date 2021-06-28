@@ -15,7 +15,7 @@ export class AppComponent {
     private translate: TranslateService,
     private apiGateway: DefaultService
   ) {
-    this.translate.setDefaultLang('en');
+    this.translate.setDefaultLang('de');
     console.log('AppConfig', AppConfig);
 
     if (electronService.isElectron) {

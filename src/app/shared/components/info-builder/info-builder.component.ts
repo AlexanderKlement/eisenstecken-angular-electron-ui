@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DataSourceClass} from "../table-builder/table-builder.datasource";
 import {InfoDataSource} from "./info-builder.datasource";
+import {DataSourceClass} from "../../types";
 
 @Component({
   selector: 'app-info-builder',
