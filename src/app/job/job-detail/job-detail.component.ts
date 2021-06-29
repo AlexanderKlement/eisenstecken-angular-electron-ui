@@ -45,7 +45,15 @@ export class JobDetailComponent implements OnInit {
         ],
         () => {
           this.router.navigateByUrl('/job/edit/' + id.toString());
-        }
+        },
+        () => {
+          return this.api.islockedJobJobIslockedJobIdGet(id);
+        },() => {
+          this.api.lockJobJobUnlockJobIdPost(id).subscribe(); //TODO: this function is nor working anymore after next api update
+        },() => {
+          this.api.lockJobJobLockJobIdPost(id).subscribe();
+        },
+        this.api.readUsersMeUsersMeGet()
       );
     });
   }

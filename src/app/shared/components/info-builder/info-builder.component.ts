@@ -1,6 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {InfoDataSource} from "./info-builder.datasource";
 import {DataSourceClass} from "../../types";
+import {MatDialog} from "@angular/material/dialog";
+import {LockDialogComponent} from "./lock-dialog/lock-dialog.component";
+import {Lock} from "eisenstecken-openapi-angular-library";
 
 @Component({
   selector: 'app-info-builder',
@@ -12,7 +15,7 @@ export class InfoBuilderComponent<T extends DataSourceClass> implements OnInit {
 
   @Input() dataSource: InfoDataSource<T>;
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -26,6 +29,35 @@ export class InfoBuilderComponent<T extends DataSourceClass> implements OnInit {
   }
 
   editButtonClicked() :void{
+    const lock = this.dataSource.islockedFunction();
+    lock.subscribe((lock) => {
+      if(lock.locked){
+        this.dataSource.user$.subscribe((user) => {
+          if(user.id == lock.user.id){
+            this.lockAndNavigate();
+          } else {
+            this.showLockDialog(lock);
+          }
+        });
+
+      }
+      else {
+        this.lockAndNavigate();
+      }
+    });
+  }
+
+  showLockDialog(lock: Lock): void {
+    this.dialog.open(LockDialogComponent, {
+      data: {
+        lock: lock,
+        unlockFunction: this.dataSource.unlockFunction
+      }
+    });
+  }
+
+  lockAndNavigate(): void {
+    this.dataSource.lockFunction();
     this.dataSource.editButtonFunction();
   }
 }

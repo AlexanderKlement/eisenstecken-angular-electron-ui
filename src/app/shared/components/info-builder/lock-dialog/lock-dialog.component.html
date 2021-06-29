@@ -1,0 +1,11 @@
+<div mat-dialog-content>
+  <div class="introduction">
+    Dieser Datensatz ist gesperrt, da er gerade von <b>{{data.lock.user.firstname}}</b> bearbeitet wird.
+    Sie können einige Minuten warten, bis der Benutzer den Datensatz freigibt, oder sie entsperren diesen sofort. <br>
+    ACHTUNG: Manuelles entsperren kann dazu führen, dass die Änderungen von <b>{{data.lock.user.firstname}}</b> nicht gespeichert werden!
+  </div>
+  <div class="buttons">
+    <button mat-button (click)="onCancelClick()">Warten</button>
+    <button mat-button (click)="onUnlockClick()">Entsperren</button>
+  </div>
+</div>

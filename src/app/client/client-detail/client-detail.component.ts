@@ -47,7 +47,17 @@ export class ClientDetailComponent implements OnInit {
         ],
         () => {
           this.router.navigateByUrl('/client/edit/' + id.toString());
-        }
+        },
+        () => {
+          return this.api.islockedClientClientIslockedClientIdGet(id);
+        },
+        () => {
+          this.api.unlockClientClientUnlockClientIdPost(id).subscribe();
+        },
+        () => {
+          this.api.lockClientClientLockClientIdPost(id).subscribe();
+        },
+        this.api.readUsersMeUsersMeGet()
       );
       this.tableDataSource = new TableDataSource(
         this.api,
