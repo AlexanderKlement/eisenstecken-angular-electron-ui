@@ -6,6 +6,7 @@ import { JobComponent } from './job.component';
 import {SharedModule} from "../shared/shared.module";
 import { JobDetailComponent } from './job-detail/job-detail.component';
 import { JobEditComponent } from './job-edit/job-edit.component';
+import {FlexModule} from "@angular/flex-layout";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { JobEditComponent } from './job-edit/job-edit.component';
   imports: [
     CommonModule,
     JobRoutingModule,
-    SharedModule
+    SharedModule,
+    FlexModule
   ]
 })
 export class JobModule { }

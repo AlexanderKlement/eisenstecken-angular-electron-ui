@@ -1,1 +1,6 @@
 <p>job-edit works!</p>
+<div fxLayout="column" fxLayoutAlign="space-evenly center" >
+  <form [formGroup]="jobGroup" (ngSubmit)="send()" *ngIf="job$ | async as job">
+
+  </form>
+</div>
