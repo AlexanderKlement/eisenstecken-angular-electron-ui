@@ -20,9 +20,10 @@ import {MatButtonModule} from "@angular/material/button";
 import { LockDialogComponent } from './components/info-builder/lock-dialog/lock-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import { BaseEditComponent } from './components/base-edit/base-edit.component';
+import { WarningDialogComponent } from './components/base-edit/warning-dialog/warning-dialog.component';
 
 @NgModule({
-  declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent, InfoBuilderComponent, LockDialogComponent, BaseEditComponent],
+  declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent, InfoBuilderComponent, LockDialogComponent, BaseEditComponent, WarningDialogComponent],
   imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule, MatInputModule, MatGridListModule, MatListModule, MatButtonModule, MatDialogModule],
   exports: [TranslateModule, WebviewDirective, FormsModule, TestComponent, TableBuilderComponent, InfoBuilderComponent]
 })

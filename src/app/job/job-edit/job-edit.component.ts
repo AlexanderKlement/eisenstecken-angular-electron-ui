@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BaseEditComponent} from "../../shared/components/base-edit/base-edit.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-job-edit',
@@ -12,7 +13,7 @@ import {BaseEditComponent} from "../../shared/components/base-edit/base-edit.com
 })
 export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
 
-  navigationTarget = "Job";
+  navigationTarget = "/job";
   lockFunction = (api: DefaultService, id: number): Observable<Lock> => {
     return api.islockedJobJobIslockedJobIdGet(id);
   };
@@ -20,14 +21,17 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
     return api.readJobJobJobIdGet(id);
   };
 
+  jobGroup: FormGroup;
 
-
-  constructor(api: DefaultService, router: Router,  route: ActivatedRoute) {
-    super(api, router, route);
+  constructor(api: DefaultService, router: Router,  route: ActivatedRoute, dialog: MatDialog) {
+    super(api, router, route, dialog);
   }
 
   ngOnInit(): void {
     super.ngOnInit();
   }
 
+  send(): void {
+
+  }
 }

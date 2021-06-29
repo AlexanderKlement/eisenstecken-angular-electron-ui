@@ -1,0 +1,9 @@
+<div mat-dialog-content>
+  <div class="introduction">
+    Der Datensatz den sie gerade bearbeiten kann nur für <b>{{data.totalBlockingTime}} Minuten</b> gesperrt werden. Bitte beenden Sie ihre Arbeit innerhalb von
+    <b>{{data.remainingBlockingTime}} Minuten</b>. Danach wird die Sitzung geschlossen und ihre Daten gehen verloren.
+  </div>
+  <div class="buttons">
+    <button mat-button (click)="onAcceptClick()">Ok</button>
+  </div>
+</div>

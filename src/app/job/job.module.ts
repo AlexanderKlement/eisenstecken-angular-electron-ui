@@ -7,6 +7,9 @@ import {SharedModule} from "../shared/shared.module";
 import { JobDetailComponent } from './job-detail/job-detail.component';
 import { JobEditComponent } from './job-edit/job-edit.component';
 import {FlexModule} from "@angular/flex-layout";
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({
@@ -19,7 +22,10 @@ import {FlexModule} from "@angular/flex-layout";
     CommonModule,
     JobRoutingModule,
     SharedModule,
-    FlexModule
+    FlexModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ]
 })
 export class JobModule { }

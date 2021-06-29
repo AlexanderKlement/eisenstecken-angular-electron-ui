@@ -1,6 +1,9 @@
 <p>job-edit works!</p>
 <div fxLayout="column" fxLayoutAlign="space-evenly center" >
-  <form [formGroup]="jobGroup" (ngSubmit)="send()" *ngIf="job$ | async as job">
-
+  <form [formGroup]="jobGroup" (ngSubmit)="send()" *ngIf="data$ | async as job">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input id="message-input" class="form-control" formControlName="messageInput" matInput>
+    </mat-form-field>
   </form>
 </div>
