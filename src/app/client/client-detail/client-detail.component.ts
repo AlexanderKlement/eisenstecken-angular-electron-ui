@@ -44,7 +44,10 @@ export class ClientDetailComponent implements OnInit {
             property: "mail2",
             name: "Mail"
           }
-        ]
+        ],
+        () => {
+          this.router.navigateByUrl('/client/edit/' + id.toString());
+        }
       );
       this.tableDataSource = new TableDataSource(
         this.api,

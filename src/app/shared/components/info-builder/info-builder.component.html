@@ -1,8 +1,9 @@
+<button mat-button (click)="editButtonClicked()">Bearbeiten</button>
 <mat-grid-list cols="3" rowHeight="5:1" *ngIf="dataSource.data$ | async as data">
   <mat-grid-tile *ngFor="let info of dataSource.mapping; let i=index">
     <mat-form-field>
       <mat-label> {{ info.name}}</mat-label>
-      <input matInput value="{{ data[info.property]}}" readonly>
+      <input matInput value="{{ getPropertyOfObject(data, info.property)}}" readonly>
     </mat-form-field>
   </mat-grid-tile>
 </mat-grid-list>

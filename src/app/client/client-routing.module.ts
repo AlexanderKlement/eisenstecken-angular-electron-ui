@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {ClientComponent} from "./client.component";
 import {CommonModule} from "@angular/common";
 import {ClientDetailComponent} from "./client-detail/client-detail.component";
+import {ClientEditComponent} from "./client-edit/client-edit.component";
 
 const routes: Routes = [
   {
@@ -13,6 +14,11 @@ const routes: Routes = [
   {
     path: 'client/:id',
     component: ClientDetailComponent,
+    data:{requiresLogin: true}
+  },
+  {
+    path: 'client/edit/:id',
+    component: ClientEditComponent,
     data:{requiresLogin: true}
   },
 ];

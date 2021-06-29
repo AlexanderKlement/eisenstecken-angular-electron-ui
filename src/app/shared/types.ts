@@ -1,6 +1,7 @@
 import {Calendar, Client, Job, User} from "eisenstecken-openapi-angular-library";
 
 export type DataSourceClass = Client | User | Calendar | Job;
+
 export type RecursiveKeyOf<T, Prefix extends string = never> =
   T extends string | number | bigint | boolean
   | null | undefined | ((...args: any) => any) ? never : {

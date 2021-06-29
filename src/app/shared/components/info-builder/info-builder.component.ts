@@ -17,4 +17,15 @@ export class InfoBuilderComponent<T extends DataSourceClass> implements OnInit {
   ngOnInit(): void {
   }
 
+  getPropertyOfObject(data: T, property: string): string{
+    const propertyArray = property.split(".");
+    for(let i = 0; i < propertyArray.length; i++){
+      data = data[propertyArray[i]];
+    }
+    return data.toString();
+  }
+
+  editButtonClicked() :void{
+    this.dataSource.editButtonFunction();
+  }
 }

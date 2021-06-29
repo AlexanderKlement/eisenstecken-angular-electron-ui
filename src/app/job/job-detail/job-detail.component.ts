@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {InfoDataSource} from "../../shared/components/info-builder/info-builder.datasource";
 import {Job, DefaultService} from "eisenstecken-openapi-angular-library";
-import {TableDataSource} from "../../shared/components/table-builder/table-builder.datasource";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
@@ -43,7 +42,10 @@ export class JobDetailComponent implements OnInit {
             property: "status",
             name: "Status"
           }
-        ]
+        ],
+        () => {
+          this.router.navigateByUrl('/job/edit/' + id.toString());
+        }
       );
     });
   }

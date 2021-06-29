@@ -10,9 +10,11 @@ export class InfoDataSource<T extends DataSourceClass> {
 
   public data$: Observable<T>;
   public mapping: Mapping<T>[];
+  public editButtonFunction: VoidFunction;
 
-  constructor(data: Observable<T>, mapping: Mapping<T>[]) {
+  constructor(data: Observable<T>, mapping: Mapping<T>[], editButtonFunction: VoidFunction) {
     this.data$ = data;
     this.mapping = mapping;
+    this.editButtonFunction = editButtonFunction;
   }
 }

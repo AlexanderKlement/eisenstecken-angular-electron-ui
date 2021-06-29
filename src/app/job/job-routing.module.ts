@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {JobComponent} from "./job.component";
 import {JobDetailComponent} from "./job-detail/job-detail.component";
+import {JobEditComponent} from "./job-edit/job-edit.component";
 
 const routes: Routes = [
   {
@@ -12,6 +13,11 @@ const routes: Routes = [
   {
     path: 'job/:id',
     component: JobDetailComponent,
+    data:{requiresLogin: true}
+  },
+  {
+    path: 'job/edit/:id',
+    component: JobEditComponent,
     data:{requiresLogin: true}
   },
 ];
