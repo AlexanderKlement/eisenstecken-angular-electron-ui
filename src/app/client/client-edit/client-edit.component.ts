@@ -130,7 +130,9 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
   }
 
   createUpdateSuccess(client: Client): void{
-    this.router.navigateByUrl("client/" + client.id.toString());
+    this.api.unlockClientClientUnlockClientIdPost(this.id).subscribe(() => {
+      this.router.navigateByUrl("client/" + client.id.toString());
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

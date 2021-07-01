@@ -31,6 +31,10 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
 
   constructor(api: DefaultService, router: Router,  route: ActivatedRoute, dialog: MatDialog) {
     super(api, router, route, dialog);
+    this.route.params.subscribe((params) => {
+      console.log("Client id: ");
+      console.log( params.client_id);
+    });
   }
 
   ngOnInit(): void {

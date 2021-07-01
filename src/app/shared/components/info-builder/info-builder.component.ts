@@ -15,10 +15,9 @@ export class InfoBuilderComponent<T extends DataSourceClass> implements OnInit {
 
   @Input() dataSource: InfoDataSource<T>;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   getPropertyOfObject(data: T, property: string): string{
     const propertyArray = property.split(".");
@@ -39,7 +38,6 @@ export class InfoBuilderComponent<T extends DataSourceClass> implements OnInit {
             this.showLockDialog(lock);
           }
         });
-
       }
       else {
         this.lockAndNavigate();
@@ -58,6 +56,5 @@ export class InfoBuilderComponent<T extends DataSourceClass> implements OnInit {
 
   lockAndNavigate(): void {
     this.dataSource.lockFunction(this.dataSource.editButtonFunction);
-
   }
 }
