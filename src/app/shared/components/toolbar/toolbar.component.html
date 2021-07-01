@@ -1,0 +1,11 @@
+<mat-toolbar color="primary">
+  <span>Eisenstecken</span>
+  <span class="example-spacer"></span>
+  <div fxShow="true">
+    <a href="#"><span class="material-icons">home</span></a>
+    <a href="javascript:void(0);">
+      <span class="material-icons" (click)="backClicked()">arrow_back</span>
+    </a>
+    <a *ngFor="let button of buttonList" (click)="button[1]()" mat-button>{{button[0]}}</a>
+  </div>
+</mat-toolbar>

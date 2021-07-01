@@ -11,6 +11,15 @@ import {Router} from "@angular/router";
 
 export class ClientComponent implements OnInit {
 
+  public buttons = [
+    [
+      "TEST",
+      (): void => {
+        console.log("hai");
+      }
+    ]
+  ];
+
   public clientDataSource: TableDataSource<Client>;
 
   constructor(private api: DefaultService, private router: Router) {}

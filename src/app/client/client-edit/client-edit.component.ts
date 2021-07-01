@@ -135,7 +135,7 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   createUpdateError(error: any): void {
-    console.log(error);
+    console.log(error); //TODO: make error handling here
   }
 
   createUpdateComplete() : void {
