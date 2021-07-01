@@ -10,6 +10,8 @@ import {FlexModule} from "@angular/flex-layout";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import {MatInputModule} from "@angular/material/input";
     FlexModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule
   ]
 })
 export class JobModule { }

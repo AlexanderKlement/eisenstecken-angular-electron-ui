@@ -1,0 +1,24 @@
+<form [formGroup]="address">
+  <div fxLayout="column" fxLayoutAlign="space-around center" >
+    <mat-form-field>
+      <mat-label>Adresse</mat-label>
+      <input class="form-control" formControlName="street_number" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Stadt/Gemeinde</mat-label>
+      <input class="form-control" formControlName="city" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>PLZ</mat-label>
+      <input class="form-control" formControlName="cap" matInput>
+    </mat-form-field>
+    <mat-form-field *ngIf="countryOptions$ | async as countryOptions">
+      <mat-label>Land</mat-label>
+      <mat-select [(ngModel)]="countryOptions[0].code" formControlName="country">
+        <mat-option *ngFor="let country of countryOptions" [value]="country.code">
+          {{country.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>

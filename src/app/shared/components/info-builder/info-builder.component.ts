@@ -57,7 +57,7 @@ export class InfoBuilderComponent<T extends DataSourceClass> implements OnInit {
   }
 
   lockAndNavigate(): void {
-    this.dataSource.lockFunction();
-    this.dataSource.editButtonFunction();
+    this.dataSource.lockFunction(this.dataSource.editButtonFunction);
+
   }
 }

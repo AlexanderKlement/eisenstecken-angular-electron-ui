@@ -15,9 +15,9 @@ export class InfoDataSource<T extends DataSourceClass> {
   public user$: Observable<User>;
   public unlockFunction: VoidFunction;
   public islockedFunction: () => Observable<Lock>;
-  public lockFunction: VoidFunction;
+  public lockFunction: (VoidFunction) => void;
 
-  constructor(data: Observable<T>, mapping: Mapping<T>[], editButtonFunction: VoidFunction, islockedFunction: () => Observable<Lock>, unlockFunction: VoidFunction, lockFunction: VoidFunction, user: Observable<User>) {
+  constructor(data: Observable<T>, mapping: Mapping<T>[], editButtonFunction: VoidFunction, islockedFunction: () => Observable<Lock>, unlockFunction: VoidFunction, lockFunction: (VoidFunction) => void, user: Observable<User>) {
     this.data$ = data;
     this.mapping = mapping;
     this.editButtonFunction = editButtonFunction;

@@ -30,6 +30,8 @@ import {ClientComponent} from "./client/client.component";
 import { ClientDetailComponent } from './client/client-detail/client-detail.component';
 import {JobModule} from "./job/job.module";
 import { ClientEditComponent } from './client/client-edit/client-edit.component';
+import {MatSelectModule} from "@angular/material/select";
+import {MatButtonModule} from "@angular/material/button";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -71,7 +73,9 @@ export function apiConfigFactory (): Configuration {
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatButtonModule
   ],
   providers:
     [

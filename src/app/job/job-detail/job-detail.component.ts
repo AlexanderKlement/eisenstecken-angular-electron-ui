@@ -50,8 +50,8 @@ export class JobDetailComponent implements OnInit {
           return this.api.islockedJobJobIslockedJobIdGet(id);
         },() => {
           this.api.unlockJobJobUnlockJobIdPost(id).subscribe(); //TODO: this function is nor working anymore after next api update
-        },() => {
-          this.api.lockJobJobLockJobIdPost(id).subscribe();
+        },(afterFunction: VoidFunction) => {
+          this.api.lockJobJobLockJobIdPost(id).subscribe(afterFunction);
         },
         this.api.readUsersMeUsersMeGet()
       );

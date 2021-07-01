@@ -54,8 +54,8 @@ export class ClientDetailComponent implements OnInit {
         () => {
           this.api.unlockClientClientUnlockClientIdPost(id).subscribe();
         },
-        () => {
-          this.api.lockClientClientLockClientIdPost(id).subscribe();
+        (afterFunction: VoidFunction) => {
+          this.api.lockClientClientLockClientIdPost(id).subscribe(afterFunction);
         },
         this.api.readUsersMeUsersMeGet()
       );

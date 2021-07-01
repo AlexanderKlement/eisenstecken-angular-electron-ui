@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { PageNotFoundComponent } from './components/';
 import { WebviewDirective } from './directives/';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TestComponent} from "./components/test/test.component";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { TableBuilderComponent } from './components/table-builder/table-builder.component';
@@ -21,10 +21,13 @@ import { LockDialogComponent } from './components/info-builder/lock-dialog/lock-
 import {MatDialogModule} from "@angular/material/dialog";
 import { BaseEditComponent } from './components/base-edit/base-edit.component';
 import { WarningDialogComponent } from './components/base-edit/warning-dialog/warning-dialog.component';
+import { AddressFormComponent } from './components/address-form/address-form.component';
+import {FlexModule} from "@angular/flex-layout";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
-  declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent, InfoBuilderComponent, LockDialogComponent, BaseEditComponent, WarningDialogComponent],
-  imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule, MatInputModule, MatGridListModule, MatListModule, MatButtonModule, MatDialogModule],
-  exports: [TranslateModule, WebviewDirective, FormsModule, TestComponent, TableBuilderComponent, InfoBuilderComponent]
+  declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent, InfoBuilderComponent, LockDialogComponent, BaseEditComponent, WarningDialogComponent, AddressFormComponent],
+  imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule, MatInputModule, MatGridListModule, MatListModule, MatButtonModule, MatDialogModule, ReactiveFormsModule, FlexModule, MatSelectModule],
+  exports: [TranslateModule, WebviewDirective, FormsModule, TestComponent, TableBuilderComponent, InfoBuilderComponent, AddressFormComponent]
 })
 export class SharedModule {}

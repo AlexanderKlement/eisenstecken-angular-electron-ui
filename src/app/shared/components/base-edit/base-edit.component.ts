@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
+import { Observable} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DefaultService, Lock, User} from "eisenstecken-openapi-angular-library";
 import {DataSourceClass} from "../../types";
@@ -20,35 +20,35 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
 
   //this not:
   me: Observable<User>;
-  data$: BehaviorSubject<T>;
-  create = false;
-
+  data$: Observable<T>;
+  createMode = false;
+  id: number;
 
   constructor(protected api: DefaultService, protected router: Router, protected route: ActivatedRoute, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.me = this.api.readUsersMeUsersMeGet();
     this.route.params.subscribe((params) => {
-      let id;
-      try {
-        id = parseInt(params.id);
-      } catch {
-        console.error("Cannot parse given id");
+
+      if(params.id == "new"){
+        this.createMode = true;
+        return;
+      }
+      this.id = parseInt(params.id);
+      if(isNaN(this.id)){
+        console.error("BaseEditComponent: Cannot parse given id");
         this.goBack();
-        return;
       }
-      if(id == 0){
-        this.create = true;
-        return;
-      }
-      this.lockFunction(this.api, id).subscribe(lock => {
-        if (!lock.locked)
+
+      this.lockFunction(this.api, this.id).subscribe(lock => {
+        if (!lock.locked) //has to be locked, otherwise component is accessed directly
           this.goBack();
         this.me.subscribe((user) => {
-          if (user.id != lock.user.id)
+          if (user.id != lock.user.id) //if locked by other user go back
             this.goBack();
-          else{
-            this.dataFunction(this.api, id).subscribe(this.data$);
+          else{   //now we talking
+            this.data$ = this.dataFunction(this.api, this.id);
+            this.observableReady();
             setTimeout(() => {
               this.showWarningDialog(lock.max_lock_time_minutes, lock.reminder_time_minutes);
             }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes - lock.reminder_time_minutes));
@@ -74,9 +74,12 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
     });
   }
 
-
   protected goBack() : void {
     this.router.navigateByUrl(this.navigationTarget);
+  }
+
+  protected observableReady():void {
+
   }
 
 }

@@ -1,1 +1,65 @@
-<p>client-edit works!</p>
+<h1 *ngIf="createMode">Kunde erstellen</h1>
+<h1 *ngIf="!createMode">Kunde bearbeiten</h1>
+<form (ngSubmit)="onSubmit()" [formGroup]="clientGroup">
+  <div fxLayout="column" fxLayoutAlign="space-around center" >
+    <mat-checkbox [checked]="company" (change)="companyCheckBoxClicked()">Firma</mat-checkbox>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input class="form-control" formControlName="name" matInput>
+    </mat-form-field>
+    <mat-form-field *ngIf="!company">
+      <mat-label>Nachname</mat-label>
+      <input class="form-control" formControlName="lastname" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Mail1</mat-label>
+      <input class="form-control" formControlName="mail1" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Mail2</mat-label>
+      <input class="form-control" formControlName="mail2" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tel1</mat-label>
+      <input class="form-control" formControlName="tel1" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tel2</mat-label>
+      <input class="form-control" formControlName="tel2" matInput>
+    </mat-form-field>
+    <mat-form-field *ngIf="company">
+      <mat-label>P. IVA</mat-label>
+      <input class="form-control" formControlName="vat_number" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Steuernummer</mat-label>
+      <input class="form-control" formControlName="fiscal_code" matInput>
+    </mat-form-field>
+    <mat-form-field *ngIf="company">
+      <mat-label>PEC</mat-label>
+      <input class="form-control" formControlName="pec" matInput>
+    </mat-form-field>
+    <mat-form-field *ngIf="company">
+      <mat-label>Empfängerkodex</mat-label>
+      <input class="form-control" formControlName="codice_destinatario" matInput>
+    </mat-form-field>
+    <mat-form-field *ngIf="!company && genderOptions$ | async as genderOptions">
+      <mat-label>Geschlecht</mat-label>
+      <mat-select [(ngModel)]="genderOptions[0].code" formControlName="gender">
+        <mat-option *ngFor="let gender of genderOptions" [value]="gender.code">
+          {{gender.name.translation_de}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="languageOptions$ | async as languageOptions">
+      <mat-label>Sprache</mat-label>
+      <mat-select [(ngModel)]="languageOptions[0].code" formControlName="language">
+        <mat-option *ngFor="let language of languageOptions" [value]="language.code">
+          {{language.name.translation_de}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <app-address-form [address]="clientGroup.get('address')" [countryOptions$]="countryOptions$"></app-address-form>
+    <button [disabled]="submitted" mat-raised-button type="submit">Senden</button>
+  </div>
+</form>
