@@ -16,6 +16,11 @@ const routes: Routes = [
     data:{requiresLogin: true}
   },
   {
+    path: 'job/edit/:id',
+    component: JobEditComponent,
+    data:{requiresLogin: true}
+  },
+  {
     path: 'job/edit/:id/:client_id',
     component: JobEditComponent,
     data:{requiresLogin: true}

@@ -104,7 +104,7 @@ export class ClientDetailComponent implements OnInit {
           {name: "description", headerName: "Beschreibung"}
         ],
         (api) => {
-          return api.readClientCountClientCountGet();
+          return api.readJobsByClientJobClientClientIdCountGet(this.id);
         }
       );
       this.tableDataSource.loadData();

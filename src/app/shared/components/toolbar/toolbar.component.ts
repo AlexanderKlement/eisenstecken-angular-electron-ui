@@ -16,7 +16,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   backClicked(): void {
-    this.navigation.back();
+    this.navigation.back(); //TODO: make this method overwriteable or smth like this, to unlock an edit process if back is clicked
   }
 
 }

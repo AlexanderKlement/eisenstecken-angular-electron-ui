@@ -13,6 +13,15 @@ export class ClientComponent implements OnInit {
 
   public clientDataSource: TableDataSource<Client>;
 
+  public buttons = [
+    [
+      "Neuer Kunde",
+      (): void => {
+        this.router.navigateByUrl('/client/edit/new');
+      }
+    ]
+  ];
+
   constructor(private api: DefaultService, private router: Router) {}
 
   ngOnInit(): void {

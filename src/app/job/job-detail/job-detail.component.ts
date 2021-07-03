@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {InfoDataSource} from "../../shared/components/info-builder/info-builder.datasource";
-import {Job, DefaultService} from "eisenstecken-openapi-angular-library";
+import {Job, DefaultService, Client} from "eisenstecken-openapi-angular-library";
 import {ActivatedRoute, Router} from "@angular/router";
+import {InfoBuilderComponent} from "../../shared/components/info-builder/info-builder.component";
 
 @Component({
   selector: 'app-job-detail',
@@ -12,6 +13,17 @@ export class JobDetailComponent implements OnInit {
 
   public infoDataSource: InfoDataSource<Job>;
   constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute) { }
+
+  public buttons = [
+    [
+      "Bearbeiten",
+      (): void => {
+        this.child.editButtonClicked();
+      }
+    ]
+  ];
+
+  @ViewChild(InfoBuilderComponent) child:InfoBuilderComponent<Job>;
 
   ngOnInit(): void {
     this.route.params.subscribe( (params) => {

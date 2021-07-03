@@ -1,23 +1,24 @@
 <h1 *ngIf="createMode">Auftrag erstellen</h1>
 <h1 *ngIf="!createMode">Auftrag bearbeiten</h1>
-<form (ngSubmit)="send()" *ngIf="data$ | async as job" [formGroup]="jobGroup">
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input class="form-control" formControlName="nameInput" id="name-input" matInput>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Beschreibung</mat-label>
-    <input class="form-control" formControlName="nameInput" id="description-input" matInput>
-  </mat-form-field>
-  <mat-form-field  *ngIf="jobTypeOptions$ | async as jobTypeOptions">
-    <mat-label></mat-label>
-    <mat-select formControlName="typeSelect" [(ngModel)]="jobTypeOptions[0].key">
-      <mat-option *ngFor="let jobType of jobTypeOptions" [value]="jobType.key">
-        {{jobType.translation}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button [disabled]="submitted" mat-raised-button type="submit">Senden</button>
+<form (ngSubmit)="onSubmit()" [formGroup]="jobGroup">
+  <div fxLayout="column" fxLayoutAlign="space-around center" >
+    <mat-form-field *ngIf="jobTypeOptions$ | async as jobTypes">
+      <mat-label>Auftragsart</mat-label>
+      <mat-select [(ngModel)]="jobTypes[0].key" formControlName="type">
+        <mat-option *ngFor="let jobType of jobTypes" [value]="jobType.key">
+          {{jobType.translation}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input class="form-control" formControlName="name" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Beschreibung</mat-label>
+      <input class="form-control" formControlName="description" matInput>
+    </mat-form-field>
+    <app-address-form [address]="jobGroup.get('address')" [countryOptions$]="countryOptions$"></app-address-form>
+    <button [disabled]="submitted" mat-raised-button type="submit">Senden</button>
+  </div>
 </form>
-
-

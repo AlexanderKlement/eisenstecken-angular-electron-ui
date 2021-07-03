@@ -42,7 +42,7 @@ export class JobComponent implements OnInit {
         {name: "description", headerName: "Beschreibung"}
       ],
       (api) => {
-        return api.readClientCountClientCountGet();
+        return api.readJobCountJobCountGet();
       }
     );
     this.jobDataSource.loadData();

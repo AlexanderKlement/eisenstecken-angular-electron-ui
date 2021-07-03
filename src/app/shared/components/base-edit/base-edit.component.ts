@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable} from "rxjs";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Observable, ReplaySubject, Subject} from "rxjs";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {DefaultService, Lock, User} from "eisenstecken-openapi-angular-library";
 import {DataSourceClass} from "../../types";
 import {MatDialog} from "@angular/material/dialog";
 import {WarningDialogComponent} from "./warning-dialog/warning-dialog.component";
+import { multicast } from 'rxjs/operators';
 
 @Component({
   selector: 'app-base-edit',
@@ -23,12 +24,16 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
   data$: Observable<T>;
   createMode = false;
   id: number;
+  submitted = false;
+  routeParams: ReplaySubject<Params> = new ReplaySubject<Params>(1);
 
-  constructor(protected api: DefaultService, protected router: Router, protected route: ActivatedRoute, public dialog: MatDialog) {}
+  constructor(protected api: DefaultService, protected router: Router, protected route: ActivatedRoute, public dialog: MatDialog) {
+    this.route.params.subscribe((params) => this.routeParams.next(params));
+  }
 
   ngOnInit(): void {
     this.me = this.api.readUsersMeUsersMeGet();
-    this.route.params.subscribe((params) => {
+    this.routeParams.subscribe((params) => {
 
       if(params.id == "new"){
         this.createMode = true;
@@ -81,5 +86,15 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
   protected observableReady():void {
 
   }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  createUpdateError(error: any): void {
+    console.log(error); //TODO: make error handling here
+  }
+
+  createUpdateComplete() : void {
+    this.submitted = false;
+  }
+
 
 }

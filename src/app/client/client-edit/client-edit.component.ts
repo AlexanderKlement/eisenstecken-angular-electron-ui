@@ -33,8 +33,6 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
   "cig": "string",
    */
 
-  submitted = false;
-
   company= false;
 
   genderOptions$: Observable<Gender[]>;
@@ -86,7 +84,7 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
     const clientCreate: ClientCreate = {
       name: this.clientGroup.get("name").value,
       lastname: this.clientGroup.get("lastname").value,
-      isCompany: this.clientGroup.get("isCompany").value,
+      isCompany: this.company,
       mail1: this.clientGroup.get("mail1").value,
       mail2:this.clientGroup.get("mail2").value,
       tel1: this.clientGroup.get("tel1").value,
@@ -130,18 +128,10 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
   }
 
   createUpdateSuccess(client: Client): void{
+    this.id = client.id;
     this.api.unlockClientClientUnlockClientIdPost(this.id).subscribe(() => {
       this.router.navigateByUrl("client/" + client.id.toString());
     });
-  }
-
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  createUpdateError(error: any): void {
-    console.log(error); //TODO: make error handling here
-  }
-
-  createUpdateComplete() : void {
-    this.submitted = false;
   }
 
   companyCheckBoxClicked() :void {
