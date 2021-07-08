@@ -1,8 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {InfoDataSource} from "../../shared/components/info-builder/info-builder.datasource";
-import {Job, DefaultService, Client} from "eisenstecken-openapi-angular-library";
+import {Job, DefaultService, JobStatus} from "eisenstecken-openapi-angular-library";
 import {ActivatedRoute, Router} from "@angular/router";
 import {InfoBuilderComponent} from "../../shared/components/info-builder/info-builder.component";
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-job-detail',
@@ -12,6 +14,7 @@ import {InfoBuilderComponent} from "../../shared/components/info-builder/info-bu
 export class JobDetailComponent implements OnInit {
 
   public infoDataSource: InfoDataSource<Job>;
+  public selectedJobStatus: Observable<JobStatus>;
   constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute) { }
 
   public buttons = [
@@ -35,6 +38,9 @@ export class JobDetailComponent implements OnInit {
         this.router.navigate(['Job']);
         return;
       }
+      this.selectedJobStatus = this.api.readJobJobJobIdGet(id).pipe(map((job) : JobStatus => {
+        return job.status; //TODO: this is executed way to late. The Observable is already read as null on this point
+      }));
       this.infoDataSource = new InfoDataSource<Job>(
         this.api.readJobJobJobIdGet(id),
         [

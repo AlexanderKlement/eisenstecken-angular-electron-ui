@@ -1,0 +1,6 @@
+<mat-toolbar class="{{toolBarColor}}">
+  <div>
+    <a *ngFor="let status of jobStatusList | async" (click)="statusClicked(status.status)" mat-button>{{status.text.translation}}</a>
+  </div>
+</mat-toolbar>
+

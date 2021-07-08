@@ -12,13 +12,16 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatSelectModule} from "@angular/material/select";
+import { JobStatusBarComponent } from './job-detail/job-status-bar/job-status-bar.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 
 @NgModule({
   declarations: [
     JobComponent,
     JobDetailComponent,
-    JobEditComponent
+    JobEditComponent,
+    JobStatusBarComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +32,8 @@ import {MatSelectModule} from "@angular/material/select";
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatToolbarModule
   ]
 })
 export class JobModule { }

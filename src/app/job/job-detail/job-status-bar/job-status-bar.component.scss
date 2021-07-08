@@ -1,0 +1,22 @@
+.mat-toolbar {
+  &.created {
+    background: #ff0000;
+    color: #fff;
+  }
+
+  &.accepted {
+    background: #00ffd8;
+    color: #000;
+  }
+
+  &.finished {
+    background: #467b46;
+    color: #fff;
+  }
+
+  &.other {
+    background: #bda7a7;
+    color: #000000;
+  }
+
+}
