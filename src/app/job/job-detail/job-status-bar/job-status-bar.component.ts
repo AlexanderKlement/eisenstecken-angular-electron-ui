@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {DefaultService, JobStatus, JobStatusType} from "eisenstecken-openapi-angular-library";
-import {Observable, ReplaySubject} from "rxjs";
+import {Observable, ReplaySubject, Subject} from "rxjs";
 import {map, tap} from "rxjs/operators";
 
 @Component({
@@ -12,7 +12,9 @@ export class JobStatusBarComponent implements OnInit {
 
   public jobStatusList: ReplaySubject<JobStatus[]>;
   public toolBarColor = "created";
-  @Input() selectedStatus: JobStatus;
+  public selectStatusSubject: Subject<JobStatus>;
+  @Input() selectedStatus: Observable<JobStatus>;
+  @Input() jobId: number;
 
 
   private colorMap = [
@@ -30,15 +32,24 @@ export class JobStatusBarComponent implements OnInit {
     this.api.getStatusOptionsJobStatusOptionsGet().subscribe((jobStatusList) => {
       this.jobStatusList.next(jobStatusList);
     });
-    this.changeColor();
+    this.selectStatusSubject = new Subject<JobStatus>();
+    this.selectStatusSubject.subscribe((selectedStatus) => {
+      this.changeColor(selectedStatus);
+      this.updateStatus(selectedStatus);
+    });
+    this.selectedStatus.subscribe((selectedStatus) => {
+      this.selectStatusSubject.next(selectedStatus);
+    });
   }
 
   public statusClicked(status: string): void {
-    this.getStatus(status).pipe(tap((selectedStatus) => {
-      console.log(selectedStatus);
-      this.selectedStatus = selectedStatus;
-      this.changeColor();
-    })).subscribe();
+    this.getStatus(status).subscribe((selectedStatus) => {
+      this.selectStatusSubject.next(selectedStatus);
+    });
+  }
+
+  private updateStatus(selectedStatus): void {
+    this.api.updateJobStatusJobStatusJobIdPost(this.jobId, selectedStatus.status).subscribe();
   }
 
   private getStatus(status_name: string): Observable<JobStatus> {
@@ -52,10 +63,9 @@ export class JobStatusBarComponent implements OnInit {
     }));
   }
 
-  private changeColor(): void {
-    if(this.selectedStatus != null){
-      console.log(this.toolBarColor);
-      this.toolBarColor = this.getColorWithEnum(this.selectedStatus.status);
+  private changeColor(selectedStatus: JobStatus): void {
+    if(selectedStatus != null){
+      this.toolBarColor = this.getColorWithEnum(selectedStatus.status);
     }
   }
 

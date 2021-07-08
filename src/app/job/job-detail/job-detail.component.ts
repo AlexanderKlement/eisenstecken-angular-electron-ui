@@ -15,6 +15,7 @@ export class JobDetailComponent implements OnInit {
 
   public infoDataSource: InfoDataSource<Job>;
   public selectedJobStatus: Observable<JobStatus>;
+  public jobId: number;
   constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute) { }
 
   public buttons = [
@@ -31,6 +32,7 @@ export class JobDetailComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe( (params) => {
       let id: number;
+
       try{
         id = parseInt(params.id);
       } catch {
@@ -38,6 +40,7 @@ export class JobDetailComponent implements OnInit {
         this.router.navigate(['Job']);
         return;
       }
+      this.jobId = id;
       this.selectedJobStatus = this.api.readJobJobJobIdGet(id).pipe(map((job) : JobStatus => {
         return job.status; //TODO: this is executed way to late. The Observable is already read as null on this point
       }));
