@@ -1,14 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  Client,
-  ClientCreate,
-  Country,
-  DefaultService,
-  Job,
-  JobCreate,
-  JobType, JobUpdate,
-  Lock
-} from "eisenstecken-openapi-angular-library";
+import {Country, DefaultService, Job, JobCreate, JobType, JobUpdate, Lock} from "eisenstecken-openapi-angular-library";
 import {Observable} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -29,6 +20,11 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
   };
   dataFunction = (api: DefaultService, id: number): Observable<Job> => {
     return api.readJobJobJobIdGet(id);
+  };
+  unlockFunction = (afterUnlockFunction: VoidFunction = () => {}): void => {
+    this.api.unlockJobJobUnlockJobIdPost(this.id).subscribe(() => {
+      afterUnlockFunction();
+    });
   };
   clientId: number;
 
@@ -67,10 +63,13 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
     });
   }
 
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+  }
 
   onSubmit() : void {
+    console.log(this.jobGroup.get("type").value);
     this.submitted = true;
-    console.log(this.clientId);
     if(this.createMode){
       const jobCreate: JobCreate = {
         description: this.jobGroup.get("description").value,
@@ -116,7 +115,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
 
   createUpdateSuccess(job: Job): void{
     this.id = job.id;
-    this.api.unlockJobJobUnlockJobIdPost(this.id).subscribe(() => {
+    this.unlockFunction(() => {
       this.router.navigateByUrl("job/" + job.id.toString());
     });
   }

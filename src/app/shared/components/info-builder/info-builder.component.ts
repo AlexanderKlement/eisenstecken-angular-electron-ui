@@ -4,6 +4,7 @@ import {DataSourceClass} from "../../types";
 import {MatDialog} from "@angular/material/dialog";
 import {LockDialogComponent} from "./lock-dialog/lock-dialog.component";
 import {Lock} from "eisenstecken-openapi-angular-library";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'app-info-builder',
@@ -29,9 +30,9 @@ export class InfoBuilderComponent<T extends DataSourceClass> implements OnInit {
 
   editButtonClicked() :void{
     const lock = this.dataSource.islockedFunction();
-    lock.subscribe((lock) => {
+    lock.pipe(first()).subscribe((lock) => {
       if(lock.locked){
-        this.dataSource.user$.subscribe((user) => {
+        this.dataSource.user$.pipe(first()).subscribe((user) => {
           if(user.id == lock.user.id){
             this.lockAndNavigate();
           } else {

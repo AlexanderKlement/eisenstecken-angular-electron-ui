@@ -5,7 +5,7 @@ import {BaseEditComponent} from "../../shared/components/base-edit/base-edit.com
 import {FormControl, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
-import {tap} from "rxjs/operators";
+import {first, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-client-edit',
@@ -20,6 +20,11 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
   };
   dataFunction = (api: DefaultService, id: number): Observable<Client> => {
     return api.readClientClientClientIdGet(id);
+  };
+  unlockFunction = (afterUnlockFunction: VoidFunction = () => {}) : void => {
+    this.api.unlockClientClientUnlockClientIdPost(this.id).pipe(first()).subscribe(() => {
+      afterUnlockFunction();
+    });
   };
 
 
@@ -133,9 +138,7 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
 
   createUpdateSuccess(client: Client): void{
     this.id = client.id;
-    this.api.unlockClientClientUnlockClientIdPost(this.id).subscribe(() => {
-      this.router.navigateByUrl("client/" + client.id.toString());
-    });
+    this.unlockFunction(() => {this.router.navigateByUrl("client/" + this.id.toString());});
   }
 
   companyCheckBoxClicked() :void {

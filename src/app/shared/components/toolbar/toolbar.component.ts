@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NavigationService} from "../../nagivation.service";
+import {NavigationService} from "../../navigation.service";
 
 @Component({
   selector: 'app-toolbar',
@@ -9,14 +9,21 @@ import {NavigationService} from "../../nagivation.service";
 export class ToolbarComponent implements OnInit {
 
   @Input() buttonList?: [[string, VoidFunction]];
+  @Input() beforeBackFunction?: (afterBackFunction: VoidFunction) => void;
 
   constructor(private navigation: NavigationService) { }
 
   ngOnInit(): void {
   }
 
-  backClicked(): void {
-    this.navigation.back(); //TODO: make this method overwriteable or smth like this, to unlock an edit process if back is clicked
+  backClicked(): void { // TODO: bind back button clicked here
+    if(this.beforeBackFunction != null){
+      this.beforeBackFunction(() => {
+        this.navigation.back();
+      });
+    } else {
+      this.navigation.back();
+    }
   }
 
 }

@@ -1,12 +1,13 @@
+<app-toolbar [beforeBackFunction]="unlockFunction"></app-toolbar>
 <h1 *ngIf="createMode">Auftrag erstellen</h1>
 <h1 *ngIf="!createMode">Auftrag bearbeiten</h1>
 <form (ngSubmit)="onSubmit()" [formGroup]="jobGroup">
   <div fxLayout="column" fxLayoutAlign="space-around center" >
     <mat-form-field *ngIf="jobTypeOptions$ | async as jobTypes">
       <mat-label>Auftragsart</mat-label>
-      <mat-select [(ngModel)]="jobTypes[0].key" formControlName="type">
-        <mat-option *ngFor="let jobType of jobTypes" [value]="jobType.key">
-          {{jobType.translation}}
+      <mat-select [(ngModel)]="jobTypes[0].type" formControlName="type">
+        <mat-option *ngFor="let jobType of jobTypes" [value]="jobType.type">
+          {{jobType.text.translation}}
         </mat-option>
       </mat-select>
     </mat-form-field>

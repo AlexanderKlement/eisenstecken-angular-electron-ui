@@ -1,4 +1,4 @@
-<app-toolbar></app-toolbar>
+<app-toolbar [beforeBackFunction]="unlockFunction"></app-toolbar>
 <h1 *ngIf="createMode">Kunde erstellen</h1>
 <h1 *ngIf="!createMode">Kunde bearbeiten</h1>
 <form (ngSubmit)="onSubmit()" [formGroup]="clientGroup">
