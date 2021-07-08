@@ -72,6 +72,10 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
     });
   }
 
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+  }
+
 
   onSubmit() :void{
     this.submitted = true;

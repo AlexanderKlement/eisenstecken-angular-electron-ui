@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable, ReplaySubject, Subject} from "rxjs";
+import {Observable, ReplaySubject, Subject, Subscription} from "rxjs";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {DefaultService, Lock, User} from "eisenstecken-openapi-angular-library";
 import {DataSourceClass} from "../../types";
 import {MatDialog} from "@angular/material/dialog";
 import {WarningDialogComponent} from "./warning-dialog/warning-dialog.component";
-import { multicast } from 'rxjs/operators';
+import {first, multicast, take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-base-edit',
@@ -26,15 +26,16 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
   id: number;
   submitted = false;
   routeParams: ReplaySubject<Params> = new ReplaySubject<Params>(1);
+  subscription: Subscription;
 
   constructor(protected api: DefaultService, protected router: Router, protected route: ActivatedRoute, public dialog: MatDialog) {
-    this.route.params.subscribe((params) => this.routeParams.next(params));
+    this.subscription = new Subscription();
+    this.subscription.add(this.route.params.subscribe((params) => this.routeParams.next(params)));
   }
 
   ngOnInit(): void {
     this.me = this.api.readUsersMeUsersMeGet();
-    this.routeParams.subscribe((params) => {
-
+    this.routeParams.pipe(first()).subscribe((params) => {
       if(params.id == "new"){
         this.createMode = true;
         return;
@@ -45,10 +46,10 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
         this.goBack();
       }
 
-      this.lockFunction(this.api, this.id).subscribe(lock => {
+      this.lockFunction(this.api, this.id).pipe(first()).subscribe(lock => {
         if (!lock.locked) //has to be locked, otherwise component is accessed directly
           this.goBack();
-        this.me.subscribe((user) => {
+        this.me.pipe(first()).subscribe((user) => {
           if (user.id != lock.user.id) //if locked by other user go back
             this.goBack();
           else{   //now we talking
@@ -64,6 +65,10 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
         });
       });
     });
+  }
+
+  ngOnDestroy() :void {
+    this.subscription.unsubscribe();
   }
 
   private static minutesToMilliSeconds(minutes: number): number {
