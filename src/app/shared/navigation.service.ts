@@ -5,6 +5,7 @@ import { Router, NavigationEnd } from '@angular/router';
 @Injectable({ providedIn: 'root' })
 export class NavigationService {
   private history: string[] = [];
+  private backEventInProgress = false;
 
   constructor(private router: Router, private location: Location) {
     this.router.events.subscribe((event) => {
@@ -15,6 +16,10 @@ export class NavigationService {
   }
 
   back(): void {
+    if(this.backEventInProgress){
+      this.backEventInProgress = false;
+      return;
+    }
     this.history.pop();
     if (this.history.length > 0) {
       this.location.back();
@@ -22,4 +27,9 @@ export class NavigationService {
       this.router.navigateByUrl('/');
     }
   }
+
+  backEvent() : void {
+    this.backEventInProgress = true;
+  }
+
 }
