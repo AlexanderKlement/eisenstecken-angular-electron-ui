@@ -8,8 +8,6 @@ import { DefaultService } from "eisenstecken-openapi-angular-library";
 })
 export class TestComponent implements OnInit {
 
-  units$ = this.api.readUnitsUnitGet();
-
   constructor(private api: DefaultService) {
   }
 

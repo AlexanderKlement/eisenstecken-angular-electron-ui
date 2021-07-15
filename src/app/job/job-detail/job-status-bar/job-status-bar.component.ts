@@ -13,6 +13,7 @@ export class JobStatusBarComponent implements OnInit {
   public jobStatusList: ReplaySubject<JobStatus[]>;
   public toolBarColor = "created";
   public selectStatusSubject: Subject<JobStatus>;
+  public selectedStatusHeader: string;
   @Input() selectedStatus: Observable<JobStatus>;
   @Input() jobId: number;
 
@@ -34,7 +35,7 @@ export class JobStatusBarComponent implements OnInit {
     });
     this.selectStatusSubject = new Subject<JobStatus>();
     this.selectStatusSubject.subscribe((selectedStatus) => {
-      this.changeColor(selectedStatus);
+      this.setupBar(selectedStatus);
       this.updateStatus(selectedStatus);
     });
     this.selectedStatus.subscribe((selectedStatus) => {
@@ -61,6 +62,15 @@ export class JobStatusBarComponent implements OnInit {
       console.error("JobStatusBar: Did not find status of job");
       return null;
     }));
+  }
+
+  private setupBar(selectedStatus: JobStatus): void {
+    this.changeStatus(selectedStatus);
+    this.changeColor(selectedStatus);
+  }
+
+  private changeStatus(selectedStatus: JobStatus): void {
+    this.selectedStatusHeader = "Status: " + selectedStatus.text.translation;
   }
 
   private changeColor(selectedStatus: JobStatus): void {

@@ -17,6 +17,7 @@ export class NavigationService {
 
   back(): void {
     if(this.backEventInProgress){
+      console.info("back navigation once prevented");
       this.backEventInProgress = false;
       return;
     }
