@@ -5,7 +5,7 @@ import {DefaultService, Lock, User} from "eisenstecken-openapi-angular-library";
 import {DataSourceClass} from "../../types";
 import {MatDialog} from "@angular/material/dialog";
 import {WarningDialogComponent} from "./warning-dialog/warning-dialog.component";
-import {first, multicast, take} from 'rxjs/operators';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-base-edit',

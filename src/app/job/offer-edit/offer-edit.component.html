@@ -1,0 +1,37 @@
+<app-toolbar [beforeBackFunction]="unlockFunction"></app-toolbar>
+<h1 *ngIf="createMode">Auftrag erstellen</h1>
+<h1 *ngIf="!createMode">Auftrag bearbeiten</h1>
+<div fxLayout="row" fxLayoutAlign=" start" >
+  <div>
+    <app-ordered-article-edit></app-ordered-article-edit>
+  </div>
+  <div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="offerGroup">
+      <div fxLayout="column" fxLayoutAlign="space-around center" >
+        <mat-form-field>
+          <mat-label>Im Preis einbegriffen:</mat-label>
+          <textarea class="form-control" formControlName="in_price_included" matInput></textarea>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Nicht im Preis einbegriffen:</mat-label>
+          <textarea class="form-control" formControlName="in_price_excluded" matInput></textarea>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Bezahlung:</mat-label>
+          <textarea class="form-control" formControlName="payment" matInput></textarea>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Lieferung</mat-label>
+          <textarea class="form-control" formControlName="delivery" matInput></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Datum</mat-label>
+          <input formControlName="date" matInput [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {JobComponent} from "./job.component";
 import {JobDetailComponent} from "./job-detail/job-detail.component";
 import {JobEditComponent} from "./job-edit/job-edit.component";
+import {OfferEditComponent} from "./offer-edit/offer-edit.component";
 
 const routes: Routes = [
   {
@@ -24,7 +25,17 @@ const routes: Routes = [
     path: 'job/edit/:id/:client_id',
     component: JobEditComponent,
     data:{requiresLogin: true}
-  }
+  },
+  {
+    path: 'offer/edit/:id/:job_id',
+    component: OfferEditComponent,
+    data:{requiresLogin: true}
+  },
+  {
+    path: 'offer/edit/:id',
+    component: OfferEditComponent,
+    data:{requiresLogin: true}
+  },
 ];
 
 @NgModule({

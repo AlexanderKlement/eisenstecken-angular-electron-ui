@@ -14,6 +14,9 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatSelectModule} from "@angular/material/select";
 import { JobStatusBarComponent } from './job-detail/job-status-bar/job-status-bar.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
+import { OfferEditComponent } from './offer-edit/offer-edit.component';
+import { OrderedArticleEditComponent } from './offer-edit/ordered-article-edit/ordered-article-edit.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 
 @NgModule({
@@ -21,19 +24,22 @@ import {MatToolbarModule} from "@angular/material/toolbar";
     JobComponent,
     JobDetailComponent,
     JobEditComponent,
-    JobStatusBarComponent
+    JobStatusBarComponent,
+    OfferEditComponent,
+    OrderedArticleEditComponent
   ],
-  imports: [
-    CommonModule,
-    JobRoutingModule,
-    SharedModule,
-    FlexModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatToolbarModule
-  ]
+    imports: [
+        CommonModule,
+        JobRoutingModule,
+        SharedModule,
+        FlexModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatToolbarModule,
+        MatDatepickerModule
+    ]
 })
 export class JobModule { }

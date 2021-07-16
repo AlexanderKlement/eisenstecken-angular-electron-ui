@@ -41,7 +41,6 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
     super.ngOnInit();
     if(this.createMode)
       this.routeParams.subscribe((params) => {
-        console.log(params);
         this.clientId =  parseInt(params.client_id);
         if(isNaN(this.clientId)){
           console.error("JobEdit: Cannot determine client id");
@@ -68,7 +67,6 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
   }
 
   onSubmit() : void {
-    console.log(this.jobGroup.get("type").value);
     this.submitted = true;
     if(this.createMode){
       const jobCreate: JobCreate = {
