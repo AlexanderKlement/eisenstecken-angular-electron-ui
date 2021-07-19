@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormArray, FormControl, FormGroup} from "@angular/forms";
 import {BaseEditComponent} from "../../shared/components/base-edit/base-edit.component";
-import {DefaultService, OfferCreate, OfferUpdate, Lock, Offer} from "eisenstecken-openapi-angular-library";
+import {
+  DefaultService,
+  OfferCreate,
+  OfferUpdate,
+  Lock,
+  Offer,
+  OrderedArticleCreate, Vat
+} from "eisenstecken-openapi-angular-library";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
@@ -23,6 +30,10 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     return api.readOfferOfferOfferIdGet(id);
   };
   unlockFunction = (afterUnlockFunction: VoidFunction = () => {}): void => {
+    if(this.createMode){
+      afterUnlockFunction();
+      return;
+    }
     this.api.lockOfferOfferUnlockOfferIdPost(this.id).subscribe(() => {
       afterUnlockFunction();
     });
@@ -31,6 +42,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
 
   offerGroup: FormGroup;
   submitted: boolean;
+  vatOptions$: Observable<Vat[]>;
 
   constructor(api: DefaultService, router: Router,  route: ActivatedRoute, dialog: MatDialog) {
     super(api, router, route, dialog);
@@ -38,6 +50,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
 
   ngOnInit(): void {
     super.ngOnInit();
+    this.vatOptions$ = this.api.readVatsVatGet();
     if(this.createMode)
       this.routeParams.subscribe((params) => {
         this.jobId =  parseInt(params.job_id);
@@ -51,7 +64,19 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       in_price_excluded: new FormControl(""),
       payment: new FormControl(""),
       delivery: new FormControl(""),
-      date: new FormControl("")
+      date: new FormControl(""),
+      ordered_articles: new FormArray([
+        new FormGroup({
+          amount:new FormControl(""),
+          discount: new FormControl(""),
+          vat: new FormControl(""),
+          custom_description: new FormControl(""),
+          alternative: new FormControl(""),
+          ordered_unit_id: new FormControl(""),
+          article_id: new FormControl(""),
+        })
+      ]),
+
     });
   }
 
@@ -60,7 +85,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     const orderedArticles = [];
     if(this.createMode){
       const offerCreate: OfferCreate = {
-        date: this.formatDate(this.offerGroup.get("date").value),
+        date: OfferEditComponent.formatDate(this.offerGroup.get("date").value),
         in_price_included: this.offerGroup.get("in_price_included").value,
         in_price_excluded: this.offerGroup.get("in_price_excluded").value,
         payment: this.offerGroup.get("payment").value,
@@ -77,7 +102,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       });
     } else {
       const offerUpdate: OfferUpdate = {
-        date: this.formatDate(this.offerGroup.get("date").value),
+        date: OfferEditComponent.formatDate(this.offerGroup.get("date").value),
         in_price_included: this.offerGroup.get("in_price_included").value,
         in_price_excluded: this.offerGroup.get("in_price_excluded").value,
         payment: this.offerGroup.get("payment").value,
@@ -116,7 +141,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     }
   }
 
-  private formatDate(datetime: string){
+  private static formatDate(datetime: string){ //TODO: move to some sort of util class or so
     return formatDate(datetime, 'yyyy-MM-dd', 'en-US');
   }
 

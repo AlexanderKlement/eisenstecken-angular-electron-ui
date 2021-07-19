@@ -11,7 +11,7 @@ import {Observable} from "rxjs";
 export class AddressFormComponent implements OnInit {
 
   @Input() address: FormGroup;
-  @Input() countryOptions$: Observable<Country[]>;
+  @Input() countryOptions$: Observable<Country[]>; //TODO: maybe remove the dependency and get it directly from here
 
   constructor() { }
 

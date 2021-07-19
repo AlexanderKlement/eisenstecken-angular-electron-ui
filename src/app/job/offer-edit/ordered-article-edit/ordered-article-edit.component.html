@@ -1,0 +1,23 @@
+<form [formGroup]="orderedArticlesGroup">
+  <div formArrayName="articles">
+    <div *ngFor="let _ of orderedArticles.controls; let i = index" fxLayout="row"
+         fxLayoutAlign="space-around center">
+      <div [formGroupName]="i">
+        <mat-form-field>
+          <mat-label>Menge</mat-label>
+          <input class="form-control" formControlName="amount" matInput>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Rabatt</mat-label>
+          <input class="form-control" formControlName="discount" matInput>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Beschreibung</mat-label>
+          <textarea class="form-control" formControlName="custom_description" matInput></textarea>
+        </mat-form-field>
+
+      </div>
+    </div>
+  </div>
+  <button (click)="addOrderedArticleClicked()" mat-raised-button type="button">Hinzufügen</button>
+</form>
