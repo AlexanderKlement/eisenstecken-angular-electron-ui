@@ -24,6 +24,7 @@ https://materialtheme.arcsine.dev/
  */
 
 @import '~@angular/material/theming';
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -262,3 +263,6 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
     font-family: 'Roboto';
   }
 }
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

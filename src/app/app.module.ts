@@ -35,6 +35,9 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatNativeDateModule} from "@angular/material/core";
 import {DatePipe} from "@angular/common";
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -71,6 +74,10 @@ export function apiConfigFactory (): Configuration {
     }),
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
     MatCheckboxModule,
     MatInputModule,
     MatTableModule,
@@ -80,7 +87,8 @@ export function apiConfigFactory (): Configuration {
     MatSelectModule,
     MatButtonModule,
     MatToolbarModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    NgbModule
   ],
   providers:
     [

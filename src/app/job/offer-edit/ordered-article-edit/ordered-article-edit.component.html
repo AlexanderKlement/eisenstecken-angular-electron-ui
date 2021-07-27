@@ -1,23 +1,31 @@
-<form [formGroup]="orderedArticlesGroup">
+<form [formGroup]="descriptiveArticlesGroup">
   <div formArrayName="articles">
-    <div *ngFor="let _ of orderedArticles.controls; let i = index" fxLayout="row"
+    <div *ngFor="let _ of descriptiveArticles.controls; let i = index" fxLayout="row"
          fxLayoutAlign="space-around center">
       <div [formGroupName]="i">
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input class="form-control" formControlName="name" matInput>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Beschreibung</mat-label>
+          <textarea class="form-control" formControlName="description" matInput></textarea>
+        </mat-form-field>
         <mat-form-field>
           <mat-label>Menge</mat-label>
           <input class="form-control" formControlName="amount" matInput>
         </mat-form-field>
         <mat-form-field>
+          <mat-label>Einzelpreis</mat-label>
+          <input class="form-control" formControlName="single_price" matInput>
+        </mat-form-field>
+        <mat-form-field>
           <mat-label>Rabatt</mat-label>
           <input class="form-control" formControlName="discount" matInput>
         </mat-form-field>
-        <mat-form-field>
-          <mat-label>Beschreibung</mat-label>
-          <textarea class="form-control" formControlName="custom_description" matInput></textarea>
-        </mat-form-field>
-
+        <mat-checkbox formControlName="alternative">Alternative</mat-checkbox>
       </div>
     </div>
   </div>
-  <button (click)="addOrderedArticleClicked()" mat-raised-button type="button">Hinzufügen</button>
+  <button (click)="addHeaderClicked()" mat-raised-button type="button">Überschrift hinzufügen</button>
 </form>

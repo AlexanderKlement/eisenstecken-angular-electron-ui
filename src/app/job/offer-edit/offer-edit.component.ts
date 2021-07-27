@@ -7,7 +7,7 @@ import {
   OfferUpdate,
   Lock,
   Offer,
-  OrderedArticleCreate, Vat
+  DescriptiveArticleCreate, Vat
 } from "eisenstecken-openapi-angular-library";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
@@ -65,24 +65,40 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       payment: new FormControl(""),
       delivery: new FormControl(""),
       date: new FormControl(""),
-      ordered_articles: new FormArray([
+      descriptive_articles: new FormArray([
         new FormGroup({
-          amount:new FormControl(""),
+          name:new FormControl(""),
+          description: new FormControl(""),
+          amount: new FormControl(""),
+          single_price: new FormControl(""),
           discount: new FormControl(""),
-          vat: new FormControl(""),
-          custom_description: new FormControl(""),
           alternative: new FormControl(""),
-          ordered_unit_id: new FormControl(""),
-          article_id: new FormControl(""),
+          header_article: new FormControl("")
         })
       ]),
 
     });
   }
 
+  getDescriptiveArticleFromArray() : FormArray {
+    return (this.offerGroup.get('descriptive_articles') as FormArray);
+  }
+
   onSubmit() : void {
     this.submitted = true;
-    const orderedArticles = [];
+    const descriptiveArticles = [];
+    for(const descriptiveArticle of this.getDescriptiveArticleFromArray().controls) {
+      const tempArticle:DescriptiveArticleCreate = {
+        name: descriptiveArticle.get("name").value,
+        amount: descriptiveArticle.get("amount").value,
+        description: descriptiveArticle.get("description").value,
+        single_price: descriptiveArticle.get("single_price").value,
+        discount: descriptiveArticle.get("discount").value,
+        alternative: descriptiveArticle.get("alternative").value,
+      };
+      descriptiveArticles.push(tempArticle);
+    }
+
     if(this.createMode){
       const offerCreate: OfferCreate = {
         date: OfferEditComponent.formatDate(this.offerGroup.get("date").value),
@@ -91,7 +107,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         payment: this.offerGroup.get("payment").value,
         delivery: this.offerGroup.get("delivery").value,
         job_id: this.jobId,
-        ordered_articles: orderedArticles,
+        descriptive_articles: descriptiveArticles,
       };
       this.api.createOfferOfferPost(offerCreate).subscribe((offer) => {
         this.createUpdateSuccess(offer);
@@ -107,7 +123,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         in_price_excluded: this.offerGroup.get("in_price_excluded").value,
         payment: this.offerGroup.get("payment").value,
         delivery: this.offerGroup.get("delivery").value,
-        ordered_articles: orderedArticles,
+        descriptive_articles: descriptiveArticles,
       };
       this.api.updateOfferOfferOfferIdPut(this.id, offerUpdate).subscribe((offer) => {
         this.createUpdateSuccess(offer);
@@ -127,7 +143,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
   }
 
   observableReady() :void {
-    super.observableReady(); //TODO: fill in the ordered articles here
+    super.observableReady(); //TODO: fill in the descriptive articles here
     if(!this.createMode){
       this.data$.pipe(tap(offer => this.offerGroup.patchValue(offer))).subscribe((offer) => {
         this.offerGroup.patchValue({

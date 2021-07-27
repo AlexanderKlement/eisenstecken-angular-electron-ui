@@ -1,9 +1,9 @@
 <app-toolbar [beforeBackFunction]="unlockFunction"></app-toolbar>
-<h1 *ngIf="createMode">Auftrag erstellen</h1>
-<h1 *ngIf="!createMode">Auftrag bearbeiten</h1>
+<h1 *ngIf="createMode">Angebot erstellen</h1>
+<h1 *ngIf="!createMode">Angebot bearbeiten</h1>
 <div fxLayout="row" fxLayoutAlign=" start" >
   <div>
-    <app-ordered-article-edit [orderedArticles]="offerGroup.get('ordered_articles')"></app-ordered-article-edit>
+    <app-ordered-article-edit [descriptiveArticles]="getDescriptiveArticleFromArray()"></app-ordered-article-edit>
   </div>
   <div>
     <form (ngSubmit)="onSubmit()" [formGroup]="offerGroup">

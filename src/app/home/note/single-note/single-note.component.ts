@@ -27,9 +27,7 @@ export class SingleNoteComponent implements OnInit {
       .pipe(distinctUntilChanged()) // makes sure the value has actually changed.
       .subscribe(data => {
         const noteCreate:NoteCreate = {text : data};
-        this.api.updateNoteEntryNoteNoteIdPut(this.note.id, noteCreate).subscribe((event) => {
-          console.info(event);
-        });
+        this.api.updateNoteEntryNoteNoteIdPut(this.note.id, noteCreate).subscribe(); //TODO: unsubscribe from here
       }));
   }
 

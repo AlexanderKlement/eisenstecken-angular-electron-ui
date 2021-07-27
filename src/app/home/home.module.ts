@@ -19,9 +19,15 @@ import { SingleNoteComponent } from './note/single-note/single-note.component';
 import {MenuTilesComponent} from "./menu-tiles/menu-tiles.component";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { SingleMenuTileComponent } from './menu-tiles/single-menu-tile/single-menu-tile.component';
+import { WeeklyCalendarComponent } from './calendar/weekly-calendar/weekly-calendar.component';
+import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
+import {CalendarModule, DateAdapter} from "angular-calendar";
 
 @NgModule({
-  declarations: [HomeComponent, ChatComponent, ChatMessageComponent, NoteComponent, SingleNoteComponent, MenuTilesComponent, SingleMenuTileComponent],
-  imports: [CommonModule, SharedModule, HomeRoutingModule, MatCardModule, FlexLayoutModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, ReactiveFormsModule, MatGridListModule]
+  declarations: [HomeComponent, ChatComponent, ChatMessageComponent, NoteComponent, SingleNoteComponent, MenuTilesComponent, SingleMenuTileComponent, WeeklyCalendarComponent],
+  imports: [CommonModule, SharedModule, HomeRoutingModule, MatCardModule, FlexLayoutModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, ReactiveFormsModule, MatGridListModule, CalendarModule.forRoot({
+    provide: DateAdapter,
+    useFactory: adapterFactory,
+  }),]
 })
 export class HomeModule {}

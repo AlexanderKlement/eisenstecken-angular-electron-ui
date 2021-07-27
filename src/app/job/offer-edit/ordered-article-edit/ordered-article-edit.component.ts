@@ -21,45 +21,54 @@ export interface OrderedArticleType {
 
 export class OrderedArticleEditComponent implements OnInit {
 
-  orderedArticlesGroup: FormGroup;
-  @Input() orderedArticles: FormArray;
+  descriptiveArticlesGroup: FormGroup;
+  @Input() descriptiveArticles: FormArray;
   vatOptions$: Observable<Vat[]>;
 
   constructor(private api: DefaultService) { }
 
   ngOnInit(): void {
     this.vatOptions$ = this.api.readVatsVatGet();
-    this.orderedArticlesGroup = new FormGroup({
-      articles: this.orderedArticles,
+    this.descriptiveArticlesGroup = new FormGroup({
+      articles: this.descriptiveArticles,
     });
+    if(this.descriptiveArticles.length == 0){
+      this.addLine();
+    }
   }
 
-  addEmptyOrderedArticle(): void {
+  addLine(header?: number): void {
     const emptyFormGroup = new FormGroup({
-      amount:new FormControl(""),
-      discount: new FormControl("0"),
-      vat: new FormControl(""),
-      custom_description: new FormControl(""),
+      name:new FormControl(""),
+      description: new FormControl(""),
+      amount: new FormControl(1),
+      single_price: new FormControl(""),
+      discount: new FormControl(0),
       alternative: new FormControl(false),
-      ordered_unit_id: new FormControl(""),
-      article_id: new FormControl(""),
+      header_article: new FormControl(header),
     });
-    this.orderedArticles.push(emptyFormGroup);
+    if(header == null){
+      this.descriptiveArticles.push(emptyFormGroup);
+    }
   }
 
-  addOrderedArticleClicked(): void {
-    console.log("Adding an ordered article");
-    this.addEmptyOrderedArticle();
+  addHeaderClicked(): void {
+    console.log("Adding a new Header to the bottom");
+    this.addLine();
+  }
+
+  addDescriptiveArticle(headerArticle: number): void {
+    console.log("Adding a new descriptive Article");
+    this.addLine(headerArticle);
   }
 
   removeOrderedArticleClicked(rowNumber: number): void {
-    if(this.orderedArticles.length > 1){
+    if(this.descriptiveArticles.length > 1){
       this.removeOrderedArticle(rowNumber);
     }
   }
 
-
   private removeOrderedArticle(rowNumber: number) {
-    this.orderedArticles.removeAt(rowNumber);
+    this.descriptiveArticles.removeAt(rowNumber);
   }
 }
