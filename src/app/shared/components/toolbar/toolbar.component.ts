@@ -24,7 +24,7 @@ export class ToolbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  backClicked(): void { // TODO: bind back button clicked here
+  backClicked(): void {
     if(this.beforeBackFunction != null){
       this.beforeBackFunction(() => {
         this.navigation.back();
@@ -32,6 +32,10 @@ export class ToolbarComponent implements OnInit {
     } else {
       this.navigation.back();
     }
+  }
+
+  homeClicked(): void {
+    this.navigation.home();
   }
 
 }

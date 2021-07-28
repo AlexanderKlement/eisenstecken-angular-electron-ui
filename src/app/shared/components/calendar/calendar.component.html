@@ -1,0 +1,28 @@
+<mat-toolbar color="primary">
+  <span>Eisenstecken</span>
+  <span class="example-spacer"></span>
+  <div fxShow="true">
+    <button mat-icon-button (click)="previousDayClicked()">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+    <button mat-icon-button (click)="todayClicked()">
+      <mat-icon>today</mat-icon>
+    </button>
+    <button mat-icon-button (click)="nextDayClicked()">
+      <mat-icon>navigate_next</mat-icon>
+    </button>
+    <span class="example-spacer"></span>
+    <mat-form-field appearance="fill">
+      <mat-label>Anzahl Tage</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let day of days" [value]="day.value">
+          {{day.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-icon-button (click)="newMeetingClicked()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+

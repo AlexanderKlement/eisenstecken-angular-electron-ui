@@ -33,4 +33,8 @@ export class NavigationService {
     this.backEventInProgress = true;
   }
 
+  home(): void {
+    this.router.navigateByUrl('/');
+  }
+
 }
