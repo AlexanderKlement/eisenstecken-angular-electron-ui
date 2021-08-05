@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {DefaultService, ChatMessageCreate, ChatMessage, ChatRecipient} from "eisenstecken-openapi-angular-library";
-import {Observable, Observer, Subscriber} from "rxjs";
+import {Observable, Subscriber} from "rxjs";
 
 @Injectable({
   providedIn: 'root'

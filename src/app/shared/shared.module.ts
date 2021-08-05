@@ -31,9 +31,10 @@ import { CalendarEditComponent } from './components/calendar/calendar-edit/calen
 import {MatIconModule} from "@angular/material/icon";
 import {NgxMatDatetimePickerModule} from "@angular-material-components/datetime-picker";
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import { CalendarDayComponent } from './components/calendar/calendar-day/calendar-day.component';
 
 @NgModule({
-  declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent, InfoBuilderComponent, LockDialogComponent, BaseEditComponent, WarningDialogComponent, AddressFormComponent, ToolbarComponent, CalendarComponent, CalendarEditComponent],
+  declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent, InfoBuilderComponent, LockDialogComponent, BaseEditComponent, WarningDialogComponent, AddressFormComponent, ToolbarComponent, CalendarComponent, CalendarEditComponent, CalendarDayComponent],
   imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule, MatInputModule, MatGridListModule, MatListModule, MatButtonModule, MatDialogModule, ReactiveFormsModule, FlexModule, MatSelectModule, MatToolbarModule, FlexLayoutModule, MatIconModule, NgxMatDatetimePickerModule, MatDatepickerModule],
   exports: [TranslateModule, WebviewDirective, FormsModule, TestComponent, TableBuilderComponent, InfoBuilderComponent, AddressFormComponent, ToolbarComponent, CalendarComponent]
 })

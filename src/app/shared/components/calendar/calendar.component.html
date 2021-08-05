@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  <span>Eisenstecken</span>
+  <span>Eisenstecken</span><!-- TODO: Add external Kalendar name here -->
   <span class="example-spacer"></span>
   <div fxShow="true">
     <button mat-icon-button (click)="previousDayClicked()">
@@ -13,16 +13,20 @@
     </button>
     <span class="example-spacer"></span>
     <mat-form-field appearance="fill">
-      <mat-label>Anzahl Tage</mat-label>
-      <mat-select>
-        <mat-option *ngFor="let day of days" [value]="day.value">
+      <mat-label># Tage</mat-label>
+      <mat-select [(value)]="amountOfDays" (valueChange)="amountOfDaysChanged()">
+        <mat-option *ngFor="let day of dayManager.getSelectableDays()" [value]="day.value">
           {{day.viewValue}}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <button mat-icon-button (click)="newMeetingClicked()">
       <mat-icon>add</mat-icon>
-    </button>
+    </button>W
   </div>
 </mat-toolbar>
+<div fxLayout="row" fxLayoutAlign="center start" >
+  <app-calendar-day [day]="day" [calendarId]="calendarId" *ngFor="let day of dayManager.getShownDayArray()">
+  </app-calendar-day>
+</div>
 

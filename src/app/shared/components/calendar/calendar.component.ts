@@ -1,13 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {CalendarEntry, DefaultService} from "eisenstecken-openapi-angular-library";
+import {Component, OnInit} from '@angular/core';
+import {DefaultService} from "eisenstecken-openapi-angular-library";
 import {ActivatedRoute, Router} from "@angular/router";
-import {first} from "rxjs/operators";
-import {Observable} from "rxjs";
-
-interface Days {
-  value: string;
-  viewValue: string;
-}
+import {DayManager} from "./day.manager";
 
 @Component({
   selector: 'app-calendar',
@@ -16,37 +10,35 @@ interface Days {
 })
 export class CalendarComponent implements OnInit {
 
-  days: Days[] = [
-    {value: '2', viewValue: '2'},
-    {value: '3', viewValue: '3'},
-    {value: '5', viewValue: '5'},
-    {value: '7', viewValue: '7'},
-    {value: '10', viewValue: '10'},
-  ];
-
-  createMode = false; //TODO: add calendar id as input character
+  createMode = false;
   calendarId = 1;
+  dayManager: DayManager;
 
-  constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router) { }
+  amountOfDays: string;
+
+  constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router) {
+    this.dayManager = new DayManager(0, 3);
+    this.amountOfDays = this.dayManager.amountOfDaysString;
+  }
 
   ngOnInit(): void {
 
   }
 
   previousDayClicked(): void {
-
+    this.dayManager.moveStartDayLeft();
   }
 
   nextDayClicked(): void {
-
+    this.dayManager.moveStartDayRight();
   }
 
   todayClicked(): void {
-
+    this.dayManager.setStartDay(0);
   }
 
   amountOfDaysChanged() : void {
-
+    this.dayManager.setAmountOfDays(parseInt(this.amountOfDays));
   }
 
   newMeetingClicked(): void {
