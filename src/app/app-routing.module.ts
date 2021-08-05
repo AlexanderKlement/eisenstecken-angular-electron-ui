@@ -9,6 +9,7 @@ import { AccessGuard } from "./shared/access-guard.service";
 import { HomeComponent } from "./home/home.component";
 import {ClientRoutingModule} from "./client/client-routing.module";
 import {JobRoutingModule} from "./job/job-routing.module";
+import {CalendarEditComponent} from "./shared/components/calendar/calendar-edit/calendar-edit.component";
 
 const routes: Routes = [
   {
@@ -17,6 +18,12 @@ const routes: Routes = [
     component: HomeComponent,
     pathMatch: 'full',
     //data: { requiresLogin: true },
+    canActivate: [ AccessGuard ]
+  },
+  {
+    path: 'calendar/:mode/:id',
+    component: CalendarEditComponent,
+    data:{requiresLogin: true},
     canActivate: [ AccessGuard ]
   },
   {

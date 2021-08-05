@@ -33,8 +33,9 @@ import { ClientEditComponent } from './client/client-edit/client-edit.component'
 import {MatSelectModule} from "@angular/material/select";
 import {MatButtonModule} from "@angular/material/button";
 import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatNativeDateModule} from "@angular/material/core";
+import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
 import {DatePipe} from "@angular/common";
+import {NgxMatMomentModule} from "@angular-material-components/moment-adapter";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -80,7 +81,8 @@ export function apiConfigFactory (): Configuration {
     MatSelectModule,
     MatButtonModule,
     MatToolbarModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    NgxMatMomentModule
   ],
   providers:
     [
@@ -94,7 +96,13 @@ export function apiConfigFactory (): Configuration {
         ),
         deps: [AuthService],
         multi: false
-      }, AccessGuard, ChatService, DatePipe
+      },
+      AccessGuard,
+      ChatService,
+      DatePipe,
+      {
+        provide: MAT_DATE_LOCALE, useValue: 'de-DE'
+      }
     ],
   bootstrap: [AppComponent]
 })

@@ -4,6 +4,7 @@ import {JobComponent} from "./job.component";
 import {JobDetailComponent} from "./job-detail/job-detail.component";
 import {JobEditComponent} from "./job-edit/job-edit.component";
 import {OfferEditComponent} from "./offer-edit/offer-edit.component";
+import {AccessGuard} from "../shared/access-guard.service";
 
 const routes: Routes = [
   {
@@ -14,27 +15,32 @@ const routes: Routes = [
   {
     path: 'job/:id',
     component: JobDetailComponent,
-    data:{requiresLogin: true}
+    data:{requiresLogin: true},
+    canActivate: [ AccessGuard ]
   },
   {
     path: 'job/edit/:id',
     component: JobEditComponent,
-    data:{requiresLogin: true}
+    data:{requiresLogin: true},
+    canActivate: [ AccessGuard ]
   },
   {
     path: 'job/edit/:id/:client_id',
     component: JobEditComponent,
-    data:{requiresLogin: true}
+    data:{requiresLogin: true},
+    canActivate: [ AccessGuard ]
   },
   {
     path: 'offer/edit/:id/:job_id',
     component: OfferEditComponent,
-    data:{requiresLogin: true}
+    data:{requiresLogin: true},
+    canActivate: [ AccessGuard ]
   },
   {
     path: 'offer/edit/:id',
     component: OfferEditComponent,
-    data:{requiresLogin: true}
+    data:{requiresLogin: true},
+    canActivate: [ AccessGuard ]
   },
 ];
 

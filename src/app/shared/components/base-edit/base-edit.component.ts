@@ -88,9 +88,7 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
     this.router.navigateByUrl(this.navigationTarget);
   }
 
-  protected observableReady():void {
-
-  }
+  protected observableReady():void {}
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   createUpdateError(error: any): void {
