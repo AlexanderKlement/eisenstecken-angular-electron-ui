@@ -8,6 +8,7 @@
     <button mat-icon-button (click)="backClicked()">
       <mat-icon>arrow_back</mat-icon>
     </button>
+
     <a *ngFor="let button of buttonList" (click)="button[1]()" mat-button>{{button[0]}}</a>
   </div>
 </mat-toolbar>

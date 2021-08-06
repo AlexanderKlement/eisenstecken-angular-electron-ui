@@ -4,6 +4,7 @@
       {{this.selectedStatusHeader}}
     </h3>
   </div>
+  <span class="example-spacer"></span>
   <div>
     <a *ngFor="let status of jobStatusList | async" (click)="statusClicked(status.status)" mat-button>{{status.text.translation}}</a>
   </div>

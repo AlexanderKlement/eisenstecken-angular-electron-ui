@@ -18,17 +18,17 @@ export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
         menuTileArray.push({title:"Job", image:"001-shopping-cart.png", link:"/job"});
         return;
       case "supplier:all":
-        menuTileArray.push({title:"Job", image:"001-shopping-cart.png", link:"/"});
+        menuTileArray.push({title:"Nothing", image:"001-shopping-cart.png", link:"/"});
         return;
       case "ingoing_invoices:all":
       case "outgoing_invoices:all":
-        menuTileArray.push({title:"Job", image:"001-shopping-cart.png", link:"/"});
+        menuTileArray.push({title:"Nothing", image:"001-shopping-cart.png", link:"/"});
         return;
       case "clients:all":
-        menuTileArray.push({title:"Job", image:"001-shopping-cart.png", link:"/"});
+        menuTileArray.push({title:"Nothing", image:"001-shopping-cart.png", link:"/"});
         return;
       case "articles:all":
-        menuTileArray.push({title:"Job", image:"001-shopping-cart.png", link:"/"});
+        menuTileArray.push({title:"Nothing", image:"001-shopping-cart.png", link:"/"});
         return;
     }
   });
