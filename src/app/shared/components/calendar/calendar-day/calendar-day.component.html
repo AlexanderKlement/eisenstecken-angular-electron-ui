@@ -1,3 +1,20 @@
-{{calendarId}}
-<br>
-{{day}}
+<h1>{{titleDayOfTheWeek}}</h1>
+<h2>{{titleDay}}</h2>
+<div *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
+<div fxLayout="column" fxLayoutAlign="space-between center" *ngFor="let calendarEntry of calendarEntries$ | async">
+  <div (click)="onCalendarEntryClicked(calendarEntry.id)">
+    <table class="mat-table" >
+      <tr class="mat-header-row">
+        <th class="mat-header-cell">{{calendarEntry.title}}</th>
+      </tr>
+      <tr class="mat-row">
+        <td class="mat-cell">{{calendarEntry.description}}</td>
+        <td class="mat-cell">{{calendarEntry.start_time}}</td>
+        <td class="mat-cell">{{calendarEntry.end_time}}</td>
+        <td class="mat-cell" *ngIf="public">{{calendarEntry.user.firstname}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

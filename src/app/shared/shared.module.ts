@@ -32,10 +32,12 @@ import {MatIconModule} from "@angular/material/icon";
 import {NgxMatDatetimePickerModule} from "@angular-material-components/datetime-picker";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import { CalendarDayComponent } from './components/calendar/calendar-day/calendar-day.component';
+import { CalendarsFrameComponent } from './components/calendar/calendars-frame/calendars-frame.component';
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
-  declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent, InfoBuilderComponent, LockDialogComponent, BaseEditComponent, WarningDialogComponent, AddressFormComponent, ToolbarComponent, CalendarComponent, CalendarEditComponent, CalendarDayComponent],
-  imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule, MatInputModule, MatGridListModule, MatListModule, MatButtonModule, MatDialogModule, ReactiveFormsModule, FlexModule, MatSelectModule, MatToolbarModule, FlexLayoutModule, MatIconModule, NgxMatDatetimePickerModule, MatDatepickerModule],
-  exports: [TranslateModule, WebviewDirective, FormsModule, TestComponent, TableBuilderComponent, InfoBuilderComponent, AddressFormComponent, ToolbarComponent, CalendarComponent]
+  declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent, InfoBuilderComponent, LockDialogComponent, BaseEditComponent, WarningDialogComponent, AddressFormComponent, ToolbarComponent, CalendarComponent, CalendarEditComponent, CalendarDayComponent, CalendarsFrameComponent],
+  imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule, MatInputModule, MatGridListModule, MatListModule, MatButtonModule, MatDialogModule, ReactiveFormsModule, FlexModule, MatSelectModule, MatToolbarModule, FlexLayoutModule, MatIconModule, NgxMatDatetimePickerModule, MatDatepickerModule, MatTabsModule],
+  exports: [TranslateModule, WebviewDirective, FormsModule, TestComponent, TableBuilderComponent, InfoBuilderComponent, AddressFormComponent, ToolbarComponent, CalendarComponent, CalendarsFrameComponent]
 })
 export class SharedModule {}

@@ -29,7 +29,7 @@ export class ChatService {
 
   private check4Messages(observer: Subscriber<ChatMessage>) {
     const new_messages = this.api.readChatMessagesSinceIdChatsLastIdGet(this.lastId);
-    new_messages.subscribe({
+    new_messages.subscribe({ //TODO: this should be piped through a "first()" to ensure we have no memory leak??
       next: messages => {//TODO: check if this could be a bad idea and a lot of overheat
         messages.forEach((message) => {
           if(this.lastId < message.id){

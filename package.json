@@ -58,8 +58,9 @@
     "@angular/router": "12.0.2",
     "@electron/remote": "1.0.4",
     "core-js": "3.6.5",
-    "eisenstecken-openapi-angular-library": "7.2.6",
+    "eisenstecken-openapi-angular-library": "7.2.9",
     "material-design-icons": "3.0.1",
+    "moment": "2.29.1",
     "rxjs": "6.6.6",
     "tslib": "2.1.0",
     "zone.js": "~0.11.4"

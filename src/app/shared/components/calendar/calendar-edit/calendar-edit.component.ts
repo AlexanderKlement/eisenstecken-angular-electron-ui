@@ -12,6 +12,9 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class CalendarEditComponent implements OnInit {
 
+  //TODO: add a cancel key to go back to home
+  //TODO: add a delete key to delete the thing
+
   @Input() calendarId: number;
 
   submitted = false;
@@ -60,22 +63,31 @@ export class CalendarEditComponent implements OnInit {
 
   fillCalendarGroup(): void {
     if(!this.createMode){
-      this.calendarEntry$.pipe(tap(calendarEntry => this.calendarGroup.patchValue(calendarEntry))).subscribe(); //TODO: unsubscribe on destroy
+      this.calendarEntry$.pipe(first(), tap(calendarEntry => this.calendarGroup.patchValue(calendarEntry))).subscribe();
     }
   }
 
 
   onSubmit():void {
     this.submitted = true;
+    const calendarEntryCreate: CalendarEntryCreate = {
+      title: this.calendarGroup.get("title").value,
+      description: this.calendarGroup.get("description").value,
+      start_time: this.calendarGroup.get("start_time").value,
+      end_time: this.calendarGroup.get("end_time").value
+    };
     if(this.createMode){
-      const calendarEntryCreate: CalendarEntryCreate = {
-        title: this.calendarGroup.get("title").value,
-        description: this.calendarGroup.get("description").value,
-        start_time: this.calendarGroup.get("start_time").value,
-        end_time: this.calendarGroup.get("end_time").value
-      };
-      console.log(this.calendarId);
       this.api.createCalendarEntryCalendarCalendarIdPost(this.calendarId, calendarEntryCreate).pipe(first()).subscribe(
+        (calendarEntry) => {
+          this.createUpdateSuccess(calendarEntry);
+        },
+        (error) => {
+          this.createUpdateError(error);
+        }, () => {
+          this.createUpdateComplete();
+        });
+    } else {
+      this.api.updateCalendarEntryCalendarCalendarEntryIdPut(this.calendarEntryId,  calendarEntryCreate).pipe(first()).subscribe(
         (calendarEntry) => {
           this.createUpdateSuccess(calendarEntry);
         },
@@ -87,12 +99,15 @@ export class CalendarEditComponent implements OnInit {
     }
   }
 
-  createUpdateSuccess(calendarEntry): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  createUpdateSuccess(calendarEntry: CalendarEntry): void {
     this.router.navigateByUrl("/"); //This is only valid if calendar gets used in main window. I have a feeling that this will bite my neck some day
   }
 
-  createUpdateError(error): void {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  createUpdateError(error: any): void {
     console.error("CalendarEditComponent: Could not complete " + (this.createMode ? "creation" : "update"));
+    console.log(error);
   }
 
   createUpdateComplete():void {

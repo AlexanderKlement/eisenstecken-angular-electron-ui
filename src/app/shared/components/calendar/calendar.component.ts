@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {DefaultService} from "eisenstecken-openapi-angular-library";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DayManager} from "./day.manager";
@@ -11,10 +11,12 @@ import {DayManager} from "./day.manager";
 export class CalendarComponent implements OnInit {
 
   createMode = false;
-  calendarId = 1;
   dayManager: DayManager;
 
   amountOfDays: string;
+
+  @Input() calendarId = 1;
+  @Input() public = true;
 
   constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router) {
     this.dayManager = new DayManager(0, 3);
