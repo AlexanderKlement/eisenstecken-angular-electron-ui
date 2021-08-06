@@ -15,11 +15,19 @@ export class CalendarEditComponent implements OnInit {
   //TODO: add a cancel key to go back to home
   //TODO: add a delete key to delete the thing
 
-  @Input() calendarId: number;
+  public buttons = [
+    [
+      "Löschen",
+      (): void => {
+        this.deleteButtonClicked();
+      }
+    ]
+  ];
 
   submitted = false;
   createMode: boolean;
 
+  calendarId: number;
   calendarEntryId: number; //maybe these two need to be replaced by param
   calendarEntry$: Observable<CalendarEntry>;
   calendarGroup: FormGroup;
@@ -112,5 +120,24 @@ export class CalendarEditComponent implements OnInit {
 
   createUpdateComplete():void {
     this.submitted = false;
+  }
+
+  cancelButtonClicked(): void {
+    this.router.navigateByUrl("/");
+  }
+
+  deleteButtonClicked(): void {
+    if(this.createMode){
+      this.router.navigateByUrl("/");
+    }
+    else{
+      this.deleteCalendarEntry();
+    }
+  }
+
+  deleteCalendarEntry(): void {
+    this.api.deleteCalendarEntryCalendarCalendarIdDelete(this.calendarEntryId).pipe(first()).subscribe(() => {
+      this.router.navigateByUrl("/");
+    });
   }
 }

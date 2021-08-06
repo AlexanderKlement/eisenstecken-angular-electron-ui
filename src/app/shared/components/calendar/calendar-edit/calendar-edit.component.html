@@ -1,4 +1,4 @@
-<app-toolbar></app-toolbar>
+<app-toolbar [buttonList]="buttons"></app-toolbar>
 <h1 *ngIf="createMode">Termin erstellen</h1>
 <h1 *ngIf="!createMode">Termin bearbeiten</h1>
 <form (ngSubmit)="onSubmit()" [formGroup]="calendarGroup">
@@ -23,6 +23,9 @@
       <ngx-mat-datetime-picker #end_picker stepMinute="10">
       </ngx-mat-datetime-picker>
     </mat-form-field>
-    <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <button  mat-raised-button (click)="cancelButtonClicked()">Abbrechen</button>
+      <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+    </div>
   </div>
 </form>

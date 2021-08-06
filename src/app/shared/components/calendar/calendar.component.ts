@@ -15,8 +15,8 @@ export class CalendarComponent implements OnInit {
 
   amountOfDays: string;
 
-  @Input() calendarId = 1;
-  @Input() public = true;
+  @Input() calendarId: number;
+  @Input() public: boolean;
 
   constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router) {
     this.dayManager = new DayManager(0, 3);
@@ -44,7 +44,7 @@ export class CalendarComponent implements OnInit {
   }
 
   newMeetingClicked(): void {
-    this.router.navigateByUrl('/calendar/new/' + this.calendarId.toString());
+    this.router.navigateByUrl("/calendar/new/" + this.calendarId.toString());
   }
 
 }

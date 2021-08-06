@@ -41,7 +41,7 @@ export class CalendarDayComponent implements OnInit, OnDestroy{
   }
 
   check4CalendarEntries(observer: Subscriber<CalendarEntry[]>): void {
-    this.api.readCalendarEntriesByDayCalendarPublicCalendarIdGet(this.calendarId, this.day).pipe(first()).subscribe((calendarEntries) => {
+    this.api.readCalendarEntriesByDayCalendarCalendarsCalendarIdGet(this.calendarId, this.day).pipe(first()).subscribe((calendarEntries) => {
       calendarEntries = this.formatCalendarEntryDates(calendarEntries);
       if(this.loading){
         observer.next(calendarEntries);

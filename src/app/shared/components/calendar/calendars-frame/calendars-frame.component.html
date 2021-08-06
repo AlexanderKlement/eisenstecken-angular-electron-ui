@@ -3,7 +3,7 @@
 </div>
 <mat-tab-group>
     <mat-tab *ngFor="let calendar of calendars$ | async" label="{{calendar.name}}">
-      <app-calendar [public]="calendar._public" [calendarId]="calendar.id">
+      <app-calendar [public]="calendar.open" [calendarId]="calendar.id">
       </app-calendar>
     </mat-tab>
 </mat-tab-group>
