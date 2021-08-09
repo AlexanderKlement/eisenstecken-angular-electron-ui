@@ -12,9 +12,6 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class CalendarEditComponent implements OnInit {
 
-  //TODO: add a cancel key to go back to home
-  //TODO: add a delete key to delete the thing
-
   public buttons = [
     [
       "Löschen",

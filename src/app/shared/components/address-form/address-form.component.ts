@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormGroup} from "@angular/forms";
-import {Country} from "eisenstecken-openapi-angular-library";
+import {Country, DefaultService} from "eisenstecken-openapi-angular-library";
 import {Observable} from "rxjs";
 
 @Component({
@@ -11,10 +11,11 @@ import {Observable} from "rxjs";
 export class AddressFormComponent implements OnInit {
 
   @Input() address: FormGroup;
-  @Input() countryOptions$: Observable<Country[]>; //TODO: maybe remove the dependency and get it directly from here
+  countryOptions$: Observable<Country[]>;
 
-  constructor() { }
+  constructor(private api: DefaultService) { }
 
   ngOnInit(): void {
+    this.countryOptions$ = this.api.readCountriesAddressCountriesGet();
   }
 }

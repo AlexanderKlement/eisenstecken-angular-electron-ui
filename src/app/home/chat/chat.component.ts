@@ -2,7 +2,7 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {ChatService} from "./chat.service";
 import {ChatMessage, ChatRecipient} from "eisenstecken-openapi-angular-library";
 import {FormControl, FormGroup} from "@angular/forms";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {first} from "rxjs/operators";
 
 @Component({
@@ -13,7 +13,7 @@ import {first} from "rxjs/operators";
 export class ChatComponent implements OnInit, OnDestroy {
 
   messages: ChatMessage[] = [];
-  recipients$ : Observable<ChatRecipient[]>;
+  recipients$: Observable<ChatRecipient[]>;
 
   chatGroup: FormGroup = new FormGroup({
     messageInput : new FormControl(""),
@@ -22,28 +22,26 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   buttonLocked = false;
 
-
-  constructor(private chatService: ChatService) {
-  }
-
+  constructor(private chatService: ChatService) {}
 
   @ViewChild('chatMsgBox') chatMsgBox: ElementRef;
 
+  subscription: Subscription;
+
   ngOnInit(): void {
-    this.chatService.getMessages()
+    this.subscription = new Subscription();
+    this.subscription.add(this.chatService.getMessages()
       .subscribe((message: ChatMessage) => {
         this.messages.push(message);
-      });
-    this.recipients$ =  this.chatService.getRecipients();
-
+      }));
+    this.recipients$ =  this.chatService.getRecipients(); //unsubscribes automatically
   }
-
 
   public scrollToBottom(): void {
     try {
       this.chatMsgBox.nativeElement.scrollTop = this.chatMsgBox.nativeElement.scrollHeight;
     } catch (e) {
-      console.error(e);
+      console.warn(e);
     }
   }
 
@@ -79,7 +77,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    //TODO: unsubscribe from all the thingies
+    this.subscription.unsubscribe();
   }
 
 }

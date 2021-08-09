@@ -51,7 +51,7 @@ export function apiConfigFactory (): Configuration {
 }
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, ClientComponent, ClientDetailComponent, ClientEditComponent], //TODO: move components to theirs respective modules
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     FormsModule,

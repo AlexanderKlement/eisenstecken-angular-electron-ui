@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Country, DefaultService, Job, JobCreate, JobType, JobUpdate, Lock} from "eisenstecken-openapi-angular-library";
+import {DefaultService, Job, JobCreate, JobType, JobUpdate, Lock} from "eisenstecken-openapi-angular-library";
 import {Observable} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -31,7 +31,6 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
   jobGroup: FormGroup;
   submitted = false;
   jobTypeOptions$: Observable<JobType[]>;
-  countryOptions$: Observable<Country[]>;
 
   constructor(api: DefaultService, router: Router,  route: ActivatedRoute, dialog: MatDialog) {
     super(api, router, route, dialog);
@@ -48,7 +47,6 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
         }
       });
     this.jobTypeOptions$ = this.api.getTypeOptionsJobTypeOptionsGet();
-    this.countryOptions$ = this.api.readCountriesAddressCountriesGet();
     this.jobGroup = new FormGroup({
       name: new FormControl(""),
       description: new FormControl(""),

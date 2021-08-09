@@ -30,19 +30,10 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
 
   clientGroup: FormGroup;
 
-  //TODO: make this extended:
-  /*
-  "esigibilita_iva": "string",
-  "publica_amministrazione": true,
-  "cup": "string",
-  "cig": "string",
-   */
-
   company= false;
 
   genderOptions$: Observable<Gender[]>;
   languageOptions$: Observable<Language[]>;
-  countryOptions$: Observable<Country[]>;
 
 
   constructor(api: DefaultService, router: Router,  route: ActivatedRoute, dialog: MatDialog) {
@@ -74,7 +65,6 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
     });
     this.genderOptions$ = this.api.readGendersGenderGet();
     this.languageOptions$ = this.api.readLanguagesLanguageGet();
-    this.countryOptions$ = this.api.readCountriesAddressCountriesGet();
   }
 
   ngOnDestroy(): void {
