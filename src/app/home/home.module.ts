@@ -19,9 +19,15 @@ import { SingleNoteComponent } from './note/single-note/single-note.component';
 import {MenuTilesComponent} from "./menu-tiles/menu-tiles.component";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { SingleMenuTileComponent } from './menu-tiles/single-menu-tile/single-menu-tile.component';
+import {CalendarsChatFrameComponent} from "./calendars-chat-frame/calendars-chat-frame.component";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
-  declarations: [HomeComponent, ChatComponent, ChatMessageComponent, NoteComponent, SingleNoteComponent, MenuTilesComponent, SingleMenuTileComponent],
-  imports: [CommonModule, SharedModule, HomeRoutingModule, MatCardModule, FlexLayoutModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, ReactiveFormsModule, MatGridListModule]
+  declarations: [HomeComponent, ChatComponent, ChatMessageComponent, NoteComponent, SingleNoteComponent, MenuTilesComponent, SingleMenuTileComponent, CalendarsChatFrameComponent],
+  exports: [
+    ChatComponent
+  ],
+  imports: [CommonModule, SharedModule, HomeRoutingModule, MatCardModule, FlexLayoutModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, ReactiveFormsModule, MatGridListModule, MatProgressSpinnerModule, MatTabsModule]
 })
 export class HomeModule {}

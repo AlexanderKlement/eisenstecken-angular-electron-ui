@@ -6,4 +6,7 @@
       <app-calendar [public]="calendar.open" [calendarId]="calendar.id">
       </app-calendar>
     </mat-tab>
+  <mat-tab #chatTab label="{{chatTabName}}"> <!-- TODO: make this more stylish -->
+    <app-chat></app-chat>
+  </mat-tab>
 </mat-tab-group>

@@ -1,15 +1,16 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ChatService} from "./chat.service";
 import {ChatMessage, ChatRecipient} from "eisenstecken-openapi-angular-library";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Observable} from "rxjs";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
 
   messages: ChatMessage[] = [];
   recipients$ : Observable<ChatRecipient[]>;
@@ -21,18 +22,22 @@ export class ChatComponent implements OnInit {
 
   buttonLocked = false;
 
+
   constructor(private chatService: ChatService) {
   }
 
+
+  @ViewChild('chatMsgBox') chatMsgBox: ElementRef;
+
   ngOnInit(): void {
-    this.chatService.getMessages() //TODO: moving this to the constructor should load messages even though the component is not loaded sometimes
-      .subscribe((message: ChatMessage) => { //TODO: maybe we could reset the index when lifecycle has ended
+    this.chatService.getMessages()
+      .subscribe((message: ChatMessage) => {
         this.messages.push(message);
       });
     this.recipients$ =  this.chatService.getRecipients();
+
   }
 
-  @ViewChild('chatMsgBox') chatMsgBox: ElementRef;
 
   public scrollToBottom(): void {
     try {
@@ -47,7 +52,7 @@ export class ChatComponent implements OnInit {
       return;
     this.lockSendButton();
     const chatMessageObservable = this.chatService.sendMessage(this.chatGroup.value.messageInput, this.chatGroup.value.recipientSelect);
-    chatMessageObservable.subscribe(() => {
+    chatMessageObservable.pipe(first()).subscribe(() => {
       this.resetChatControl();
     }, (message) => {
       console.error("Cannot send chat message");
@@ -72,6 +77,10 @@ export class ChatComponent implements OnInit {
 
   private releaseSendButton() {
     this.buttonLocked = false;
+  }
+
+  ngOnDestroy(): void {
+    //TODO: unsubscribe from all the thingies
   }
 
 }
