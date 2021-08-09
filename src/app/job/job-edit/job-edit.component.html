@@ -5,7 +5,7 @@
   <div fxLayout="column" fxLayoutAlign="space-around center" >
     <mat-form-field *ngIf="jobTypeOptions$ | async as jobTypes">
       <mat-label>Auftragsart</mat-label>
-      <mat-select [(ngModel)]="jobTypes[0].type" formControlName="type">
+      <mat-select formControlName="type">
         <mat-option *ngFor="let jobType of jobTypes" [value]="jobType.type">
           {{jobType.text.translation}}
         </mat-option>
@@ -19,7 +19,7 @@
       <mat-label>Beschreibung</mat-label>
       <input class="form-control" formControlName="description" matInput>
     </mat-form-field>
-    <app-address-form [address]="jobGroup.get('address')" [countryOptions$]="countryOptions$"></app-address-form>
+    <app-address-form [address]="getAddressGroup()" [countryOptions$]="countryOptions$"></app-address-form>
     <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
   </div>
 </form>

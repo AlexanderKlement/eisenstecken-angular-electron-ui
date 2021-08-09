@@ -15,7 +15,7 @@ export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
         menuTileArray.push({title:"Kunden", image:"001-shopping-cart.png", link:"/client"});
         return;
       case "calendar:all":
-        menuTileArray.push({title:"Job", image:"001-shopping-cart.png", link:"/job"});
+        menuTileArray.push({title:"Auftrag", image:"001-shopping-cart.png", link:"/job"});
         return;
       case "supplier:all":
         menuTileArray.push({title:"Nothing", image:"001-shopping-cart.png", link:"/"});
@@ -30,6 +30,8 @@ export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
       case "articles:all":
         menuTileArray.push({title:"Nothing", image:"001-shopping-cart.png", link:"/"});
         return;
+      case "parameters:set":
+        menuTileArray.push({title: "Einstellungen", image:"044-settings.png", link:"/settings"});
     }
   });
   return menuTileArray;

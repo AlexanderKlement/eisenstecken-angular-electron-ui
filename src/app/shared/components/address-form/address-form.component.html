@@ -14,7 +14,7 @@
     </mat-form-field>
     <mat-form-field *ngIf="countryOptions$ | async as countryOptions">
       <mat-label>Land</mat-label>
-      <mat-select [(ngModel)]="countryOptions[0].code" formControlName="country">
+      <mat-select formControlName="country">
         <mat-option *ngFor="let country of countryOptions" [value]="country.code">
           {{country.name}}
         </mat-option>

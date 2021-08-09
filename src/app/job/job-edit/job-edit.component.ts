@@ -52,12 +52,12 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
     this.jobGroup = new FormGroup({
       name: new FormControl(""),
       description: new FormControl(""),
-      type: new FormControl(""),
+      type: new FormControl("JOBTYPE_MAIN"),
       address: new FormGroup( {
         street_number: new FormControl(""),
         city: new FormControl(""),
         cap: new FormControl(""),
-        country: new FormControl("")
+        country: new FormControl("IT")
       }),
     });
   }
@@ -131,6 +131,10 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
         });
       });
     }
+  }
+
+  getAddressGroup(): FormGroup {
+    return <FormGroup> this.jobGroup.get('address');
   }
 
 

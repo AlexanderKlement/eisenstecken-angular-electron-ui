@@ -16,8 +16,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   recipients$ : Observable<ChatRecipient[]>;
 
   chatGroup: FormGroup = new FormGroup({
-    messageInput : new FormControl( ),
-    recipientSelect : new FormControl()
+    messageInput : new FormControl(""),
+    recipientSelect : new FormControl(0)
   });
 
   buttonLocked = false;
@@ -64,7 +64,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   private resetChatControl() {
-    console.log("clearing");
     this.chatGroup.reset({
       "messageInput" : "",
       "recipientSelect" : 0

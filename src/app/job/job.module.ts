@@ -29,19 +29,19 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     OfferEditComponent,
     OrderedArticleEditComponent
   ],
-    imports: [
-        CommonModule,
-        JobRoutingModule,
-        SharedModule,
-        FlexModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatSelectModule,
-        MatToolbarModule,
-        MatDatepickerModule,
-        MatCheckboxModule
-    ]
+  imports: [
+    CommonModule,
+    JobRoutingModule,
+    SharedModule,
+    FlexModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatToolbarModule,
+    MatDatepickerModule,
+    MatCheckboxModule
+  ]
 })
 export class JobModule { }

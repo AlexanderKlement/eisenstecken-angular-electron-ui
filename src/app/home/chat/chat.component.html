@@ -12,7 +12,7 @@
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Empfänger</mat-label>
-        <mat-select formControlName="recipientSelect" [(ngModel)]="recipients[0].id">
+        <mat-select formControlName="recipientSelect">
           <mat-option *ngFor="let recipient of recipients" [value]="recipient.id">
             {{recipient.firstname}}
           </mat-option>

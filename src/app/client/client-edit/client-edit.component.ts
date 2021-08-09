@@ -51,9 +51,6 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.genderOptions$ = this.api.readGendersGenderGet();
-    this.languageOptions$ = this.api.readLanguagesLanguageGet();
-    this.countryOptions$ = this.api.readCountriesAddressCountriesGet();
     this.clientGroup = new FormGroup({
       name: new FormControl(""),
       lastname: new FormControl(""),
@@ -66,15 +63,18 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
       fiscal_code: new FormControl(""),
       codice_destinatario: new FormControl(""),
       pec: new FormControl(""),
-      gender: new FormControl(""),
-      language: new FormControl(""),
+      gender: new FormControl("M"),
+      language: new FormControl("DE"),
       address: new FormGroup( {
         street_number: new FormControl(""),
         city: new FormControl(""),
         cap: new FormControl(""),
-        country: new FormControl("")
+        country: new FormControl("DE")
       }),
     });
+    this.genderOptions$ = this.api.readGendersGenderGet();
+    this.languageOptions$ = this.api.readLanguagesLanguageGet();
+    this.countryOptions$ = this.api.readCountriesAddressCountriesGet();
   }
 
   ngOnDestroy(): void {
@@ -162,5 +162,7 @@ export class ClientEditComponent extends BaseEditComponent<Client>  implements O
     }
   }
 
-
+  getAddressGroup(): FormGroup {
+    return <FormGroup> this.clientGroup.get('address');
+  }
 }

@@ -27,7 +27,7 @@ export class CalendarsChatFrameComponent implements OnInit {
     this.calendars$ = this.api.readCalendarsCalendarGet().pipe(first(), tap(() => {
       this.loading = false;
     }));
-    this.checkIfUnreadMessagesInterval = setInterval(() => { //TODO: may there is a lighter method than checking every x seconds
+    this.checkIfUnreadMessagesInterval = setInterval(() => { //TODO: may there is a lighter method than checking every x seconds -> is there some sort of event?
       this.resetUnreadChatMessageCountIfActive();
     }, 1000 * this.secondsCheckIfUnreadMessages);
     this.chatService.getAmountOfUnreadMessages().subscribe((amountOfUnreadChatMessages) => {

@@ -10,6 +10,7 @@ import { HomeComponent } from "./home/home.component";
 import {ClientRoutingModule} from "./client/client-routing.module";
 import {JobRoutingModule} from "./job/job-routing.module";
 import {CalendarEditComponent} from "./shared/components/calendar/calendar-edit/calendar-edit.component";
+import {SettingsModule} from "./settings/settings.module";
 
 const routes: Routes = [
   {
@@ -39,7 +40,8 @@ const routes: Routes = [
     DetailRoutingModule,
     LoginRoutingModule,
     ClientRoutingModule,
-    JobRoutingModule
+    JobRoutingModule,
+    SettingsModule
   ],
   exports: [RouterModule]
 })

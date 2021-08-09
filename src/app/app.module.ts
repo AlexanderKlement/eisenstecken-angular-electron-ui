@@ -36,6 +36,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
 import {DatePipe} from "@angular/common";
 import {NgxMatMomentModule} from "@angular-material-components/moment-adapter";
+import {SettingsModule} from "./settings/settings.module";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -60,6 +61,7 @@ export function apiConfigFactory (): Configuration {
     HomeModule,
     DetailModule,
     JobModule,
+    SettingsModule,
     ApiModule.forRoot(apiConfigFactory),
     AppRoutingModule,
     FlexLayoutModule,
