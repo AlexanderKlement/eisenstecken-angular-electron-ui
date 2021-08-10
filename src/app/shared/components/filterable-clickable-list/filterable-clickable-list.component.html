@@ -1,0 +1,10 @@
+<h3>{{name}}</h3>
+<mat-form-field >
+  <mat-label>Suchen</mat-label>
+  <input matInput [formControl]="search">
+</mat-form-field>
+<mat-selection-list [multiple]="false" (selectionChange)="selectionChange($event.option)" >
+  <mat-list-option *ngFor="let listElement of search$ | async" [value]="listElement.item" [selected]="listElementControl.value && listElementControl.value?.indexOf(listElement)>=0">
+    {{listElement.name}}
+  </mat-list-option>
+</mat-selection-list>

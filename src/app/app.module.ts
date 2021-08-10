@@ -14,7 +14,6 @@ import { DetailModule } from './detail/detail.module';
 import { AppConfig } from 'environments/environment';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
 import { AuthService } from "./shared/auth.service";
 import { AccessGuard } from "./shared/access-guard.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -26,10 +25,7 @@ import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatSortModule} from "@angular/material/sort";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {ClientComponent} from "./client/client.component";
-import { ClientDetailComponent } from './client/client-detail/client-detail.component';
 import {JobModule} from "./job/job.module";
-import { ClientEditComponent } from './client/client-edit/client-edit.component';
 import {MatSelectModule} from "@angular/material/select";
 import {MatButtonModule} from "@angular/material/button";
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -37,6 +33,7 @@ import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
 import {DatePipe} from "@angular/common";
 import {NgxMatMomentModule} from "@angular-material-components/moment-adapter";
 import {SettingsModule} from "./settings/settings.module";
+import {OrderModule} from "./order/order.module";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -62,6 +59,7 @@ export function apiConfigFactory (): Configuration {
     DetailModule,
     JobModule,
     SettingsModule,
+    OrderModule,
     ApiModule.forRoot(apiConfigFactory),
     AppRoutingModule,
     FlexLayoutModule,

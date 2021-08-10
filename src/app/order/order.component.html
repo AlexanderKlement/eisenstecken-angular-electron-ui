@@ -1,0 +1,17 @@
+<app-toolbar></app-toolbar>
+<div fxLayout="row" fxLayoutAlign=" none" >
+  <div>
+    <app-filterable-clickable-list [listElements$]="toList$" (onClickEventEmitter)="toListItemClicked($event)" [name]="toListName"></app-filterable-clickable-list>
+  </div>
+  <div>
+    FROM-LIST
+  </div>
+  <div fxLayout="column" fxLayoutAlign=" none" >
+    <div>
+      SUPPLIER-LIST
+    </div>
+    <div>
+      ORDERED-LIST
+    </div>
+  </div>
+</div>
