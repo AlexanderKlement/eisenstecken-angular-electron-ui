@@ -4,8 +4,8 @@ import {
   ListItem,
   SupportedListElements
 } from "../shared/components/filterable-clickable-list/filterable-clickable-list.types";
-import {DefaultService, OrderableType} from "eisenstecken-openapi-angular-library";
-import {tap} from "rxjs/operators";
+import {Article, DefaultService, OrderableType, OrderedArticle} from "eisenstecken-openapi-angular-library";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'app-order',
@@ -25,6 +25,15 @@ export class OrderComponent implements OnInit {
   fromListSubscriber: Subscriber<ListItem[]>;
   fromListSelected: ListItem;
 
+  availableProductListName = "Verfügbare Produkte";
+  availableProducts$: Observable<Article[]>;
+  availableProductsSubscriber: Subscriber<Article[]>;
+
+  orderedProductListName = "Bestellte Produkte";
+  orderedProducts$: Observable<OrderedArticle[]>;
+  orderedProductsSubscriber: Subscriber<OrderedArticle[]>;
+
+
   constructor(private api: DefaultService) { }
 
   ngOnInit(): void {
@@ -35,11 +44,14 @@ export class OrderComponent implements OnInit {
     this.fromList$ = new Observable<ListItem[]>((fromListSubscriber) => {
       this.fromListSubscriber = fromListSubscriber;
     });
+    this.availableProducts$ = new Observable<Article[]>((availableProductsSubscriber) => {
+      this.availableProductsSubscriber = availableProductsSubscriber;
+    });
   }
 
   private loadToList(){
-    const stocks$ = this.api.readStocksStockGet();
-    const jobs$ = this.api.readJobsJobGet(); //TODO: change this to only open jobs, otherwise the list gets way too populated
+    const stocks$ = this.api.readStocksStockGet().pipe(first());
+    const jobs$ = this.api.readJobsJobGet().pipe(first()); //TODO: change this to only open jobs, otherwise the list gets way too populated -> python
 
     combineLatest([stocks$, jobs$]).subscribe(([stocks, jobs]) => {
       const stockListItems = OrderComponent.createListItems(stocks);
@@ -63,8 +75,8 @@ export class OrderComponent implements OnInit {
   }
 
   private loadFromList(withStocks: boolean) {
-    const stocks$ = this.api.readStocksStockGet();
-    const suppliers$ = this.api.readSuppliersSupplierGet();
+    const stocks$ = this.api.readStocksStockGet().pipe(first());
+    const suppliers$ = this.api.readSuppliersSupplierGet().pipe(first());
 
     if(withStocks){
       combineLatest([stocks$, suppliers$]).subscribe(([stocks, jobs]) => {
@@ -82,6 +94,7 @@ export class OrderComponent implements OnInit {
   }
 
   toListItemClicked(listItem: ListItem) :void {
+    this.resetProductWindows();
     switch (listItem.type) {
       case OrderableType.Stock: {
         this.loadFromList(false);
@@ -100,6 +113,12 @@ export class OrderComponent implements OnInit {
   }
 
   fromListItemClicked(listItem: ListItem): void {
+    this.resetProductWindows();
     this.fromListSelected=listItem;
+  }
+
+  private resetProductWindows(): void {
+    this.availableProductsSubscriber.next([]);
+    this.orderedProductsSubscriber.next([]);
   }
 }

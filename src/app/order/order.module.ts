@@ -6,11 +6,13 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {SharedModule} from "../shared/shared.module";
+import { ProductsListComponent } from './available-products-list/products-list.component';
 
 
 @NgModule({
   declarations: [
-    OrderComponent
+    OrderComponent,
+    ProductsListComponent
   ],
     imports: [
         CommonModule,
