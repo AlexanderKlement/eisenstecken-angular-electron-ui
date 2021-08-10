@@ -4,8 +4,8 @@
     <app-filterable-clickable-list [listElements$]="toList$" (onClickEventEmitter)="toListItemClicked($event)" [name]="toListName"></app-filterable-clickable-list>
   </div>
   <div>
+    <app-filterable-clickable-list [listElements$]="fromList$" (onClickEventEmitter)="fromListItemClicked($event)" [name]="fromListName"></app-filterable-clickable-list>
   </div>
-  <app-filterable-clickable-list [listElements$]="fromList$" (onClickEventEmitter)="fromListItemClicked($event)" [name]="fromListName"></app-filterable-clickable-list>
   <div fxLayout="column" fxLayoutAlign=" none" >
     <div>
       SUPPLIER-LIST

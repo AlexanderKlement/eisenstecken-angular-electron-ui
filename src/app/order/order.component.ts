@@ -4,7 +4,8 @@ import {
   ListItem,
   SupportedListElements
 } from "../shared/components/filterable-clickable-list/filterable-clickable-list.types";
-import {DefaultService, Job, OrderableType, Stock} from "eisenstecken-openapi-angular-library";
+import {DefaultService, OrderableType} from "eisenstecken-openapi-angular-library";
+import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-order',
@@ -17,10 +18,12 @@ export class OrderComponent implements OnInit {
   toListName = "Bestelle für Aufträge oder Lager";
   toList$ : Observable<ListItem[]>; //Here go stocks and suppliers
   toListSubscriber: Subscriber<ListItem[]>;
+  toListSelected: ListItem;
 
   fromListName = "Bestelle von Lieferanten oder Lager";
   fromList$: Observable<ListItem[]>;
   fromListSubscriber: Subscriber<ListItem[]>;
+  fromListSelected: ListItem;
 
   constructor(private api: DefaultService) { }
 
@@ -59,7 +62,6 @@ export class OrderComponent implements OnInit {
     return listItems;
   }
 
-
   private loadFromList(withStocks: boolean) {
     const stocks$ = this.api.readStocksStockGet();
     const suppliers$ = this.api.readSuppliersSupplierGet();
@@ -80,7 +82,6 @@ export class OrderComponent implements OnInit {
   }
 
   toListItemClicked(listItem: ListItem) :void {
-    console.log(listItem);
     switch (listItem.type) {
       case OrderableType.Stock: {
         this.loadFromList(false);
@@ -95,11 +96,10 @@ export class OrderComponent implements OnInit {
         break;
       }
     }
+    this.toListSelected=listItem;
   }
 
   fromListItemClicked(listItem: ListItem): void {
+    this.fromListSelected=listItem;
   }
-
-
-
 }

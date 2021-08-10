@@ -25,10 +25,12 @@ export class FilterableClickableListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.listElements = [];
+    this.search = new FormControl("");
     this.listElements$.subscribe((listElements) => {
       this.listElements = listElements;
+      this.search.setValue("");
     });
-    this.search = new FormControl();
     this.listElementControl = new FormControl();
     this.search$ = this.search.valueChanges.pipe(
       startWith(null), //TODO: replace this deprecated element => someday we'll have to update
