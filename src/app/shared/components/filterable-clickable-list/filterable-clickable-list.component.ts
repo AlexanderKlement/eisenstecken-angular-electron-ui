@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {Observable, of} from "rxjs";
-import {SupportedListElements, ListItem} from "./filterable-clickable-list.types";
+import {ListItem} from "./filterable-clickable-list.types";
 import {FormControl} from "@angular/forms";
 import {debounceTime, startWith, switchMap} from "rxjs/operators";
 
@@ -14,15 +14,13 @@ export class FilterableClickableListComponent implements OnInit {
 
   @Input() listElements$: Observable<ListItem[]>;
   @Input() name: string;
-  @Output() onClickEventEmitter = new EventEmitter<SupportedListElements>();
+  @Output() onClickEventEmitter = new EventEmitter<ListItem>();
 
   loading = true;
   listElements : ListItem[];
   search: FormControl;
   listElementControl: FormControl;
   search$: Observable<ListItem[]>;
-
-
 
   constructor() { }
 
@@ -33,7 +31,7 @@ export class FilterableClickableListComponent implements OnInit {
     this.search = new FormControl();
     this.listElementControl = new FormControl();
     this.search$ = this.search.valueChanges.pipe(
-      startWith(null),
+      startWith(null), //TODO: replace this deprecated element => someday we'll have to update
       debounceTime(200),
       switchMap((filterString: string) => {
         if(!filterString){
@@ -44,15 +42,9 @@ export class FilterableClickableListComponent implements OnInit {
       }));
   }
 
-  public listElementClicked(supportedListElements: SupportedListElements): void{
-    this.onClickEventEmitter.emit(supportedListElements);
-  }
-
-  selectionChange(option: any) {
-    let value = this.listElementControl.value || [];
-    if (option.selected) value.push(option.value);
-    else value = value.filter((x: any) => x != option.value);
-    this.listElementControl.setValue(value);
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  selectionChange($event: any) :void {
+    this.onClickEventEmitter.emit($event.value);
   }
 
 }

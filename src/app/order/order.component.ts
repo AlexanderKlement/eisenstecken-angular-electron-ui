@@ -4,7 +4,7 @@ import {
   ListItem,
   SupportedListElements
 } from "../shared/components/filterable-clickable-list/filterable-clickable-list.types";
-import {DefaultService, Job} from "eisenstecken-openapi-angular-library";
+import {DefaultService, Job, OrderableType, Stock} from "eisenstecken-openapi-angular-library";
 
 @Component({
   selector: 'app-order',
@@ -14,9 +14,13 @@ import {DefaultService, Job} from "eisenstecken-openapi-angular-library";
 export class OrderComponent implements OnInit {
 
 
-  toListName = "Bestelle für Aufträge und Lager";
+  toListName = "Bestelle für Aufträge oder Lager";
   toList$ : Observable<ListItem[]>; //Here go stocks and suppliers
   toListSubscriber: Subscriber<ListItem[]>;
+
+  fromListName = "Bestelle von Lieferanten oder Lager";
+  fromList$: Observable<ListItem[]>;
+  fromListSubscriber: Subscriber<ListItem[]>;
 
   constructor(private api: DefaultService) { }
 
@@ -25,35 +29,75 @@ export class OrderComponent implements OnInit {
       this.toListSubscriber = toListSubscriber;
       this.loadToList();
     });
+    this.fromList$ = new Observable<ListItem[]>((fromListSubscriber) => {
+      this.fromListSubscriber = fromListSubscriber;
+    });
   }
 
   private loadToList(){
     const stocks$ = this.api.readStocksStockGet();
     const jobs$ = this.api.readJobsJobGet(); //TODO: change this to only open jobs, otherwise the list gets way too populated
 
-    const jobStockArray: ListItem[] = [];
-
     combineLatest([stocks$, jobs$]).subscribe(([stocks, jobs]) => {
-      for (const stock of stocks){ //TODO: maybe this could be asynchron to speed things up
-        const listItem:ListItem = {
-          name: stock.orderable.name,
-          item: stock
-        };
-        jobStockArray.push(listItem);
-      }
-      for (const job of jobs){
-        const listItem: ListItem = {
-          name: job.client.name + " " + job.orderable.name, //TODO: change this to fullname, once this property is introduced in python
-          item: job
-        };
-        jobStockArray.push(listItem);
-      }
-      this.toListSubscriber.next(jobStockArray);
+      const stockListItems = OrderComponent.createListItems(stocks);
+      const jobListItems = OrderComponent.createListItems(jobs);
+      stockListItems.push(...jobListItems);
+      this.toListSubscriber.next(stockListItems);
     });
   }
 
-  toListItemClicked(supportedListElements: SupportedListElements) :void {
-    console.log(supportedListElements);
+  private static createListItems(supportedListElements: SupportedListElements[]): ListItem[] {
+    const listItems: ListItem[] = [];
+    for (const elem of supportedListElements){
+      const listItem: ListItem = {
+        name: elem.orderable.name, //TODO: change orderable name remotely to job.client.name + job.orderable.name
+        item: elem,
+        type: elem.orderable.type
+      };
+      listItems.push(listItem);
+    }
+    return listItems;
+  }
+
+
+  private loadFromList(withStocks: boolean) {
+    const stocks$ = this.api.readStocksStockGet();
+    const suppliers$ = this.api.readSuppliersSupplierGet();
+
+    if(withStocks){
+      combineLatest([stocks$, suppliers$]).subscribe(([stocks, jobs]) => {
+        const stockListItems = OrderComponent.createListItems(stocks);
+        const jobListItems = OrderComponent.createListItems(jobs);
+        stockListItems.push(...jobListItems);
+        this.fromListSubscriber.next(stockListItems);
+      });
+    } else {
+      suppliers$.subscribe((suppliers) => {
+        this.fromListSubscriber.next(OrderComponent.createListItems(suppliers));
+      });
+    }
+
+  }
+
+  toListItemClicked(listItem: ListItem) :void {
+    console.log(listItem);
+    switch (listItem.type) {
+      case OrderableType.Stock: {
+        this.loadFromList(false);
+        break;
+      }
+      case OrderableType.Job: {
+        this.loadFromList(true);
+        break;
+      }
+      case OrderableType.Supplier: {
+        console.error("OrderComponent: an item with type SUPPLIER has been klicked in to list");
+        break;
+      }
+    }
+  }
+
+  fromListItemClicked(listItem: ListItem): void {
   }
 
 
