@@ -60,7 +60,7 @@
     "@sentry/angular": "6.11.0",
     "@sentry/tracing": "6.11.0",
     "core-js": "3.6.5",
-    "eisenstecken-openapi-angular-library": "7.2.13",
+    "eisenstecken-openapi-angular-library": "7.2.15",
     "material-design-icons": "3.0.1",
     "moment": "2.29.1",
     "rxjs": "6.6.6",

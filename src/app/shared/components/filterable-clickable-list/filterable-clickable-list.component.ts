@@ -27,7 +27,7 @@ export class FilterableClickableListComponent implements OnInit {
   ngOnInit(): void {
     this.listElements = [];
     this.search = new FormControl("");
-    this.listElements$.subscribe((listElements) => {
+    this.listElements$.subscribe((listElements) => { //TODO unsubscribe from listElements, once view is destroyed
       this.listElements = listElements;
       this.search.setValue("");
     });

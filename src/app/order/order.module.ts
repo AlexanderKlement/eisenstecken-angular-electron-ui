@@ -11,6 +11,8 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {MatListModule} from "@angular/material/list";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatButtonModule} from "@angular/material/button";
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import {MatListModule} from "@angular/material/list";
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatListModule
+    MatListModule,
+    MatTooltipModule,
+    MatButtonModule
   ]
 })
 export class OrderModule { }

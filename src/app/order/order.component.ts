@@ -6,7 +6,6 @@ import {
 } from "../shared/components/filterable-clickable-list/filterable-clickable-list.types";
 import {Article, DefaultService, OrderableType, OrderedArticle} from "eisenstecken-openapi-angular-library";
 import {first} from "rxjs/operators";
-import {TableDataSource} from "../shared/components/table-builder/table-builder.datasource";
 
 @Component({
   selector: 'app-order',
@@ -54,8 +53,7 @@ export class OrderComponent implements OnInit {
 
   private loadToList(){
     const stocks$ = this.api.readStocksStockGet().pipe(first());
-    const jobs$ = this.api.readJobsJobGet().pipe(first()); //TODO: change this to only open jobs, otherwise the list gets way too populated -> fastapi
-
+    const jobs$ = this.api.getJobsByStatusJobStatusJobStatusGet("JOBSTATUS_CREATED").pipe(first());
 
     combineLatest([stocks$, jobs$]).subscribe(([stocks, jobs]) => {
       const stockListItems = OrderComponent.createListItems(stocks);
@@ -69,7 +67,7 @@ export class OrderComponent implements OnInit {
     const listItems: ListItem[] = [];
     for (const elem of supportedListElements){
       const listItem: ListItem = {
-        name: elem.orderable.name, //TODO: change orderable name remotely to job.client.name + job.orderable.name
+        name: elem.displayable_name,
         item: elem,
         type: elem.orderable.type
       };
@@ -113,7 +111,7 @@ export class OrderComponent implements OnInit {
   private loadAvailableArticles(listItem: ListItem): void {
     switch (listItem.type) {
       case OrderableType.Stock: {
-        this.api.readArticlesBySupplierArticleSupplierSupplierIdGet(listItem.item.id).pipe(first()).subscribe((articles) => {
+        this.api.readArticlesByStockArticleStockStockIdGet(listItem.item.id).pipe(first()).subscribe((articles) => {
           this.availableProductsSubscriber.next(articles);
         });
         break;
