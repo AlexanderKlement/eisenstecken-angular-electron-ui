@@ -6,6 +6,7 @@ import {
 } from "../shared/components/filterable-clickable-list/filterable-clickable-list.types";
 import {Article, DefaultService, OrderableType, OrderedArticle} from "eisenstecken-openapi-angular-library";
 import {first} from "rxjs/operators";
+import {TableDataSource} from "../shared/components/table-builder/table-builder.datasource";
 
 @Component({
   selector: 'app-order',
@@ -33,7 +34,6 @@ export class OrderComponent implements OnInit {
   orderedProducts$: Observable<OrderedArticle[]>;
   orderedProductsSubscriber: Subscriber<OrderedArticle[]>;
 
-
   constructor(private api: DefaultService) { }
 
   ngOnInit(): void {
@@ -47,11 +47,15 @@ export class OrderComponent implements OnInit {
     this.availableProducts$ = new Observable<Article[]>((availableProductsSubscriber) => {
       this.availableProductsSubscriber = availableProductsSubscriber;
     });
+    this.orderedProducts$ = new Observable<OrderedArticle[]>((orderedProductsSubscriber) => {
+      this.orderedProductsSubscriber = orderedProductsSubscriber;
+    });
   }
 
   private loadToList(){
     const stocks$ = this.api.readStocksStockGet().pipe(first());
-    const jobs$ = this.api.readJobsJobGet().pipe(first()); //TODO: change this to only open jobs, otherwise the list gets way too populated -> python
+    const jobs$ = this.api.readJobsJobGet().pipe(first()); //TODO: change this to only open jobs, otherwise the list gets way too populated -> fastapi
+
 
     combineLatest([stocks$, jobs$]).subscribe(([stocks, jobs]) => {
       const stockListItems = OrderComponent.createListItems(stocks);
@@ -95,6 +99,39 @@ export class OrderComponent implements OnInit {
 
   toListItemClicked(listItem: ListItem) :void {
     this.resetProductWindows();
+    this.decideWhichFromListToLoad(listItem);
+    this.toListSelected=listItem;
+  }
+
+  fromListItemClicked(listItem: ListItem): void {
+    this.resetProductWindows();
+    this.fromListSelected=listItem;
+    this.loadAvailableArticles(listItem);
+  }
+
+
+  private loadAvailableArticles(listItem: ListItem): void {
+    switch (listItem.type) {
+      case OrderableType.Stock: {
+        this.api.readArticlesBySupplierArticleSupplierSupplierIdGet(listItem.item.id).pipe(first()).subscribe((articles) => {
+          this.availableProductsSubscriber.next(articles);
+        });
+        break;
+      }
+      case OrderableType.Job: {
+        console.error("OrderComponent: an item with type JOB has been clicked in FROM list");
+        break;
+      }
+      case OrderableType.Supplier: {
+        this.api.readArticlesBySupplierArticleSupplierSupplierIdGet(listItem.item.id).pipe(first()).subscribe((articles) => {
+          this.availableProductsSubscriber.next(articles);
+        });
+        break;
+      }
+    }
+  }
+
+  private decideWhichFromListToLoad(listItem: ListItem): void {
     switch (listItem.type) {
       case OrderableType.Stock: {
         this.loadFromList(false);
@@ -105,20 +142,16 @@ export class OrderComponent implements OnInit {
         break;
       }
       case OrderableType.Supplier: {
-        console.error("OrderComponent: an item with type SUPPLIER has been klicked in to list");
+        console.error("OrderComponent: an item with type SUPPLIER has been clicked in TO list");
         break;
       }
     }
-    this.toListSelected=listItem;
-  }
-
-  fromListItemClicked(listItem: ListItem): void {
-    this.resetProductWindows();
-    this.fromListSelected=listItem;
   }
 
   private resetProductWindows(): void {
-    this.availableProductsSubscriber.next([]);
-    this.orderedProductsSubscriber.next([]);
+    if(this.availableProductsSubscriber !== undefined)
+      this.availableProductsSubscriber.next([]);
+    if(this.orderedProductsSubscriber !== undefined)
+      this.orderedProductsSubscriber.next([]);
   }
 }

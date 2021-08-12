@@ -1,0 +1,10 @@
+<h3>{{name}}</h3>
+<mat-form-field >
+  <mat-label>Suchen</mat-label>
+  <input matInput [formControl]="search">
+</mat-form-field>
+<mat-list>
+  <mat-list-item *ngFor="let article of availableProducts$| async">
+    {{article.name.translation}}
+  </mat-list-item>
+</mat-list>

@@ -17,7 +17,7 @@ export class JobComponent implements OnInit {
     this.jobDataSource = new TableDataSource(
       this.api,
       ( api, filter, sortDirection, skip, limit) => {
-        return api.readJobsByClientJobClientClientIdGet(0, filter, skip, limit);
+        return api.readJobsByClientJobClientClientIdGet(0, filter, skip, limit); //TODO: remove this 0, to get all clients
       },
       (dataSourceClasses) => {
         const rows = [];

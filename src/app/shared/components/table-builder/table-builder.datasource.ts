@@ -27,6 +27,11 @@ export const defaultValues = {
   ]
 };
 
+export interface TableButton<T> {
+  name: string;
+  onClick: (arg0: T) => void;
+}
+
 export type LoadFunction<T> = (api: DefaultService, filter: string, sortDirection: string, skip: number, limit: number) => Observable<T[]>;
 
 export type ParseFunction<T extends DataSourceClass> = (dataSourceClasses: T[]) => Row<T>[];
@@ -48,14 +53,17 @@ export class TableDataSource<T extends DataSourceClass> extends DataSource<Row<T
   public pageSize = defaultValues.pageSize;
   public pageSizeOptions = defaultValues.pageSizeOptions;
 
+  public buttonList: TableButton<T>[];
 
-  constructor(private api: DefaultService, loadFunction: LoadFunction<T>, parseFunction: ParseFunction<T>, columns: Column<T>[], amountFunction: AmountFunction) {
+
+  constructor(private api: DefaultService, loadFunction: LoadFunction<T>, parseFunction: ParseFunction<T>, columns: Column<T>[], amountFunction: AmountFunction, buttonList: TableButton<T>[]= []) {
     super();
     this.loadFunction = loadFunction;
     this.parseFunction = parseFunction;
     this.columns = columns;
     this.columnIdentifiers = this.columns.map((column) => column.name.toString());
     this.amount$ = amountFunction(api);
+    this.buttonList = buttonList;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

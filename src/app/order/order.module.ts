@@ -6,21 +6,29 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {SharedModule} from "../shared/shared.module";
-import { ProductsListComponent } from './available-products-list/products-list.component';
+import { AvailableProductsListComponent } from './available-products-list/available-products-list.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatInputModule} from "@angular/material/input";
+import {MatListModule} from "@angular/material/list";
 
 
 @NgModule({
   declarations: [
     OrderComponent,
-    ProductsListComponent
+    AvailableProductsListComponent
   ],
-    imports: [
-        CommonModule,
-        OrderRoutingModule,
-        MatGridListModule,
-        FlexLayoutModule,
-        MatProgressSpinnerModule,
-        SharedModule
-    ]
+  imports: [
+    CommonModule,
+    OrderRoutingModule,
+    MatGridListModule,
+    FlexLayoutModule,
+    MatProgressSpinnerModule,
+    SharedModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatListModule
+  ]
 })
 export class OrderModule { }
