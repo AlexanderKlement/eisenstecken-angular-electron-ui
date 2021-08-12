@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
@@ -34,7 +34,9 @@ import {DatePipe} from "@angular/common";
 import {NgxMatMomentModule} from "@angular-material-components/moment-adapter";
 import {SettingsModule} from "./settings/settings.module";
 import {OrderModule} from "./order/order.module";
-
+import {LogService} from "./shared/log.service";
+import { Router } from "@angular/router";
+import * as Sentry from "@sentry/angular";
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -102,7 +104,23 @@ export function apiConfigFactory (): Configuration {
       DatePipe,
       {
         provide: MAT_DATE_LOCALE, useValue: 'de-DE'
-      }
+      },
+      {
+        provide: ErrorHandler,
+        useValue: Sentry.createErrorHandler({
+          showDialog: true,
+        }),
+      },
+      {
+        provide: Sentry.TraceService,
+        deps: [Router],
+      },
+      {
+        provide: APP_INITIALIZER,
+        useFactory: () => () => {},
+        deps: [Sentry.TraceService],
+        multi: true,
+      },
     ],
   bootstrap: [AppComponent]
 })
