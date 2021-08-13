@@ -13,12 +13,16 @@ import {MatInputModule} from "@angular/material/input";
 import {MatListModule} from "@angular/material/list";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatButtonModule} from "@angular/material/button";
+import { ProductEditDialogComponent } from './available-products-list/product-edit-dialog/product-edit-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
   declarations: [
     OrderComponent,
-    AvailableProductsListComponent
+    AvailableProductsListComponent,
+    ProductEditDialogComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +36,9 @@ import {MatButtonModule} from "@angular/material/button";
     MatInputModule,
     MatListModule,
     MatTooltipModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule,
+    MatSelectModule
   ]
 })
 export class OrderModule { }

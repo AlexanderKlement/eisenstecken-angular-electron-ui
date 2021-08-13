@@ -7,7 +7,7 @@
   <mat-list-item *ngFor="let article of search$| async">
     <div fxLayout="row" fxLayoutAlign="space-around center">
       <input matInput value="{{article.name.translation}}" matTooltip="{{article.description.translation}}" readonly>
-      <button mat-button (click)="copyButtonClicked(article)">Kopieren</button>
+      <button mat-button (click)="copyButtonClicked(article)">Kopieren und hinzufügen</button>
       <button mat-button (click)="orderButtonClicked(article)">Hinzufügen</button>
     </div>
   </mat-list-item>

@@ -1,5 +1,5 @@
 <app-toolbar></app-toolbar>
-<div fxLayout="row" fxLayoutAlign=" none" >
+<div fxLayout="row" fxLayoutAlign=" start" >
   <div>
     <app-filterable-clickable-list [listElements$]="toList$" (onClickEventEmitter)="toListItemClicked($event)" [name]="toListName"></app-filterable-clickable-list>
   </div>
@@ -8,10 +8,12 @@
   </div>
   <div fxLayout="column" fxLayoutAlign=" none" >
     <div>
-      <app-available-products-list [availableProducts$]="availableProducts$" [name]="availableProductListName"></app-available-products-list>
+      <app-available-products-list [availableProducts$]="availableProducts$" [name]="availableProductListName" [orderId]="lastOrderId"></app-available-products-list>
     </div>
+    <!--
     <div>
       ORDERED-LIST
     </div>
+    -->
   </div>
 </div>

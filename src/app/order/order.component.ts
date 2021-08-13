@@ -33,6 +33,8 @@ export class OrderComponent implements OnInit {
   orderedProducts$: Observable<OrderedArticle[]>;
   orderedProductsSubscriber: Subscriber<OrderedArticle[]>;
 
+  lastOrderId: number;
+
   constructor(private api: DefaultService) { }
 
   ngOnInit(): void {
@@ -105,8 +107,15 @@ export class OrderComponent implements OnInit {
     this.resetProductWindows();
     this.fromListSelected=listItem;
     this.loadAvailableArticles(listItem);
+    this.loadOrderId();
   }
 
+
+  private loadOrderId(): void {
+    this.api.readOrderFromToOrderFromOrderableFromIdToOrderableToIdGet(this.fromListSelected.item.orderable.id, this.toListSelected.item.orderable.id).pipe(first()).subscribe((order) => {
+      this.lastOrderId = order.id;
+    });
+  }
 
   private loadAvailableArticles(listItem: ListItem): void {
     switch (listItem.type) {
