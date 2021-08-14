@@ -1,19 +1,24 @@
 <app-toolbar></app-toolbar>
-<div fxLayout="row" fxLayoutAlign=" start" >
+<div fxLayout="row" fxLayoutAlign=" start">
   <div>
-    <app-filterable-clickable-list [listElements$]="toList$" (onClickEventEmitter)="toListItemClicked($event)" [name]="toListName"></app-filterable-clickable-list>
+    <app-filterable-clickable-list [listElements$]="toList$" (onClickEventEmitter)="toListItemClicked($event)"
+                                   [name]="toListName"></app-filterable-clickable-list>
   </div>
   <div>
-    <app-filterable-clickable-list [listElements$]="fromList$" (onClickEventEmitter)="fromListItemClicked($event)" [name]="fromListName"></app-filterable-clickable-list>
+    <app-filterable-clickable-list [listElements$]="fromList$" (onClickEventEmitter)="fromListItemClicked($event)"
+                                   [name]="fromListName"></app-filterable-clickable-list>
   </div>
-  <div fxLayout="column" fxLayoutAlign=" none" >
+  <div fxLayout="column" fxLayoutAlign=" none">
     <div>
-      <app-available-products-list [availableProducts$]="availableProducts$" [name]="availableProductListName" [orderId]="lastOrderId"></app-available-products-list>
+      <app-products-list [availableProducts$]="availableProducts$" [name]="availableProductListName"
+                         [orderId]="lastOrderId" [available]="true"
+                         (onRefreshOrderedArticleListEmitter)="refreshOrderedProducts()"
+                         (onRefreshAvailableArticleListEmitter)="refreshAvailableProducts()"></app-products-list>
     </div>
-    <!--
     <div>
-      ORDERED-LIST
+      <app-products-list [orderedProducts$]="orderedProducts$" [name]="orderedProductListName" [orderId]="lastOrderId"
+                         [available]="false" (onRefreshOrderedArticleListEmitter)="refreshOrderedProducts()"
+                         (onRefreshAvailableArticleListEmitter)="refreshAvailableProducts()"></app-products-list>
     </div>
-    -->
   </div>
 </div>

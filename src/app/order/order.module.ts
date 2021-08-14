@@ -6,7 +6,7 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {SharedModule} from "../shared/shared.module";
-import { AvailableProductsListComponent } from './available-products-list/available-products-list.component';
+import { ProductsListComponent } from './available-products-list/products-list.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
@@ -21,7 +21,7 @@ import {MatSelectModule} from "@angular/material/select";
 @NgModule({
   declarations: [
     OrderComponent,
-    AvailableProductsListComponent,
+    ProductsListComponent,
     ProductEditDialogComponent
   ],
   imports: [

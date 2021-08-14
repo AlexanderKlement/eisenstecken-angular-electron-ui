@@ -106,21 +106,14 @@ export class OrderComponent implements OnInit {
   fromListItemClicked(listItem: ListItem): void {
     this.resetProductWindows();
     this.fromListSelected=listItem;
-    this.loadAvailableArticles(listItem);
-    this.loadOrderId();
+    this.loadAvailableArticles();
+    this.loadOrderedArticles();
   }
 
-
-  private loadOrderId(): void {
-    this.api.readOrderFromToOrderFromOrderableFromIdToOrderableToIdGet(this.fromListSelected.item.orderable.id, this.toListSelected.item.orderable.id).pipe(first()).subscribe((order) => {
-      this.lastOrderId = order.id;
-    });
-  }
-
-  private loadAvailableArticles(listItem: ListItem): void {
-    switch (listItem.type) {
+  private loadAvailableArticles(): void {
+    switch (this.fromListSelected.type) {
       case OrderableType.Stock: {
-        this.api.readArticlesByStockArticleStockStockIdGet(listItem.item.id).pipe(first()).subscribe((articles) => {
+        this.api.readArticlesByStockArticleStockStockIdGet(this.fromListSelected.item.id).pipe(first()).subscribe((articles) => {
           this.availableProductsSubscriber.next(articles);
         });
         break;
@@ -130,12 +123,20 @@ export class OrderComponent implements OnInit {
         break;
       }
       case OrderableType.Supplier: {
-        this.api.readArticlesBySupplierArticleSupplierSupplierIdGet(listItem.item.id).pipe(first()).subscribe((articles) => {
+        this.api.readArticlesBySupplierArticleSupplierSupplierIdGet(this.fromListSelected.item.id).pipe(first()).subscribe((articles) => {
           this.availableProductsSubscriber.next(articles);
         });
         break;
       }
     }
+  }
+
+
+  private loadOrderedArticles(): void {
+    this.api.readOrderFromToOrderFromOrderableFromIdToOrderableToIdGet(this.fromListSelected.item.orderable.id, this.toListSelected.item.orderable.id).pipe(first()).subscribe((order) => {
+      this.lastOrderId = order.id;
+      this.orderedProductsSubscriber.next(order.articles);
+    });
   }
 
   private decideWhichFromListToLoad(listItem: ListItem): void {
@@ -160,5 +161,14 @@ export class OrderComponent implements OnInit {
       this.availableProductsSubscriber.next([]);
     if(this.orderedProductsSubscriber !== undefined)
       this.orderedProductsSubscriber.next([]);
+  }
+
+
+  refreshOrderedProducts() : void {
+    this.loadOrderedArticles();
+  }
+
+  refreshAvailableProducts() :void {
+    this.loadAvailableArticles();
   }
 }

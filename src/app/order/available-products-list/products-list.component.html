@@ -1,0 +1,31 @@
+<h3>{{name}}</h3>
+<mat-form-field>
+  <mat-label>Suchen</mat-label>
+  <input matInput [formControl]="search">
+</mat-form-field>
+<mat-list *ngIf="available">
+  <mat-list-item *ngFor="let article of searchAvailableArticles$| async">
+    <div fxLayout="row" fxLayoutAlign="space-around center">
+      <input matInput value="{{article.name.translation}}" matTooltip="{{article.description.translation}}" readonly>
+      <button mat-button (click)="copyButtonClicked(article)">Kopieren und hinzufügen</button>
+      <button mat-button (click)="orderButtonClicked(article)">Hinzufügen</button>
+    </div>
+  </mat-list-item>
+</mat-list>
+<mat-list *ngIf="!available">
+  <mat-list-item *ngFor="let orderedArticle of searchOrderedArticles$| async">
+    <div fxLayout="row" fxLayoutAlign="space-around center">
+      <input matInput value="{{orderedArticle.article.name.translation}}" matTooltip="{{orderedArticle.article.description.translation}}" readonly>
+      <mat-form-field>
+        <mat-label>Menge</mat-label>
+        <input matInput value="{{orderedArticle.amount}}" readonly>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Einheit</mat-label>
+        <input matInput value="{{orderedArticle.ordered_unit.name.translation}}" readonly>
+      </mat-form-field>
+      <button mat-button (click)="editButtonClicked(orderedArticle)">Bearbeiten</button>
+      <button mat-button (click)="removeButtonClicked(orderedArticle)">Entfernen</button>
+    </div>
+  </mat-list-item>
+</mat-list>
