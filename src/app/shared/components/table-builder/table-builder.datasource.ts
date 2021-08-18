@@ -68,7 +68,6 @@ export class TableDataSource<T extends DataSourceClass> extends DataSource<Row<T
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public connect(collectionViewer: CollectionViewer): Observable<Row<T>[]> {
-    console.log("Connecting data source to table");
     return this.dataSubject.asObservable();
   }
 

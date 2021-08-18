@@ -72,11 +72,10 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
           amount: new FormControl(""),
           single_price: new FormControl(""),
           discount: new FormControl(""),
-          alternative: new FormControl(""),
-          header_article: new FormControl("")
+          alternative: new FormControl(false),
+          header_article: new FormControl(-1)
         })
       ]),
-
     });
   }
 
@@ -95,6 +94,8 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         single_price: descriptiveArticle.get("single_price").value,
         discount: descriptiveArticle.get("discount").value,
         alternative: descriptiveArticle.get("alternative").value,
+        header_article_offline: 1,
+        header_article_id_offline: 2,
       };
       descriptiveArticles.push(tempArticle);
     }
