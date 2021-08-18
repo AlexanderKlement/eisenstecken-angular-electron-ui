@@ -38,8 +38,32 @@ export class OrderedArticleEditComponent implements OnInit {
     }
   }
 
-  addLine(header: number): void {
-    const emptyFormGroup = new FormGroup({
+  getDescriptiveArticleArray(): FormArray {
+    return this.descriptiveArticlesGroup.get("articles") as FormArray;
+  }
+
+  getDescriptiveArticleRow(row: number): FormGroup {
+    return this.getDescriptiveArticleArray().at(row) as FormGroup;
+  }
+
+  insertDescriptiveArticleRow(index: number, formGroup: FormGroup): void {
+    return this.getDescriptiveArticleArray().insert(index, formGroup);
+  }
+
+  existsDescriptiveArticleRow(index: number): boolean {
+    return index in this.getDescriptiveArticleArray().controls;
+  }
+
+  pushDescriptiveArticleRow(formGroup: FormGroup): void {
+    return this.getDescriptiveArticleArray().push(formGroup);
+  }
+
+  removeDescriptiveArticleRow(row: number) : void {
+    return this.getDescriptiveArticleArray().removeAt(row);
+  }
+
+  public static getEmptyFormGroup(header: number): FormGroup {
+    return  new FormGroup({
       name: new FormControl(""),
       description: new FormControl(""),
       amount: new FormControl(1),
@@ -48,10 +72,14 @@ export class OrderedArticleEditComponent implements OnInit {
       alternative: new FormControl(false),
       header_article: new FormControl(header),
     });
+  }
+
+  addLine(header: number): void {
+    const emptyFormGroup = OrderedArticleEditComponent.getEmptyFormGroup(header);
     if (header == -1) {
-      this.descriptiveArticles.push(emptyFormGroup);
+      this.pushDescriptiveArticleRow(emptyFormGroup);
     } else {
-      this.descriptiveArticles.insert(this.getIdOfLastSlaveOfDescriptiveArticleGroup(header), emptyFormGroup);
+      this.insertDescriptiveArticleRow(this.getIdOfLastSlaveOfDescriptiveArticleGroup(header), emptyFormGroup);
     }
   }
 
@@ -65,28 +93,37 @@ export class OrderedArticleEditComponent implements OnInit {
     this.addLine(headerArticle);
   }
 
-  removeOrderedArticleClicked(rowNumber: number): void {
-    if (this.descriptiveArticles.length > 1) {
-      this.removeOrderedArticle(rowNumber);
-    }
+  lineRemovable(rowNumber: number): boolean {
+    return this.isSlave(rowNumber) || !this.existsSlave(rowNumber);
   }
 
-  removeLine(i: number): void {
-    const article = this.descriptiveArticles.at(i).value;
-    //TODO: check if slaves
+  private existsSlave(rowNumber: number): boolean {
+    if(!this.existsDescriptiveArticleRow(rowNumber + 1))
+      return false;
+    return this.isSlave(rowNumber + 1);
   }
 
-  private getIdOfLastSlaveOfDescriptiveArticleGroup(headerId: number): number {
-    for (let index = (headerId + 1); index < this.descriptiveArticles.length; index++) {
-      const slaveIndex = parseInt(this.descriptiveArticles.at(headerId).value.header_article);
-      if (slaveIndex != headerId) {
-        return headerId + 1;
+  private isSlave(rowNumber: number): boolean{
+    return !this.isMaster(rowNumber);
+  }
+
+  private isMaster(rowNumber: number): boolean {
+    if(this.existsDescriptiveArticleRow(rowNumber))
+      return this.getDescriptiveArticleRow(rowNumber).value.header_article == -1;
+    console.error("OrderArticleEdit: Index out of range");
+    return false;
+  }
+
+  removeLine(rowId: number): void {
+    this.removeDescriptiveArticleRow(rowId);
+  }
+
+  private getIdOfLastSlaveOfDescriptiveArticleGroup(headerId: number): number { //Use this function with caution, it does not really what it seems l
+    for (let index = (headerId + 1); index < this.getDescriptiveArticleArray().controls.length; index++) {
+      if(this.isMaster(index)){
+        return index;
       }
     }
-    return this.descriptiveArticles.length;
-  }
-
-  private removeOrderedArticle(rowNumber: number) {
-    this.descriptiveArticles.removeAt(rowNumber);
+    return this.getDescriptiveArticleArray().controls.length;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup} from "@angular/forms";
 import {BaseEditComponent} from "../../shared/components/base-edit/base-edit.component";
 import {
@@ -13,7 +13,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
 import {tap} from "rxjs/operators";
-import {formatDate } from '@angular/common';
+import {formatDate} from '@angular/common';
+import {OrderedArticleEditComponent} from "./ordered-article-edit/ordered-article-edit.component";
 
 @Component({
   selector: 'app-offer-edit',
@@ -23,14 +24,30 @@ import {formatDate } from '@angular/common';
 export class OfferEditComponent extends BaseEditComponent<Offer> implements OnInit {
 
   navigationTarget = "/offer";
+  jobId: number;
+  offerGroup: FormGroup;
+  submitted: boolean;
+  vatOptions$: Observable<Vat[]>;
+
+  constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
+    super(api, router, route, dialog);
+  }
+
+  private static formatDate(datetime: string) { //TODO: move to some sort of util class or so
+    return formatDate(datetime, 'yyyy-MM-dd', 'en-US');
+  }
+
   lockFunction = (api: DefaultService, id: number): Observable<Lock> => {
     return api.islockedOfferOfferIslockedOfferIdGet(id);
   };
+
   dataFunction = (api: DefaultService, id: number): Observable<Offer> => {
     return api.readOfferOfferOfferIdGet(id);
   };
-  unlockFunction = (afterUnlockFunction: VoidFunction = () => {}): void => {
-    if(this.createMode){
+
+  unlockFunction = (afterUnlockFunction: VoidFunction = () => {
+  }): void => {
+    if (this.createMode) {
       afterUnlockFunction();
       return;
     }
@@ -38,23 +55,14 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       afterUnlockFunction();
     });
   };
-  jobId: number;
-
-  offerGroup: FormGroup;
-  submitted: boolean;
-  vatOptions$: Observable<Vat[]>;
-
-  constructor(api: DefaultService, router: Router,  route: ActivatedRoute, dialog: MatDialog) {
-    super(api, router, route, dialog);
-  }
 
   ngOnInit(): void {
     super.ngOnInit();
     this.vatOptions$ = this.api.readVatsVatGet();
-    if(this.createMode)
+    if (this.createMode)
       this.routeParams.subscribe((params) => {
-        this.jobId =  parseInt(params.job_id);
-        if(isNaN(this.jobId)){
+        this.jobId = parseInt(params.job_id);
+        if (isNaN(this.jobId)) {
           console.error("OfferEdit: Cannot determine job id");
           this.router.navigateByUrl(this.navigationTarget);
         }
@@ -65,42 +73,63 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       payment: new FormControl(""),
       delivery: new FormControl(""),
       date: new FormControl(""),
-      descriptive_articles: new FormArray([
-        new FormGroup({
-          name:new FormControl(""),
-          description: new FormControl(""),
-          amount: new FormControl(""),
-          single_price: new FormControl(""),
-          discount: new FormControl(""),
-          alternative: new FormControl(false),
-          header_article: new FormControl(-1)
-        })
-      ]),
+      descriptive_articles: new FormArray([]),
     });
   }
 
-  getDescriptiveArticleFromArray() : FormArray {
-    return (this.offerGroup.get('descriptive_articles') as FormArray);
+  getDescriptiveArticleFromArray(): FormArray {
+    return this.offerGroup.get('descriptive_articles') as FormArray;
   }
 
-  onSubmit() : void {
-    this.submitted = true;
-    const descriptiveArticles = [];
-    for(const descriptiveArticle of this.getDescriptiveArticleFromArray().controls) {
-      const tempArticle:DescriptiveArticleCreate = {
+  getDescriptiveArticleRow(index: number): FormGroup {
+    return this.getDescriptiveArticleFromArray().at(index) as FormGroup;
+  }
+
+  private createDescriptiveArticle(index: number, header_article_offline?: number): DescriptiveArticleCreate {
+    const descriptiveArticle = this.getDescriptiveArticleRow(index);
+    if(header_article_offline != null){
+      return  {
         name: descriptiveArticle.get("name").value,
         amount: descriptiveArticle.get("amount").value,
         description: descriptiveArticle.get("description").value,
         single_price: descriptiveArticle.get("single_price").value,
         discount: descriptiveArticle.get("discount").value,
         alternative: descriptiveArticle.get("alternative").value,
-        header_article_offline: 1,
-        header_article_id_offline: 2,
+        header_article_offline: header_article_offline,
+        header_article_id_offline: index,
       };
-      descriptiveArticles.push(tempArticle);
+    } else {
+      return  {
+        name: descriptiveArticle.get("name").value,
+        amount: 69.420,
+        description: descriptiveArticle.get("name").value,
+        single_price: 69.420,
+        discount: 69.420,
+        alternative: false,
+        header_article_offline: header_article_offline,
+        header_article_id_offline: index,
+      };
+    }
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+    const descriptiveArticles = [];
+
+    let lastId = 0;
+    for (let index = 0 ; index < this.getDescriptiveArticleFromArray().controls.length; index++) {
+      const currentDescriptiveArticle = this.getDescriptiveArticleRow(index);
+      let newDescriptiveArticle: DescriptiveArticleCreate;
+      if(currentDescriptiveArticle.value.header_article == -1){
+        newDescriptiveArticle = this.createDescriptiveArticle(index,  null);
+        lastId = index;
+      } else {
+        newDescriptiveArticle = this.createDescriptiveArticle(index, lastId);
+      }
+      descriptiveArticles.push(newDescriptiveArticle);
     }
 
-    if(this.createMode){
+    if (this.createMode) {
       const offerCreate: OfferCreate = {
         date: OfferEditComponent.formatDate(this.offerGroup.get("date").value),
         in_price_included: this.offerGroup.get("in_price_included").value,
@@ -143,9 +172,9 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     });
   }
 
-  observableReady() :void {
+  observableReady(): void {
     super.observableReady(); //TODO: fill in the descriptive articles here
-    if(!this.createMode){
+    if (!this.createMode) {
       this.data$.pipe(tap(offer => this.offerGroup.patchValue(offer))).subscribe((offer) => {
         this.offerGroup.patchValue({
           in_price_included: offer.in_price_included,
@@ -156,10 +185,6 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         });
       });
     }
-  }
-
-  private static formatDate(datetime: string){ //TODO: move to some sort of util class or so
-    return formatDate(datetime, 'yyyy-MM-dd', 'en-US');
   }
 
 

@@ -1,6 +1,6 @@
 <form [formGroup]="descriptiveArticlesGroup">
   <div formArrayName="articles">
-    <div *ngFor="let descriptiveArticle of descriptiveArticles.controls; let i = index" fxLayout="row"
+    <div *ngFor="let descriptiveArticle of getDescriptiveArticleArray().controls; let i = index" fxLayout="row"
          fxLayoutAlign="space-around center">
       <div [formGroupName]="i">
         <mat-form-field>
@@ -25,7 +25,7 @@
         </mat-form-field>
         <mat-checkbox formControlName="alternative" *ngIf="descriptiveArticle.get('header_article').value > -1">Alternative</mat-checkbox>
         <button *ngIf="descriptiveArticle.get('header_article').value == -1" (click)="addDescriptiveArticle(i)" mat-raised-button type="button">Zeile einfügen</button>
-        <button (click)="removeLine(i)" mat-raised-button type="button">Zeile löschen</button>
+        <button *ngIf="lineRemovable(i)" (click)="removeLine(i)" mat-raised-button type="button">Zeile löschen</button>
       </div>
     </div>
   </div>
