@@ -1,6 +1,21 @@
 <app-toolbar></app-toolbar>
 <mat-tab-group>
-  <mat-tab label="First"> I'm, adding settings, once it is decided what we actually need</mat-tab>
-  <mat-tab label="Second"> Content 2 </mat-tab>
-  <mat-tab label="Third"> Content 3 </mat-tab>
+  <mat-tab label="Angebot">
+    <app-offer-settings></app-offer-settings>
+  </mat-tab>
+  <mat-tab label="Rechnung">
+    <app-invoice-settings></app-invoice-settings>
+  </mat-tab>
+  <mat-tab label="Lieferung">
+    <app-delivery-settings></app-delivery-settings>
+  </mat-tab>
+  <mat-tab label="Bestellung">
+    <app-order-settings></app-order-settings>
+  </mat-tab>
+  <mat-tab label="Mahnung">
+    <app-reminder-settings></app-reminder-settings>
+  </mat-tab>
+  <mat-tab label="Allgemein">
+    <app-general-settings></app-general-settings>
+  </mat-tab>
 </mat-tab-group>

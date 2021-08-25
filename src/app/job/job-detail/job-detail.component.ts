@@ -17,7 +17,9 @@ export class JobDetailComponent implements OnInit {
   public infoDataSource: InfoDataSource<Job>;
   public selectedJobStatus: Observable<JobStatus>;
   public jobId: number;
-  constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute) { }
+
+  @ViewChild(InfoBuilderComponent) child:InfoBuilderComponent<Job>;
+  offerDataSource: TableDataSource<Offer>;
 
   public buttons = [
     [
@@ -34,8 +36,7 @@ export class JobDetailComponent implements OnInit {
     ]
   ];
 
-  @ViewChild(InfoBuilderComponent) child:InfoBuilderComponent<Job>;
-  offerDataSource: TableDataSource<Offer>;
+  constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.params.subscribe( (params) => {
@@ -70,10 +71,11 @@ export class JobDetailComponent implements OnInit {
             {
               values: {
                 id: dataSource.id,
-                data: dataSource.date
+                date: dataSource.date,
+                full_price_with_vat: dataSource.full_price_with_vat
               },
               route : () => {
-                this.router.navigateByUrl('/job/' +dataSource.id.toString());
+                this.router.navigateByUrl('/job/offer/' +dataSource.id.toString());
               }
             });
         });
@@ -81,7 +83,8 @@ export class JobDetailComponent implements OnInit {
       },
       [
         {name: "id", headerName: "ID"},
-        {name: "date", headerName: "Datum"}
+        {name: "date", headerName: "Datum"},
+        {name: "full_price_with_vat", headerName: "Preis"}
       ],
       (api) => {
         return api.countOffersByJobOfferJobCountJobIdGet(this.jobId);

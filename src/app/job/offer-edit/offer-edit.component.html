@@ -17,8 +17,16 @@
           <textarea class="form-control" formControlName="in_price_excluded" matInput></textarea>
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Bezahlung:</mat-label>
+          <mat-label>Bezahlung:</mat-label>'
           <textarea class="form-control" formControlName="payment" matInput></textarea>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Mehrwertsteuer</mat-label>
+          <mat-select formControlName="vat_id">
+            <mat-option *ngFor="let vat of vatOptions$ | async" [value]="vat.id">
+              {{vat.name}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Lieferung</mat-label>

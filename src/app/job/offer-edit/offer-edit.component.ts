@@ -73,6 +73,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       payment: new FormControl(""),
       delivery: new FormControl(""),
       date: new FormControl(""),
+      vat_id: new FormControl(1),
       descriptive_articles: new FormArray([]),
     });
   }
@@ -85,9 +86,9 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     return this.getDescriptiveArticleFromArray().at(index) as FormGroup;
   }
 
-  private createDescriptiveArticle(index: number, header_article_offline?: number): DescriptiveArticleCreate {
+  private createDescriptiveArticle(index: number, descriptive_article_offline?: number): DescriptiveArticleCreate {
     const descriptiveArticle = this.getDescriptiveArticleRow(index);
-    if(header_article_offline != null){
+    if(descriptive_article_offline != null){
       return  {
         name: descriptiveArticle.get("name").value,
         amount: descriptiveArticle.get("amount").value,
@@ -95,19 +96,21 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         single_price: descriptiveArticle.get("single_price").value,
         discount: descriptiveArticle.get("discount").value,
         alternative: descriptiveArticle.get("alternative").value,
-        header_article_offline: header_article_offline,
-        header_article_id_offline: index,
+        vat_id: 1,
+        descriptive_article_offline: descriptive_article_offline,
+        descriptive_article_id_offline: index,
       };
     } else {
       return  {
         name: descriptiveArticle.get("name").value,
-        amount: 69.420,
+        amount: 0.0,
         description: descriptiveArticle.get("name").value,
-        single_price: 69.420,
-        discount: 69.420,
+        single_price: 0.0,
+        discount: 0.0,
         alternative: false,
-        header_article_offline: header_article_offline,
-        header_article_id_offline: index,
+        vat_id: 1,
+        descriptive_article_offline: descriptive_article_offline,
+        descriptive_article_id_offline: index,
       };
     }
   }
@@ -137,6 +140,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         payment: this.offerGroup.get("payment").value,
         delivery: this.offerGroup.get("delivery").value,
         job_id: this.jobId,
+        vat_id: this.offerGroup.get("vat_id").value,
         descriptive_articles: descriptiveArticles,
       };
       this.api.createOfferOfferPost(offerCreate).subscribe((offer) => {
@@ -154,6 +158,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         payment: this.offerGroup.get("payment").value,
         delivery: this.offerGroup.get("delivery").value,
         descriptive_articles: descriptiveArticles,
+        vat_id: this.offerGroup.get("vat_id").value,
       };
       this.api.updateOfferOfferOfferIdPut(this.id, offerUpdate).subscribe((offer) => {
         this.createUpdateSuccess(offer);

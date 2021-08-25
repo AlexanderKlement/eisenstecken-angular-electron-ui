@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {DefaultService, Unit} from "eisenstecken-openapi-angular-library";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-detail',
@@ -7,8 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetailComponent implements OnInit {
 
-  constructor() { }
+  constructor(private api: DefaultService) { }
 
-  ngOnInit(): void { }
+  units$:Observable<Unit[]>;
+
+  ngOnInit(): void {
+    this.units$ = this.api.readUnitsUnitGet();
+    this.units$.subscribe((units) => {
+      console.log(units);
+    });
+  }
 
 }

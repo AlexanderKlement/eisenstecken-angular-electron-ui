@@ -34,7 +34,7 @@ import {DatePipe} from "@angular/common";
 import {NgxMatMomentModule} from "@angular-material-components/moment-adapter";
 import {SettingsModule} from "./settings/settings.module";
 import {OrderModule} from "./order/order.module";
-import {LogService} from "./shared/log.service";
+import {LoginModule} from "./login/login.module";
 import { Router } from "@angular/router";
 import * as Sentry from "@sentry/angular";
 // AoT requires an exported function for factories
@@ -62,6 +62,7 @@ export function apiConfigFactory (): Configuration {
     JobModule,
     SettingsModule,
     OrderModule,
+    LoginModule,
     ApiModule.forRoot(apiConfigFactory),
     AppRoutingModule,
     FlexLayoutModule,
