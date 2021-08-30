@@ -9,6 +9,10 @@
     <form (ngSubmit)="onSubmit()" [formGroup]="offerGroup">
       <div fxLayout="column" fxLayoutAlign="space-around center" >
         <mat-form-field>
+          <mat-label>Allgemeine Materialbeschreibung:</mat-label>
+          <textarea class="form-control" formControlName="material_description"  placeholder="Wird weggelassen wenn leer" matInput></textarea>
+        </mat-form-field>
+        <mat-form-field>
           <mat-label>Im Preis einbegriffen:</mat-label>
           <textarea class="form-control" formControlName="in_price_included" matInput></textarea>
         </mat-form-field>
@@ -21,6 +25,10 @@
           <textarea class="form-control" formControlName="payment" matInput></textarea>
         </mat-form-field>
         <mat-form-field>
+          <mat-label>Lieferung</mat-label>
+          <textarea class="form-control" formControlName="delivery" matInput></textarea>
+        </mat-form-field>
+        <mat-form-field>
           <mat-label>Mehrwertsteuer</mat-label>
           <mat-select formControlName="vat_id">
             <mat-option *ngFor="let vat of vatOptions$ | async" [value]="vat.id">
@@ -28,15 +36,15 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field>
-          <mat-label>Lieferung</mat-label>
-          <textarea class="form-control" formControlName="delivery" matInput></textarea>
-        </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Datum</mat-label>
           <input formControlName="date" matInput [matDatepicker]="picker">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Rabatt</mat-label>
+          <input class="form-control" [value]="discountAmount.value | currency:'EUR':true" placeholder="Wird weggelassen wenn leer" matInput>
         </mat-form-field>
         <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
       </div>

@@ -12,7 +12,7 @@ import {
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
-import {tap} from "rxjs/operators";
+import {first, tap} from "rxjs/operators";
 import {formatDate} from '@angular/common';
 import {OrderedArticleEditComponent} from "./ordered-article-edit/ordered-article-edit.component";
 
@@ -56,24 +56,34 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     });
   };
 
+  get discountAmount(): FormControl {
+    return this.offerGroup.get('discount_amount') as FormControl;
+  }
+
   ngOnInit(): void {
     super.ngOnInit();
     this.vatOptions$ = this.api.readVatsVatGet();
-    if (this.createMode)
+    if (this.createMode){
       this.routeParams.subscribe((params) => {
         this.jobId = parseInt(params.job_id);
         if (isNaN(this.jobId)) {
           console.error("OfferEdit: Cannot determine job id");
           this.router.navigateByUrl(this.navigationTarget);
         }
+        this.api.readJobJobJobIdGet(this.jobId).pipe(first()).subscribe((job) => {
+          this.fillRightSidebar(job.client.language.code);
+        });
       });
+    }
     this.offerGroup = new FormGroup({
       in_price_included: new FormControl(""),
       in_price_excluded: new FormControl(""),
       payment: new FormControl(""),
       delivery: new FormControl(""),
-      date: new FormControl(""),
-      vat_id: new FormControl(1),
+      date: new FormControl((new Date()).toISOString()),
+      vat_id: new FormControl(2),
+      discount_amount: new FormControl(0),
+      material_description: new FormControl(""),
       descriptive_articles: new FormArray([]),
     });
   }
@@ -94,7 +104,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         amount: descriptiveArticle.get("amount").value,
         description: descriptiveArticle.get("description").value,
         single_price: descriptiveArticle.get("single_price").value,
-        discount: descriptiveArticle.get("discount").value,
+        discount: 0, //descriptiveArticle.get("discount").value,
         alternative: descriptiveArticle.get("alternative").value,
         vat_id: 1,
         descriptive_article_offline: descriptive_article_offline,
@@ -104,7 +114,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       return  {
         name: descriptiveArticle.get("name").value,
         amount: 0.0,
-        description: descriptiveArticle.get("name").value,
+        description: "",
         single_price: 0.0,
         discount: 0.0,
         alternative: false,
@@ -142,6 +152,8 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         job_id: this.jobId,
         vat_id: this.offerGroup.get("vat_id").value,
         descriptive_articles: descriptiveArticles,
+        discount_amount: this.offerGroup.get("discount_amount").value,
+        material_description: this.offerGroup.get("material_description").value
       };
       this.api.createOfferOfferPost(offerCreate).subscribe((offer) => {
         this.createUpdateSuccess(offer);
@@ -159,6 +171,8 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         delivery: this.offerGroup.get("delivery").value,
         descriptive_articles: descriptiveArticles,
         vat_id: this.offerGroup.get("vat_id").value,
+        discount_amount: this.offerGroup.get("discount_amount").value,
+        material_description: this.offerGroup.get("material_description").value
       };
       this.api.updateOfferOfferOfferIdPut(this.id, offerUpdate).subscribe((offer) => {
         this.createUpdateSuccess(offer);
@@ -186,10 +200,29 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
           in_price_excluded: offer.in_price_excluded,
           payment: offer.payment,
           delivery: offer.delivery,
-          date: offer.date
+          date: offer.date, //remove this line if always today's date should be shown
+          discount_amount: offer.discount_amount,
+          material_description: offer.material_description
         });
       });
     }
+  }
+
+
+  private fillRightSidebar(langCode: string): void {
+    const langCodeLower = langCode.toLowerCase();
+    this.getAndFillParameters("in_price_included", "offer_in_price_included_" + langCodeLower);
+    this.getAndFillParameters("in_price_excluded", "offer_in_price_excluded_" + langCodeLower);
+    this.getAndFillParameters("delivery", "offer_delivery_" + langCodeLower);
+    this.getAndFillParameters("payment", "offer_payment_" + langCodeLower);
+  }
+
+  private getAndFillParameters(formControlName: string, key: string){
+    this.api.getParameterParameterKeyGet(key).pipe(first()).subscribe((parameter) => {
+      this.offerGroup.patchValue({
+        [formControlName]: parameter,
+      });
+    });
   }
 
 

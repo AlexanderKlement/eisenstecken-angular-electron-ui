@@ -11,6 +11,7 @@ import {ClientRoutingModule} from "./client/client-routing.module";
 import {JobRoutingModule} from "./job/job-routing.module";
 import {CalendarEditComponent} from "./shared/components/calendar/calendar-edit/calendar-edit.component";
 import {SettingsModule} from "./settings/settings.module";
+import {UserRoutingModule} from "./user/user-routing.module";
 
 const routes: Routes = [
   {
@@ -41,7 +42,8 @@ const routes: Routes = [
     LoginRoutingModule,
     ClientRoutingModule,
     JobRoutingModule,
-    SettingsModule
+    SettingsModule,
+    UserRoutingModule
   ],
   exports: [RouterModule]
 })

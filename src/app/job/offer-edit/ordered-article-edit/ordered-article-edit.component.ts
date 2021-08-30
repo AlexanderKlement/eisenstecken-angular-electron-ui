@@ -67,7 +67,7 @@ export class OrderedArticleEditComponent implements OnInit {
       name: new FormControl(""),
       description: new FormControl(""),
       amount: new FormControl(1),
-      single_price: new FormControl(""),
+      single_price: new FormControl(0),
       discount: new FormControl(0),
       alternative: new FormControl(false),
       header_article: new FormControl(header),

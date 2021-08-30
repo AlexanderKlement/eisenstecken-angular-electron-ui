@@ -3,7 +3,7 @@
     <div *ngFor="let descriptiveArticle of getDescriptiveArticleArray().controls; let i = index" fxLayout="row"
          fxLayoutAlign="space-around center">
       <div [formGroupName]="i">
-        <mat-form-field>
+        <mat-form-field *ngIf="descriptiveArticle.get('header_article').value <= -1">
           <mat-label>Name</mat-label>
           <input class="form-control" formControlName="name" matInput>
         </mat-form-field>
@@ -17,17 +17,18 @@
         </mat-form-field>
         <mat-form-field *ngIf="descriptiveArticle.get('header_article').value > -1">
           <mat-label>Einzelpreis</mat-label>
-          <input class="form-control" formControlName="single_price" matInput>
+          <input class="form-control" [value]="descriptiveArticle.get('single_price').value | currency:'EUR':true"  matInput>
         </mat-form-field>
+        <!--
         <mat-form-field *ngIf="descriptiveArticle.get('header_article').value > -1">
           <mat-label>Rabatt</mat-label>
           <input class="form-control" formControlName="discount" matInput>
-        </mat-form-field>
+        </mat-form-field>-->
         <mat-checkbox formControlName="alternative" *ngIf="descriptiveArticle.get('header_article').value > -1">Alternative</mat-checkbox>
-        <button *ngIf="descriptiveArticle.get('header_article').value == -1" (click)="addDescriptiveArticle(i)" mat-raised-button type="button">Zeile einfügen</button>
-        <button *ngIf="lineRemovable(i)" (click)="removeLine(i)" mat-raised-button type="button">Zeile löschen</button>
+        <button *ngIf="descriptiveArticle.get('header_article').value == -1" (click)="addDescriptiveArticle(i)" mat-raised-button type="button">Unterposition einfügen</button>
+        <button *ngIf="lineRemovable(i)" (click)="removeLine(i)" mat-raised-button type="button">Position löschen</button>
       </div>
     </div>
   </div>
-  <button (click)="addHeaderClicked()" mat-raised-button type="button">Überschrift hinzufügen</button>
+  <button (click)="addHeaderClicked()" mat-raised-button type="button">Position hinzufügen</button>
 </form>

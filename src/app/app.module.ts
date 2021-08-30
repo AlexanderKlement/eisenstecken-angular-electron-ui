@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
+import {APP_INITIALIZER, ErrorHandler, LOCALE_ID, NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
@@ -30,17 +30,21 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatButtonModule} from "@angular/material/button";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MAT_DATE_LOCALE, MatNativeDateModule} from "@angular/material/core";
-import {DatePipe} from "@angular/common";
+import {DatePipe, registerLocaleData} from "@angular/common";
 import {NgxMatMomentModule} from "@angular-material-components/moment-adapter";
 import {SettingsModule} from "./settings/settings.module";
 import {OrderModule} from "./order/order.module";
 import {LoginModule} from "./login/login.module";
 import { Router } from "@angular/router";
+import localeDe from '@angular/common/locales/de';
+import localeDeExtra from '@angular/common/locales/extra/de';
 import * as Sentry from "@sentry/angular";
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
+registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 
 export function apiConfigFactory (): Configuration {
   const params: ConfigurationParameters = {
@@ -105,6 +109,10 @@ export function apiConfigFactory (): Configuration {
       DatePipe,
       {
         provide: MAT_DATE_LOCALE, useValue: 'de-DE'
+      },
+      {
+        provide: LOCALE_ID,
+        useValue: 'de-DE' // 'de-DE' for Germany, 'fr-FR' for France ...
       },
       {
         provide: ErrorHandler,

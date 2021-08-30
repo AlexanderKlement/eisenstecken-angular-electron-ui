@@ -17,8 +17,8 @@ export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
       case "calendar:all":
         menuTileArray.push({title:"Auftrag", image:"001-shopping-cart.png", link:"/job"});
         return;
-      case "supplier:all":
-        menuTileArray.push({title:"Nothing", image:"001-shopping-cart.png", link:"/"});
+      case "users:all":
+        menuTileArray.push({title:"Benutzer", image:"001-shopping-cart.png", link:"/user"});
         return;
       case "order:all":
         menuTileArray.push({title:"Bestellungen", image:"001-shopping-cart.png", link:"/order"});
