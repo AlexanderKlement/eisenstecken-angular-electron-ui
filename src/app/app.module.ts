@@ -39,6 +39,8 @@ import { Router } from "@angular/router";
 import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
 import * as Sentry from "@sentry/angular";
+import {ClientModule} from "./client/client.module";
+import {UserModule} from "./user/user.module";
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -64,6 +66,8 @@ export function apiConfigFactory (): Configuration {
     HomeModule,
     DetailModule,
     JobModule,
+    ClientModule,
+    UserModule,
     SettingsModule,
     OrderModule,
     LoginModule,

@@ -18,7 +18,7 @@ export class UserComponent implements OnInit {
     this.userDataSource = new TableDataSource(
       this.api,
       ( api, filter, sortDirection, skip, limit) => {
-        return api.readUsersUsersGet();
+        return api.readUsersUsersGet(skip, filter, limit);
       },
       (dataSourceClasses) => {
         const rows = [];
