@@ -6,6 +6,7 @@ import {InfoBuilderComponent} from "../../shared/components/info-builder/info-bu
 import {Observable} from "rxjs";
 import {first, map} from "rxjs/operators";
 import {TableDataSource} from "../../shared/components/table-builder/table-builder.datasource";
+import {LockService} from "../../shared/lock.service";
 
 @Component({
   selector: 'app-job-detail',
@@ -21,9 +22,6 @@ export class JobDetailComponent implements OnInit {
   @ViewChild(InfoBuilderComponent) child:InfoBuilderComponent<Job>;
   offerDataSource: TableDataSource<Offer>;
 
-  offerLockFuncton = (api: DefaultService, id: number): Observable<Lock> => {
-    return api.islockedOfferOfferIslockedOfferIdGet(id);
-  };
 
 
 
@@ -42,7 +40,7 @@ export class JobDetailComponent implements OnInit {
     ]
   ];
 
-  constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute, private locker: LockService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe( (params) => {
@@ -81,21 +79,12 @@ export class JobDetailComponent implements OnInit {
                 full_price_with_vat: dataSource.full_price_with_vat
               },
               route : () => {
-                const lock = this.offerLockFuncton(this.api, dataSource.id);
-                lock.pipe(first()).subscribe((lock) => {
-                  if(lock.locked){
-                    this.api.readUsersMeUsersMeGet().pipe(first()).subscribe((user) => {
-                      if(user.id == lock.user.id){
-                        this.lockAndNavigate(dataSource.id);
-                      } else {
-                        this.showLockDialog(lock);
-                      }
-                    });
-                  }
-                  else {
-                    this.lockAndNavigate(dataSource.id);
-                  }
-                });
+                this.locker.getLockAndTryNavigate(
+                  this.api.islockedOfferOfferIslockedOfferIdGet(dataSource.id),
+                  this.api.lockOfferOfferLockOfferIdPost(dataSource.id),
+                  this.api.lockOfferOfferUnlockOfferIdPost(dataSource.id),
+                  "offer/edit/" + dataSource.id.toString()
+                );
               }
             });
         });

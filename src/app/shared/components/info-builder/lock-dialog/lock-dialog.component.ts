@@ -1,10 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Lock} from "eisenstecken-openapi-angular-library";
+import {Observable} from "rxjs";
+import {first} from "rxjs/operators";
 
 export interface LockDialogData {
   lock: Lock;
-  unlockFunction: VoidFunction;
+  unlockObservable: Observable<boolean>;
 }
 
 
@@ -27,7 +29,12 @@ export class LockDialogComponent implements OnInit {
   }
 
   onUnlockClick() :void {
-    this.data.unlockFunction();
-    this.dialogRef.close();
+    this.data.unlockObservable.pipe(first()).subscribe((success) => {
+      if(!success){
+        console.error("LockDataDialog: Unable to unlock ressource");
+      }
+      this.dialogRef.close();
+    });
+
   }
 }
