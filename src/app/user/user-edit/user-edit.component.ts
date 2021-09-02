@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Observable} from "rxjs";
+import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-user-edit',
@@ -44,12 +45,24 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
       mail: new FormControl(""),
       tel: new FormControl(""),
     });
+    console.log(this.id);
   }
 
-
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+  }
 
   onSubmit() :void  {
 
+  }
+
+  observableReady() :void {
+    super.observableReady();
+    if(!this.createMode){
+      this.data$.pipe(tap(user => this.userGroup.patchValue(user))).subscribe((user) => {
+        console.log("done");
+      });
+    }
   }
 
   createUpdateSuccess(offer: Offer): void {

@@ -83,7 +83,7 @@ export class JobDetailComponent implements OnInit {
                   this.api.islockedOfferOfferIslockedOfferIdGet(dataSource.id),
                   this.api.lockOfferOfferLockOfferIdPost(dataSource.id),
                   this.api.lockOfferOfferUnlockOfferIdPost(dataSource.id),
-                  "offer/edit/" + dataSource.id.toString()
+                  "job/edit/" + dataSource.id.toString()
                 );
               }
             });
@@ -123,7 +123,7 @@ export class JobDetailComponent implements OnInit {
           name: "Status"
         }
       ],
-      "/client/edit/" + this.jobId.toString(),
+      "/job/edit/" + this.jobId.toString(),
       this.api.islockedJobJobIslockedJobIdGet(this.jobId),
       this.api.lockJobJobLockJobIdPost(this.jobId),
       this.api.unlockJobJobUnlockJobIdPost(this.jobId)
