@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {InfoDataSource} from "../../shared/components/info-builder/info-builder.datasource";
-import {Job, DefaultService, JobStatus, Offer, OfferCreate} from "eisenstecken-openapi-angular-library";
+import {Job, DefaultService, JobStatus, Offer, Lock} from "eisenstecken-openapi-angular-library";
 import {ActivatedRoute, Router} from "@angular/router";
 import {InfoBuilderComponent} from "../../shared/components/info-builder/info-builder.component";
 import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
+import {first, map} from "rxjs/operators";
 import {TableDataSource} from "../../shared/components/table-builder/table-builder.datasource";
 
 @Component({
@@ -20,6 +20,12 @@ export class JobDetailComponent implements OnInit {
 
   @ViewChild(InfoBuilderComponent) child:InfoBuilderComponent<Job>;
   offerDataSource: TableDataSource<Offer>;
+
+  offerLockFuncton = (api: DefaultService, id: number): Observable<Lock> => {
+    return api.islockedOfferOfferIslockedOfferIdGet(id);
+  };
+
+
 
   public buttons = [
     [
@@ -75,7 +81,21 @@ export class JobDetailComponent implements OnInit {
                 full_price_with_vat: dataSource.full_price_with_vat
               },
               route : () => {
-                this.router.navigateByUrl('/job/offer/' +dataSource.id.toString());
+                const lock = this.offerLockFuncton(this.api, dataSource.id);
+                lock.pipe(first()).subscribe((lock) => {
+                  if(lock.locked){
+                    this.api.readUsersMeUsersMeGet().pipe(first()).subscribe((user) => {
+                      if(user.id == lock.user.id){
+                        this.lockAndNavigate(dataSource.id);
+                      } else {
+                        this.showLockDialog(lock);
+                      }
+                    });
+                  }
+                  else {
+                    this.lockAndNavigate(dataSource.id);
+                  }
+                });
               }
             });
         });
@@ -91,6 +111,10 @@ export class JobDetailComponent implements OnInit {
       }
     );
     this.offerDataSource.loadData();
+  }
+
+  private lockAndNavigate(id: number) {
+    this.router.navigateByUrl('offer/edit/' + id.toString());
   }
 
   private initJobDetail(id: number) {

@@ -23,7 +23,7 @@ import {OrderedArticleEditComponent} from "./ordered-article-edit/ordered-articl
 })
 export class OfferEditComponent extends BaseEditComponent<Offer> implements OnInit {
 
-  navigationTarget = "/offer";
+  navigationTarget = "job";
   jobId: number;
   offerGroup: FormGroup;
   submitted: boolean;
@@ -70,6 +70,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
           console.error("OfferEdit: Cannot determine job id");
           this.router.navigateByUrl(this.navigationTarget);
         }
+        this.navigationTarget = "job/edit/" +this.jobId.toString();
         this.api.readJobJobJobIdGet(this.jobId).pipe(first()).subscribe((job) => {
           this.fillRightSidebar(job.client.language.code);
         });
@@ -77,7 +78,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     }
     this.offerGroup = new FormGroup({
       in_price_included: new FormControl(""),
-      in_price_excluded: new FormControl(""),
+      validity: new FormControl(""),
       payment: new FormControl(""),
       delivery: new FormControl(""),
       date: new FormControl((new Date()).toISOString()),
@@ -146,7 +147,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       const offerCreate: OfferCreate = {
         date: OfferEditComponent.formatDate(this.offerGroup.get("date").value),
         in_price_included: this.offerGroup.get("in_price_included").value,
-        in_price_excluded: this.offerGroup.get("in_price_excluded").value,
+        validity: this.offerGroup.get("validity").value,
         payment: this.offerGroup.get("payment").value,
         delivery: this.offerGroup.get("delivery").value,
         job_id: this.jobId,
@@ -166,7 +167,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       const offerUpdate: OfferUpdate = {
         date: OfferEditComponent.formatDate(this.offerGroup.get("date").value),
         in_price_included: this.offerGroup.get("in_price_included").value,
-        in_price_excluded: this.offerGroup.get("in_price_excluded").value,
+        validity: this.offerGroup.get("validity").value,
         payment: this.offerGroup.get("payment").value,
         delivery: this.offerGroup.get("delivery").value,
         descriptive_articles: descriptiveArticles,
@@ -187,6 +188,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
   createUpdateSuccess(offer: Offer): void {
     this.id = offer.id;
     this.unlockFunction(() => {
+      console.log("navigatin");
       this.router.navigateByUrl("job/" + this.jobId.toString()); //TODO: change this to the detail view of the offer
     });
   }
@@ -197,7 +199,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       this.data$.pipe(tap(offer => this.offerGroup.patchValue(offer))).subscribe((offer) => {
         this.offerGroup.patchValue({
           in_price_included: offer.in_price_included,
-          in_price_excluded: offer.in_price_excluded,
+          validity: offer.validity,
           payment: offer.payment,
           delivery: offer.delivery,
           date: offer.date, //remove this line if always today's date should be shown
@@ -212,7 +214,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
   private fillRightSidebar(langCode: string): void {
     const langCodeLower = langCode.toLowerCase();
     this.getAndFillParameters("in_price_included", "offer_in_price_included_" + langCodeLower);
-    this.getAndFillParameters("in_price_excluded", "offer_in_price_excluded_" + langCodeLower);
+    this.getAndFillParameters("validity", "offer_validity_" + langCodeLower);
     this.getAndFillParameters("delivery", "offer_delivery_" + langCodeLower);
     this.getAndFillParameters("payment", "offer_payment_" + langCodeLower);
   }

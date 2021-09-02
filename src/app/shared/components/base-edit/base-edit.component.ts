@@ -47,11 +47,16 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
       }
 
       this.lockFunction(this.api, this.id).pipe(first()).subscribe(lock => {
-        if (!lock.locked) //has to be locked, otherwise component is accessed directly
+        if (!lock.locked) {//has to be locked, otherwise component is accessed directly {
+          console.error("BaseEditComponent: The lock is not locked. This should not happen on accessing a ressource");
           this.goBack();
+        }
         this.me.pipe(first()).subscribe((user) => {
-          if (user.id != lock.user.id) //if locked by other user go back
+          if (user.id != lock.user.id){//if locked by other user go back
+            console.error("BaseEditComponent: The accessed ressource is locked by another user");
             this.goBack();
+          }
+
           else{   //now we talking
             this.data$ = this.dataFunction(this.api, this.id);
             this.observableReady();
@@ -59,6 +64,7 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
               this.showWarningDialog(lock.max_lock_time_minutes, lock.reminder_time_minutes);
             }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes - lock.reminder_time_minutes));
             setTimeout( () => {
+              console.warn("BaseEditComponent: Going back, because maximum access time is over");
               this.goBack();
             }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes));
           }
@@ -85,6 +91,7 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
   }
 
   protected goBack() : void {
+    console.log("BaseEditComponent: Go Back is called");
     this.router.navigateByUrl(this.navigationTarget);
   }
 

@@ -31,7 +31,7 @@ export class UserComponent implements OnInit {
                 tel: dataSource.tel
               },
               route : () => {
-                this.router.navigateByUrl('/job/' +dataSource.id.toString());
+                this.router.navigateByUrl('/user/edit/' +dataSource.id.toString());
               }
             });
         });

@@ -17,7 +17,7 @@
         </mat-form-field>
         <mat-form-field *ngIf="descriptiveArticle.get('header_article').value > -1">
           <mat-label>Einzelpreis</mat-label>
-          <input class="form-control" [value]="descriptiveArticle.get('single_price').value | currency:'EUR':true"  matInput>
+          <input class="form-control" [value]="descriptiveArticle.get('single_price').value | currency:'EUR'"  matInput>
         </mat-form-field>
         <!--
         <mat-form-field *ngIf="descriptiveArticle.get('header_article').value > -1">

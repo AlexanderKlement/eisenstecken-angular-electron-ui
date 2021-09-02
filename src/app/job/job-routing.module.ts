@@ -31,13 +31,13 @@ const routes: Routes = [
     canActivate: [ AccessGuard ]
   },
   {
-    path: 'offer/edit/:id/:job_id',
+    path: 'offer/edit/:id',
     component: OfferEditComponent,
     data:{requiresLogin: true},
     canActivate: [ AccessGuard ]
   },
   {
-    path: 'offer/edit/:id',
+    path: 'offer/edit/:id/:job_id',
     component: OfferEditComponent,
     data:{requiresLogin: true},
     canActivate: [ AccessGuard ]
