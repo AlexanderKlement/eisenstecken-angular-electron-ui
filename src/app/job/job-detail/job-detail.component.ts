@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {InfoDataSource} from "../../shared/components/info-builder/info-builder.datasource";
-import {Job, DefaultService, JobStatus, Offer, Lock} from "eisenstecken-openapi-angular-library";
+import {Job, DefaultService, JobStatus, Offer} from "eisenstecken-openapi-angular-library";
 import {ActivatedRoute, Router} from "@angular/router";
 import {InfoBuilderComponent} from "../../shared/components/info-builder/info-builder.component";
 import {Observable} from "rxjs";
-import {first, map} from "rxjs/operators";
+import { map} from "rxjs/operators";
 import {TableDataSource} from "../../shared/components/table-builder/table-builder.datasource";
 import {LockService} from "../../shared/lock.service";
 
@@ -102,10 +102,6 @@ export class JobDetailComponent implements OnInit {
     this.offerDataSource.loadData();
   }
 
-  private lockAndNavigate(id: number) {
-    this.router.navigateByUrl('offer/edit/' + id.toString());
-  }
-
   private initJobDetail(id: number) {
     this.infoDataSource = new InfoDataSource<Job>(
       this.api.readJobJobJobIdGet(id),
@@ -127,17 +123,10 @@ export class JobDetailComponent implements OnInit {
           name: "Status"
         }
       ],
-      () => {
-        this.router.navigateByUrl('/job/edit/' + id.toString());
-      },
-      () => {
-        return this.api.islockedJobJobIslockedJobIdGet(id);
-      },() => {
-        this.api.unlockJobJobUnlockJobIdPost(id).subscribe();
-      },(afterFunction: VoidFunction) => {
-        this.api.lockJobJobLockJobIdPost(id).subscribe(afterFunction);
-      },
-      this.api.readUsersMeUsersMeGet()
+      "/client/edit/" + this.jobId.toString(),
+      this.api.islockedJobJobIslockedJobIdGet(this.jobId),
+      this.api.lockJobJobLockJobIdPost(this.jobId),
+      this.api.unlockJobJobUnlockJobIdPost(this.jobId)
     );
   }
 

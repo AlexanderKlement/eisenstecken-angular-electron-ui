@@ -20,7 +20,7 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
   dataFunction: (api: DefaultService, id: number) => Observable<T>;
 
   //this not:
-  me: Observable<User>;
+  me$: Observable<User>;
   data$: Observable<T>;
   createMode = false;
   id: number;
@@ -34,7 +34,7 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
   }
 
   ngOnInit(): void {
-    this.me = this.api.readUsersMeUsersMeGet();
+    this.me$ = this.api.readUsersMeUsersMeGet();
     this.routeParams.pipe(first()).subscribe((params) => {
       if(params.id == "new"){
         this.createMode = true;
@@ -51,7 +51,7 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
           console.error("BaseEditComponent: The lock is not locked. This should not happen on accessing a ressource");
           this.goBack();
         }
-        this.me.pipe(first()).subscribe((user) => {
+        this.me$.pipe(first()).subscribe((user) => {
           if (user.id != lock.user.id){//if locked by other user go back
             console.error("BaseEditComponent: The accessed ressource is locked by another user");
             this.goBack();

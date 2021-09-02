@@ -62,19 +62,10 @@ export class ClientDetailComponent implements OnInit {
             name: "Mail"
           }
         ],
-        () => {
-          this.router.navigateByUrl('/client/edit/' + this.id.toString());
-        },
-        () => {
-          return this.api.islockedClientClientIslockedClientIdGet(this.id);
-        },
-        () => {
-          this.api.unlockClientClientUnlockClientIdPost(this.id).subscribe();
-        },
-        (afterFunction: VoidFunction) => {
-          this.api.lockClientClientLockClientIdPost(this.id).subscribe(afterFunction);
-        },
-        this.api.readUsersMeUsersMeGet()
+        "/client/edit/" + this.id.toString(),
+        this.api.islockedClientClientIslockedClientIdGet(this.id),
+        this.api.lockClientClientLockClientIdPost(this.id),
+        this.api.unlockClientClientUnlockClientIdPost(this.id)
       );
       this.tableDataSource = new TableDataSource(
         this.api,

@@ -35,7 +35,7 @@ export class LockService {
       if(success) {
         this.router.navigateByUrl(navigationTarget);
       } else {
-        console.error("LockService: Unable to lock desired ressource");
+        console.error("LockService: Unable to lock desired resource");
       }
     });
 

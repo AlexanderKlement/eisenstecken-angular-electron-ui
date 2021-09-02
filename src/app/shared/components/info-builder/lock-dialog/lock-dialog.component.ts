@@ -35,6 +35,5 @@ export class LockDialogComponent implements OnInit {
       }
       this.dialogRef.close();
     });
-
   }
 }
