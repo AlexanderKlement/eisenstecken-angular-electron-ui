@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray, FormControl, FormGroup} from "@angular/forms";
+import {Form, FormArray, FormControl, FormGroup} from "@angular/forms";
 import {BaseEditComponent} from "../../shared/components/base-edit/base-edit.component";
 import {
   DefaultService,
@@ -14,7 +14,6 @@ import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
 import {first, tap} from "rxjs/operators";
 import {formatDate} from '@angular/common';
-import {OrderedArticleEditComponent} from "./ordered-article-edit/ordered-article-edit.component";
 
 @Component({
   selector: 'app-offer-edit',
@@ -63,6 +62,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
   ngOnInit(): void {
     super.ngOnInit();
     this.vatOptions$ = this.api.readVatsVatGet();
+    this.initOfferGroup();
     if (this.createMode){
       this.routeParams.subscribe((params) => {
         this.jobId = parseInt(params.job_id);
@@ -75,73 +75,44 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
           this.fillRightSidebar(job.client.language.code);
         });
       });
+      this.addDescriptiveArticle();
     }
-    this.offerGroup = new FormGroup({
-      in_price_included: new FormControl(""),
-      validity: new FormControl(""),
-      payment: new FormControl(""),
-      delivery: new FormControl(""),
-      date: new FormControl((new Date()).toISOString()),
-      vat_id: new FormControl(2),
-      discount_amount: new FormControl(0),
-      material_description: new FormControl(""),
-      descriptive_articles: new FormArray([]),
+  }
+
+  private static initDescriptiveArticles() : FormGroup{
+    return new FormGroup({
+      description: new FormControl(""),
+      sub_descriptive_articles: new FormArray([
+        OfferEditComponent.initSubDescriptiveArticles()
+      ])
     });
   }
 
-  getDescriptiveArticleFromArray(): FormArray {
-    return this.offerGroup.get('descriptive_articles') as FormArray;
+  private static initSubDescriptiveArticles(): FormGroup {
+    return new FormGroup({
+      description: new FormControl(""),
+      amount: new FormControl(1),
+      single_price: new FormControl(0),
+      alternative: new FormControl(true)
+    });
   }
 
-  getDescriptiveArticleRow(index: number): FormGroup {
-    return this.getDescriptiveArticleFromArray().at(index) as FormGroup;
+
+  addDescriptiveArticle(): void {
+    const control = <FormArray>this.offerGroup.get("descriptive_articles");
+    control.push(OfferEditComponent.initDescriptiveArticles());
   }
 
-  private createDescriptiveArticle(index: number, descriptive_article_offline?: number): DescriptiveArticleCreate {
-    const descriptiveArticle = this.getDescriptiveArticleRow(index);
-    if(descriptive_article_offline != null){
-      return  {
-        name: descriptiveArticle.get("name").value,
-        amount: descriptiveArticle.get("amount").value,
-        description: descriptiveArticle.get("description").value,
-        single_price: descriptiveArticle.get("single_price").value,
-        discount: 0, //descriptiveArticle.get("discount").value,
-        alternative: descriptiveArticle.get("alternative").value,
-        vat_id: 1,
-        descriptive_article_offline: descriptive_article_offline,
-        descriptive_article_id_offline: index,
-      };
-    } else {
-      return  {
-        name: descriptiveArticle.get("name").value,
-        amount: 0.0,
-        description: "",
-        single_price: 0.0,
-        discount: 0.0,
-        alternative: false,
-        vat_id: 1,
-        descriptive_article_offline: descriptive_article_offline,
-        descriptive_article_id_offline: index,
-      };
-    }
+  addSubDescriptiveArticle(index: number) : void {
+    const control = <FormArray>this.offerGroup.get("descriptive_articles")["controls"][index].get("sub_descriptive_articles");
+    control.push(OfferEditComponent.initSubDescriptiveArticles());
   }
+
 
   onSubmit(): void {
     this.submitted = true;
     const descriptiveArticles = [];
 
-    let lastId = 0;
-    for (let index = 0 ; index < this.getDescriptiveArticleFromArray().controls.length; index++) {
-      const currentDescriptiveArticle = this.getDescriptiveArticleRow(index);
-      let newDescriptiveArticle: DescriptiveArticleCreate;
-      if(currentDescriptiveArticle.value.header_article == -1){
-        newDescriptiveArticle = this.createDescriptiveArticle(index,  null);
-        lastId = index;
-      } else {
-        newDescriptiveArticle = this.createDescriptiveArticle(index, lastId);
-      }
-      descriptiveArticles.push(newDescriptiveArticle);
-    }
 
     if (this.createMode) {
       const offerCreate: OfferCreate = {
@@ -194,7 +165,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
   }
 
   observableReady(): void {
-    super.observableReady(); //TODO: fill in the descriptive articles here
+    super.observableReady();
     if (!this.createMode) {
       this.data$.pipe(tap(offer => this.offerGroup.patchValue(offer))).subscribe((offer) => {
         this.offerGroup.patchValue({
@@ -228,4 +199,27 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
   }
 
 
+  getDescriptiveArticles(formGroup: FormGroup) : FormArray {
+    return formGroup.get("descriptive_articles")["controls"] as FormArray;
+  }
+
+  getSubDescriptiveArticles(formGroup: FormGroup) : FormArray{
+    return formGroup.get("descriptive_articles")["controls"] as FormArray;
+  }
+
+  private initOfferGroup() {
+    this.offerGroup = new FormGroup({
+      in_price_included: new FormControl(""),
+      validity: new FormControl(""),
+      payment: new FormControl(""),
+      delivery: new FormControl(""),
+      date: new FormControl((new Date()).toISOString()),
+      vat_id: new FormControl(2),
+      discount_amount: new FormControl(0),
+      material_description: new FormControl(""),
+      descriptive_articles: new FormArray([
+        OfferEditComponent.initDescriptiveArticles()
+      ]),
+    });
+  }
 }

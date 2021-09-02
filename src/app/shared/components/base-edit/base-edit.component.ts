@@ -27,10 +27,12 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
   submitted = false;
   routeParams: ReplaySubject<Params> = new ReplaySubject<Params>(1);
   subscription: Subscription;
+  timeouts: NodeJS.Timeout[];
 
   constructor(protected api: DefaultService, protected router: Router, protected route: ActivatedRoute, public dialog: MatDialog) {
     this.subscription = new Subscription();
     this.subscription.add(this.route.params.subscribe((params) => this.routeParams.next(params)));
+    this.timeouts = [];
   }
 
   ngOnInit(): void {
@@ -60,13 +62,13 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
           else{   //now we talking
             this.data$ = this.dataFunction(this.api, this.id);
             this.observableReady();
-            setTimeout(() => {
+            this.timeouts.push(setTimeout(() => {
               this.showWarningDialog(lock.max_lock_time_minutes, lock.reminder_time_minutes);
-            }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes - lock.reminder_time_minutes));
-            setTimeout( () => {
+            }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes - lock.reminder_time_minutes)));
+            this.timeouts.push(setTimeout( () => {
               console.warn("BaseEditComponent: Going back, because maximum access time is over");
               this.goBack();
-            }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes));
+            }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes)));
           }
         });
       });
@@ -75,6 +77,9 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
 
   ngOnDestroy() :void {
     this.subscription.unsubscribe();
+    this.timeouts.forEach((timeout) => {
+      clearTimeout(timeout);
+    });
   }
 
   private static minutesToMilliSeconds(minutes: number): number {

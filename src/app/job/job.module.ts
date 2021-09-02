@@ -15,7 +15,6 @@ import {MatSelectModule} from "@angular/material/select";
 import { JobStatusBarComponent } from './job-detail/job-status-bar/job-status-bar.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import { OfferEditComponent } from './offer-edit/offer-edit.component';
-import { OrderedArticleEditComponent } from './offer-edit/ordered-article-edit/ordered-article-edit.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 
@@ -27,7 +26,6 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     JobEditComponent,
     JobStatusBarComponent,
     OfferEditComponent,
-    OrderedArticleEditComponent
   ],
   imports: [
     CommonModule,
