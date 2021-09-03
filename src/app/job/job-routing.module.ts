@@ -25,7 +25,19 @@ const routes: Routes = [
     canActivate: [ AccessGuard ]
   },
   {
-    path: 'job/edit/:id/:client_id',
+    path: 'job/:id/new',
+    component: JobEditComponent,
+    data:{requiresLogin: true},
+    canActivate: [ AccessGuard ]
+  },
+  {
+    path: 'job/edit/:id/:client_id/',
+    component: JobEditComponent,
+    data:{requiresLogin: true},
+    canActivate: [ AccessGuard ]
+  },
+  {
+    path: 'job/edit/:id/:job_id/:sub',
     component: JobEditComponent,
     data:{requiresLogin: true},
     canActivate: [ AccessGuard ]

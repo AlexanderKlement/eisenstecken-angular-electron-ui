@@ -37,6 +37,12 @@ export class JobDetailComponent implements OnInit {
       (): void => {
         this.router.navigateByUrl('/offer/edit/new/' + this.jobId.toString());
       }
+    ],
+    [
+      "Neuer Unterauftrag",
+      () : void => {
+        this.router.navigateByUrl('/job/edit/new/' + this.jobId.toString() + "/sub");
+      }
     ]
   ];
 

@@ -58,6 +58,7 @@
     "@angular/router": "12.0.2",
     "@electron/remote": "1.0.4",
     "@sentry/angular": "6.11.0",
+    "@sentry/electron": "2.5.3",
     "@sentry/tracing": "6.11.0",
     "core-js": "3.6.5",
     "eisenstecken-openapi-angular-library": "7.5.1",

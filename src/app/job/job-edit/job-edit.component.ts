@@ -27,6 +27,8 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
     });
   };
   clientId: number;
+  subMode = false;
+  mainJobId: number;
 
   jobGroup: FormGroup;
   submitted = false;
@@ -40,11 +42,21 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
     super.ngOnInit();
     if(this.createMode)
       this.routeParams.subscribe((params) => {
-        this.clientId =  parseInt(params.client_id);
-        if(isNaN(this.clientId)){
-          console.error("JobEdit: Cannot determine client id");
-          this.router.navigateByUrl(this.navigationTarget);
+        if(params.sub !== undefined && params.sub == "sub"){
+          this.subMode = true;
+          this.mainJobId = parseInt(params.job_id);
+          if(isNaN(this.mainJobId)){
+            console.error("JobEdit: Cannot determine mainJob id");
+            this.router.navigateByUrl(this.navigationTarget);
+          }
+        } else {
+          this.clientId =  parseInt(params.client_id);
+          if(isNaN(this.clientId)){
+            console.error("JobEdit: Cannot determine client id");
+            this.router.navigateByUrl(this.navigationTarget);
+          }
         }
+
       });
     this.jobTypeOptions$ = this.api.getTypeOptionsJobTypeOptionsGet();
     this.jobGroup = new FormGroup({

@@ -100,8 +100,9 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
 
   createUpdateSuccess(user: User): void {
     this.id = user.id;
+    this.navigationTarget = "user/edit/" + user.id.toString();
     this.unlockFunction(() => {
-      this.router.navigateByUrl("user");
+      this.router.navigateByUrl(this.navigationTarget);
     });
   }
 
