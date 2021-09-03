@@ -13,7 +13,16 @@ export class UserComponent implements OnInit {
 
   userDataSource: TableDataSource<User>;
 
-  constructor(private api: DefaultService, private locker: LockService) { }
+  public buttons = [
+    [
+      "Neuer Benutzer",
+      (): void => {
+        this.router.navigateByUrl('/user/edit/new');
+      }
+    ]
+  ];
+
+  constructor(private api: DefaultService, private locker: LockService, private router: Router) { }
 
   ngOnInit(): void {
     this.userDataSource = new TableDataSource(

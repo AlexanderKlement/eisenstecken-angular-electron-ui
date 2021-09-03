@@ -42,8 +42,17 @@
       <button [disabled]="submitted" mat-raised-button type="button" (click)="onSubmitRights()">Speichern</button>
     </div>
   </mat-tab>
-
-  <mat-tab label="Password" *ngIf="!createMode"> Content 3</mat-tab>
+  <mat-tab label="Password" *ngIf="!createMode">
+    <form (ngSubmit)="onSubmitPassword()" [formGroup]="passwordGroup">
+      <div fxLayout="column" fxLayoutAlign="space-around center">
+        <mat-form-field>
+          <mat-label>Neues Password</mat-label>
+          <input class="form-control" formControlName="password" matInput>
+        </mat-form-field>
+        <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+      </div>
+    </form>
+  </mat-tab>
 </mat-tab-group>
 
 <pre> {{userGroup.value | json}} </pre>

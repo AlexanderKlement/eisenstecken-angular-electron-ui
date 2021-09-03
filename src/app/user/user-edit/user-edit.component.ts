@@ -1,6 +1,14 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BaseEditComponent} from "../../shared/components/base-edit/base-edit.component";
-import {DefaultService, Lock, Right, User, UserCreate, UserUpdate} from "eisenstecken-openapi-angular-library";
+import {
+  DefaultService,
+  Lock,
+  Right,
+  User,
+  UserCreate,
+  UserPassword,
+  UserUpdate
+} from "eisenstecken-openapi-angular-library";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {FormControl, FormGroup} from "@angular/forms";
@@ -15,6 +23,7 @@ import {MatSelectionList} from "@angular/material/list";
 })
 export class UserEditComponent extends BaseEditComponent<User> implements OnInit {
   userGroup: FormGroup;
+  passwordGroup: FormGroup;
   availableRights : Right[];
   userRights : Right[];
   rightsLoaded = false;
@@ -47,19 +56,25 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.api.getRightsRightsGet().pipe(first()).subscribe((rights) => {
-      this.availableRights = rights;
-      this.api.readUserUsersUserIdGet(this.id).pipe(first()).subscribe((user) => {
-        this.userRights = user.rights;
-        this.rightsLoaded = true;
-      });
-    });
     this.userGroup = new FormGroup({
       firstname: new FormControl(""),
       secondname: new FormControl(""),
       email: new FormControl(""),
       tel: new FormControl(""),
+      password: new FormControl("")
     });
+    this.passwordGroup = new FormGroup({
+      password : new FormControl("")
+    });
+    if(!this.createMode) {
+      this.api.getRightsRightsGet().pipe(first()).subscribe((rights) => {
+        this.availableRights = rights;
+        this.api.readUserUsersUserIdGet(this.id).pipe(first()).subscribe((user) => {
+          this.userRights = user.rights;
+          this.rightsLoaded = true;
+        });
+      });
+    }
   }
 
   userHasRight(rightKey: string): boolean {
@@ -140,6 +155,15 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
   }
 
   onSubmitPassword(): void {
-
+    const userPassword: UserPassword = {
+      password: this.passwordGroup.get("password").value
+    };
+    this.api.updateUserPasswordUsersPasswordUserIdPut(this.id, userPassword).pipe(first()).subscribe((user) => {
+      this.createUpdateSuccess(user);
+    }, (error) => {
+      this.createUpdateError(error);
+    }, () => {
+      this.createUpdateComplete();
+    });
   }
 }
