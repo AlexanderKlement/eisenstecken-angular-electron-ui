@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {TableDataSource} from "../shared/components/table-builder/table-builder.datasource";
 import {DefaultService, User} from "eisenstecken-openapi-angular-library";
 import {Router} from "@angular/router";
+import {LockService} from "../shared/lock.service";
 
 @Component({
   selector: 'app-user',
@@ -12,7 +13,7 @@ export class UserComponent implements OnInit {
 
   userDataSource: TableDataSource<User>;
 
-  constructor(private api: DefaultService, private router: Router) { }
+  constructor(private api: DefaultService, private locker: LockService) { }
 
   ngOnInit(): void {
     this.userDataSource = new TableDataSource(
@@ -31,7 +32,12 @@ export class UserComponent implements OnInit {
                 tel: dataSource.tel
               },
               route : () => {
-                this.router.navigateByUrl('/user/edit/' +dataSource.id.toString());
+                this.locker.getLockAndTryNavigate(
+                  this.api.islockedUserUsersIslockedUserIdGet(dataSource.id),
+                  this.api.lockUserUsersLockUserIdGet(dataSource.id),
+                  this.api.unlockUserUsersUnlockUserIdGet(dataSource.id),
+                  '/user/edit/' +dataSource.id.toString()
+                );
               }
             });
         });

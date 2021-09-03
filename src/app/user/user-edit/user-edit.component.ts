@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BaseEditComponent} from "../../shared/components/base-edit/base-edit.component";
-import {DefaultService, Lock, Offer, User} from "eisenstecken-openapi-angular-library";
+import {DefaultService, Lock, Right, User, UserCreate, UserUpdate} from "eisenstecken-openapi-angular-library";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Observable} from "rxjs";
-import {tap} from "rxjs/operators";
+import {first, map, tap} from "rxjs/operators";
+import {MatSelectionList} from "@angular/material/list";
 
 @Component({
   selector: 'app-user-edit',
@@ -14,10 +15,15 @@ import {tap} from "rxjs/operators";
 })
 export class UserEditComponent extends BaseEditComponent<User> implements OnInit {
   userGroup: FormGroup;
+  availableRights : Right[];
+  userRights : Right[];
+  rightsLoaded = false;
 
-  navigationTarget = "/user";
+  @ViewChild('rights') rightsSelected: MatSelectionList;
+
+  navigationTarget = "user";
   lockFunction = (api: DefaultService, id: number): Observable<Lock> => {
-    return api.unlockUserUsersUnlockUserIdGet(id);
+    return api.islockedUserUsersIslockedUserIdGet(id);
   };
 
   dataFunction = (api: DefaultService, id: number): Observable<User> => {
@@ -40,37 +46,100 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
+    this.api.getRightsRightsGet().pipe(first()).subscribe((rights) => {
+      this.availableRights = rights;
+      this.api.readUserUsersUserIdGet(this.id).pipe(first()).subscribe((user) => {
+        this.userRights = user.rights;
+        this.rightsLoaded = true;
+      });
+    });
     this.userGroup = new FormGroup({
       firstname: new FormControl(""),
-      lastname: new FormControl(""),
-      mail: new FormControl(""),
+      secondname: new FormControl(""),
+      email: new FormControl(""),
       tel: new FormControl(""),
     });
+  }
+
+  userHasRight(rightKey: string): boolean {
+    for(let i=0; i<this.userRights.length; i++){
+      if(this.userRights[i].key == rightKey){
+        return true;
+      }
+    }
+    return false;
   }
 
   ngOnDestroy(): void {
     super.ngOnDestroy();
   }
 
-  onSubmit() :void  {
-
-  }
 
   observableReady() :void {
     super.observableReady();
-    console.log("hei");
     if(!this.createMode){
-      this.data$.pipe(tap(user => this.userGroup.patchValue(user))).subscribe((user) => {
-        console.log("done");
-        console.log(user);
+      this.data$.pipe(tap(user => this.userGroup.patchValue(user)), first()).subscribe();
+    }
+  }
+
+  createUpdateSuccess(user: User): void {
+    this.id = user.id;
+    this.unlockFunction(() => {
+      this.router.navigateByUrl("user");
+    });
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+  }
+
+  onSubmitGeneral() :void {
+    this.onSubmit();
+    if(this.createMode) {
+      const userCreate: UserCreate = {
+        email: this.userGroup.get("email").value,
+        tel: this.userGroup.get("tel").value,
+        firstname: this.userGroup.get("firstname").value,
+        secondname: this.userGroup.get("secondname").value,
+        password: this.userGroup.get("password").value
+      };
+      this.api.createUserUsersPost(userCreate).pipe(first()).subscribe((user) => {
+        this.createUpdateSuccess(user);
+      }, (error) => {
+        this.createUpdateError(error);
+      }, () => {
+        this.createUpdateComplete();
+      });
+    } else {
+      const userUpdate: UserUpdate = {
+        email: this.userGroup.get("email").value,
+        tel: this.userGroup.get("tel").value,
+        firstname: this.userGroup.get("firstname").value,
+        secondname: this.userGroup.get("secondname").value,
+      };
+      this.api.updateUserUsersUserIdPut(this.id, userUpdate).pipe(first()).subscribe((user) => {
+        this.createUpdateSuccess(user);
+      }, (error) => {
+        this.createUpdateError(error);
+      }, () => {
+        this.createUpdateComplete();
       });
     }
   }
 
-  createUpdateSuccess(offer: Offer): void {
-    this.id = offer.id;
-    this.unlockFunction(() => {
-      this.router.navigateByUrl("user");
+  onSubmitRights(): void {
+    const selectedKeys = this.rightsSelected.selectedOptions.selected.map((obj) => obj.value);
+    this.api.grantRightsToUserUsersRightsUserIdPost(this.id, selectedKeys).pipe(first()).subscribe((user) => {
+      this.createUpdateSuccess(user);
+    }, (error) => {
+      this.createUpdateError(error);
+    }, () => {
+      this.createUpdateComplete();
     });
+  }
+
+  onSubmitPassword(): void {
+
   }
 }

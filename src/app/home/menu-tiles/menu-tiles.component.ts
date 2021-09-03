@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DefaultService, Right} from "eisenstecken-openapi-angular-library";
+import {DefaultService} from "eisenstecken-openapi-angular-library";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {matchRightsToMenuTiles, MenuTileDetail} from "./menu-tile.settings";

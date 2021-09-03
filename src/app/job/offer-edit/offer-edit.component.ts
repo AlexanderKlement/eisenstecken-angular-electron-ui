@@ -110,7 +110,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
           console.error("OfferEdit: Cannot determine job id");
           this.router.navigateByUrl(this.navigationTarget);
         }
-        this.navigationTarget = "job/edit/" + this.jobId.toString();
+        this.navigationTarget = "job/" + this.jobId.toString();
         this.api.readJobJobJobIdGet(this.jobId).pipe(first()).subscribe((job) => {
           this.fillRightSidebar(job.client.language.code);
         });
@@ -162,7 +162,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         discount_amount: this.offerGroup.get("discount_amount").value,
         material_description: this.offerGroup.get("material_description").value
       };
-      this.api.createOfferOfferPost(offerCreate).subscribe((offer) => {
+      this.api.createOfferOfferPost(offerCreate).pipe(first()).subscribe((offer) => {
         this.createUpdateSuccess(offer);
       }, (error) => {
         this.createUpdateError(error);
