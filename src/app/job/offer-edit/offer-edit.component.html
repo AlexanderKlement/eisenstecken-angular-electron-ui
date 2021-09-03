@@ -4,18 +4,29 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="offerGroup">
   <div fxLayout="row" fxLayoutAlign=" start">
     <div formArrayName="descriptive_articles" fxLayout="column" fxLayoutAlign="space-around center">
-      <div *ngFor="let descriptiveArticle of getDescriptiveArticles(offerGroup).controls; let i = index">
+      <div *ngFor="let descriptiveArticle of getDescriptiveArticles().controls; let i = index">
         <div fxLayout="column" fxLayoutAlign="space-around center" [formGroupName]="i">
           <div fxLayout="row" fxLayoutAlign="start center">
-            <p>hhfifigd</p>
             <mat-form-field>
               <mat-label>Name</mat-label>
               <input class="form-control" formControlName="description" matInput>
             </mat-form-field>
+            <button mat-icon-button (click)="addDescriptiveArticleAt(i)">
+              <mat-icon>add</mat-icon>
+            </button>
+            <button mat-button (click)="removeDescriptiveArticle(i)" [disabled]="getSubDescriptiveArticles(descriptiveArticle).controls.length > 0">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <button mat-icon-button (click)="moveDescriptiveArticleUp(i)" [disabled]="i == 0">
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button mat-icon-button (click)="moveDescriptiveArticleDown(i)" [disabled]="i == getDescriptiveArticles().controls.length - 1">
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
           </div>
           <div formArrayName="sub_descriptive_articles">
             <div fxLayout="row" fxLayoutAlign="start center" [formGroupName]="j"
-                 *ngFor="let sub_descriptive_article of getSubDescriptiveArticles(offerGroup).controls; let j = index">
+                 *ngFor="let sub_descriptive_article of getSubDescriptiveArticles(descriptiveArticle).controls; let j = index">
               <mat-form-field>
                 <mat-label>Beschreibung</mat-label>
                 <textarea class="form-control" formControlName="description" matInput></textarea>
@@ -28,11 +39,14 @@
                 <mat-label>Einzelpreis</mat-label>
                 <input class="form-control" formControlName="single_price" matInput>
               </mat-form-field>
+              <mat-checkbox formControlName="alternative">Alternative</mat-checkbox>
+              <button mat-button (click)="removeDescriptiveSubArticle(descriptiveArticle, j)">
+                <mat-icon>remove</mat-icon>
+              </button>
             </div>
           </div>
         </div>
       </div>
-      <button (click)="addDescriptiveArticle()" mat-raised-button type="button">Position hinzufügen</button>
     </div>
     <div fxLayout="column" fxLayoutAlign="space-around center">
       <mat-form-field>
@@ -80,3 +94,4 @@
   </div>
 </form>
 
+<pre> {{offerGroup.value | json}} </pre>

@@ -47,7 +47,7 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
         console.error("BaseEditComponent: Cannot parse given id");
         this.goBack();
       }
-
+      console.log("Loading given datasource with id: " +  this.id.toString());
       this.lockFunction(this.api, this.id).pipe(first()).subscribe(lock => {
         if (!lock.locked) {//has to be locked, otherwise component is accessed directly {
           console.error("BaseEditComponent: The lock is not locked. This should not happen on accessing a ressource");

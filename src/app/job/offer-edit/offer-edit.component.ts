@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Form, FormArray, FormControl, FormGroup} from "@angular/forms";
+import {AbstractControl, Form, FormArray, FormControl, FormGroup} from "@angular/forms";
 import {BaseEditComponent} from "../../shared/components/base-edit/base-edit.component";
 import {
   DefaultService,
@@ -13,7 +13,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
 import {first, tap} from "rxjs/operators";
-import {formatDate} from '@angular/common';
+import {formatDate, CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-offer-edit',
@@ -92,8 +92,8 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     return new FormGroup({
       description: new FormControl(""),
       amount: new FormControl(1),
-      single_price: new FormControl(0),
-      alternative: new FormControl(true)
+      single_price: new FormControl(0.0),
+      alternative: new FormControl(false)
     });
   }
 
@@ -199,12 +199,12 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
   }
 
 
-  getDescriptiveArticles(formGroup: FormGroup) : FormArray {
-    return formGroup.get("descriptive_articles")["controls"] as FormArray;
+  getDescriptiveArticles() : FormArray {
+    return this.offerGroup.get("descriptive_articles") as FormArray;
   }
 
-  getSubDescriptiveArticles(formGroup: FormGroup) : FormArray{
-    return formGroup.get("descriptive_articles")["controls"] as FormArray;
+  getSubDescriptiveArticles(formGroup: AbstractControl) : FormArray{
+    return formGroup.get("sub_descriptive_articles") as FormArray;
   }
 
   private initOfferGroup() {
@@ -221,5 +221,29 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         OfferEditComponent.initDescriptiveArticles()
       ]),
     });
+  }
+
+  removeDescriptiveArticle(index: number) :void{
+    this.getDescriptiveArticles().removeAt(index);
+  }
+
+  addDescriptiveArticleAt(index: number): void {
+    this.getDescriptiveArticles().insert(index + 1, OfferEditComponent.initDescriptiveArticles());
+  }
+
+  moveDescriptiveArticleUp(index: number) : void {
+    const descriptiveArticle = this.getDescriptiveArticles().at(index);
+    this.getDescriptiveArticles().removeAt(index);
+    this.getDescriptiveArticles().insert(index - 1, descriptiveArticle);
+  }
+
+  moveDescriptiveArticleDown(index: number): void {
+    const descriptiveArticle = this.getDescriptiveArticles().at(index);
+    this.getDescriptiveArticles().removeAt(index);
+    this.getDescriptiveArticles().insert(index + 1, descriptiveArticle);
+  }
+
+  removeDescriptiveSubArticle(descriptiveArticleControl: AbstractControl, j: number) : void {
+    this.getSubDescriptiveArticles(descriptiveArticleControl).removeAt(j);
   }
 }

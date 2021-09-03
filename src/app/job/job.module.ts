@@ -17,6 +17,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import { OfferEditComponent } from './offer-edit/offer-edit.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     MatSelectModule,
     MatToolbarModule,
     MatDatepickerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatIconModule
   ]
 })
 export class JobModule { }

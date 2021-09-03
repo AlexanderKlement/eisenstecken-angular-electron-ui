@@ -15,6 +15,7 @@ import {tap} from "rxjs/operators";
 export class UserEditComponent extends BaseEditComponent<User> implements OnInit {
   userGroup: FormGroup;
 
+  navigationTarget = "/user";
   lockFunction = (api: DefaultService, id: number): Observable<Lock> => {
     return api.unlockUserUsersUnlockUserIdGet(id);
   };
@@ -45,7 +46,6 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
       mail: new FormControl(""),
       tel: new FormControl(""),
     });
-    console.log(this.id);
   }
 
   ngOnDestroy(): void {
@@ -58,9 +58,11 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
 
   observableReady() :void {
     super.observableReady();
+    console.log("hei");
     if(!this.createMode){
       this.data$.pipe(tap(user => this.userGroup.patchValue(user))).subscribe((user) => {
         console.log("done");
+        console.log(user);
       });
     }
   }
