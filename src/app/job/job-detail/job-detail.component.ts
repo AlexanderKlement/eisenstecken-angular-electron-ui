@@ -83,7 +83,7 @@ export class JobDetailComponent implements OnInit {
                   this.api.islockedOfferOfferIslockedOfferIdGet(dataSource.id),
                   this.api.lockOfferOfferLockOfferIdPost(dataSource.id),
                   this.api.lockOfferOfferUnlockOfferIdPost(dataSource.id),
-                  "job/edit/" + dataSource.id.toString()
+                  "offer/edit/" + dataSource.id.toString()
                 );
               }
             });

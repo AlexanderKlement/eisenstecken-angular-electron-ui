@@ -7,7 +7,7 @@ import {
   OfferUpdate,
   Lock,
   Offer,
-  DescriptiveArticleCreate, Vat
+  DescriptiveArticleCreate, Vat, DescriptiveArticle
 } from "eisenstecken-openapi-angular-library";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
@@ -32,8 +32,52 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     super(api, router, route, dialog);
   }
 
+  get discountAmount(): FormControl {
+    return this.offerGroup.get('discount_amount') as FormControl;
+  }
+
   private static formatDate(datetime: string) { //TODO: move to some sort of util class or so
     return formatDate(datetime, 'yyyy-MM-dd', 'en-US');
+  }
+
+  private static initDescriptiveArticles(descriptiveArticle?: DescriptiveArticle): FormGroup {
+    if(descriptiveArticle === undefined){
+      return new FormGroup({
+        description: new FormControl(""),
+        sub_descriptive_articles: new FormArray([
+          OfferEditComponent.initSubDescriptiveArticles()
+        ])
+      });
+    }
+    else {
+      const subDescriptiveArticles: FormGroup[] = [];
+      descriptiveArticle.descriptive_article.forEach((subDescriptiveArticle) => {
+        subDescriptiveArticles.push(OfferEditComponent.initSubDescriptiveArticles(subDescriptiveArticle));
+      });
+      return new FormGroup({
+        description: new FormControl(descriptiveArticle.description),
+        sub_descriptive_articles: new FormArray(subDescriptiveArticles)
+      });
+    }
+  }
+
+  private static initSubDescriptiveArticles(subDescriptiveArticle?: DescriptiveArticle): FormGroup {
+    if(subDescriptiveArticle === undefined){
+      return new FormGroup({
+        description: new FormControl(""),
+        amount: new FormControl(1),
+        single_price: new FormControl(0.0),
+        alternative: new FormControl(false)
+      });
+    } else {
+      return new FormGroup({
+        description: new FormControl(subDescriptiveArticle.description),
+        amount: new FormControl(subDescriptiveArticle.amount),
+        single_price: new FormControl(subDescriptiveArticle.single_price),
+        alternative: new FormControl(subDescriptiveArticle.alternative)
+      });
+    }
+
   }
 
   lockFunction = (api: DefaultService, id: number): Observable<Lock> => {
@@ -55,63 +99,54 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     });
   };
 
-  get discountAmount(): FormControl {
-    return this.offerGroup.get('discount_amount') as FormControl;
-  }
-
   ngOnInit(): void {
     super.ngOnInit();
     this.vatOptions$ = this.api.readVatsVatGet();
     this.initOfferGroup();
-    if (this.createMode){
+    if (this.createMode) {
       this.routeParams.subscribe((params) => {
         this.jobId = parseInt(params.job_id);
         if (isNaN(this.jobId)) {
           console.error("OfferEdit: Cannot determine job id");
           this.router.navigateByUrl(this.navigationTarget);
         }
-        this.navigationTarget = "job/edit/" +this.jobId.toString();
+        this.navigationTarget = "job/edit/" + this.jobId.toString();
         this.api.readJobJobJobIdGet(this.jobId).pipe(first()).subscribe((job) => {
           this.fillRightSidebar(job.client.language.code);
         });
       });
-      this.addDescriptiveArticle();
     }
   }
-
-  private static initDescriptiveArticles() : FormGroup{
-    return new FormGroup({
-      description: new FormControl(""),
-      sub_descriptive_articles: new FormArray([
-        OfferEditComponent.initSubDescriptiveArticles()
-      ])
-    });
-  }
-
-  private static initSubDescriptiveArticles(): FormGroup {
-    return new FormGroup({
-      description: new FormControl(""),
-      amount: new FormControl(1),
-      single_price: new FormControl(0.0),
-      alternative: new FormControl(false)
-    });
-  }
-
-
-  addDescriptiveArticle(): void {
-    const control = <FormArray>this.offerGroup.get("descriptive_articles");
-    control.push(OfferEditComponent.initDescriptiveArticles());
-  }
-
-  addSubDescriptiveArticle(index: number) : void {
-    const control = <FormArray>this.offerGroup.get("descriptive_articles")["controls"][index].get("sub_descriptive_articles");
-    control.push(OfferEditComponent.initSubDescriptiveArticles());
-  }
-
 
   onSubmit(): void {
     this.submitted = true;
     const descriptiveArticles = [];
+    this.getDescriptiveArticles().controls.forEach((descriptiveArticleControl) => {
+      const subDescriptiveArticleArray: DescriptiveArticleCreate[] = [];
+      this.getSubDescriptiveArticles(descriptiveArticleControl).controls.forEach((subDescriptiveArticleControl) => {
+        const subDescriptiveArticle: DescriptiveArticleCreate = {
+          name: "",
+          amount: subDescriptiveArticleControl.get("amount").value,
+          description: subDescriptiveArticleControl.get("description").value,
+          single_price: subDescriptiveArticleControl.get("single_price").value,
+          discount: 0,
+          alternative: subDescriptiveArticleControl.get("alternative").value,
+          vat_id: 1,
+        };
+        subDescriptiveArticleArray.push(subDescriptiveArticle);
+      });
+      const descriptiveArticle: DescriptiveArticleCreate = {
+        name: "",
+        amount: 0,
+        description: descriptiveArticleControl.get("description").value,
+        single_price: 0,
+        discount: 0,
+        alternative: false,
+        descriptive_articles: subDescriptiveArticleArray,
+        vat_id: 1,
+      };
+      descriptiveArticles.push(descriptiveArticle);
+    });
 
 
     if (this.createMode) {
@@ -159,7 +194,6 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
   createUpdateSuccess(offer: Offer): void {
     this.id = offer.id;
     this.unlockFunction(() => {
-      console.log("navigatin");
       this.router.navigateByUrl("job/" + this.jobId.toString()); //TODO: change this to the detail view of the offer
     });
   }
@@ -168,19 +202,60 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     super.observableReady();
     if (!this.createMode) {
       this.data$.pipe(tap(offer => this.offerGroup.patchValue(offer))).subscribe((offer) => {
+        this.removeDescriptiveArticle(0);
+        offer.descriptive_articles.forEach((descriptiveArticle) => {
+          this.getDescriptiveArticles().push(OfferEditComponent.initDescriptiveArticles(descriptiveArticle));
+        });
         this.offerGroup.patchValue({
           in_price_included: offer.in_price_included,
           validity: offer.validity,
           payment: offer.payment,
           delivery: offer.delivery,
-          date: offer.date, //remove this line if always today's date should be shown
+          //date: offer.date, //remove this line if always today's date should be shown -> and vice versa
           discount_amount: offer.discount_amount,
           material_description: offer.material_description
         });
+        this.jobId = offer.job_id;
       });
+
     }
   }
 
+  getDescriptiveArticles(): FormArray {
+    return this.offerGroup.get("descriptive_articles") as FormArray;
+  }
+
+  getSubDescriptiveArticles(formGroup: AbstractControl): FormArray {
+    return formGroup.get("sub_descriptive_articles") as FormArray;
+  }
+
+  removeDescriptiveArticle(index: number): void {
+    this.getDescriptiveArticles().removeAt(index);
+  }
+
+  addDescriptiveArticleAt(index: number): void {
+    this.getDescriptiveArticles().insert(index + 1, OfferEditComponent.initDescriptiveArticles());
+  }
+
+  moveDescriptiveArticleUp(index: number): void {
+    const descriptiveArticle = this.getDescriptiveArticles().at(index);
+    this.getDescriptiveArticles().removeAt(index);
+    this.getDescriptiveArticles().insert(index - 1, descriptiveArticle);
+  }
+
+  moveDescriptiveArticleDown(index: number): void {
+    const descriptiveArticle = this.getDescriptiveArticles().at(index);
+    this.getDescriptiveArticles().removeAt(index);
+    this.getDescriptiveArticles().insert(index + 1, descriptiveArticle);
+  }
+
+  removeDescriptiveSubArticle(descriptiveArticleControl: AbstractControl, j: number): void {
+    this.getSubDescriptiveArticles(descriptiveArticleControl).removeAt(j);
+  }
+
+  addDescriptiveSubArticle(descriptiveArticleControl: AbstractControl, j: number): void {
+    this.getSubDescriptiveArticles(descriptiveArticleControl).insert(j + 1, OfferEditComponent.initSubDescriptiveArticles());
+  }
 
   private fillRightSidebar(langCode: string): void {
     const langCodeLower = langCode.toLowerCase();
@@ -190,21 +265,12 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     this.getAndFillParameters("payment", "offer_payment_" + langCodeLower);
   }
 
-  private getAndFillParameters(formControlName: string, key: string){
+  private getAndFillParameters(formControlName: string, key: string) {
     this.api.getParameterParameterKeyGet(key).pipe(first()).subscribe((parameter) => {
       this.offerGroup.patchValue({
         [formControlName]: parameter,
       });
     });
-  }
-
-
-  getDescriptiveArticles() : FormArray {
-    return this.offerGroup.get("descriptive_articles") as FormArray;
-  }
-
-  getSubDescriptiveArticles(formGroup: AbstractControl) : FormArray{
-    return formGroup.get("sub_descriptive_articles") as FormArray;
   }
 
   private initOfferGroup() {
@@ -221,29 +287,5 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         OfferEditComponent.initDescriptiveArticles()
       ]),
     });
-  }
-
-  removeDescriptiveArticle(index: number) :void{
-    this.getDescriptiveArticles().removeAt(index);
-  }
-
-  addDescriptiveArticleAt(index: number): void {
-    this.getDescriptiveArticles().insert(index + 1, OfferEditComponent.initDescriptiveArticles());
-  }
-
-  moveDescriptiveArticleUp(index: number) : void {
-    const descriptiveArticle = this.getDescriptiveArticles().at(index);
-    this.getDescriptiveArticles().removeAt(index);
-    this.getDescriptiveArticles().insert(index - 1, descriptiveArticle);
-  }
-
-  moveDescriptiveArticleDown(index: number): void {
-    const descriptiveArticle = this.getDescriptiveArticles().at(index);
-    this.getDescriptiveArticles().removeAt(index);
-    this.getDescriptiveArticles().insert(index + 1, descriptiveArticle);
-  }
-
-  removeDescriptiveSubArticle(descriptiveArticleControl: AbstractControl, j: number) : void {
-    this.getSubDescriptiveArticles(descriptiveArticleControl).removeAt(j);
   }
 }

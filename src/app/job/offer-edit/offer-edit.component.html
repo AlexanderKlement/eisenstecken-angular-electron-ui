@@ -11,16 +11,16 @@
               <mat-label>Name</mat-label>
               <input class="form-control" formControlName="description" matInput>
             </mat-form-field>
-            <button mat-icon-button (click)="addDescriptiveArticleAt(i)">
+            <button type="button" mat-icon-button (click)="addDescriptiveArticleAt(i)">
               <mat-icon>add</mat-icon>
             </button>
-            <button mat-button (click)="removeDescriptiveArticle(i)" [disabled]="getSubDescriptiveArticles(descriptiveArticle).controls.length > 0">
+            <button type="button" mat-button (click)="removeDescriptiveArticle(i)" [disabled]="i == 0">
               <mat-icon>remove</mat-icon>
             </button>
-            <button mat-icon-button (click)="moveDescriptiveArticleUp(i)" [disabled]="i == 0">
+            <button type="button" mat-icon-button (click)="moveDescriptiveArticleUp(i)" [disabled]="i == 0">
               <mat-icon>arrow_upward</mat-icon>
             </button>
-            <button mat-icon-button (click)="moveDescriptiveArticleDown(i)" [disabled]="i == getDescriptiveArticles().controls.length - 1">
+            <button type="button" mat-icon-button (click)="moveDescriptiveArticleDown(i)" [disabled]="i == getDescriptiveArticles().controls.length - 1">
               <mat-icon>arrow_downward</mat-icon>
             </button>
           </div>
@@ -37,14 +37,20 @@
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Einzelpreis</mat-label>
-                <input class="form-control" formControlName="single_price" matInput>
+                <input class="form-control" formControlName="single_price" [value]="sub_descriptive_article.get('single_price').value | currency:'EUR'" matInput>
               </mat-form-field>
               <mat-checkbox formControlName="alternative">Alternative</mat-checkbox>
-              <button mat-button (click)="removeDescriptiveSubArticle(descriptiveArticle, j)">
+              <button type="button" mat-button (click)="addDescriptiveSubArticle(descriptiveArticle, j)">
+                <mat-icon>add</mat-icon>
+              </button>
+              <button type="button" mat-button (click)="removeDescriptiveSubArticle(descriptiveArticle, j)">
                 <mat-icon>remove</mat-icon>
               </button>
             </div>
           </div>
+          <button *ngIf="getSubDescriptiveArticles(descriptiveArticle).controls.length == 0" type="button" mat-button (click)="addDescriptiveSubArticle(descriptiveArticle, 0)">
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
       </div>
     </div>
