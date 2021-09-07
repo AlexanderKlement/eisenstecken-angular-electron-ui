@@ -130,7 +130,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
 
   observableReady() :void {
     super.observableReady();
-    if(!this.createMode){
+    if(!this.createMode){ //TODO: pipe all this values to first()
       this.data$.pipe(tap(job => this.jobGroup.patchValue(job))).subscribe((job) => {
         this.jobGroup.patchValue({
           name: job.orderable.name,

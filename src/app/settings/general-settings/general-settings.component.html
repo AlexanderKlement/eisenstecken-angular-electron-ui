@@ -1,1 +1,60 @@
-<p>general-settings works!</p>
+<form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+  <div fxLayout="column" fxLayoutAlign="space-around center" >
+    <mat-form-field>
+      <mat-label>Firmenbezeichnung</mat-label>
+      <input class="form-control" formControlName="general_name" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Addresszeile 1</mat-label>
+      <input class="form-control" formControlName="general_address_1" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Addresszeile 2</mat-label>
+      <input class="form-control" formControlName="general_address_2" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Telefon 1</mat-label>
+      <input class="form-control" formControlName="general_tel_1" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Telefon 2</mat-label>
+      <input class="form-control" formControlName="general_tel_2" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Mail</mat-label>
+      <input class="form-control" formControlName="general_mail" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Webseite</mat-label>
+      <input class="form-control" formControlName="general_site" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>REA</mat-label>
+      <input class="form-control" formControlName="general_rea" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>IVA</mat-label>
+      <input class="form-control" formControlName="general_iva" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>PEC</mat-label>
+      <input class="form-control" formControlName="general_pec" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Empfängerkodex</mat-label>
+      <input class="form-control" formControlName="general_code" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Auftragspfad</mat-label>
+      <input class="form-control" formControlName="general_job_path" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Bestellungspfad</mat-label>
+      <input class="form-control" formControlName="general_order_path" matInput>
+    </mat-form-field>
+    <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+  </div>
+
+</form>
+
+<pre> {{formGroup.value | json}} </pre>

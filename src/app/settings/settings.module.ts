@@ -10,6 +10,11 @@ import { DeliverySettingsComponent } from './delivery-settings/delivery-settings
 import { OrderSettingsComponent } from './order-settings/order-settings.component';
 import { ReminderSettingsComponent } from './reminder-settings/reminder-settings.component';
 import { GeneralSettingsComponent } from './general-settings/general-settings.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import {FlexModule} from "@angular/flex-layout";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
 
 
 @NgModule({
@@ -20,13 +25,18 @@ import { GeneralSettingsComponent } from './general-settings/general-settings.co
     DeliverySettingsComponent,
     OrderSettingsComponent,
     ReminderSettingsComponent,
-    GeneralSettingsComponent
+    GeneralSettingsComponent,
   ],
   imports: [
     CommonModule,
     SettingsRoutingModule,
     SharedModule,
-    MatTabsModule
+    MatTabsModule,
+    ReactiveFormsModule,
+    FlexModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
   ]
 })
 export class SettingsModule { }

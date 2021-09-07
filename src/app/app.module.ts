@@ -42,6 +42,7 @@ import localeDeExtra from '@angular/common/locales/extra/de';
 import * as Sentry from "@sentry/angular";
 import {ClientModule} from "./client/client.module";
 import {UserModule} from "./user/user.module";
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -94,7 +95,8 @@ export function apiConfigFactory (): Configuration {
     MatButtonModule,
     MatToolbarModule,
     MatNativeDateModule,
-    NgxMatMomentModule
+    NgxMatMomentModule,
+    MatSnackBarModule
   ],
   providers:
     [{
@@ -133,22 +135,6 @@ export function apiConfigFactory (): Configuration {
     {
       provide: LOCALE_ID,
       useValue: 'de-DE' // 'de-DE' for Germany, 'fr-FR' for France ...
-    },
-    {
-      provide: ErrorHandler,
-      useValue: Sentry.createErrorHandler({
-        showDialog: true,
-      }),
-    },
-    {
-      provide: Sentry.TraceService,
-      deps: [Router],
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: () => () => {},
-      deps: [Sentry.TraceService],
-      multi: true,
     },
     ],
   bootstrap: [AppComponent]
