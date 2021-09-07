@@ -5,6 +5,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
+
 // NG Translate
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -96,44 +97,59 @@ export function apiConfigFactory (): Configuration {
     NgxMatMomentModule
   ],
   providers:
-    [
-      {
-        provide: Configuration,
-        useFactory: (authService: AuthService) => new Configuration(
-          {
-            accessToken: authService.getToken.bind(authService),
-            basePath: AppConfig.API_BASE_PATH,
-          }
-        ),
-        deps: [AuthService],
-        multi: false
-      },
-      AccessGuard,
-      ChatService,
-      DatePipe,
-      {
-        provide: MAT_DATE_LOCALE, useValue: 'de-DE'
-      },
-      {
-        provide: LOCALE_ID,
-        useValue: 'de-DE' // 'de-DE' for Germany, 'fr-FR' for France ...
-      },
-      {
-        provide: ErrorHandler,
-        useValue: Sentry.createErrorHandler({
-          showDialog: true,
-        }),
-      },
-      {
-        provide: Sentry.TraceService,
-        deps: [Router],
-      },
-      {
-        provide: APP_INITIALIZER,
-        useFactory: () => () => {},
-        deps: [Sentry.TraceService],
-        multi: true,
-      },
+    [{
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: true,
+      }),
+    },
+    {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {},
+      deps: [Sentry.TraceService],
+      multi: true,
+    },
+    {
+      provide: Configuration,
+      useFactory: (authService: AuthService) => new Configuration(
+        {
+          accessToken: authService.getToken.bind(authService),
+          basePath: AppConfig.API_BASE_PATH,
+        }
+      ),
+      deps: [AuthService],
+      multi: false
+    },
+    AccessGuard,
+    ChatService,
+    DatePipe,
+    {
+      provide: MAT_DATE_LOCALE, useValue: 'de-DE'
+    },
+    {
+      provide: LOCALE_ID,
+      useValue: 'de-DE' // 'de-DE' for Germany, 'fr-FR' for France ...
+    },
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: true,
+      }),
+    },
+    {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {},
+      deps: [Sentry.TraceService],
+      multi: true,
+    },
     ],
   bootstrap: [AppComponent]
 })
