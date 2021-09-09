@@ -18,6 +18,7 @@ import { OfferEditComponent } from './offer-edit/offer-edit.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatIconModule} from "@angular/material/icon";
+import { OutgoingInvoiceEditComponent } from './outgoing-invoice-edit/outgoing-invoice-edit.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import {MatIconModule} from "@angular/material/icon";
     JobEditComponent,
     JobStatusBarComponent,
     OfferEditComponent,
+    OutgoingInvoiceEditComponent,
   ],
   imports: [
     CommonModule,

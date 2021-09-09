@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {DefaultService, Job, JobCreate, JobType, JobUpdate, Lock} from "eisenstecken-openapi-angular-library";
+import {
+  DefaultService,
+  Job,
+  JobCreate,
+  JobType,
+  JobUpdate,
+  Lock,
+  SubJobCreate
+} from "eisenstecken-openapi-angular-library";
 import {Observable} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -40,6 +48,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
 
   ngOnInit(): void {
     super.ngOnInit();
+    this.initJobGroup();
     if(this.createMode)
       this.routeParams.subscribe((params) => {
         if(params.sub !== undefined && params.sub == "sub"){
@@ -59,67 +68,131 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
 
       });
     this.jobTypeOptions$ = this.api.getTypeOptionsJobTypeOptionsGet();
-    this.jobGroup = new FormGroup({
-      name: new FormControl(""),
-      description: new FormControl(""),
-      type: new FormControl("JOBTYPE_MAIN"),
-      address: new FormGroup( {
-        street_number: new FormControl(""),
-        city: new FormControl(""),
-        cap: new FormControl(""),
-        country: new FormControl("IT")
-      }),
-    });
   }
 
   ngOnDestroy(): void {
     super.ngOnDestroy();
   }
 
+  initJobGroup(): void{
+    if(!this.subMode){
+      this.jobGroup = new FormGroup({
+        name: new FormControl(""),
+        description: new FormControl(""),
+        type: new FormControl("JOBTYPE_MAIN"),
+        address: new FormGroup( {
+          street_number: new FormControl(""),
+          city: new FormControl(""),
+          cap: new FormControl(""),
+          country: new FormControl("IT")
+        }),
+      });
+    } else {
+      this.jobGroup = new FormGroup({
+        name: new FormControl(""),
+        description: new FormControl(""),
+        type: new FormControl("JOBTYPE_SUB"),
+        address: new FormGroup( {
+          street_number: new FormControl(""),
+          city: new FormControl(""),
+          cap: new FormControl(""),
+          country: new FormControl("IT")
+        }),
+      });
+    }
+
+  }
+
   onSubmit() : void {
     this.submitted = true;
     if(this.createMode){
-      const jobCreate: JobCreate = {
-        description: this.jobGroup.get("description").value,
-        name: this.jobGroup.get("name").value,
-        client_id: this.clientId,
-        address: {
-          name: this.jobGroup.get("name").value,
-          street_number: this.jobGroup.get("address.street_number").value,
-          city: this.jobGroup.get("address.city").value,
-          cap: this.jobGroup.get("address.cap").value,
-          country_code: this.jobGroup.get("address.country").value,
-        },
-        type: this.jobGroup.get("type").value
-      };
-      this.api.createJobJobPost(jobCreate).subscribe((job) => {
-        this.createUpdateSuccess(job);
-      }, (error) => {
-        this.createUpdateError(error);
-      }, () => {
-        this.createUpdateComplete();
-      });
+      if(!this.subMode){
+        this.onSubmitMainJobCreate();
+      } else {
+        this.onSubmitSubJobCreate();
+      }
     } else {
-      const jobUpdate: JobUpdate = {
-        description: this.jobGroup.get("description").value,
-        name: this.jobGroup.get("name").value,
-        address: {
-          name: this.jobGroup.get("name").value,
-          street_number: this.jobGroup.get("address.street_number").value,
-          city: this.jobGroup.get("address.city").value,
-          cap: this.jobGroup.get("address.cap").value,
-          country_code: this.jobGroup.get("address.country").value,
-        }
-      };
-      this.api.updateJobJobJobIdPut(this.id, jobUpdate).subscribe((job) => {
-        this.createUpdateSuccess(job);
-      }, (error) => {
-        this.createUpdateError(error);
-      }, () => {
-        this.createUpdateComplete();
-      });
+      if(!this.subMode){
+        this.onSubmitMainJobEdit();
+      } else {
+        this.onSubmitSubJobEdit();
+      }
     }
   }
+
+  private onSubmitMainJobCreate(): void{
+    const jobCreate: JobCreate = {
+      description: this.jobGroup.get("description").value,
+      name: this.jobGroup.get("name").value,
+      client_id: this.clientId,
+      address: {
+        name: this.jobGroup.get("name").value,
+        street_number: this.jobGroup.get("address.street_number").value,
+        city: this.jobGroup.get("address.city").value,
+        cap: this.jobGroup.get("address.cap").value,
+        country_code: this.jobGroup.get("address.country").value,
+      },
+      type: this.jobGroup.get("type").value
+    };
+    this.api.createJobJobPost(jobCreate).subscribe((job) => {
+      this.createUpdateSuccess(job);
+    }, (error) => {
+      this.createUpdateError(error);
+    }, () => {
+      this.createUpdateComplete();
+    });
+  }
+
+  private onSubmitSubJobCreate(): void {
+    const subJobCreate: SubJobCreate = {
+      description: this.jobGroup.get("description").value,
+      name: this.jobGroup.get("name").value,
+    };
+    this.api.addSubjobToJobJobSubJobJobIdPost(this.mainJobId, subJobCreate).subscribe((job) => {
+      this.createUpdateSuccess(job);
+    }, (error) => {
+      this.createUpdateError(error);
+    }, () => {
+      this.createUpdateComplete();
+    });
+
+  }
+
+  private onSubmitMainJobEdit(): void {
+    const jobUpdate: JobUpdate = {
+      description: this.jobGroup.get("description").value,
+      name: this.jobGroup.get("name").value,
+      address: {
+        name: this.jobGroup.get("name").value,
+        street_number: this.jobGroup.get("address.street_number").value,
+        city: this.jobGroup.get("address.city").value,
+        cap: this.jobGroup.get("address.cap").value,
+        country_code: this.jobGroup.get("address.country").value,
+      }
+    };
+    this.api.updateJobJobJobIdPut(this.id, jobUpdate).subscribe((job) => {
+      this.createUpdateSuccess(job);
+    }, (error) => {
+      this.createUpdateError(error);
+    }, () => {
+      this.createUpdateComplete();
+    });
+  }
+
+  private onSubmitSubJobEdit(): void {
+    const subJobCreate: SubJobCreate = {
+      description: this.jobGroup.get("description").value,
+      name: this.jobGroup.get("name").value,
+    };
+    this.api.updateSubjobJobSubJobSubjobIdPut(this.id, subJobCreate).subscribe((job) => {
+      this.createUpdateSuccess(job);
+    }, (error) => {
+      this.createUpdateError(error);
+    }, () => {
+      this.createUpdateComplete();
+    });
+  }
+
 
   createUpdateSuccess(job: Job): void{
     this.id = job.id;
@@ -132,6 +205,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
     super.observableReady();
     if(!this.createMode){ //TODO: pipe all this values to first()
       this.data$.pipe(tap(job => this.jobGroup.patchValue(job))).subscribe((job) => {
+        this.subMode = job.is_sub;
         this.jobGroup.patchValue({
           name: job.orderable.name,
           type: job.type.toString(),
@@ -147,5 +221,5 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit{
     return <FormGroup> this.jobGroup.get('address');
   }
 
-
+  //TODO: change how job-type is changed. There should only be a checkbox for minijobs
 }

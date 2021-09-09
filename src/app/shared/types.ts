@@ -1,6 +1,6 @@
-import {Article, Calendar, Client, Job, Offer, User} from "eisenstecken-openapi-angular-library";
+import {Article, Calendar, Client, Job, Offer, OutgoingInvoice, User} from "eisenstecken-openapi-angular-library";
 
-export type DataSourceClass = Client | User | Calendar | Job | Offer | Article;
+export type DataSourceClass = Client | User | Calendar | Job | Offer | Article | OutgoingInvoice;
 
 export type RecursiveKeyOf<T, Prefix extends string = never> =
   T extends string | number | bigint | boolean

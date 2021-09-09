@@ -32,6 +32,6 @@ if (AppConfig.production) {
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule, {
-    preserveWhitespaces: false
+    preserveWhitespaces: true //TODO: decide if we should change this to false
   })
   .catch(err => console.error(err));

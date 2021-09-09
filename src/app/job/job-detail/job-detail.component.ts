@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {InfoDataSource} from "../../shared/components/info-builder/info-builder.datasource";
-import {Job, DefaultService, JobStatus, Offer} from "eisenstecken-openapi-angular-library";
+import {Job, DefaultService, JobStatus, Offer, OutgoingInvoice} from "eisenstecken-openapi-angular-library";
 import {ActivatedRoute, Router} from "@angular/router";
 import {InfoBuilderComponent} from "../../shared/components/info-builder/info-builder.component";
 import {Observable} from "rxjs";
@@ -21,6 +21,7 @@ export class JobDetailComponent implements OnInit {
 
   @ViewChild(InfoBuilderComponent) child:InfoBuilderComponent<Job>;
   offerDataSource: TableDataSource<Offer>;
+  outgoingInvoiceDataSource: TableDataSource<OutgoingInvoice>;
 
 
 
@@ -43,6 +44,12 @@ export class JobDetailComponent implements OnInit {
       () : void => {
         this.router.navigateByUrl('/job/edit/new/' + this.jobId.toString() + "/sub");
       }
+    ],
+    [
+      "Neue Rechnung",
+      () : void => {
+        this.router.navigateByUrl('/outgoing_invoice/edit/new/' + this.jobId.toString());
+      }
     ]
   ];
 
@@ -64,6 +71,7 @@ export class JobDetailComponent implements OnInit {
         return job.status;
       }));
       this.initOfferTable();
+      this.initOutgoingInvoiceTable();
       this.initJobDetail(id);
     });
   }
@@ -107,6 +115,50 @@ export class JobDetailComponent implements OnInit {
     );
     this.offerDataSource.loadData();
   }
+
+  private initOutgoingInvoiceTable(){
+    this.outgoingInvoiceDataSource = new TableDataSource(
+      this.api,
+      ( api, filter, sortDirection, skip, limit) => {
+        return api.readOutgoingInvoicesByJobOutgoingInvoiceJobJobIdGet(this.jobId, filter, skip, limit);
+      },
+      (dataSourceClasses) => {
+        const rows = [];
+        dataSourceClasses.forEach((dataSource) => {
+          rows.push(
+            {
+              values: {
+                id: dataSource.id,
+                date: dataSource.number,
+                full_price_with_vat: dataSource.date
+              },
+              route : () => {
+                this.locker.getLockAndTryNavigate(
+                  this.api.islockedOutgoingInvoiceOutgoingInvoiceIslockedOutgoingInvoiceIdGet(dataSource.id),
+                  this.api.lockOutgoingInvoiceOutgoingInvoiceLockOutgoingInvoiceIdPost(dataSource.id),
+                  this.api.unlockOutgoingInvoiceOutgoingInvoiceUnlockOutgoingInvoiceIdPost(dataSource.id),
+                  "outgoing_invoice/edit/" + dataSource.id.toString()
+                );
+              }
+            });
+        });
+        return rows;
+      },
+      [
+        {name: "id", headerName: "ID"},
+        {name: "number", headerName: "Nummer"},
+        {name: "date", headerName: "Datum"}
+      ],
+      (api) => {
+        return api.countOutgoingInvoicesByJobOutgoingInvoiceJobCountJobIdGet(this.jobId);
+      }
+    );
+    this.outgoingInvoiceDataSource.loadData();
+  }
+
+  //TODO: add text, to which mainjob this is (if subjob)
+  //TODO: remove orderstatus change if subjob
+  //TODO: change status of subjobs if mainjobstatus is changed
 
   private initJobDetail(id: number) {
     this.infoDataSource = new InfoDataSource<Job>(

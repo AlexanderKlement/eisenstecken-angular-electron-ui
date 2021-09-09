@@ -47,4 +47,5 @@ export class JobComponent implements OnInit {
     );
     this.jobDataSource.loadData();
   }
+
 }

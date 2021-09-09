@@ -13,6 +13,7 @@ import {DataSourceClass} from "../../types";
 export class TableBuilderComponent<T extends DataSourceClass> implements OnInit, AfterViewInit {
 
   @Input() dataSource: TableDataSource<T>;
+  @Input() title?: string;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('input') input: ElementRef;
 

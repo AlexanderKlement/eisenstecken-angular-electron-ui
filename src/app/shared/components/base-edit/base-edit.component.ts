@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable, ReplaySubject, Subject, Subscription} from "rxjs";
+import {Observable, ReplaySubject, Subscription} from "rxjs";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {DefaultService, Lock, User} from "eisenstecken-openapi-angular-library";
 import {DataSourceClass} from "../../types";
@@ -48,30 +48,30 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
         this.goBack();
       }
       console.log("Loading given datasource with id: " +  this.id.toString());
-      this.lockFunction(this.api, this.id).pipe(first()).subscribe(lock => {
-        if (!lock.locked) {//has to be locked, otherwise component is accessed directly {
-          console.error("BaseEditComponent: The lock is not locked. This should not happen on accessing a ressource");
-          this.goBack();
-        }
-        this.me$.pipe(first()).subscribe((user) => {
-          if (user.id != lock.user.id){//if locked by other user go back
-            console.error("BaseEditComponent: The accessed ressource is locked by another user");
+      if(!this.createMode){
+        this.lockFunction(this.api, this.id).pipe(first()).subscribe(lock => {
+          if (!lock.locked) {//has to be locked, otherwise component is accessed directly {
+            console.error("BaseEditComponent: The lock is not locked. This should not happen on accessing a ressource");
             this.goBack();
           }
-
-          else{   //now we talking
-            this.data$ = this.dataFunction(this.api, this.id);
-            this.observableReady();
-            this.timeouts.push(setTimeout(() => {
-              this.showWarningDialog(lock.max_lock_time_minutes, lock.reminder_time_minutes);
-            }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes - lock.reminder_time_minutes)));
-            this.timeouts.push(setTimeout( () => {
-              console.warn("BaseEditComponent: Going back, because maximum access time is over");
+          this.me$.pipe(first()).subscribe((user) => {
+            if (user.id != lock.user.id){//if locked by other user go back
+              console.error("BaseEditComponent: The accessed ressource is locked by another user");
               this.goBack();
-            }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes)));
-          }
+            } else{   //now we talking
+              this.data$ = this.dataFunction(this.api, this.id);
+              this.observableReady();
+              this.timeouts.push(setTimeout(() => {
+                this.showWarningDialog(lock.max_lock_time_minutes, lock.reminder_time_minutes);
+              }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes - lock.reminder_time_minutes)));
+              this.timeouts.push(setTimeout( () => {
+                console.warn("BaseEditComponent: Going back, because maximum access time is over");
+                this.goBack();
+              }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes)));
+            }
+          });
         });
-      });
+      }
     });
   }
 
@@ -100,10 +100,13 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
     this.router.navigateByUrl(this.navigationTarget);
   }
 
-  protected observableReady():void {}
+  protected observableReady():void {
+    console.info("BaseEditComponent: The data observable is ready");
+  }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   createUpdateError(error: any): void {
+    this.submitted = false;
     console.log(error); //TODO: make error handling here
   }
 

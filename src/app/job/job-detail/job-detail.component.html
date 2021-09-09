@@ -1,4 +1,5 @@
 <app-toolbar [buttonList]="buttons"></app-toolbar>
 <app-job-status-bar [selectedStatus]="selectedJobStatus" [jobId]="jobId"></app-job-status-bar>
 <app-info-builder [dataSource]="infoDataSource"></app-info-builder>
-<app-table-builder [dataSource]="offerDataSource"></app-table-builder>
+<app-table-builder [dataSource]="offerDataSource" title="Angebote"></app-table-builder>
+<app-table-builder [dataSource]="outgoingInvoiceDataSource" title="Rechnungen"></app-table-builder>

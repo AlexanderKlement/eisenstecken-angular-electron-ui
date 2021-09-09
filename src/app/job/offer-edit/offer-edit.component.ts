@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {AbstractControl, Form, FormArray, FormControl, FormGroup} from "@angular/forms";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AbstractControl, FormArray, FormControl, FormGroup} from "@angular/forms";
 import {BaseEditComponent} from "../../shared/components/base-edit/base-edit.component";
 import {
   DefaultService,
@@ -13,14 +13,14 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
 import {first, tap} from "rxjs/operators";
-import {formatDate, CommonModule} from '@angular/common';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-offer-edit',
   templateUrl: './offer-edit.component.html',
   styleUrls: ['./offer-edit.component.scss']
 })
-export class OfferEditComponent extends BaseEditComponent<Offer> implements OnInit {
+export class OfferEditComponent extends BaseEditComponent<Offer> implements OnInit, OnDestroy {
 
   navigationTarget = "job";
   jobId: number;
@@ -36,7 +36,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     return this.offerGroup.get('discount_amount') as FormControl;
   }
 
-  private static formatDate(datetime: string) { //TODO: move to some sort of util class or so
+  private static formatDate(datetime: string): string { //TODO: move to some sort of util class or so
     return formatDate(datetime, 'yyyy-MM-dd', 'en-US');
   }
 
