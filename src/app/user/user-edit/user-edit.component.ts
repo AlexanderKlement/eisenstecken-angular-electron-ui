@@ -1,5 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {BaseEditComponent} from "../../shared/components/base-edit/base-edit.component";
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {BaseEditComponent} from '../../shared/components/base-edit/base-edit.component';
 import {
   DefaultService,
   Lock,
@@ -8,36 +8,42 @@ import {
   UserCreate,
   UserPassword,
   UserUpdate
-} from "eisenstecken-openapi-angular-library";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MatDialog} from "@angular/material/dialog";
-import {FormControl, FormGroup} from "@angular/forms";
-import {Observable} from "rxjs";
-import {first, map, tap} from "rxjs/operators";
-import {MatSelectionList} from "@angular/material/list";
+} from 'eisenstecken-openapi-angular-library';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {first, tap} from 'rxjs/operators';
+import {MatSelectionList} from '@angular/material/list';
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-user-edit',
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit.component.scss']
 })
-export class UserEditComponent extends BaseEditComponent<User> implements OnInit {
-  userGroup: FormGroup;
-  passwordGroup: FormGroup;
-  availableRights : Right[];
-  userRights : Right[];
-  rightsLoaded = false;
+export class UserEditComponent extends BaseEditComponent<User> implements OnInit, OnDestroy {
 
   @ViewChild('rights') rightsSelected: MatSelectionList;
 
-  navigationTarget = "user";
-  lockFunction = (api: DefaultService, id: number): Observable<Lock> => {
-    return api.islockedUserUsersIslockedUserIdGet(id);
-  };
+  userGroup: FormGroup;
+  passwordGroup: FormGroup;
+  availableRights: Right[];
+  userRights: Right[];
+  rightsLoaded = false;
 
-  dataFunction = (api: DefaultService, id: number): Observable<User> => {
-    return api.readUserUsersUserIdGet(id);
-  };
+
+  navigationTarget = 'user';
+
+  constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog, private snackBar: MatSnackBar) {
+    super(api, router, route, dialog);
+  }
+
+
+  lockFunction = (api: DefaultService, id: number): Observable<Lock> => api.islockedUserUsersIslockedUserIdGet(id);
+
+  dataFunction = (api: DefaultService, id: number): Observable<User> => api.readUserUsersUserIdGet(id);
 
   unlockFunction = (afterUnlockFunction: VoidFunction = () => {
   }): void => {
@@ -50,23 +56,20 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
     });
   };
 
-  constructor(api: DefaultService, router: Router,  route: ActivatedRoute, dialog: MatDialog) {
-    super(api, router, route, dialog);
-  }
 
   ngOnInit(): void {
     super.ngOnInit();
     this.userGroup = new FormGroup({
-      firstname: new FormControl(""),
-      secondname: new FormControl(""),
-      email: new FormControl(""),
-      tel: new FormControl(""),
-      password: new FormControl("")
+      firstname: new FormControl(''),
+      secondname: new FormControl(''),
+      email: new FormControl(''),
+      tel: new FormControl(''),
+      password: new FormControl('')
     });
     this.passwordGroup = new FormGroup({
-      password : new FormControl("")
+      password: new FormControl('')
     });
-    if(!this.createMode) {
+    if (!this.createMode) {
       this.api.getRightsRightsGet().pipe(first()).subscribe((rights) => {
         this.availableRights = rights;
         this.api.readUserUsersUserIdGet(this.id).pipe(first()).subscribe((user) => {
@@ -78,8 +81,8 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
   }
 
   userHasRight(rightKey: string): boolean {
-    for(let i=0; i<this.userRights.length; i++){
-      if(this.userRights[i].key == rightKey){
+    for (const userRight of this.userRights) {
+      if (userRight.key === rightKey) {
         return true;
       }
     }
@@ -91,18 +94,21 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
   }
 
 
-  observableReady() :void {
+  observableReady(): void {
     super.observableReady();
-    if(!this.createMode){
+    if (!this.createMode) {
       this.data$.pipe(tap(user => this.userGroup.patchValue(user)), first()).subscribe();
     }
   }
 
   createUpdateSuccess(user: User): void {
     this.id = user.id;
-    this.navigationTarget = "user/edit/" + user.id.toString();
+    this.navigationTarget = 'user/edit/' + user.id.toString();
     this.unlockFunction(() => {
       this.router.navigateByUrl(this.navigationTarget);
+    });
+    this.snackBar.open('Speichern erfolgreich!', 'Ok', {
+      duration: 3000
     });
   }
 
@@ -110,15 +116,15 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
     this.submitted = true;
   }
 
-  onSubmitGeneral() :void {
+  onSubmitGeneral(): void {
     this.onSubmit();
-    if(this.createMode) {
+    if (this.createMode) {
       const userCreate: UserCreate = {
-        email: this.userGroup.get("email").value,
-        tel: this.userGroup.get("tel").value,
-        firstname: this.userGroup.get("firstname").value,
-        secondname: this.userGroup.get("secondname").value,
-        password: this.userGroup.get("password").value
+        email: this.userGroup.get('email').value,
+        tel: this.userGroup.get('tel').value,
+        firstname: this.userGroup.get('firstname').value,
+        secondname: this.userGroup.get('secondname').value,
+        password: this.userGroup.get('password').value
       };
       this.api.createUserUsersPost(userCreate).pipe(first()).subscribe((user) => {
         this.createUpdateSuccess(user);
@@ -129,10 +135,10 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
       });
     } else {
       const userUpdate: UserUpdate = {
-        email: this.userGroup.get("email").value,
-        tel: this.userGroup.get("tel").value,
-        firstname: this.userGroup.get("firstname").value,
-        secondname: this.userGroup.get("secondname").value,
+        email: this.userGroup.get('email').value,
+        tel: this.userGroup.get('tel').value,
+        firstname: this.userGroup.get('firstname').value,
+        secondname: this.userGroup.get('secondname').value,
       };
       this.api.updateUserUsersUserIdPut(this.id, userUpdate).pipe(first()).subscribe((user) => {
         this.createUpdateSuccess(user);
@@ -157,7 +163,7 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
 
   onSubmitPassword(): void {
     const userPassword: UserPassword = {
-      password: this.passwordGroup.get("password").value
+      password: this.passwordGroup.get('password').value
     };
     this.api.updateUserPasswordUsersPasswordUserIdPut(this.id, userPassword).pipe(first()).subscribe((user) => {
       this.createUpdateSuccess(user);

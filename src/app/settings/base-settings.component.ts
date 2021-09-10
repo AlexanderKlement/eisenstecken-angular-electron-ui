@@ -52,9 +52,9 @@ export abstract class BaseSettingsComponent  {
     });
     this.api.setBulkParameterByKeyParameterBulkSetPost(parameters).pipe(first()).subscribe((success) => {
       if(success){
-        this.snackBar.open('Gespeichert', 'Ok', {
+        this.snackBar.open('Speichern erfolgreich!', 'Ok', {
           duration: 3000
-        });
+        }); //TODO: show a message if not
       } else {
         console.error('Save did not work'); //This should not be possible atm
       }
