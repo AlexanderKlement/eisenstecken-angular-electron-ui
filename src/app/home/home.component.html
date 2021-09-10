@@ -1,6 +1,13 @@
-<div fxLayout="row" fxLayoutAlign="space-between center" class="container">
-  <app-calendars-frame></app-calendars-frame>
-  <!--<app-calendar></app-calendar>-->
-  <app-note></app-note>
-  <app-menu-tiles></app-menu-tiles>
+<div fxLayout="column" fxLayoutGap="10">
+  <div fxFlex="10">
+    <img class="logo" src="assets/logos/ESS-Logo-RGB-Pos.jpg" alt="Eisenstecken-logo">
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="80">
+    <app-calendars-frame fxFlex="40"></app-calendars-frame>
+    <app-note fxFlex="15"></app-note>
+    <app-menu-tiles fxFlex="30"></app-menu-tiles>
+  </div>
+  <div fxFlex="10">
+  </div>
 </div>
+

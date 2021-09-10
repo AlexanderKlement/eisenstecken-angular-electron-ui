@@ -1,22 +1,22 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Calendar, DefaultService} from "eisenstecken-openapi-angular-library";
-import {Observable} from "rxjs";
-import {first, tap} from "rxjs/operators";
-import {ChatService} from "../chat/chat.service";
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Calendar, DefaultService} from 'eisenstecken-openapi-angular-library';
+import {Observable} from 'rxjs';
+import {first, tap} from 'rxjs/operators';
+import {ChatService} from '../chat/chat.service';
 
 @Component({
   selector: 'app-calendars-frame',
   templateUrl: './calendars-chat-frame.component.html',
   styleUrls: ['./calendars-chat-frame.component.scss']
 })
-export class CalendarsChatFrameComponent implements OnInit {
+export class CalendarsChatFrameComponent implements OnInit, OnDestroy {
+
+  @ViewChild('chatTab') chatTab;
 
   calendars$: Observable<Calendar[]>;
   loading = true;
-  chatTabName = "Chat";
+  chatTabName = 'Chat';
 
-
-  @ViewChild("chatTab") chatTab;
   checkIfUnreadMessagesInterval: NodeJS.Timeout;
   secondsCheckIfUnreadMessages = 2;
 
@@ -27,11 +27,12 @@ export class CalendarsChatFrameComponent implements OnInit {
     this.calendars$ = this.api.readCalendarsCalendarGet().pipe(first(), tap(() => {
       this.loading = false;
     }));
-    this.checkIfUnreadMessagesInterval = setInterval(() => { //TODO: may there is a lighter method than checking every x seconds -> is there some sort of event?
+    this.checkIfUnreadMessagesInterval = setInterval(() => {
+      //TODO: may there is a lighter method than checking every x seconds -> is there some sort of event?
       this.resetUnreadChatMessageCountIfActive();
     }, 1000 * this.secondsCheckIfUnreadMessages);
     this.chatService.getAmountOfUnreadMessages().subscribe((amountOfUnreadChatMessages) => {
-      this.chatTabName = "Chat " + amountOfUnreadChatMessages.toString();
+      this.chatTabName = 'Chat ' + amountOfUnreadChatMessages.toString();
     });
   }
 
@@ -39,8 +40,8 @@ export class CalendarsChatFrameComponent implements OnInit {
     clearInterval(this.checkIfUnreadMessagesInterval);
   }
 
-  private resetUnreadChatMessageCountIfActive() : void {
-    if(this.chatTab.isActive){
+  private resetUnreadChatMessageCountIfActive(): void {
+    if (this.chatTab.isActive) {
       this.chatService.resetUnreadMessageCount();
     }
   }

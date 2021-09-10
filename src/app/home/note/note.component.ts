@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {DefaultService, Note, NoteCreate} from "eisenstecken-openapi-angular-library";
+import {DefaultService, Note, NoteCreate} from 'eisenstecken-openapi-angular-library';
 
 @Component({
   selector: 'app-note',
@@ -32,7 +32,7 @@ export class NoteComponent implements OnInit {
   }
 
   public newNoteClicked(): void {
-    const noteCreate:NoteCreate = {text: ""};
+    const noteCreate: NoteCreate = {text: ''};
     const newNoteObservable = this.api.createNoteEntryNotePost(noteCreate);
     newNoteObservable.subscribe((note) => {
       this.notes.push(note);

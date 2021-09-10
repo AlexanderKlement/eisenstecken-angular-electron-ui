@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
-import {AuthService} from "../shared/auth.service";
-import {DefaultService} from "eisenstecken-openapi-angular-library";
+import {FormControl, FormGroup} from '@angular/forms';
+import {AuthService} from '../shared/auth.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,17 +16,24 @@ export class LoginComponent implements OnInit {
     password: new FormControl(),
   });
 
-  constructor(private authService: AuthService, private api: DefaultService) {
-    console.log(this.api.readUnitsUnitGet());
+  constructor(private authService: AuthService, protected snackBar: MatSnackBar, private router: Router) {
   }
 
   ngOnInit(): void {
   }
 
   onSubmit(): void {
-    console.info("Login Button clicked");
-    console.log(this.loginForm.value);
-    this.authService.login(this.loginForm.value.username, this.loginForm.value.password);
+    const loginSuccess = this.authService.login(this.loginForm.value.username, this.loginForm.value.password);
+    loginSuccess.then((success) => {
+      if (success) {
+        console.log('Login Success');
+        this.router.navigate(['home']);
+      } else {
+        this.snackBar.open('Anmeldung fehlgeschlagen. Email/Password überprüfen', 'OK', {
+          duration: 10000
+        });
+      }
+    });
   }
 }
 

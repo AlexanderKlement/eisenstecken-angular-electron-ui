@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, ReplaySubject, Subscription} from 'rxjs';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {DefaultService, Lock, User} from 'eisenstecken-openapi-angular-library';
@@ -12,7 +12,7 @@ import {first} from 'rxjs/operators';
   template: ``,
   styleUrls: ['./base-edit.component.scss']
 })
-export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
+export class BaseEditComponent<T extends DataSourceClass> implements OnInit, OnDestroy {
 
   //This has to be defined by Derived class:
   navigationTarget: string;
@@ -35,36 +35,40 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
     this.timeouts = [];
   }
 
+  private static minutesToMilliSeconds(minutes: number): number {
+    return minutes * 60 * 1000;
+  }
+
   ngOnInit(): void {
     this.me$ = this.api.readUsersMeUsersMeGet();
     this.routeParams.pipe(first()).subscribe((params) => {
-      if(params.id == 'new'){
+      if (params.id === 'new') {
         this.createMode = true;
         return;
       }
-      this.id = parseInt(params.id);
-      if(isNaN(this.id)){
+      this.id = parseInt(params.id, 10);
+      if (isNaN(this.id)) {
         console.error('BaseEditComponent: Cannot parse given id');
         this.goBack();
       }
-      console.log('Loading given datasource with id: ' +  this.id.toString());
-      if(!this.createMode){
+      console.log('Loading given datasource with id: ' + this.id.toString());
+      if (!this.createMode) {
         this.lockFunction(this.api, this.id).pipe(first()).subscribe(lock => {
           if (!lock.locked) {//has to be locked, otherwise component is accessed directly {
             console.error('BaseEditComponent: The lock is not locked. This should not happen on accessing a ressource');
             this.goBack();
           }
           this.me$.pipe(first()).subscribe((user) => {
-            if (user.id != lock.user.id){//if locked by other user go back
+            if (user.id !== lock.user.id) {//if locked by other user go back
               console.error('BaseEditComponent: The accessed ressource is locked by another user');
               this.goBack();
-            } else{   //now we talking
+            } else {   //now we talking
               this.data$ = this.dataFunction(this.api, this.id);
               this.observableReady();
               this.timeouts.push(setTimeout(() => {
                 this.showWarningDialog(lock.max_lock_time_minutes, lock.reminder_time_minutes);
               }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes - lock.reminder_time_minutes)));
-              this.timeouts.push(setTimeout( () => {
+              this.timeouts.push(setTimeout(() => {
                 console.warn('BaseEditComponent: Going back, because maximum access time is over');
                 this.goBack();
               }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes)));
@@ -82,7 +86,6 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
     });
   }
 
-
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   createUpdateError(error: any): void {
     this.submitted = false;
@@ -93,8 +96,13 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
     this.submitted = false;
   }
 
-  private static minutesToMilliSeconds(minutes: number): number {
-    return minutes * 60 * 1000;
+  protected goBack(): void {
+    console.log('BaseEditComponent: Go Back is called');
+    this.router.navigateByUrl(this.navigationTarget);
+  }
+
+  protected observableReady(): void {
+    console.info('BaseEditComponent: The data observable is ready');
   }
 
   private showWarningDialog(totBlockTime: number, remBlockTime: number): void {
@@ -105,15 +113,5 @@ export class BaseEditComponent <T extends DataSourceClass> implements OnInit {
       }
     });
   }
-
-
-  protected goBack(): void {
-    console.log('BaseEditComponent: Go Back is called');
-    this.router.navigateByUrl(this.navigationTarget);
-  }
-
-  protected observableReady(): void {
-    console.info('BaseEditComponent: The data observable is ready');
-  }
-
 }
+
