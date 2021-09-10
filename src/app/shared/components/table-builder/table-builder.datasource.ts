@@ -1,8 +1,8 @@
-import {CollectionViewer, DataSource} from "@angular/cdk/collections";
-import {BehaviorSubject, Observable, of} from "rxjs";
-import {DefaultService} from "eisenstecken-openapi-angular-library";
-import {catchError, finalize, map} from "rxjs/operators";
-import {DataSourceClass, RecursiveKeyOf} from "../../types";
+import {CollectionViewer, DataSource} from '@angular/cdk/collections';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {DefaultService} from 'eisenstecken-openapi-angular-library';
+import {catchError, finalize, map} from 'rxjs/operators';
+import {DataSourceClass, RecursiveKeyOf} from '../../types';
 
 export interface Column<T> {
   name: RecursiveKeyOf<T>;
@@ -16,8 +16,8 @@ export interface Row<T> {
 }
 
 export const defaultValues = {
-  filter: "",
-  sortDirection: "ASC",
+  filter: '',
+  sortDirection: 'ASC',
   pageIndex: 1,
   pageSize: 25,
   pageSizeOptions: [
@@ -36,7 +36,7 @@ export type LoadFunction<T> = (api: DefaultService, filter: string, sortDirectio
 
 export type ParseFunction<T extends DataSourceClass> = (dataSourceClasses: T[]) => Row<T>[];
 
-export type AmountFunction = (api:DefaultService) => Observable<number>;
+export type AmountFunction = (api: DefaultService) => Observable<number>;
 
 export class TableDataSource<T extends DataSourceClass> extends DataSource<Row<T>> {
 

@@ -18,6 +18,7 @@
   ],
   "angularCompilerOptions": {
     "strictTemplates": true,
+    "strictInputTypes": false, //TODO: check if needed: was added to support ngx-mat-datetime-picker
     "fullTemplateTypeCheck": true,
     "annotateForClosureCompiler": true,
     "strictInjectionParameters": true,

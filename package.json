@@ -43,16 +43,16 @@
   "dependencies": {
     "@angular-material-components/datetime-picker": "6.0.3",
     "@angular-material-components/moment-adapter": "6.0.0",
-    "@angular/animations": "12.0.2",
-    "@angular/cdk": "12.0.4",
+    "@angular/animations": "12.1.2",
+    "@angular/cdk": "12.1.2",
     "@angular/common": "12.1.2",
     "@angular/compiler": "12.1.2",
-    "@angular/compiler-cli": "12.0.2",
+    "@angular/compiler-cli": "12.1.2",
     "@angular/core": "12.1.2",
     "@angular/flex-layout": "12.0.0-beta.34",
     "@angular/forms": "12.1.2",
     "@angular/language-service": "12.1.2",
-    "@angular/material": "12.0.4",
+    "@angular/material": "12.1.2",
     "@angular/platform-browser": "12.1.2",
     "@angular/platform-browser-dynamic": "12.1.2",
     "@angular/router": "12.1.2",
@@ -68,7 +68,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "12.1.0",
+    "@angular-builders/custom-webpack": "12.1.2",
     "@angular-devkit/build-angular": "12.1.2",
     "@angular-eslint/builder": "12.3.1",
     "@angular-eslint/eslint-plugin": "12.3.1",
@@ -78,7 +78,6 @@
     "@angular/cli": "12.1.2",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
-    "@openapitools/openapi-generator-cli": "2.3.3",
     "@types/jasmine": "3.8.1",
     "@types/jasminewd2": "2.0.10",
     "@types/mocha": "8.2.3",
@@ -108,8 +107,8 @@
     "npm-run-all": "4.1.5",
     "spectron": "15.0.0",
     "ts-node": "10.1.0",
-    "typescript": "~4.2.0",
-    "wait-on": "5.0.1",
+    "typescript": "4.2.3",
+    "wait-on": "5.3.0",
     "webdriver-manager": "12.1.8"
   },
   "engines": {

@@ -1,7 +1,18 @@
-<p>login works!</p>
+<div class="logo">
+  <img src="assets/logos/ESS-Logo-RGB-Pos.jpg" alt="Eisenstecken-logo">
+</div>
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <input type="text" id="username" formControlName="username">
-  <input type="password" id="password" formControlName="password">
-  <button type="submit">Submit</button>
+  <div fxLayout="column" fxLayoutAlign="space-around center" >
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input class="form-control" type="text" formControlName="username" matInput>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Passwort</mat-label>
+      <input class="form-control" type="password" formControlName="password" matInput>
+    </mat-form-field>
+    <button mat-raised-button type="submit">Anmelden</button>
+  </div>
+
 </form>
 <app-test></app-test>

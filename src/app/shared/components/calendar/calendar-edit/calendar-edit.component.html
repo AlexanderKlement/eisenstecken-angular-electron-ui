@@ -13,14 +13,14 @@
     </mat-form-field>
     <mat-form-field>
       <input matInput [ngxMatDatetimePicker]="start_picker" placeholder="Startzeit" formControlName="start_time">
-      <mat-datepicker-toggle matSuffix [for]="start_picker"></mat-datepicker-toggle>
-      <ngx-mat-datetime-picker #start_picker stepMinute="10">
+      <mat-datepicker-toggle matSuffix [for]="$any(start_picker)"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #start_picker stepMinute=10>
       </ngx-mat-datetime-picker>
     </mat-form-field>
     <mat-form-field>
       <input matInput [ngxMatDatetimePicker]="end_picker" placeholder="Endzeit" formControlName="end_time">
-      <mat-datepicker-toggle matSuffix [for]="end_picker"></mat-datepicker-toggle>
-      <ngx-mat-datetime-picker #end_picker stepMinute="10">
+      <mat-datepicker-toggle matSuffix [for]="$any(end_picker)"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #end_picker stepMinute=10>
       </ngx-mat-datetime-picker>
     </mat-form-field>
     <div fxLayout="row" fxLayoutAlign="space-between center">

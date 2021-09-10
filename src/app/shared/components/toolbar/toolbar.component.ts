@@ -1,5 +1,10 @@
 import {Component, HostListener, Input, OnInit} from '@angular/core';
-import {NavigationService} from "../../navigation.service";
+import {NavigationService} from '../../navigation.service';
+
+export interface CustomButton {
+  name: string;
+  navigate: VoidFunction;
+}
 
 @Component({
   selector: 'app-toolbar',
@@ -8,18 +13,21 @@ import {NavigationService} from "../../navigation.service";
 })
 export class ToolbarComponent implements OnInit {
 
-  @Input() buttonList?: [[string, VoidFunction]];
+  @Input() buttonList?: CustomButton[];
   @Input() beforeBackFunction?: (afterBackFunction: VoidFunction) => void;
 
+  // @ts-ignore
   @HostListener('window:popstate', ['$event'])
+
+  constructor(private navigation: NavigationService) { }
+
   onBrowserBackBtnClose(event: Event): void {
-    console.info('back button pressed');
     event.preventDefault();
     this.navigation.backEvent();
     this.backClicked();
   }
 
-  constructor(private navigation: NavigationService) { }
+
 
   ngOnInit(): void {
   }

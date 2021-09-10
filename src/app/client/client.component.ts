@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {TableDataSource} from "../shared/components/table-builder/table-builder.datasource";
-import {DefaultService, Client} from "eisenstecken-openapi-angular-library";
-import {Router} from "@angular/router";
+import {TableDataSource} from '../shared/components/table-builder/table-builder.datasource';
+import {DefaultService, Client} from 'eisenstecken-openapi-angular-library';
+import {Router} from '@angular/router';
+import {CustomButton} from "../shared/components/toolbar/toolbar.component";
 
 @Component({
   selector: 'app-client',
@@ -13,13 +14,13 @@ export class ClientComponent implements OnInit {
 
   public clientDataSource: TableDataSource<Client>;
 
-  public buttons = [
-    [
-      "Neuer Kunde",
-      (): void => {
+  public buttons: CustomButton[]  = [
+    {
+      name:  'Neuer Kunde',
+      navigate:    (): void => {
         this.router.navigateByUrl('/client/edit/new');
       }
-    ]
+    },
   ];
 
   constructor(private api: DefaultService, private router: Router) {}
@@ -27,9 +28,7 @@ export class ClientComponent implements OnInit {
   ngOnInit(): void {
     this.clientDataSource = new TableDataSource(
       this.api,
-      ( api, filter, sortDirection, skip, limit) => {
-        return api.readClientsClientGet(skip, limit, filter);
-      },
+      ( api, filter, sortDirection, skip, limit) => api.readClientsClientGet(skip, limit, filter),
       (dataSourceClasses) => {
         const rows = [];
         dataSourceClasses.forEach((dataSource) => {
@@ -48,13 +47,11 @@ export class ClientComponent implements OnInit {
         return rows;
       },
       [
-        {name: "id", headerName: "ID"},
-        {name: "name", headerName: "Name"},
-        {name: "lastname", headerName: "Nachname"}
+        {name: 'id', headerName: 'ID'},
+        {name: 'name', headerName: 'Name'},
+        {name: 'lastname', headerName: 'Nachname'}
       ],
-      (api) => {
-        return api.readClientCountClientCountGet();
-      }
+      (api) => api.readClientCountClientCountGet()
     );
     this.clientDataSource.loadData();
   }
