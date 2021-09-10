@@ -1,15 +1,14 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
-import { AppConfig } from './environments/environment';
-import * as Sentry from "@sentry/angular";
-import {Integrations} from "@sentry/tracing";
+import * as Sentry from '@sentry/angular';
+import {Integrations} from '@sentry/tracing';
 
 Sentry.init({
-  dsn: "https://739b39d0b92749a485e48a80da87816e@sentry.kivi.bz.it/26",
+  dsn: 'https://739b39d0b92749a485e48a80da87816e@sentry.kivi.bz.it/26',
   integrations: [
     new Integrations.BrowserTracing({
-      tracingOrigins: ["localhost", "https://yourserver.io/api"],
+      tracingOrigins: ['localhost', 'https://yourserver.io/api'],
       routingInstrumentation: Sentry.routingInstrumentation,
     }),
   ],
@@ -25,8 +24,9 @@ platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .then(success => console.log(`Bootstrap success`))
   .catch(err => console.error(err));
+import { APP_CONFIG } from './environments/environment';
 
-if (AppConfig.production) {
+if (APP_CONFIG.production) {
   enableProdMode();
 }
 

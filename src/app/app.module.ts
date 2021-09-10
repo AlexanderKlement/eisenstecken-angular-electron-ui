@@ -12,7 +12,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ApiModule, Configuration, ConfigurationParameters} from 'eisenstecken-openapi-angular-library';
 import { HomeModule } from './home/home.module';
 import { DetailModule } from './detail/detail.module';
-import { AppConfig } from 'environments/environment';
+import { APP_CONFIG } from 'environments/environment';
 
 import { AppComponent } from './app.component';
 import { AuthService } from "./shared/auth.service";
@@ -44,15 +44,13 @@ import {ClientModule} from "./client/client.module";
 import {UserModule} from "./user/user.module";
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 // AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
+const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
 registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 
 export function apiConfigFactory (): Configuration {
   const params: ConfigurationParameters = {
-    basePath: AppConfig.API_BASE_PATH,
+    basePath: APP_CONFIG.apiBasePath,
   };
   return new Configuration(params);
 }
@@ -79,7 +77,7 @@ export function apiConfigFactory (): Configuration {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: httpLoaderFactory,
         deps: [HttpClient]
       }
     }),
@@ -120,7 +118,7 @@ export function apiConfigFactory (): Configuration {
       useFactory: (authService: AuthService) => new Configuration(
         {
           accessToken: authService.getToken.bind(authService),
-          basePath: AppConfig.API_BASE_PATH,
+          basePath: APP_CONFIG.apiBasePath,
         }
       ),
       deps: [AuthService],

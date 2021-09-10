@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ElectronService } from './core/services';
 import { TranslateService } from '@ngx-translate/core';
-import { AppConfig } from '../environments/environment';
 import { DefaultService } from 'eisenstecken-openapi-angular-library';
+import { APP_CONFIG } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ export class AppComponent {
     private apiGateway: DefaultService
   ) {
     this.translate.setDefaultLang('de');
-    console.log('AppConfig', AppConfig);
+    console.log('APP_CONFIG', APP_CONFIG);
 
     if (electronService.isElectron) {
       console.log(process.env);

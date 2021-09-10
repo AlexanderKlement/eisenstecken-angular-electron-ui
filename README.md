@@ -18,9 +18,9 @@ Bootstrap and package your project with Angular 12 and Electron 13 (Typescript +
 
 Currently runs with:
 
-- Angular v12.0.2
-- Electron v13.0.1
-- Electron Builder v22.10.5
+- Angular v12.1.2
+- Electron v13.1.7
+- Electron Builder v22.11.9
 
 With this sample, you can:
 
@@ -30,7 +30,7 @@ With this sample, you can:
 
 /!\ Hot reload only pertains to the renderer process. The main electron process is not able to be hot reloaded, only restarted.
 
-/!\ Angular 12.x CLI needs Node 11 or later to work correctly.
+/!\ Angular CLI & Electron Builder needs Node 14 or later to work correctly.
 
 ## Getting Started
 
@@ -58,7 +58,7 @@ npm install -g @angular/cli
 *Install NodeJS dependencies with npm (used by Electron main process):*
 
 ``` bash
-cp app/
+cd app/
 npm install
 ```
 
@@ -81,15 +81,19 @@ You can disable "Developer Tools" by commenting `win.webContents.openDevTools();
 | app | Electron main process folder (NodeJS) |
 | src | Electron renderer process folder (Web / Angular) |
 
-## Use Electron / NodeJS libraries
+## How to import 3rd party libraries
 
-3rd party libraries used in electron's main process (like an ORM) have to be added in `dependencies` of `app/package.json`.
 This sample project runs in both modes (web and electron). To make this work, **you have to import your dependencies the right way**. \
 
-## Use "web" 3rd party libraries (like angular, material, bootstrap, ...)
+There are two kind of 3rd party libraries :
+- NodeJS's one (like an ORM, Database...)
+    - Used in electron's Main process (app folder) have to be added in `dependencies` of `app/package.json`
+    - Used in electron's Renderer process (src folder) have to be added in `dependencies` of both `app/package.json` and `package.json (root folder)`
 
-3rd party libraries used in electron's renderer process (like angular) have to be added in `dependencies` of `package.json`. \
 Please check `providers/electron.service.ts` to watch how conditional import of libraries has to be done when using NodeJS / 3rd party libraries in renderer context (i.e. Angular).
+
+- Web's one (like bootstrap, material, tailwind...)
+    - It have to be added in `dependencies` of `package.json  (root folder)`
 
 ## Add a dependency with ng-add
 
@@ -148,7 +152,7 @@ Please note that Hot reload is only available in Renderer process.
 - Angular 8 & Electron 7 : Branch [angular8](https://github.com/maximegris/angular-electron/tree/angular8)
 - Angular 9 & Electron 7 : Branch [angular9](https://github.com/maximegris/angular-electron/tree/angular9)
 - Angular 10 & Electron 9 : Branch [angular10](https://github.com/maximegris/angular-electron/tree/angular10)
-- Angular 11 & Electron 12 : Branch [angular10](https://github.com/maximegris/angular-electron/tree/angular11)
+- Angular 11 & Electron 12 : Branch [angular11](https://github.com/maximegris/angular-electron/tree/angular11)
 - Angular 12 & Electron 13 : (master)
 
 [maintained-badge]: https://img.shields.io/badge/maintained-yes-brightgreen
