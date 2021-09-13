@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {TableDataSource} from "../shared/components/table-builder/table-builder.datasource";
-import {DefaultService, Job} from "eisenstecken-openapi-angular-library";
-import {Router} from "@angular/router";
+import {TableDataSource} from '../shared/components/table-builder/table-builder.datasource';
+import {DefaultService, Job} from 'eisenstecken-openapi-angular-library';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-job',
@@ -16,17 +16,17 @@ export class JobComponent implements OnInit {
   ngOnInit(): void {
     this.jobDataSource = new TableDataSource(
       this.api,
-      ( api, filter, sortDirection, skip, limit) => {
-        return api.readJobsByClientJobClientClientIdGet(0, filter, skip, limit); //TODO: remove this 0, to get all clients
-      },
+      ( api, filter, sortDirection, skip, limit) =>
+         api.readMainjobsJobMainGet(skip, limit, filter)
+      ,
       (dataSourceClasses) => {
         const rows = [];
         dataSourceClasses.forEach((dataSource) => {
           rows.push(
             {
               values: {
-                id: dataSource.id,
-                "orderable.name" : dataSource.orderable.name,
+                'orderable.name' : dataSource.orderable.name,
+                'client.name' : dataSource.client.fullname,
                 description: dataSource.description
               },
               route : () => {
@@ -37,13 +37,11 @@ export class JobComponent implements OnInit {
         return rows;
       },
       [
-        {name: "id", headerName: "ID"},
-        {name: "orderable.name", headerName: "Name"},
-        {name: "description", headerName: "Beschreibung"}
+        {name: 'orderable.name', headerName: 'Name'},
+        {name: 'client.name', headerName: 'Kunde'},
+        {name: 'description', headerName: 'Beschreibung'}
       ],
-      (api) => {
-        return api.readJobCountJobCountGet();
-      }
+      (api) => api.readJobCountJobCountMainGet()
     );
     this.jobDataSource.loadData();
   }
