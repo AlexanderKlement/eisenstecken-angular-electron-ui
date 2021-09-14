@@ -13,6 +13,9 @@ import {CalendarEditComponent} from './shared/components/calendar/calendar-edit/
 import {SettingsModule} from './settings/settings.module';
 import {UserRoutingModule} from './user/user-routing.module';
 import {InvoiceRoutingModule} from './invoice/invoice-routing.module';
+import {SupplierRoutingModule} from './supplier/supplier-routing.module';
+import {OrderRoutingModule} from './order/order-routing.module';
+import {SettingsRoutingModule} from './settings/settings-routing.module';
 
 const routes: Routes = [
     {
@@ -43,9 +46,11 @@ const routes: Routes = [
         LoginRoutingModule,
         ClientRoutingModule,
         JobRoutingModule,
-        SettingsModule, //TODO: shouldn't this be a routing module?
+        OrderRoutingModule,
+        SettingsRoutingModule,
         InvoiceRoutingModule,
-        UserRoutingModule
+        UserRoutingModule,
+        SupplierRoutingModule
     ],
     exports: [RouterModule]
 })

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {AccessGuard} from "../shared/access-guard.service";
-import {OrderComponent} from "./order.component";
+import {AccessGuard} from '../shared/access-guard.service';
+import {OrderComponent} from './order.component';
 
 const routes: Routes = [
   {
