@@ -27,8 +27,6 @@ export class ToolbarComponent implements OnInit {
     this.backClicked();
   }
 
-
-
   ngOnInit(): void {
   }
 
@@ -44,6 +42,11 @@ export class ToolbarComponent implements OnInit {
 
   homeClicked(): void {
     this.navigation.home();
+  }
+
+  buttonClicked(button: CustomButton): void {
+    console.log('Toolbar: ' + button.name + ' clicked');
+    button.navigate();
   }
 
 }

@@ -7,7 +7,6 @@ import {Observable} from 'rxjs';
 import {first, map} from 'rxjs/operators';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {LockService} from '../../shared/lock.service';
-import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 
 @Component({
     selector: 'app-job-detail',
@@ -21,7 +20,50 @@ export class JobDetailComponent implements OnInit {
     public infoDataSource: InfoDataSource<Job>;
     public selectedJobStatus: Observable<JobStatus>;
     public jobId: number;
-    public isSubJob = false;
+    public isMainJob = true;
+
+    buttonsMain = [
+        {
+            name: 'Bearbeiten',
+            navigate: (): void => {
+                this.child.editButtonClicked();
+            }
+        }, {
+            name: 'Neues Angebot',
+            navigate: (): void => {
+                this.router.navigateByUrl('/offer/edit/new/' + this.jobId.toString());
+            }
+        }, {
+            name: 'Neue Rechnung',
+            navigate: (): void => {
+                this.router.navigateByUrl('/outgoing_invoice/edit/new/' + this.jobId.toString());
+            }
+        },  {
+            name: 'Neuer Unterauftrag',
+            navigate: (): void => {
+                this.router.navigateByUrl('/job/edit/new/' + this.jobId.toString() + '/sub');
+            }
+        }
+    ];
+
+    buttonsSub = [
+        {
+            name: 'Bearbeiten',
+            navigate: (): void => {
+                this.child.editButtonClicked();
+            }
+        }, {
+            name: 'Neues Angebot',
+            navigate: (): void => {
+                this.router.navigateByUrl('/offer/edit/new/' + this.jobId.toString());
+            }
+        }, {
+            name: 'Neue Rechnung',
+            navigate: (): void => {
+                this.router.navigateByUrl('/outgoing_invoice/edit/new/' + this.jobId.toString());
+            }
+        }
+    ];
 
 
     offerDataSource: TableDataSource<Offer>;
@@ -29,58 +71,6 @@ export class JobDetailComponent implements OnInit {
     subJobDataSource: TableDataSource<Job>;
 
     constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute, private locker: LockService) {
-    }
-
-    public getButtons(): CustomButton[] {
-        if (this.isSubJob) {
-            return [
-                {
-                    name: 'Bearbeiten',
-                    navigate: (): void => {
-                        this.child.editButtonClicked();
-                    }
-                },
-                {
-                    name: 'Neues Angebot',
-                    navigate: (): void => {
-                        this.router.navigateByUrl('/offer/edit/new/' + this.jobId.toString());
-                    }
-                },
-                {
-                    name: 'Neue Rechnung',
-                    navigate: (): void => {
-                        this.router.navigateByUrl('/outgoing_invoice/edit/new/' + this.jobId.toString());
-                    }
-                }
-            ];
-        } else {
-            return [
-                {
-                    name: 'Bearbeiten',
-                    navigate: (): void => {
-                        this.child.editButtonClicked();
-                    }
-                },
-                {
-                    name: 'Neues Angebot',
-                    navigate: (): void => {
-                        this.router.navigateByUrl('/offer/edit/new/' + this.jobId.toString());
-                    }
-                },
-                {
-                    name: 'Neue Rechnung',
-                    navigate: (): void => {
-                        this.router.navigateByUrl('/outgoing_invoice/edit/new/' + this.jobId.toString());
-                    }
-                }, {
-                    name: 'Neuer Unterauftrag',
-                    navigate: (): void => {
-                        this.router.navigateByUrl('/job/edit/new/' + this.jobId.toString() + '/sub');
-                    }
-                }
-            ];
-        }
-
     }
 
     ngOnInit(): void {
@@ -97,7 +87,7 @@ export class JobDetailComponent implements OnInit {
             this.jobId = id;
             this.selectedJobStatus = this.api.readJobJobJobIdGet(id).pipe(map((job): JobStatus => job.status));
             this.api.readJobJobJobIdGet(this.jobId).pipe(first()).subscribe((job) => {
-                this.isSubJob = job.is_sub;
+                this.isMainJob = job.is_main;
             });
             this.initOfferTable();
             this.initSubJobTable();
@@ -222,8 +212,7 @@ export class JobDetailComponent implements OnInit {
         this.outgoingInvoiceDataSource.loadData();
     }
 
-    initJobDetail(id
-                      :
+    initJobDetail(id:
                       number
     ) {
         this.infoDataSource = new InfoDataSource<Job>(

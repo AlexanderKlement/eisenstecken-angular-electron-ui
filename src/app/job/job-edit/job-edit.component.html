@@ -5,14 +5,7 @@
 <h1 *ngIf="!createMode && subMode">Unterauftrag bearbeiten</h1>
 <form (ngSubmit)="onSubmit()" [formGroup]="jobGroup">
   <div fxLayout="column" fxLayoutAlign="space-around center" >
-    <mat-form-field *ngIf="!subMode">
-      <mat-label>Auftragsart</mat-label>
-      <mat-select formControlName="type">
-        <mat-option *ngFor="let jobType of jobTypeOptions$| async" [value]="jobType.type">
-          {{jobType.text.translation}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <mat-checkbox *ngIf="!subMode" class="form-control" [disabled]="!createMode" formControlName="minijob">Kleinstauftrag</mat-checkbox>
     <mat-form-field>
       <mat-label>Name</mat-label>
       <input class="form-control" formControlName="name" matInput>

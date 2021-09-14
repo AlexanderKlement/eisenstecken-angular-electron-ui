@@ -9,6 +9,6 @@
       <mat-icon>arrow_back</mat-icon>
     </button>
 
-    <a *ngFor="let button of buttonList" (click)="button.navigate()" mat-button>{{button.name}}</a>
+    <a *ngFor="let button of buttonList" (click)="buttonClicked(button)" mat-button>{{button.name}}</a>
   </div>
 </mat-toolbar>

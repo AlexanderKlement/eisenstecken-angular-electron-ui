@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {JobComponent} from "./job.component";
-import {JobDetailComponent} from "./job-detail/job-detail.component";
-import {JobEditComponent} from "./job-edit/job-edit.component";
-import {OfferEditComponent} from "./offer-edit/offer-edit.component";
-import {AccessGuard} from "../shared/access-guard.service";
-import {OutgoingInvoiceEditComponent} from "./outgoing-invoice-edit/outgoing-invoice-edit.component";
+import {JobComponent} from './job.component';
+import {JobDetailComponent} from './job-detail/job-detail.component';
+import {JobEditComponent} from './job-edit/job-edit.component';
+import {OfferEditComponent} from './offer-edit/offer-edit.component';
+import {AccessGuard} from '../shared/access-guard.service';
+import {OutgoingInvoiceEditComponent} from './outgoing-invoice-edit/outgoing-invoice-edit.component';
 
 const routes: Routes = [
   {
@@ -32,7 +32,7 @@ const routes: Routes = [
     canActivate: [ AccessGuard ]
   },
   {
-    path: 'job/edit/:id/:client_id/',
+    path: 'job/edit/:id/:client_id',
     component: JobEditComponent,
     data:{requiresLogin: true},
     canActivate: [ AccessGuard ]
