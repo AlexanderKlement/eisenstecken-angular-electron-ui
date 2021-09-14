@@ -1,40 +1,40 @@
-import {Right} from "eisenstecken-openapi-angular-library";
+import {Right} from 'eisenstecken-openapi-angular-library';
 
 
 export interface MenuTileDetail {
   title: string;
   image: string;
-  link: string
+  link: string;
 }
 
 export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
-  const menuTileArray:MenuTileDetail[] = [];
+  const menuTileArray: MenuTileDetail[] = [];
   rights.forEach((right) => {
     switch(right.key) {
-      case "jobs:all":
-        menuTileArray.push({title:"Kunden", image:"001-shopping-cart.png", link:"/client"});
+      case 'jobs:all':
+        menuTileArray.push({title:'Kunden', image:'001-shopping-cart.png', link:'/client'});
         return;
-      case "calendar:all":
-        menuTileArray.push({title:"Auftrag", image:"001-shopping-cart.png", link:"/job"});
+      case 'calendar:all':
+        menuTileArray.push({title:'Auftrag', image:'001-shopping-cart.png', link:'/job'});
         return;
-      case "users:all":
-        menuTileArray.push({title:"Benutzer", image:"001-shopping-cart.png", link:"/user"});
+      case 'users:all':
+        menuTileArray.push({title:'Benutzer', image:'001-shopping-cart.png', link:'/user'});
         return;
-      case "order:all":
-        menuTileArray.push({title:"Bestellungen", image:"001-shopping-cart.png", link:"/order"});
+      case 'order:all':
+        menuTileArray.push({title:'Bestellungen', image:'001-shopping-cart.png', link:'/order'});
         return;
-      case "ingoing_invoices:all":
-      case "outgoing_invoices:all":
-        menuTileArray.push({title:"Nothing", image:"001-shopping-cart.png", link:"/"});
+      case 'ingoing_invoices:all':
+      case 'outgoing_invoices:all':
+        menuTileArray.push({title:'Rechnungen', image:'001-shopping-cart.png', link:'/invoice'});
         return;
-      case "clients:all":
-        menuTileArray.push({title:"Nothing", image:"001-shopping-cart.png", link:"/"});
+      case 'clients:all':
+        menuTileArray.push({title:'Nothing', image:'001-shopping-cart.png', link:'/'});
         return;
-      case "articles:all":
-        menuTileArray.push({title:"Nothing", image:"001-shopping-cart.png", link:"/"});
+      case 'articles:all':
+        menuTileArray.push({title:'Nothing', image:'001-shopping-cart.png', link:'/'});
         return;
-      case "parameters:set":
-        menuTileArray.push({title: "Einstellungen", image:"044-settings.png", link:"/settings"});
+      case 'parameters:set':
+        menuTileArray.push({title: 'Einstellungen', image:'044-settings.png', link:'/settings'});
     }
   });
   return menuTileArray;

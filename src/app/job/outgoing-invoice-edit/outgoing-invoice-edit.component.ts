@@ -6,14 +6,14 @@ import {
   OutgoingInvoice,
   OutgoingInvoiceCreate, OutgoingInvoiceUpdate,
   Vat
-} from "eisenstecken-openapi-angular-library";
-import {BaseEditComponent} from "../../shared/components/base-edit/base-edit.component";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MatDialog} from "@angular/material/dialog";
-import {Observable} from "rxjs";
-import {AbstractControl, FormArray, FormControl, FormGroup} from "@angular/forms";
-import {first, tap} from "rxjs/operators";
-import {formatDate} from "@angular/common";
+} from 'eisenstecken-openapi-angular-library';
+import {BaseEditComponent} from '../../shared/components/base-edit/base-edit.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {Observable} from 'rxjs';
+import {AbstractControl, FormArray, FormControl, FormGroup} from '@angular/forms';
+import {first, tap} from 'rxjs/operators';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-outgoing-invoice-edit',
@@ -26,7 +26,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
   submitted = false;
   vatOptions$: Observable<Vat[]>;
   jobId: number;
-  navigationTarget = "job";
+  navigationTarget = 'job';
 
   constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
     super(api, router, route, dialog);
@@ -37,17 +37,15 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
   }
 
   calcTotalPrice(formGroup: FormGroup): void {
-    const totalPrice = formGroup.get("single_price").value * formGroup.get("amount").value;
+    const totalPrice = formGroup.get('single_price').value * formGroup.get('amount').value;
     formGroup.get('total_price').setValue(totalPrice);
   }
 
-  lockFunction = (api: DefaultService, id: number): Observable<Lock> => {
-    return api.islockedOutgoingInvoiceOutgoingInvoiceIslockedOutgoingInvoiceIdGet(id); //TODO: correct this after next update
-  };
+  lockFunction = (api: DefaultService, id: number): Observable<Lock> =>
+     api.islockedOutgoingInvoiceOutgoingInvoiceIslockedOutgoingInvoiceIdGet(id) //TODO: correct this after next update
+  ;
 
-  dataFunction = (api: DefaultService, id: number): Observable<OutgoingInvoice> => {
-    return api.readOutgoingInvoicesOutgoingInvoiceIdGet(id);
-  };
+  dataFunction = (api: DefaultService, id: number): Observable<OutgoingInvoice> => api.readOutgoingInvoiceOutgoingInvoiceOutgoingInvoiceIdGet(id);
 
   unlockFunction = (afterUnlockFunction: VoidFunction = () => {
   }): void => {
@@ -68,10 +66,10 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
       this.routeParams.subscribe((params) => {
         this.jobId = parseInt(params.job_id);
         if (isNaN(this.jobId)) {
-          console.error("OutgoingInvoiceEdit: Cannot determine job id");
+          console.error('OutgoingInvoiceEdit: Cannot determine job id');
           this.router.navigateByUrl(this.navigationTarget);
         }
-        this.navigationTarget = "job/" + this.jobId.toString();
+        this.navigationTarget = 'job/' + this.jobId.toString();
         this.api.readJobJobJobIdGet(this.jobId).pipe(first()).subscribe((job) => {
           this.fillRightSidebar(job.client.language.code);
         });
@@ -80,11 +78,11 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
   }
 
   getDescriptiveArticles(): FormArray {
-    return this.invoiceGroup.get("descriptive_articles") as FormArray;
+    return this.invoiceGroup.get('descriptive_articles') as FormArray;
   }
 
   getSubDescriptiveArticles(formGroup: AbstractControl): FormArray {
-    return formGroup.get("sub_descriptive_articles") as FormArray;
+    return formGroup.get('sub_descriptive_articles') as FormArray;
   }
 
   removeDescriptiveArticle(index: number): void {
@@ -112,10 +110,10 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
     const descriptiveArticles = [];
     this.getDescriptiveArticles().controls.forEach((descriptiveArticleControl) => {
       const descriptiveArticle: DescriptiveArticleCreate = {
-        name: "",
-        amount: descriptiveArticleControl.get("amount").value,
-        description: descriptiveArticleControl.get("description").value,
-        single_price: descriptiveArticleControl.get("single_price").value,
+        name: '',
+        amount: descriptiveArticleControl.get('amount').value,
+        description: descriptiveArticleControl.get('description').value,
+        single_price: descriptiveArticleControl.get('single_price').value,
         discount: 0,
         alternative: false,
         descriptive_articles: [],
@@ -129,11 +127,11 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
 
     if (this.createMode) {
       const invoiceCreate: OutgoingInvoiceCreate = {
-        number: this.invoiceGroup.get("number").value,
-        date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get("date").value),
-        payment_condition: this.invoiceGroup.get("payment_condition").value,
-        payment_date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get("payment_date").value),
-        vat_id: this.invoiceGroup.get("vat_id").value,
+        number: this.invoiceGroup.get('number').value,
+        date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get('date').value),
+        payment_condition: this.invoiceGroup.get('payment_condition').value,
+        payment_date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get('payment_date').value),
+        vat_id: this.invoiceGroup.get('vat_id').value,
         job_id: this.jobId,
         descriptive_articles: descriptiveArticles
       };
@@ -146,11 +144,11 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
       });
     } else {
       const invoiceUpdate: OutgoingInvoiceUpdate = {
-        number: this.invoiceGroup.get("number").value,
-        date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get("date").value),
-        payment_condition: this.invoiceGroup.get("payment_condition").value,
-        payment_date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get("payment_date").value),
-        vat_id: this.invoiceGroup.get("vat_id").value,
+        number: this.invoiceGroup.get('number').value,
+        date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get('date').value),
+        payment_condition: this.invoiceGroup.get('payment_condition').value,
+        payment_date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get('payment_date').value),
+        vat_id: this.invoiceGroup.get('vat_id').value,
         descriptive_articles: descriptiveArticles
       };
       this.api.updateOutgoingInvoiceOutgoingInvoiceOutgoingInvoiceIdPut(this.id, invoiceUpdate).pipe(first()).subscribe((invoice) => {
@@ -166,7 +164,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
   createUpdateSuccess(invoice: OutgoingInvoice): void {
     this.id = invoice.id;
     this.unlockFunction(() => {
-      this.router.navigateByUrl("job/" + this.jobId.toString()); //TODO: change this to the detail view of the offer
+      this.router.navigateByUrl('job/' + this.jobId.toString()); //TODO: change this to the detail view of the offer
     });
   }
 
@@ -189,10 +187,10 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
 
   protected initDescriptiveArticles(descriptiveArticle?: DescriptiveArticle): FormGroup {
     const descriptiveArticleFormGroup = new FormGroup({
-      description: new FormControl(""),
-      amount: new FormControl(""),
-      single_price: new FormControl(""),
-      total_price: new FormControl("")
+      description: new FormControl(''),
+      amount: new FormControl(''),
+      single_price: new FormControl(''),
+      total_price: new FormControl('')
     });
 
     this.subscription.add(descriptiveArticleFormGroup.get('single_price').valueChanges.subscribe(
@@ -221,9 +219,9 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
     now30gg.setDate(now.getDate() + 30);
     this.invoiceGroup = new FormGroup({
       date: new FormControl(now.toISOString()),
-      number: new FormControl(""), // TODO: init the next logical number here
+      number: new FormControl(''), // TODO: init the next logical number here
       vat_id: new FormControl(2),
-      payment_condition: new FormControl(""),
+      payment_condition: new FormControl(''),
       payment_date: new FormControl(now30gg),
       descriptive_articles: new FormArray([
         this.initDescriptiveArticles()
@@ -233,7 +231,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
 
   private fillRightSidebar(langCode: string): void {
     const langCodeLower = langCode.toLowerCase();
-    this.getAndFillParameters("payment_condition", "invoice_payment_condition_" + langCodeLower);
+    this.getAndFillParameters('payment_condition', 'invoice_payment_condition_' + langCodeLower);
   }
 
   private getAndFillParameters(formControlName: string, key: string) {
