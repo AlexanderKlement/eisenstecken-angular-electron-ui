@@ -39,7 +39,7 @@ export class IngoingComponent implements OnInit {
                                 this.locker.getLockAndTryNavigate(
                                     this.api.islockedIngoingInvoiceIngoingInvoiceIslockedIngoingInvoiceIdGet(dataSource.id),
                                     this.api.lockIngoingInvoiceIngoingInvoiceLockIngoingInvoiceIdPost(dataSource.id),
-                                    this.api.lockIngoingInvoiceIngoingInvoiceUnlockIngoingInvoiceIdPost(dataSource.id),
+                                    this.api.unlockIngoingInvoiceIngoingInvoiceUnlockIngoingInvoiceIdPost(dataSource.id),
                                     'ingoing_invoice/edit/' + dataSource.id.toString()
                                 );
                             }

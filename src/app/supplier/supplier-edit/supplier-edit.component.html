@@ -1,0 +1,38 @@
+<app-toolbar [beforeBackFunction]="unlockFunction"></app-toolbar>
+<h1 *ngIf="createMode">Lieferant erstellen</h1>
+<h1 *ngIf="!createMode">Lieferant bearbeiten</h1>
+<form (ngSubmit)="onSubmit()" [formGroup]="supplierGroup">
+    <div fxLayout="column" fxLayoutAlign="space-around center" >
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input class="form-control" formControlName="name" matInput>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Mail1</mat-label>
+            <input class="form-control" formControlName="mail1" matInput>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Mail2</mat-label>
+            <input class="form-control" formControlName="mail2" matInput>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Tel1</mat-label>
+            <input class="form-control" formControlName="tel1" matInput>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Tel2</mat-label>
+            <input class="form-control" formControlName="tel2" matInput>
+        </mat-form-field>
+        <mat-form-field *ngIf="languageOptions$ | async as languageOptions">
+            <mat-label>Sprache</mat-label>
+            <mat-select formControlName="language">
+                <mat-option *ngFor="let language of languageOptions" [value]="language.code">
+                    {{language.name.translation_de}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <app-address-form [address]="getAddressGroup()"></app-address-form>
+        <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+    </div>
+</form>
+

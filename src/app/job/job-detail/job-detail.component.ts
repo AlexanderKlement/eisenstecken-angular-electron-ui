@@ -212,9 +212,7 @@ export class JobDetailComponent implements OnInit {
         this.outgoingInvoiceDataSource.loadData();
     }
 
-    initJobDetail(id:
-                      number
-    ) {
+    initJobDetail(id: number) {
         this.infoDataSource = new InfoDataSource<Job>(
             this.api.readJobJobJobIdGet(id),
             [
@@ -249,5 +247,4 @@ export class JobDetailComponent implements OnInit {
             this.api.unlockJobJobUnlockJobIdPost(this.jobId)
         );
     }
-
 }

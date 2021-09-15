@@ -1,10 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
-    DefaultService, DescriptiveArticle,
+    DefaultService,
+    DescriptiveArticle,
     DescriptiveArticleCreate,
     Lock,
     OutgoingInvoice,
-    OutgoingInvoiceCreate, OutgoingInvoiceUpdate,
+    OutgoingInvoiceCreate,
+    OutgoingInvoiceUpdate,
     Vat
 } from 'eisenstecken-openapi-angular-library';
 import {BaseEditComponent} from '../../shared/components/base-edit/base-edit.component';
@@ -118,7 +120,9 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
                 single_price: descriptiveArticleControl.get('single_price').value,
                 discount: 0,
                 alternative: false,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 descriptive_articles: [],
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 vat_id: 1,
             };
             descriptiveArticles.push(descriptiveArticle);
@@ -127,12 +131,18 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
 
         if (this.createMode) {
             const invoiceCreate: OutgoingInvoiceCreate = {
+                // eslint-disable-next-line id-blacklist
                 number: this.invoiceGroup.get('number').value,
                 date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get('date').value),
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 payment_condition: this.invoiceGroup.get('payment_condition').value,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 payment_date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get('payment_date').value),
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 vat_id: this.invoiceGroup.get('vat_id').value,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 job_id: this.jobId,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 descriptive_articles: descriptiveArticles
             };
             this.api.createOutgoingInvoiceOutgoingInvoiceJobIdPost(this.jobId, invoiceCreate).pipe(first()).subscribe((invoice) => {
@@ -144,11 +154,16 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
             });
         } else {
             const invoiceUpdate: OutgoingInvoiceUpdate = {
+                // eslint-disable-next-line id-blacklist
                 number: this.invoiceGroup.get('number').value,
                 date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get('date').value),
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 payment_condition: this.invoiceGroup.get('payment_condition').value,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 payment_date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get('payment_date').value),
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 vat_id: this.invoiceGroup.get('vat_id').value,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 descriptive_articles: descriptiveArticles
             };
             this.api.updateOutgoingInvoiceOutgoingInvoiceOutgoingInvoiceIdPut(this.id, invoiceUpdate).pipe(first()).subscribe((invoice) => {
@@ -177,6 +192,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
                     this.getDescriptiveArticles().push(this.initDescriptiveArticles(descriptiveArticle));
                 });
                 this.invoiceGroup.patchValue({
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
                     vat_id: invoice.vat.id
                 });
                 this.jobId = invoice.job_id;
@@ -189,7 +205,9 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
         const descriptiveArticleFormGroup = new FormGroup({
             description: new FormControl(''),
             amount: new FormControl(''),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             single_price: new FormControl(''),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             total_price: new FormControl('')
         });
 
@@ -206,6 +224,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
             descriptiveArticleFormGroup.patchValue({
                 description: descriptiveArticle.description,
                 amount: descriptiveArticle.amount,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 single_price: descriptiveArticle.single_price,
             });
         }
@@ -219,8 +238,11 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
         now30gg.setDate(now.getDate() + 30);
         this.invoiceGroup = new FormGroup({
             date: new FormControl(now.toISOString()),
+            // eslint-disable-next-line id-blacklist
             number: new FormControl(''), // TODO: init the next logical number here
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             vat_id: new FormControl(2),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             payment_condition: new FormControl(''),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             payment_date: new FormControl(now30gg),

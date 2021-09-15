@@ -72,7 +72,8 @@ export class ClientDetailComponent implements OnInit {
       );
       this.tableDataSource = new TableDataSource(
         this.api,
-        (api, filter, sortDirection, skip, limit) => api.readJobsByClientJobClientClientIdGet(this.id, filter, skip, limit),
+        (api, filter, sortDirection, skip, limit) =>
+            api.readJobsByClientJobClientClientIdGet(this.id, filter, skip, limit),
         (dataSourceClasses) => {
           const rows = [];
           dataSourceClasses.forEach((dataSource) => {

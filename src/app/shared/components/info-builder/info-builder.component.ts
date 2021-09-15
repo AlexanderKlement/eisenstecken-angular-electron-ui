@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {InfoDataSource} from "./info-builder.datasource";
-import {DataSourceClass} from "../../types";
-import {DefaultService} from "eisenstecken-openapi-angular-library";
-import {LockService} from "../../lock.service";
+import {InfoDataSource} from './info-builder.datasource';
+import {DataSourceClass} from '../../types';
+import {DefaultService} from 'eisenstecken-openapi-angular-library';
+import {LockService} from '../../lock.service';
 
 @Component({
   selector: 'app-info-builder',
@@ -19,14 +19,14 @@ export class InfoBuilderComponent<T extends DataSourceClass> implements OnInit {
   ngOnInit(): void {}
 
   getPropertyOfObject(data: T, property: string): string{
-    const propertyArray = property.split(".");
-    for(let i = 0; i < propertyArray.length; i++){
-      data = data[propertyArray[i]];
+    const propertyArray = property.split('.');
+    for(const singleProperty of propertyArray){
+      data = data[singleProperty];
     }
     return data.toString();
   }
 
-  editButtonClicked() :void{
+  editButtonClicked(): void {
     this.locker.getLockAndTryNavigate(
       this.dataSource.lock$,
       this.dataSource.lockObservable,

@@ -30,7 +30,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
     submitted = false;
     jobTypeOptions$: Observable<JobType[]>;
 
-    navigationTarget = '/job';
+    navigationTarget = 'job';
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
         super(api, router, route, dialog);
     }

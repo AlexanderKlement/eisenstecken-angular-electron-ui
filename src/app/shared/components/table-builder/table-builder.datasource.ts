@@ -5,31 +5,31 @@ import {catchError, finalize, map} from 'rxjs/operators';
 import {DataSourceClass, RecursiveKeyOf} from '../../types';
 
 export interface Column<T> {
-  name: RecursiveKeyOf<T>;
-  sortable?: boolean;
-  headerName: string;
+    name: RecursiveKeyOf<T>;
+    sortable?: boolean;
+    headerName: string;
 }
 
 export interface Row<T> {
-  values: T;
-  route: VoidFunction;
+    values: T;
+    route: VoidFunction;
 }
 
 export const defaultValues = {
-  filter: '',
-  sortDirection: 'ASC',
-  pageIndex: 1,
-  pageSize: 25,
-  pageSizeOptions: [
-    25,
-    50,
-    100
-  ]
+    filter: '',
+    sortDirection: 'ASC',
+    pageIndex: 1,
+    pageSize: 25,
+    pageSizeOptions: [
+        25,
+        50,
+        100
+    ]
 };
 
 export interface TableButton<T> {
-  name: string;
-  onClick: (arg0: T) => void;
+    name: string;
+    onClick: (arg0: T) => void;
 }
 
 export type LoadFunction<T> = (api: DefaultService, filter: string, sortDirection: string, skip: number, limit: number) => Observable<T[]>;
@@ -40,59 +40,64 @@ export type AmountFunction = (api: DefaultService) => Observable<number>;
 
 export class TableDataSource<T extends DataSourceClass> extends DataSource<Row<T>> {
 
-  public readonly columns: Column<T>[];
-  public readonly columnIdentifiers: string[];
-  private readonly loadFunction: LoadFunction<T>;
-  private readonly parseFunction: ParseFunction<T>;
+    public readonly columns: Column<T>[];
+    public readonly columnIdentifiers: string[];
+    public amount$: Observable<number>;
+    public pageSize = defaultValues.pageSize;
+    public pageSizeOptions = defaultValues.pageSizeOptions;
+    public buttonList: TableButton<T>[];
+    private loadingSubject = new BehaviorSubject<boolean>(false);
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    public loading$ = this.loadingSubject.asObservable();
+    private readonly loadFunction: LoadFunction<T>;
+    private readonly parseFunction: ParseFunction<T>;
+    private dataSubject = new BehaviorSubject<Row<T>[]>([]);
 
-  private dataSubject = new BehaviorSubject<Row<T>[]>([]);
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  public loading$ = this.loadingSubject.asObservable();
-  public amount$: Observable<number>;
+    constructor(private api: DefaultService,
+                loadFunction: LoadFunction<T>,
+                parseFunction: ParseFunction<T>,
+                columns: Column<T>[],
+                amountFunction: AmountFunction,
+                buttonList: TableButton<T>[] = []) {
+        super();
+        this.loadFunction = loadFunction;
+        this.parseFunction = parseFunction;
+        this.columns = columns;
+        this.columnIdentifiers = this.columns.map((column) => column.name.toString());
+        this.amount$ = amountFunction(api);
+        this.buttonList = buttonList;
+    }
 
-  public pageSize = defaultValues.pageSize;
-  public pageSizeOptions = defaultValues.pageSizeOptions;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public connect(collectionViewer: CollectionViewer): Observable<Row<T>[]> {
+        return this.dataSubject.asObservable();
+    }
 
-  public buttonList: TableButton<T>[];
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public disconnect(collectionViewer: CollectionViewer): void {
+        this.dataSubject.complete();
+        this.loadingSubject.complete();
+    }
 
+    public loadData(filter?: string, sortDirection?: string, pageIndex?: number, pageSize?: number): void {
 
-  constructor(private api: DefaultService, loadFunction: LoadFunction<T>, parseFunction: ParseFunction<T>, columns: Column<T>[], amountFunction: AmountFunction, buttonList: TableButton<T>[]= []) {
-    super();
-    this.loadFunction = loadFunction;
-    this.parseFunction = parseFunction;
-    this.columns = columns;
-    this.columnIdentifiers = this.columns.map((column) => column.name.toString());
-    this.amount$ = amountFunction(api);
-    this.buttonList = buttonList;
-  }
+        this.loadingSubject.next(true);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public connect(collectionViewer: CollectionViewer): Observable<Row<T>[]> {
-    return this.dataSubject.asObservable();
-  }
+        this.findData(filter || defaultValues.filter,
+            sortDirection || defaultValues.sortDirection,
+            pageIndex || defaultValues.pageIndex,
+            pageSize || defaultValues.pageSize).pipe(
+            catchError(() => of([])), // TODO implement error function
+            finalize(() => this.loadingSubject.next(false)),
+            map(row => this.parseFunction(row))
+        ).subscribe(data => this.dataSubject.next(data));
+    }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public disconnect(collectionViewer: CollectionViewer): void {
-    this.dataSubject.complete();
-    this.loadingSubject.complete();
-  }
-
-  public loadData(filter?: string, sortDirection?: string, pageIndex?: number, pageSize?: number): void {
-
-    this.loadingSubject.next(true);
-
-    this.findData(filter || defaultValues.filter, sortDirection || defaultValues.sortDirection, pageIndex || defaultValues.pageIndex, pageSize || defaultValues.pageSize).pipe(
-      catchError(() => of([])), // TODO implement error function -> Leaving this for the moment, because i dont know if connection errors may be handled by the route
-      finalize(() => this.loadingSubject.next(false)),
-      map(row => this.parseFunction(row))
-    ).subscribe(data => this.dataSubject.next(data));
-  }
-
-  private findData(filter: string, sortDirection: string, pageIndex: number, pageSize: number): Observable<T[]> {
-    const skip = pageSize * (pageIndex - 1);
-    const limit = pageSize * pageIndex;
-    return this.loadFunction(this.api, filter, sortDirection, skip, limit);
-  }
+    private findData(filter: string, sortDirection: string, pageIndex: number, pageSize: number): Observable<T[]> {
+        const skip = pageSize * (pageIndex - 1);
+        const limit = pageSize * pageIndex;
+        return this.loadFunction(this.api, filter, sortDirection, skip, limit);
+    }
 }
 
 

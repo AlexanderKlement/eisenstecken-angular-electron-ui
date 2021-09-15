@@ -22,28 +22,31 @@ import { OutgoingInvoiceEditComponent } from './outgoing-invoice-edit/outgoing-i
 
 
 @NgModule({
-  declarations: [
-    JobComponent,
-    JobDetailComponent,
-    JobEditComponent,
-    JobStatusBarComponent,
-    OfferEditComponent,
-    OutgoingInvoiceEditComponent,
-  ],
-  imports: [
-    CommonModule,
-    JobRoutingModule,
-    SharedModule,
-    FlexModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatToolbarModule,
-    MatDatepickerModule,
-    MatCheckboxModule,
-    MatIconModule
-  ]
+    declarations: [
+        JobComponent,
+        JobDetailComponent,
+        JobEditComponent,
+        JobStatusBarComponent,
+        OfferEditComponent,
+        OutgoingInvoiceEditComponent,
+    ],
+    exports: [
+        JobStatusBarComponent
+    ],
+    imports: [
+        CommonModule,
+        JobRoutingModule,
+        SharedModule,
+        FlexModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatToolbarModule,
+        MatDatepickerModule,
+        MatCheckboxModule,
+        MatIconModule
+    ]
 })
 export class JobModule { }
