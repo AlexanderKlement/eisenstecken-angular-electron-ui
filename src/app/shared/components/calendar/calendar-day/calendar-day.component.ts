@@ -1,9 +1,9 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subscriber} from "rxjs";
-import {CalendarEntry, DefaultService} from "eisenstecken-openapi-angular-library";
-import {first, map} from "rxjs/operators";
+import {Observable, Subscriber} from 'rxjs';
+import {CalendarEntry, DefaultService} from 'eisenstecken-openapi-angular-library';
+import {first, map} from 'rxjs/operators';
 import * as moment from 'moment';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-calendar-day',
@@ -17,7 +17,7 @@ export class CalendarDayComponent implements OnInit, OnDestroy{
   @Input() public: boolean;
 
   calendarEntries$: Observable<CalendarEntry[]>;
-  lastJson = "";
+  lastJson = '';
   titleDayOfTheWeek: string;
   titleDay: string;
 
@@ -41,7 +41,8 @@ export class CalendarDayComponent implements OnInit, OnDestroy{
   }
 
   check4CalendarEntries(observer: Subscriber<CalendarEntry[]>): void {
-    this.api.readCalendarEntriesByDayCalendarCalendarsCalendarIdGet(this.calendarId, this.day).pipe(first()).subscribe((calendarEntries) => {
+    this.api.readCalendarEntriesByDayCalendarCalendarsCalendarIdGet(this.calendarId, this.day).
+    pipe(first()).subscribe((calendarEntries) => {
       calendarEntries = this.formatCalendarEntryDates(calendarEntries);
       if(this.loading){
         observer.next(calendarEntries);
@@ -50,17 +51,15 @@ export class CalendarDayComponent implements OnInit, OnDestroy{
         return;
       }
       const thisJson = JSON.stringify(calendarEntries); //I did a timer here: <0.01 ms
-      if(this.lastJson != thisJson){
+      if(this.lastJson !== thisJson){
         observer.next(calendarEntries);
         this.lastJson = thisJson;
-        console.log("CalendarDay: new CalenderEntries array pushed");
+        console.log('CalendarDay: new CalenderEntries array pushed');
       }
     });
   }
 
-  formatDate = (date: string) : string => {
-    return moment(date).format("h:mm");
-  };
+  formatDate = (date: string): string => moment(date).format('h:mm');
 
   formatCalendarEntryDates(calendarEntries: CalendarEntry[]): CalendarEntry[] {
     calendarEntries.forEach((calendarEntry) => {
@@ -70,19 +69,22 @@ export class CalendarDayComponent implements OnInit, OnDestroy{
     return calendarEntries;
   }
 
-  private setTitle(): void {
-    const todaysDate = moment().add(this.day, "days");
-    this.titleDayOfTheWeek = todaysDate.format("dddd");
-    this.titleDay = todaysDate.format("Do MMMM");
-  }
-
   ngOnDestroy(): void {
+    console.log('Calendar Day ' + this.day.toString() + ' getting destroyed');
     clearInterval(this.updateInterval);
   }
 
   onCalendarEntryClicked(id: number): void {
     this.router.navigateByUrl('/calendar/edit/' + id.toString());
   }
+
+  private setTitle(): void {
+    const todaysDate = moment().add(this.day, 'days');
+    this.titleDayOfTheWeek = todaysDate.format('dddd');
+    this.titleDay = todaysDate.format('Do MMMM');
+  }
+
+
 
 
 }

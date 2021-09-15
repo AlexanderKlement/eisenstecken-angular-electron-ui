@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DefaultService} from "eisenstecken-openapi-angular-library";
-import {ActivatedRoute, Router} from "@angular/router";
-import {DayManager} from "./day.manager";
+import {DefaultService} from 'eisenstecken-openapi-angular-library';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DayManager} from './day.manager';
 
 @Component({
   selector: 'app-calendar',
@@ -39,12 +39,12 @@ export class CalendarComponent implements OnInit {
     this.dayManager.setStartDay(0);
   }
 
-  amountOfDaysChanged() : void {
-    this.dayManager.setAmountOfDays(parseInt(this.amountOfDays));
+  amountOfDaysChanged(): void {
+    this.dayManager.setAmountOfDays(parseInt(this.amountOfDays, 10));
   }
 
   newMeetingClicked(): void {
-    this.router.navigateByUrl("/calendar/new/" + this.calendarId.toString());
+    this.router.navigateByUrl('/calendar/new/' + this.calendarId.toString());
   }
 
 }
