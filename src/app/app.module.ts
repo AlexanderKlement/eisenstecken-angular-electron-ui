@@ -23,7 +23,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {ChatService} from './home/chat/chat.service';
 import {MatInputModule} from '@angular/material/input';
 import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {JobModule} from './job/job.module';
@@ -46,6 +46,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {InvoiceModule} from './invoice/invoice.module';
 import {SupplierComponent} from './supplier/supplier.component';
 import {SupplierModule} from './supplier/supplier.module';
+import {getGermanPaginatorIntl} from './shared/components/table-builder/table-builder.datasource';
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -140,6 +141,7 @@ export function apiConfigFactory(): Configuration {
                 provide: LOCALE_ID,
                 useValue: 'de-DE' // 'de-DE' for Germany, 'fr-FR' for France ...
             },
+            {provide: MatPaginatorIntl, useValue: getGermanPaginatorIntl()}
         ],
     bootstrap: [AppComponent]
 })

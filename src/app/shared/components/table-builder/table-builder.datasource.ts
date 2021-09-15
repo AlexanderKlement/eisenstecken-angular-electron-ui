@@ -3,6 +3,7 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import {DefaultService} from 'eisenstecken-openapi-angular-library';
 import {catchError, finalize, map} from 'rxjs/operators';
 import {DataSourceClass, RecursiveKeyOf} from '../../types';
+import {MatPaginatorIntl} from '@angular/material/paginator';
 
 export interface Column<T> {
     name: RecursiveKeyOf<T>;
@@ -30,6 +31,32 @@ export const defaultValues = {
 export interface TableButton<T> {
     name: string;
     onClick: (arg0: T) => void;
+}
+
+const germanRangeLabel = (page: number, pageSize: number, length: number) => {
+    if (length === 0 || pageSize === 0) { return `0 von ${length}`; }
+
+    length = Math.max(length, 0);
+
+    const startIndex = page * pageSize;
+
+    // If the start index exceeds the list length, do not try and fix the end index to the end.
+    const endIndex = startIndex < length ?
+        Math.min(startIndex + pageSize, length) :
+        startIndex + pageSize;
+
+    return `${startIndex + 1} - ${endIndex} von ${length}`;
+};
+
+export function getGermanPaginatorIntl() {
+    const paginatorIntl = new MatPaginatorIntl();
+
+    paginatorIntl.itemsPerPageLabel = 'Elemente pro Seite:';
+    paginatorIntl.nextPageLabel = 'Nächste Seite';
+    paginatorIntl.previousPageLabel = 'Vorherige Seite';
+    paginatorIntl.getRangeLabel = germanRangeLabel;
+
+    return paginatorIntl;
 }
 
 export type LoadFunction<T> = (api: DefaultService, filter: string, sortDirection: string, skip: number, limit: number) => Observable<T[]>;
