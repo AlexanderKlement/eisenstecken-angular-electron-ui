@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import {DefaultService, ChatMessageCreate, ChatMessage, ChatRecipient} from "eisenstecken-openapi-angular-library";
-import {Observable, Subscriber} from "rxjs";
-import {first} from "rxjs/operators";
+import {DefaultService, ChatMessageCreate, ChatMessage, ChatRecipient} from 'eisenstecken-openapi-angular-library';
+import {Observable, Subscriber} from 'rxjs';
+import {first} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  private secondsBetweenNewMessageCheck = 5;
+  private secondsBetweenNewMessageCheck = 10;
 
-  private readonly messages$:Observable<ChatMessage>;
+  private readonly messages$: Observable<ChatMessage>;
   private readonly amountOfUnreadMessages$: Observable<number>;
   private amountOfUnreadMessagesSubscriber: Subscriber<number>;
 
@@ -42,7 +42,7 @@ export class ChatService {
         });
       },
       error: msg => {
-        console.error("ChatService: Could not check for new Messages. Retrying in " + this.secondsBetweenNewMessageCheck.toString() + " seconds.");
+        console.error('ChatService: Could not check for new Messages. Retrying in ' + this.secondsBetweenNewMessageCheck.toString() + ' seconds.');
         console.error(msg);
       }
     });
@@ -52,7 +52,7 @@ export class ChatService {
     if(this.amountOfUnreadMessagesSubscriber != undefined){
       this.amountOfUnreadMessagesSubscriber.next(this.amountOfUnreadMessages);
     } else {
-      console.warn("ChatService: Skipped refreshing unread chat messages, because the Subscriber was not ready yet");
+      console.warn('ChatService: Skipped refreshing unread chat messages, because the Subscriber was not ready yet');
     }
   }
 
@@ -77,11 +77,11 @@ export class ChatService {
   }
 
   public sendMessage(message: string, sendTo: number): Observable<ChatMessage> {
-    const chatMessage:ChatMessageCreate = {text:message};
+    const chatMessage: ChatMessageCreate = {text:message};
     return this.api.createChatMessageChatsUserIdPost(sendTo, chatMessage);
   }
 
-  public getMessages () : Observable<ChatMessage>{
+  public getMessages(): Observable<ChatMessage>{
     return this.messages$;
   }
 

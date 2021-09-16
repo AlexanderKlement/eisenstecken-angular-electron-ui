@@ -18,7 +18,7 @@ export class CalendarsChatFrameComponent implements OnInit, OnDestroy {
   chatTabName = 'Chat';
 
   checkIfUnreadMessagesInterval: NodeJS.Timeout;
-  secondsCheckIfUnreadMessages = 2;
+  secondsCheckIfUnreadMessages = 10;
 
   constructor(private api: DefaultService, private chatService: ChatService) {
   }

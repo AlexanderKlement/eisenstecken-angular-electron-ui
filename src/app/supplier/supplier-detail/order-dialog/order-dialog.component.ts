@@ -42,5 +42,4 @@ export class OrderDialogComponent implements OnInit {
             return [];
         }
     }
-
 }

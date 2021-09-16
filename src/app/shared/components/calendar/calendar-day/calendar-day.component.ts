@@ -22,7 +22,7 @@ export class CalendarDayComponent implements OnInit, OnDestroy{
   titleDay: string;
 
   loading = true;
-  updateDelayMilliSeconds = 1000;
+  updateDelayMilliSeconds = 20000;
   updateInterval: NodeJS.Timeout;
 
   constructor(private api: DefaultService, private router: Router) {
