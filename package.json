@@ -65,7 +65,8 @@
     "material-design-icons": "3.0.1",
     "moment": "2.29.1",
     "rxjs": "~6.6.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "angular-fontawesome": "^1.0.0"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "12.1.2",

@@ -1,16 +1,16 @@
-<div>
+<div fxLayout="column" fxLayoutAlign="space-evenly center" class="root">
   <img class="logo" src="assets/logos/ESS-Logo-RGB-Pos.jpg" alt="Eisenstecken-logo">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+    <div fxLayout="column" fxLayoutAlign="space-around center">
+      <mat-form-field class="login-input">
+        <mat-label>Email</mat-label>
+        <input class="form-control" type="text" formControlName="username" matInput>
+      </mat-form-field>
+      <mat-form-field class="login-input">
+        <mat-label>Passwort</mat-label>
+        <input class="form-control" type="password" formControlName="password" matInput>
+      </mat-form-field>
+      <button mat-raised-button type="submit" class="login-input">Anmelden</button>
+    </div>
+  </form>
 </div>
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <div fxLayout="column" fxLayoutAlign="space-around center" >
-    <mat-form-field>
-      <mat-label>Email</mat-label>
-      <input class="form-control" type="text" formControlName="username" matInput>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Passwort</mat-label>
-      <input class="form-control" type="password" formControlName="password" matInput>
-    </mat-form-field>
-    <button mat-raised-button type="submit">Anmelden</button>
-  </div>
-</form>
