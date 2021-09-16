@@ -20,7 +20,7 @@ export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
             case 'users:all':
                 menuTileArray.push({title: 'Benutzer', image: '001-shopping-cart.png', link: '/user'});
                 return;
-            case 'order:all':
+            case 'orders:all':
                 menuTileArray.push({title: 'Bestellungen', image: '001-shopping-cart.png', link: '/order'});
                 return;
             case 'ingoing_invoices:all':

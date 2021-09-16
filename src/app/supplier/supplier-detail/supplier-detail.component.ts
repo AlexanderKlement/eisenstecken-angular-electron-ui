@@ -5,6 +5,11 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {InfoBuilderComponent} from '../../shared/components/info-builder/info-builder.component';
+import {shell} from 'electron';
+import {isElectron} from '../../app.component';
+import {MatDialog} from '@angular/material/dialog';
+import {OrderDialogComponent} from './order-dialog/order-dialog.component';
+import {map} from 'rxjs/operators';
 
 @Component({
     selector: 'app-supplier-detail',
@@ -24,14 +29,21 @@ export class SupplierDetailComponent implements OnInit {
             name: 'Bearbeiten',
             navigate: () => {
                 this.child.editButtonClicked();
-            },
+            }
+        },
+        {
+            name: 'Bestellung(en) senden',
+            navigate: () => {
+                this.sendOrderButtonClicked();
+            }
         }
     ];
 
 
     constructor(private api: DefaultService,
                 private router: Router,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                public dialog: MatDialog) {
     }
 
     ngOnInit(): void {
@@ -183,5 +195,29 @@ export class SupplierDetailComponent implements OnInit {
         this.createdOrderDataSource.loadData();
         this.orderedOrderDataSource.loadData();
         this.deliveredOrderDataSource.loadData();
+    }
+
+    private sendOrderButtonClicked(): void  {
+        const dialogRef = this.dialog.open(OrderDialogComponent, {
+            width: '250px',
+            data: {name: this.api.readSupplierSupplierSupplierIdGet(this.id).pipe(
+                map((supplier) => supplier.displayable_name)),
+                orders: this.api.readOrdersOrderSupplierSupplierIdGet(this.id, 0, 1000, '', 'CREATED')
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+            if(Array.isArray(result) && result.length > 0 && typeof result[0] == 'string')
+                {this.ordersToOrderSelected(result);}
+            else {
+                console.error('Cannot order: data type is wrong!');
+                console.error(result);
+            }
+        });
+    }
+
+    private ordersToOrderSelected(orderIds: string[]): void {
+
     }
 }

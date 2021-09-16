@@ -14,12 +14,17 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {FlexModule} from '@angular/flex-layout';
 import {MatTabsModule} from '@angular/material/tabs';
+import { OrderDialogComponent } from './supplier-detail/order-dialog/order-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatListModule} from '@angular/material/list';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
   declarations: [
     SupplierDetailComponent,
-    SupplierEditComponent
+    SupplierEditComponent,
+    OrderDialogComponent
   ],
     imports: [
         CommonModule,
@@ -33,7 +38,10 @@ import {MatTabsModule} from '@angular/material/tabs';
         MatButtonModule,
         MatInputModule,
         FlexModule,
-        MatTabsModule
+        MatTabsModule,
+        MatDialogModule,
+        MatListModule,
+        MatProgressSpinnerModule
     ]
 })
 export class SupplierModule { }

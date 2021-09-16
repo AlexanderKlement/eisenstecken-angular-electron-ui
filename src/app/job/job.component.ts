@@ -30,7 +30,7 @@ export class JobComponent implements OnInit {
                 description: dataSource.description
               },
               route : () => {
-                this.router.navigateByUrl('/outgoing_invoice/' +dataSource.id.toString());
+                this.router.navigateByUrl('/job/' +dataSource.id.toString());
               }
             });
         });
