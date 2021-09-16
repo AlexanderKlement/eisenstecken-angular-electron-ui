@@ -4,7 +4,7 @@
     <textarea matInput [formControl]="singleNoteTextArea"
               cdkTextareaAutosize
               #autosize="cdkTextareaAutosize"
-              cdkAutosizeMinRows="1"
+              cdkAutosizeMinRows="5"
               cdkAutosizeMaxRows="50">{{note.text}}</textarea>
   </mat-form-field>
   <span (click)="deleteNoteClicked()" class="material-icons">close</span>

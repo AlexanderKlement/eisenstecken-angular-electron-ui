@@ -1,6 +1,7 @@
 .chat-message{
   border: 1px solid black;
-  width: 80%
+  width: 80%;
+  margin-top: 5px;
 }
 
 .received{
@@ -11,3 +12,16 @@
   float: right;
   background-color: #a3ff99;
 }
+/*
+.sent::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -10px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 4.5px 0 4.5px;
+  border-color: black transparent transparent transparent;
+}
+*/

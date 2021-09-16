@@ -4,21 +4,24 @@
       {{last ? scrollToBottom() : ''}}
     </app-chat-message>
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-evenly center" >
-    <form [formGroup]="chatGroup" (ngSubmit)="send()" *ngIf="recipients$ | async as recipients">
-      <mat-form-field appearance="fill">
+  <div fxFlex="20" fxFlexFill>
+    <form [formGroup]="chatGroup" (ngSubmit)="send()" *ngIf="recipients$ | async as recipients" fxLayout="column"
+          fxLayoutAlign="flex-start stretch" fxFlexFill>
+      <mat-form-field fxFlex="70">
         <mat-label>Nachricht</mat-label>
         <input id="message-input" class="form-control" formControlName="messageInput" matInput>
       </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Empfänger</mat-label>
-        <mat-select formControlName="recipientSelect">
-          <mat-option *ngFor="let recipient of recipients" [value]="recipient.id">
-            {{recipient.firstname}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-          <button [disabled]="buttonLocked" mat-raised-button type="submit">Senden</button>
+      <div fxFlex="40" fxLayout="row" fxLayoutAlign="space-evenly flex-start">
+        <mat-form-field fxFlex="30">
+          <mat-label>Empfänger</mat-label>
+          <mat-select formControlName="recipientSelect">
+            <mat-option *ngFor="let recipient of recipients" [value]="recipient.id">
+              {{recipient.firstname}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button [disabled]="buttonLocked" type="submit" fxFlex="30" mat-raised-button>Senden</button>
+      </div>
     </form>
   </div>
 </div>
