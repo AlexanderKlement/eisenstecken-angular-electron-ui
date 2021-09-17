@@ -59,7 +59,7 @@ export class CalendarDayComponent implements OnInit, OnDestroy{
     });
   }
 
-  formatDate = (date: string): string => moment(date).format('h:mm');
+  formatDate = (date: string): string => moment(date).format('LT');
 
   formatCalendarEntryDates(calendarEntries: CalendarEntry[]): CalendarEntry[] {
     calendarEntries.forEach((calendarEntry) => {

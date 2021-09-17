@@ -18,8 +18,6 @@ export class CalendarComponent implements OnInit {
 
   amountOfDays: string;
 
-  @Input() calendarId: number;
-  @Input() public: boolean;
 
   constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router) {
     this.dayManager = new DayManager(0, 7);

@@ -34,11 +34,13 @@ export class ChatComponent implements OnInit, OnDestroy {
       .subscribe((message: ChatMessage) => {
         this.messages.push(message);
       }));
-    this.recipients$ =  this.chatService.getRecipients(); //unsubscribes automatically
+    this.recipients$ =  this.chatService.getRecipients(); //unsubscribes automaticalco
+    console.log('Chat component started');
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    console.log('Chat component destroyed');
   }
 
   public scrollToBottom(): void {

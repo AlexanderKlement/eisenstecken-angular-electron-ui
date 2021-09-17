@@ -1,3 +1,5 @@
+import * as  moment from 'moment';
+
 interface Days {
   value: string;
   viewValue: string;
@@ -14,6 +16,14 @@ export class DayManager {
     this.startDay = startDay;
     this.amountOfDays = defaultAmountOfDays;
     this.refreshAllDayVariables();
+  }
+
+  getStartDate(): string {
+    return moment().add(this.startDay, 'days').format('DoMM');
+  }
+
+  getEndDate(): string {
+    return moment().add(this.startDay + this.amountOfDays, 'days').format('DoMM');
   }
 
   getShownDayArray(): number[] {
@@ -39,12 +49,12 @@ export class DayManager {
   }
 
   moveStartDayRight(): void {
-    this.startDay++;
+    this.startDay+=this.amountOfDays;
     this.refreshAllDayVariables();
   }
 
   moveStartDayLeft(): void {
-    this.startDay--;
+    this.startDay-=this.amountOfDays;
     this.refreshAllDayVariables();
   }
 

@@ -1,5 +1,5 @@
-<div fxLayout="column" fxLayoutAlign="stretch" class="chat">
-  <div class="chat-message-box" #chatMsgBox>
+<div fxLayout="column" fxLayoutAlign="space-between stretch" class="chat" fxFlexFill>
+  <div fxFlex="0" class="chat-message-box" #chatMsgBox>
     <app-chat-message *ngFor="let message of messages; let last = last" [message]="message">
       {{last ? scrollToBottom() : ''}}
     </app-chat-message>
@@ -9,7 +9,7 @@
           fxLayoutAlign="flex-start stretch" fxFlexFill>
       <mat-form-field fxFlex="70">
         <mat-label>Nachricht</mat-label>
-        <input id="message-input" class="form-control" formControlName="messageInput" matInput>
+        <textarea id="message-input" rows=3 class="form-control" formControlName="messageInput" matInput></textarea>
       </mat-form-field>
       <div fxFlex="40" fxLayout="row" fxLayoutAlign="space-evenly flex-start">
         <mat-form-field fxFlex="30">

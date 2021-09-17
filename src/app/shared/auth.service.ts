@@ -31,11 +31,9 @@ export class AuthService {
     return (authToken !== null);
   }
 
-
   doLogout(): void {
     this.removeToken();
     console.log('Login Success');
-    //TODO: move to loginpage!?
   }
 
   async getScopeString(): Promise<string> {

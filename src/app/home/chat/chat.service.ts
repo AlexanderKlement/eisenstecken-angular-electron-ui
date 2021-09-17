@@ -8,6 +8,10 @@ import {first} from 'rxjs/operators';
 })
 export class ChatService {
 
+  // TODO: Nachrichten kommen oft nicht an
+  // TODO: Mehrzeilige Nachichten haben nicht den gewünschten effekt
+  // TODO: Datum wird nicht als UTC angenommen
+
   private secondsBetweenNewMessageCheck = 10;
 
   private readonly messages$: Observable<ChatMessage>;
@@ -29,44 +33,6 @@ export class ChatService {
     });
   }
 
-  private check4Messages(observer: Subscriber<ChatMessage>) {
-    const new_messages = this.api.readChatMessagesSinceIdChatsLastIdGet(this.lastId);
-    new_messages.pipe(first()).subscribe({
-      next: messages => {//TODO: move this style to other components. This is way more clean than the stuff is used now
-        messages.forEach((message) => {
-          if(this.lastId < message.id){
-            this.lastId = message.id;
-          }
-          observer.next(message);
-          this.checkIfUnreadMessageCountNeedsIncrement(message);
-        });
-      },
-      error: msg => {
-        console.error('ChatService: Could not check for new Messages. Retrying in ' + this.secondsBetweenNewMessageCheck.toString() + ' seconds.');
-        console.error(msg);
-      }
-    });
-  }
-
-  private pushUnreadMessageCountToSubscriber(): void {
-    if(this.amountOfUnreadMessagesSubscriber != undefined){
-      this.amountOfUnreadMessagesSubscriber.next(this.amountOfUnreadMessages);
-    } else {
-      console.warn('ChatService: Skipped refreshing unread chat messages, because the Subscriber was not ready yet');
-    }
-  }
-
-  private checkIfUnreadMessageCountNeedsIncrement(message: ChatMessage): void {
-    if(!message.own){
-      this.incrementUnreadMessageCount();
-    }
-  }
-
-  private incrementUnreadMessageCount(): void {
-    this.amountOfUnreadMessages++;
-    this.pushUnreadMessageCountToSubscriber();
-  }
-
   public resetUnreadMessageCount(): void {
     this.amountOfUnreadMessages = 0;
     this.pushUnreadMessageCountToSubscriber();
@@ -81,12 +47,52 @@ export class ChatService {
     return this.api.createChatMessageChatsUserIdPost(sendTo, chatMessage);
   }
 
-  public getMessages(): Observable<ChatMessage>{
+  public getMessages(): Observable<ChatMessage> {
+    this.lastId = 0;
     return this.messages$;
   }
 
   public getAmountOfUnreadMessages(): Observable<number> {
     return this.amountOfUnreadMessages$;
   }
+
+  private check4Messages(observer: Subscriber<ChatMessage>) {
+    this.api.readChatMessagesSinceIdChatsLastIdGet(this.lastId).pipe(first()).subscribe({
+      next: messages => {//TODO: move this style to other components. This is way more clean than the stuff is used now
+        messages.forEach((message) => {
+          if (this.lastId < message.id) {
+            this.lastId = message.id;
+          }
+          observer.next(message);
+          this.checkIfUnreadMessageCountNeedsIncrement(message);
+        });
+      },
+      error: msg => {
+        console.error('ChatService: Could not check for new Messages. ' +
+          'Retrying in ' + this.secondsBetweenNewMessageCheck.toString() + ' seconds.');
+        console.error(msg);
+      }
+    });
+  }
+
+  private pushUnreadMessageCountToSubscriber(): void {
+    if (this.amountOfUnreadMessagesSubscriber !== undefined) {
+      this.amountOfUnreadMessagesSubscriber.next(this.amountOfUnreadMessages);
+    } else {
+      console.warn('ChatService: Skipped refreshing unread chat messages, because the Subscriber was not ready yet');
+    }
+  }
+
+  private checkIfUnreadMessageCountNeedsIncrement(message: ChatMessage): void {
+    if (!message.own) {
+      this.incrementUnreadMessageCount();
+    }
+  }
+
+  private incrementUnreadMessageCount(): void {
+    this.amountOfUnreadMessages++;
+    this.pushUnreadMessageCountToSubscriber();
+  }
+
 
 }
