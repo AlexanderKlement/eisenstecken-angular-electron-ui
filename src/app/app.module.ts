@@ -32,7 +32,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import {DatePipe, registerLocaleData} from '@angular/common';
-import {NgxMatMomentModule} from '@angular-material-components/moment-adapter';
 import {SettingsModule} from './settings/settings.module';
 import {OrderModule} from './order/order.module';
 import {LoginModule} from './login/login.module';
@@ -99,7 +98,6 @@ export function apiConfigFactory(): Configuration {
         MatButtonModule,
         MatToolbarModule,
         MatNativeDateModule,
-        NgxMatMomentModule,
         MatSnackBarModule
     ],
     providers:
