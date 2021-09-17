@@ -29,7 +29,7 @@
     "build": "npm run electron:serve-tsc && ng build --base-href ./",
     "build:dev": "npm run build -- -c dev",
     "build:prod": "npm run build -- -c production",
-    "ng:serve": "ng serve -c dev -o",
+    "ng:serve": "ng serve -c web -o",
     "electron:serve-tsc": "tsc -p tsconfig.serve.json",
     "electron:serve": "wait-on tcp:4200 && npm run electron:serve-tsc && npx electron . --serve",
     "electron:local": "npm run build:prod && npx electron .",
@@ -41,8 +41,6 @@
     "lint": "ng lint"
   },
   "dependencies": {
-    "@angular-material-components/datetime-picker": "6.0.3",
-    "@angular-material-components/moment-adapter": "6.0.0",
     "@angular/animations": "12.1.2",
     "@angular/cdk": "12.1.2",
     "@angular/common": "12.1.2",
@@ -64,9 +62,9 @@
     "eisenstecken-openapi-angular-library": "7.7.8",
     "material-design-icons": "3.0.1",
     "moment": "^2.29.1",
+    "ngx-material-timepicker": "5.5.3",
     "rxjs": "~6.6.0",
-    "zone.js": "~0.11.4",
-    "angular-fontawesome": "^1.0.0"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "12.1.2",
