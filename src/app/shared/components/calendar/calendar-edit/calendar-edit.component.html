@@ -1,42 +1,43 @@
 <app-toolbar [buttonList]="createMode ? [] : buttons"></app-toolbar>
-<h1 *ngIf="createMode">Termin erstellen</h1>
-<h1 *ngIf="!createMode">Termin bearbeiten</h1>
-<form (ngSubmit)="onSubmit()" [formGroup]="calendarGroup">
+<div class="window-container">
+  <h1 *ngIf="createMode">Termin erstellen</h1>
+  <h1 *ngIf="!createMode">Termin bearbeiten</h1>
+  <form (ngSubmit)="onSubmit()" [formGroup]="calendarGroup">
     <div fxLayout="column" fxLayoutAlign="space-around center">
-        <mat-form-field>
-            <mat-label>Titel</mat-label>
-            <input class="form-control" formControlName="title" matInput>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Beschreibung</mat-label>
-            <textarea class="form-control" formControlName="description" matInput></textarea>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Datum</mat-label>
-            <input matInput formControlName="date" [matDatepicker]="day_picker">
-            <mat-datepicker-toggle matSuffix [for]="day_picker"></mat-datepicker-toggle>
-            <mat-datepicker #day_picker></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>Start</mat-label>
-            <input formControlName="start_time" matInput [format]=24 autocomplete="disabled"
-                   [ngxTimepicker]="start_time_picker">
-            <ngx-material-timepicker [minutesGap]="5" [theme]="primaryTheme" #start_time_picker></ngx-material-timepicker>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Ende</mat-label>
-            <input formControlName="end_time" matInput [format]=24 autocomplete="disabled"
-                   [ngxTimepicker]="end_time_picker">
-            <ngx-material-timepicker [minutesGap]="5" [theme]="primaryTheme" #end_time_picker></ngx-material-timepicker>
-        </mat-form-field>
-        <div *ngIf="!calendarGroup.errors?.timeValid && (calendarGroup.touched || calendarGroup.dirty)"
-             class="cross-validation-error-message alert alert-danger">
-            Startzeit sollte vor Endzeit liegen
-        </div>
-        <div fxLayout="row" fxLayoutAlign="space-between center">
-            <button mat-raised-button (click)="cancelButtonClicked()">Abbrechen</button>
-            <button [disabled]="submitted || !calendarGroup.valid" mat-raised-button type="submit">Speichern</button>
-        </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Titel</mat-label>
+        <input class="form-control" formControlName="title" matInput>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Beschreibung</mat-label>
+        <textarea class="form-control" formControlName="description" matInput></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Datum</mat-label>
+        <input matInput formControlName="date" [matDatepicker]="day_picker">
+        <mat-datepicker-toggle matSuffix [for]="day_picker"></mat-datepicker-toggle>
+        <mat-datepicker #day_picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Start</mat-label>
+        <input formControlName="start_time" matInput [format]=24 autocomplete="disabled"
+               [ngxTimepicker]="start_time_picker">
+        <ngx-material-timepicker [minutesGap]="5" [theme]="primaryTheme" #start_time_picker></ngx-material-timepicker>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Ende</mat-label>
+        <input formControlName="end_time" matInput [format]=24 autocomplete="disabled"
+               [ngxTimepicker]="end_time_picker">
+        <ngx-material-timepicker [minutesGap]="5" [theme]="primaryTheme" #end_time_picker></ngx-material-timepicker>
+      </mat-form-field>
+      <div *ngIf="!calendarGroup.errors?.timeValid"
+           class="cross-validation-error-message alert alert-danger">
+        Startzeit sollte vor Endzeit liegen
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <button mat-raised-button (click)="cancelButtonClicked()">Abbrechen</button>
+        <button [disabled]="submitted || !calendarGroup.valid" mat-raised-button type="submit">Speichern</button>
+      </div>
     </div>
-</form>
+  </form>
+</div>

@@ -7,19 +7,19 @@
       <div *ngFor="let descriptiveArticle of getDescriptiveArticles().controls; let i = index">
         <div fxLayout="column" fxLayoutAlign="space-around center" [formGroupName]="i">
           <div fxLayout="row" fxLayoutAlign="start center">
-            <mat-form-field>
+            <mat-form-field appearance="fill">
               <mat-label>Name</mat-label>
               <input class="form-control" formControlName="description"  matInput>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field appearance="fill">
               <mat-label>Amount</mat-label>
               <input class="form-control" formControlName="amount" matInput>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field appearance="fill">
               <mat-label>Einzelpreis</mat-label>
               <input class="form-control" formControlName="single_price" matInput>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field appearance="fill">
               <mat-label>Gesamtpreis</mat-label>
               <input readonly class="form-control" formControlName="total_price" matInput>
             </mat-form-field>
@@ -40,7 +40,7 @@
       </div>
     </div>
     <div fxLayout="column" fxLayoutAlign="space-around center">
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Nummer</mat-label>
         <input class="form-control" formControlName="number" matInput>
       </mat-form-field>
@@ -50,7 +50,7 @@
         <mat-datepicker-toggle matSuffix [for]="date_picker"></mat-datepicker-toggle>
         <mat-datepicker #date_picker></mat-datepicker>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Mehrwertsteuer: </mat-label>
         <mat-select formControlName="vat_id">
           <mat-option *ngFor="let vat of vatOptions$ | async" [value]="vat.id">
@@ -58,7 +58,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Zahlungsbedingung: </mat-label>
         <textarea class="form-control" formControlName="payment_condition" matInput></textarea>
       </mat-form-field>

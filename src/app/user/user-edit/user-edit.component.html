@@ -1,58 +1,61 @@
 <app-toolbar></app-toolbar>
-<h1 *ngIf="createMode">Benutzer erstellen</h1>
-<h1 *ngIf="!createMode">Benutzer bearbeiten</h1>
-<mat-tab-group>
-  <mat-tab label="Allgemein">
-    <form (ngSubmit)="onSubmitGeneral()" [formGroup]="userGroup">
+<div class="window-container">
+  <h1 *ngIf="createMode">Benutzer erstellen</h1>
+  <h1 *ngIf="!createMode">Benutzer bearbeiten</h1>
+  <mat-tab-group>
+    <mat-tab label="Allgemein">
+      <form (ngSubmit)="onSubmitGeneral()" [formGroup]="userGroup">
+        <div fxLayout="column" fxLayoutAlign="space-around center">
+          <mat-form-field appearance="fill">
+            <mat-label>Vorname</mat-label>
+            <input class="form-control" formControlName="firstname" matInput>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Nachname</mat-label>
+            <input class="form-control" formControlName="secondname" matInput>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Mail</mat-label>
+            <input class="form-control" formControlName="email" matInput>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Telefon</mat-label>
+            <input class="form-control" formControlName="tel" matInput>
+          </mat-form-field>
+          <mat-form-field *ngIf="createMode">
+            <mat-label>Password</mat-label>
+            <input class="form-control" formControlName="password" matInput>
+          </mat-form-field>
+          <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+        </div>
+      </form>
+    </mat-tab>
+    <mat-tab label="Rechte" *ngIf="!createMode">
       <div fxLayout="column" fxLayoutAlign="space-around center">
-        <mat-form-field>
-          <mat-label>Vorname</mat-label>
-          <input class="form-control" formControlName="firstname" matInput>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Nachname</mat-label>
-          <input class="form-control" formControlName="secondname" matInput>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Mail</mat-label>
-          <input class="form-control" formControlName="email" matInput>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Telefon</mat-label>
-          <input class="form-control" formControlName="tel" matInput>
-        </mat-form-field>
-        <mat-form-field *ngIf="createMode">
-          <mat-label>Password</mat-label>
-          <input class="form-control" formControlName="password" matInput>
-        </mat-form-field>
-        <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+        <div *ngIf="!rightsLoaded">
+          <mat-spinner></mat-spinner>
+        </div>
+        <mat-selection-list #rights *ngIf="rightsLoaded">
+          <mat-list-option *ngFor="let right of availableRights " [selected]="userHasRight(right.key)"
+                           value="{{right.key}}">
+            {{right.key}} : {{right.description}}
+          </mat-list-option>
+        </mat-selection-list>
+        <button [disabled]="submitted" mat-raised-button type="button" (click)="onSubmitRights()">Speichern</button>
       </div>
-    </form>
-  </mat-tab>
-  <mat-tab label="Rechte" *ngIf="!createMode">
-    <div fxLayout="column" fxLayoutAlign="space-around center">
-      <div *ngIf="!rightsLoaded">
-        <mat-spinner></mat-spinner>
-      </div>
-      <mat-selection-list #rights *ngIf="rightsLoaded">
-        <mat-list-option  *ngFor="let right of availableRights " [selected]="userHasRight(right.key)" value="{{right.key}}">
-          {{right.key}} : {{right.description}}
-        </mat-list-option>
-      </mat-selection-list>
-      <button [disabled]="submitted" mat-raised-button type="button" (click)="onSubmitRights()">Speichern</button>
-    </div>
-  </mat-tab>
-  <mat-tab label="Password" *ngIf="!createMode">
-    <form (ngSubmit)="onSubmitPassword()" [formGroup]="passwordGroup">
-      <div fxLayout="column" fxLayoutAlign="space-around center">
-        <mat-form-field>
-          <mat-label>Neues Password</mat-label>
-          <input class="form-control" formControlName="password" matInput>
-        </mat-form-field>
-        <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
-      </div>
-    </form>
-  </mat-tab>
-</mat-tab-group>
+    </mat-tab>
+    <mat-tab label="Password" *ngIf="!createMode">
+      <form (ngSubmit)="onSubmitPassword()" [formGroup]="passwordGroup">
+        <div fxLayout="column" fxLayoutAlign="space-around center">
+          <mat-form-field appearance="fill">
+            <mat-label>Neues Password</mat-label>
+            <input class="form-control" formControlName="password" matInput>
+          </mat-form-field>
+          <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+        </div>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
 
-<pre> {{userGroup.value | json}} </pre>
+  <pre> {{userGroup.value | json}} </pre>
+</div>

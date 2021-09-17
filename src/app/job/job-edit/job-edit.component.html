@@ -6,11 +6,11 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="jobGroup">
     <div fxLayout="column" fxLayoutAlign="space-around center" >
       <mat-checkbox *ngIf="!subMode" class="form-control" [disabled]="!createMode" formControlName="minijob">Kleinstauftrag</mat-checkbox>
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
         <input class="form-control" formControlName="name" matInput>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Beschreibung</mat-label>
         <input class="form-control" formControlName="description" matInput>
       </mat-form-field>

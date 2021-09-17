@@ -1,5 +1,5 @@
 <h3>{{name}}</h3>
-<mat-form-field>
+<mat-form-field appearance="fill">
   <mat-label>Suchen</mat-label>
   <input matInput [formControl]="search">
 </mat-form-field>
@@ -16,11 +16,11 @@
   <mat-list-item *ngFor="let orderedArticle of searchOrderedArticles$| async">
     <div fxLayout="row" fxLayoutAlign="space-around center">
       <input matInput value="{{orderedArticle.article.name.translation}}" matTooltip="{{orderedArticle.article.description.translation}}" readonly>
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Menge</mat-label>
         <input matInput value="{{orderedArticle.amount}}" readonly>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Einheit</mat-label>
         <input matInput value="{{orderedArticle.ordered_unit.name.translation}}" readonly>
       </mat-form-field>

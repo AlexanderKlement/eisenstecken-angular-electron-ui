@@ -7,7 +7,7 @@
       <div *ngFor="let descriptiveArticle of getDescriptiveArticles().controls; let i = index">
         <div fxLayout="column" fxLayoutAlign="space-around center" [formGroupName]="i">
           <div fxLayout="row" fxLayoutAlign="start center">
-            <mat-form-field>
+            <mat-form-field appearance="fill">
               <mat-label>Name</mat-label>
               <input class="form-control" formControlName="description" matInput>
             </mat-form-field>
@@ -27,15 +27,15 @@
           <div formArrayName="sub_descriptive_articles">
             <div fxLayout="row" fxLayoutAlign="start center" [formGroupName]="j"
                  *ngFor="let sub_descriptive_article of getSubDescriptiveArticles(descriptiveArticle).controls; let j = index">
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Beschreibung</mat-label>
                 <textarea class="form-control" formControlName="description" matInput></textarea>
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Menge</mat-label>
                 <input class="form-control" formControlName="amount" matInput>
               </mat-form-field>
-              <mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label>Einzelpreis</mat-label>
                 <input class="form-control" formControlName="single_price" [value]="sub_descriptive_article.get('single_price').value | currency:'EUR'" matInput>
               </mat-form-field>
@@ -55,28 +55,28 @@
       </div>
     </div>
     <div fxLayout="column" fxLayoutAlign="space-around center">
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Allgemeine Materialbeschreibung:</mat-label>
         <textarea class="form-control" formControlName="material_description" placeholder="Wird weggelassen wenn leer"
                   matInput></textarea>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Im Preis einbegriffen:</mat-label>
         <textarea class="form-control" formControlName="in_price_included" matInput></textarea>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Gültigkeit</mat-label>
         <textarea class="form-control" formControlName="validity" matInput></textarea>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Bezahlung:</mat-label>
         <textarea class="form-control" formControlName="payment" matInput></textarea>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Lieferung</mat-label>
         <textarea class="form-control" formControlName="delivery" matInput></textarea>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Mehrwertsteuer</mat-label>
         <mat-select formControlName="vat_id">
           <mat-option *ngFor="let vat of vatOptions$ | async" [value]="vat.id">
@@ -90,7 +90,7 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Rabatt</mat-label>
         <input class="form-control" [value]="discountAmount.value | currency:'EUR'"
                placeholder="Wird weggelassen wenn leer" matInput>

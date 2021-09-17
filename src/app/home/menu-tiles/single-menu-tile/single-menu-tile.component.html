@@ -1,8 +1,6 @@
-<mat-card (click)="onTileClicked(tile.link)">
-    <mat-card-content>
-        <button mat-icon-button mat-flat-button>
-            <mat-icon>{{tile.icon}}</mat-icon>
-        </button>
-        <span>{{tile.title}}</span>
-    </mat-card-content>
-</mat-card>
+<div (click)="onTileClicked(tile.link)" fxLayout="column" fxLayoutAlign="start stretch" class="menu-tile" fxFlexFill>
+  <div class="menu-tile-icon-container" fxFlex="80">
+    <mat-icon class="menu-tile-icon">{{tile.icon}}</mat-icon>
+  </div>
+  <strong class="title" fxFlex="20">{{tile.title}}</strong>
+</div>

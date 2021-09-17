@@ -13,7 +13,8 @@
               <sub *ngIf="public">{{calendarEntry.user.firstname}}</sub>
             </td>
             <td class="mat-cell" title="Beschreibung">
-              <strong>{{calendarEntry.title}}</strong><br>{{calendarEntry.description}}</td>
+              <strong>{{calendarEntry.title}}</strong><br>{{ calendarEntry.description }}
+            </td>
           </tr>
           <tr class="no-entry">
             <td colspan="2" class="no-entry">Kein Eintrag</td>

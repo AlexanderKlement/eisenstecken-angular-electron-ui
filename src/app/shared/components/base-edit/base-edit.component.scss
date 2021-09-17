@@ -1,0 +1,12 @@
+.window-container {
+  padding: 0 20px;
+
+  form{
+    mat-form-field{
+      min-width: 180px;
+      max-width: 500px;
+      width: 100%;
+    }
+  }
+
+}
