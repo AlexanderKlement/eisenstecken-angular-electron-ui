@@ -1,9 +1,56 @@
-.note{
-  border: 1px outset black;
+@use "sass:map";
+@import "../../../theme";
+
+.note {
+  border-width: 1px;
+  border-style: outset;
+  border-color: map.get($mat-primary, main);
+  box-shadow: 0 0 5px map.get($mat-primary, main);
+  padding: 10px;
+  background-image: url("http://res.cloudinary.com/cspaveljb/image/upload/v1499110969/cork_w2tt25.jpg");
+  background-size: cover;
+  isolation: isolate;
 }
 
-.note-box {
-  overflow: auto; // you can use 'overflow: scroll;' and always have reserved space for scrollabar
-  height: 60vh;
-  //border: 1px solid black;
+.note::after {
+  content:'';
+  z-index: -1;
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.single-note-container{
+  box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+  -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+  overflow: visible;
+}
+.single-note-container:first-child,
+.single-note-container:nth-child(4n) {
+  transform: rotate(-2.5deg);
+  -webkit-transform: rotate(-2.5deg);
+  -moz-transform: rotate(-2.5deg);
+  background-color: #d5fcfc;
+}
+
+.single-note-container:nth-child(2n) {
+  transform: rotate(1.5deg);
+  -webkit-transform: rotate(1.5deg);
+  -moz-transform: rotate(1.5deg);
+  background-color: #c1b7fa;
+}
+
+.single-note-container:nth-child(3n) {
+  transform: rotate(.5deg);
+  -webkit-transform: rotate(.5deg);
+  -moz-transform: rotate(.5deg);
+  background-color: #fab7b7;
+}
+
+.single-note-container:hover {
+  border: 1px solid rgba(0, 0, 0, .75);
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  transform: scale(1.1);
 }

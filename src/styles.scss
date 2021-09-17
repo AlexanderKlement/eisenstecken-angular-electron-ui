@@ -1,3 +1,4 @@
+@use 'sass:map';
 @import "theme";
 
 body {
@@ -12,7 +13,7 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-thumb {
-  background: #fcaf00;
+  background: map.get($mat-primary, 200);;
 }
 
 /* Handle */
@@ -22,7 +23,7 @@ body {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #fcaf00;
+  background: map.get($mat-primary, main);
 }
 
 /* Handle on hover */
