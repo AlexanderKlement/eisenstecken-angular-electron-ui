@@ -7,9 +7,6 @@
   width: calc(100% - 20px);
   height: calc(100% - 20px);
   background-color: #ffe992;
-  box-shadow: 0 4px 5px rgb(0 0 0 / 20%);
-  -webkit-box-shadow: 0 4px 5px rgb(0 0 0 / 20%);
-  -moz-box-shadow: 0 4px 5px rgb(0 0 0 / 20%);
   margin: 10px;
 
   /* .pin {
@@ -133,6 +130,26 @@
     -ms-transform: rotate(-2deg);
     transform: rotate(
         -2deg);
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    inset: 15px 11px 10px 11px;
+    z-index: -1;
+    border-top-left-radius: 10% 100%;
+    border-top-right-radius: 10% 100%;
+    box-shadow: 0 4px 9px rgb(0 0 0 / 30%);
+    -webkit-box-shadow: 0 4px 9px rgb(0 0 0 / 30%);
+    -moz-box-shadow: 0 4px 9px rgb(0 0 0 / 30%);
+  }
+  &:hover:after{
+    inset: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    box-shadow: 2px 2px 7px rgb(0 0 0 / 30%);
+    -webkit-box-shadow: 2px 2px 7px rgb(0 0 0 / 30%);
+    -moz-box-shadow: 2px 2px 7px rgb(0 0 0 / 30%);
   }
 }
 

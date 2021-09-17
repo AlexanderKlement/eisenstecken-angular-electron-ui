@@ -30,6 +30,7 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
   userGroup: FormGroup;
   passwordGroup: FormGroup;
   availableRights: Right[];
+  availableRightCats: { key: string; open: boolean }[];
   userRights: Right[];
   rightsLoaded = false;
 
@@ -56,8 +57,16 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
     });
   };
 
+  onCategoryClick(category: string): void {
+    this.availableRightCats = this.availableRightCats.map((cat) => {
+      if (cat.key === category)
+        {return {key: cat.key, open: !cat.open};}
+      else {return cat;}
+    });
+  }
 
   ngOnInit(): void {
+    this.availableRightCats = [];
     super.ngOnInit();
     this.userGroup = new FormGroup({
       firstname: new FormControl(''),
@@ -72,6 +81,12 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
     if (!this.createMode) {
       this.api.getRightsRightsGet().pipe(first()).subscribe((rights) => {
         this.availableRights = rights;
+        rights.forEach(right => {
+          const rightKeyCat = right.key.split(':')[0];
+          if (this.availableRightCats.filter(cat => cat.key === rightKeyCat).length === 0) {
+            this.availableRightCats.push({key: rightKeyCat, open: false});
+          }
+        });
         this.api.readUserUsersUserIdGet(this.id).pipe(first()).subscribe((user) => {
           this.userRights = user.rights;
           this.rightsLoaded = true;

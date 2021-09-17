@@ -14,13 +14,13 @@
       <mat-header-cell *matHeaderCellDef >
         {{ column.headerName }}
       </mat-header-cell>
-      <mat-cell *matCellDef="let element">
+      <mat-cell *matCellDef="let element" >
         {{ element.values[column.name] }}
       </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="dataSource.columnIdentifiers; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: dataSource.columnIdentifiers" (click)="rowClicked(row.route)"></mat-row>
+    <mat-row *matRowDef="let row; columns: dataSource.columnIdentifiers" (click)="rowClicked(row.route)" class="table-row"></mat-row>
   </mat-table>
   <mat-paginator [length]="(dataSource.amount$ | async)" [pageSize]="dataSource.pageSize"
                  [pageSizeOptions]="dataSource.pageSizeOptions"></mat-paginator>

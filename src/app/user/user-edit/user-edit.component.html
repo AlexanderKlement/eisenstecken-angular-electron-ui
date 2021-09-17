@@ -26,7 +26,7 @@
             <mat-label>Password</mat-label>
             <input class="form-control" formControlName="password" matInput>
           </mat-form-field>
-          <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+          <button [disabled]="submitted" mat-raised-button type="submit" class="save-btn">Speichern</button>
         </div>
       </form>
     </mat-tab>
@@ -36,12 +36,18 @@
           <mat-spinner></mat-spinner>
         </div>
         <mat-selection-list #rights *ngIf="rightsLoaded">
-          <mat-list-option *ngFor="let right of availableRights " [selected]="userHasRight(right.key)"
-                           value="{{right.key}}">
-            {{right.key}} : {{right.description}}
-          </mat-list-option>
+          <div *ngFor="let cat of availableRightCats;" class="category {{cat.open ? 'open' : ''}}" (click)="onCategoryClick(cat.key)">
+            {{cat.key}}
+            <mat-list-option *ngFor="let right of availableRights | rightsFilter: cat.key;"
+                             [selected]="userHasRight(right.key)"
+                             value="{{right.key}}">
+              {{right.key}} : {{right.description}}
+            </mat-list-option>
+          </div>
         </mat-selection-list>
-        <button [disabled]="submitted" mat-raised-button type="button" (click)="onSubmitRights()">Speichern</button>
+        <button [disabled]="submitted" mat-raised-button type="button" (click)="onSubmitRights()" class="save-btn">
+          Speichern
+        </button>
       </div>
     </mat-tab>
     <mat-tab label="Password" *ngIf="!createMode">
@@ -51,7 +57,7 @@
             <mat-label>Neues Password</mat-label>
             <input class="form-control" formControlName="password" matInput>
           </mat-form-field>
-          <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+          <button [disabled]="submitted" mat-raised-button type="submit" class="save-btn">Speichern</button>
         </div>
       </form>
     </mat-tab>

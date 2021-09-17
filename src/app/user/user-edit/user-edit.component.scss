@@ -1,1 +1,31 @@
 @use "../../shared/components/base-edit/base-edit.component";
+
+.save-btn {
+  margin-bottom: 5px;
+}
+
+.category {
+  //TODO do no awian schianer
+  width: 100%;
+  -webkit-tap-highlight-color: transparent;
+  height: 48px;
+
+  &:hover {
+    background: rgba(44, 44, 44, 0.04);
+  }
+
+  mat-list-option {
+    visibility: hidden;
+    display: none;
+  }
+
+  &.open {
+    height: auto;
+
+    mat-list-option {
+      visibility: visible;
+      display: block;
+
+    }
+  }
+}
