@@ -16,23 +16,6 @@ export class DayManager {
     this.refreshAllDayVariables();
   }
 
-  private selectableDays: Days[] = [
-    {value: '2', viewValue: '2'},
-    {value: '3', viewValue: '3'},
-    {value: '5', viewValue: '5'},
-    {value: '7', viewValue: '7'},
-    {value: '10', viewValue: '10'},
-  ];
-
-  private refreshAllDayVariables(): void {
-    this.amountOfDaysString = this.amountOfDays.toString();
-    this.shownDayArray = Array.from({length: this.amountOfDays}, (_, i) => i + this.startDay);
-  }
-
-  getSelectableDays(): Days[] {
-    return this.selectableDays;
-  }
-
   getShownDayArray(): number[] {
     return this.shownDayArray;
   }
@@ -65,4 +48,8 @@ export class DayManager {
     this.refreshAllDayVariables();
   }
 
+  private refreshAllDayVariables(): void {
+    this.amountOfDaysString = this.amountOfDays.toString();
+    this.shownDayArray = Array.from({length: this.amountOfDays}, (_, i) => i + this.startDay);
+  }
 }

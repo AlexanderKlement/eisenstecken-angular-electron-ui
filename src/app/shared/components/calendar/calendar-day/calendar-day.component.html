@@ -1,21 +1,25 @@
-<h1>{{titleDayOfTheWeek}}</h1>
-<h2>{{titleDay}}</h2>
-<div *ngIf="loading">
-  <mat-spinner></mat-spinner>
-</div>
-<div fxLayout="column" fxLayoutAlign="space-between center" *ngFor="let calendarEntry of calendarEntries$ | async">
-  <div (click)="onCalendarEntryClicked(calendarEntry.id)">
-    <table class="mat-table" >
-      <tr class="mat-header-row">
-        <th class="mat-header-cell">{{calendarEntry.title}}</th>
-      </tr>
-      <tr class="mat-row">
-        <td class="mat-cell">{{calendarEntry.description}}</td>
-        <td class="mat-cell">{{calendarEntry.start_time}}</td>
-        <td class="mat-cell">{{calendarEntry.end_time}}</td>
-        <td class="mat-cell" *ngIf="public">{{calendarEntry.user.firstname}}</td>
-        <td class="mat-cell" *ngIf="public">yes its true</td>
-      </tr>
-    </table>
-  </div>
-</div>
+<app-loading [loading]="loading">
+  <mat-card class="small-card">
+    <mat-card-content>
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <div fxFlex="20" class="day-title">
+          <strong>{{titleDayOfTheWeek}}</strong><br>
+          <strong>{{titleDay}}</strong>
+        </div>
+        <table class="mat-table entries" fxFlex="80">
+          <tr class="mat-row" *ngFor="let calendarEntry of calendarEntries$ | async"
+              (click)="onCalendarEntryClicked(calendarEntry.id)">
+            <td class="mat-cell" title="Wann">{{calendarEntry.start_time + " - " + calendarEntry.end_time}}<br>
+              <sub *ngIf="public">{{calendarEntry.user.firstname}}</sub>
+            </td>
+            <td class="mat-cell" title="Beschreibung">
+              <strong>{{calendarEntry.title}}</strong><br>{{calendarEntry.description}}</td>
+          </tr>
+          <tr class="no-entry">
+            <td colspan="2" class="no-entry">Kein Eintrag</td>
+          </tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</app-loading>

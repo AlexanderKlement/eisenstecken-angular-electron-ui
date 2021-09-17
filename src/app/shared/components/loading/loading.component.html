@@ -1,0 +1,7 @@
+<div *ngIf="loading" fxFlexFill class="loading">
+  <mat-spinner class="spinner"></mat-spinner>
+</div>
+<div [class.hidden]="loading" class="loading" fxFlexFill>
+  <ng-content></ng-content>
+</div>
+

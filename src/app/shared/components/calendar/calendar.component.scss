@@ -1,3 +1,43 @@
 .example-spacer {
   flex: 1 1 auto;
 }
+
+.calendar-select {
+  min-height: 100%;
+  max-height: 100%;
+}
+
+.add-button {
+  float: right;
+}
+
+.calendar-days {
+  overflow-y: scroll;
+  padding-bottom: 10px;
+  padding-right: 3px;
+}
+
+/* width
+.calendar-days::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track
+.calendar-days::-webkit-scrollbar-thumb {
+  background: #fcaf00;
+}
+
+/* Handle
+.calendar-days::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+/* Handle on hover
+.calendar-days::-webkit-scrollbar-thumb:hover {
+  background: #fcaf00;
+}
+
+/* Handle on hover
+.calendar-days::-webkit-scrollbar-track:hover {
+  background: #bbb;
+}*/

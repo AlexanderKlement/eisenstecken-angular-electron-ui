@@ -1,7 +1,7 @@
-<app-loading [loading]="loading" >
-  <mat-tab-group fxFlexFill>
-    <mat-tab *ngFor="let calendar of calendars$ | async" label="{{calendar.name}}">
-      <app-calendar [public]="calendar.open" [calendarId]="calendar.id">
+<app-loading [loading]="loading">
+  <mat-tab-group fxFlexFill dynamicHeight="false">
+    <mat-tab *ngFor="let calendar of calendars$ | async" label="{{calendar.name}}" fxFlexFill>
+      <app-calendar [public]="calendar.open" [calendarId]="calendar.id" fxFlexFill>
       </app-calendar>
     </mat-tab>
     <mat-tab #chatTab label="{{chatTabName}}">

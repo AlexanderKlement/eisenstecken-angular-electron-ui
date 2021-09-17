@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutAlign="space-between center" class="note">
+<div fxLayout="column" fxLayoutAlign="space-between center" class="note" fxFlexFill>
   <div class="note-box" #noteBox fxLayout="column" fxLayoutAlign="space-around center">
     <app-single-note *ngFor="let note of notes; let last = last" [note]="note">
     {{last ? scrollToBottom() : ''}}

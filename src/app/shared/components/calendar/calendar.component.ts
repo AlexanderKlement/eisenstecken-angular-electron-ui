@@ -10,6 +10,9 @@ import {DayManager} from './day.manager';
 })
 export class CalendarComponent implements OnInit {
 
+  @Input() calendarId: number;
+  @Input() public: boolean;
+
   createMode = false;
   dayManager: DayManager;
 
@@ -19,7 +22,7 @@ export class CalendarComponent implements OnInit {
   @Input() public: boolean;
 
   constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router) {
-    this.dayManager = new DayManager(0, 3);
+    this.dayManager = new DayManager(0, 7);
     this.amountOfDays = this.dayManager.amountOfDaysString;
   }
 
@@ -27,11 +30,11 @@ export class CalendarComponent implements OnInit {
 
   }
 
-  previousDayClicked(): void {
+  previousWeekClicked(): void {
     this.dayManager.moveStartDayLeft();
   }
 
-  nextDayClicked(): void {
+  nextWeekClicked(): void {
     this.dayManager.moveStartDayRight();
   }
 

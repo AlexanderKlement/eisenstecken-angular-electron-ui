@@ -1,31 +1,39 @@
-<mat-toolbar color="primary">
-  <span class="example-spacer"></span>
-  <div fxShow="true">
-    <button mat-icon-button (click)="previousDayClicked()">
-      <mat-icon>navigate_before</mat-icon>
-    </button>
-    <button mat-icon-button (click)="todayClicked()">
-      <mat-icon>today</mat-icon>
-    </button>
-    <button mat-icon-button (click)="nextDayClicked()">
-      <mat-icon>navigate_next</mat-icon>
-    </button>
-    <span class="example-spacer"></span>
-    <mat-form-field appearance="fill">
-      <mat-label># Tage</mat-label>
-      <mat-select [(value)]="amountOfDays" (valueChange)="amountOfDaysChanged()">
-        <mat-option *ngFor="let day of dayManager.getSelectableDays()" [value]="day.value">
-          {{day.viewValue}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-icon-button (click)="newMeetingClicked()">
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
-</mat-toolbar>
-<div fxLayout="row" fxLayoutAlign="center start" >
-  <app-calendar-day [day]="day" [calendarId]="calendarId" [public]="public" *ngFor="let day of dayManager.getShownDayArray()">
-  </app-calendar-day>
-</div>
+<div fxLayout="column" fxLayoutAlign="start stretch" fxFlexFill>
+  <mat-toolbar color="primary" fxFlex="10">
+    <div fxShow="true" fxLayout="row" fxLayoutAlign="space-between center" fxFlexFill>
 
+      <button mat-icon-button (click)="todayClicked()" title="Heute">
+        <mat-icon>today</mat-icon>
+      </button>
+      <div>
+        <button mat-icon-button (click)="previousWeekClicked()" title="Vorherige Woche">
+          <mat-icon>navigate_before</mat-icon>
+        </button>
+        <span>{{ dayManager.getStartDate() + " - " + dayManager.getEndDate()}}</span>
+        <button mat-icon-button (click)="nextWeekClicked()" title="Nächste Woche">
+          <mat-icon>navigate_next</mat-icon>
+        </button>
+      </div>
+      <!--
+      <div fxFlex="60" class="calendar-select">
+        <mat-form-field fxFlexFill>
+          <mat-label># Tage</mat-label>
+          <mat-select [(value)]="amountOfDays" (valueChange)="amountOfDaysChanged()">
+            <mat-option *ngFor="let day of dayManager.getSelectableDays()" [value]="day.value">
+              {{day.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      -->
+      <button mat-icon-button (click)="newMeetingClicked()" class="add-button" title="Neuer Termin">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <div fxFlex="90" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="5px" class="calendar-days">
+    <app-calendar-day [day]="day" [calendarId]="calendarId" [public]="public"
+                      *ngFor="let day of dayManager.getShownDayArray()">
+    </app-calendar-day>
+  </div>
+</div>

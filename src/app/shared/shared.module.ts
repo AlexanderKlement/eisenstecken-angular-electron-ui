@@ -35,10 +35,11 @@ import {CalendarDayComponent} from './components/calendar/calendar-day/calendar-
 import {MatTabsModule} from '@angular/material/tabs';
 import {FilterableClickableListComponent} from './components/filterable-clickable-list/filterable-clickable-list.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent, InfoBuilderComponent, LockDialogComponent, BaseEditComponent, WarningDialogComponent, AddressFormComponent, ToolbarComponent, CalendarComponent, CalendarEditComponent, CalendarDayComponent, FilterableClickableListComponent, LoadingComponent],
-  imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule, MatInputModule, MatGridListModule, MatListModule, MatButtonModule, MatDialogModule, ReactiveFormsModule, FlexModule, MatSelectModule, MatToolbarModule, FlexLayoutModule, MatIconModule, NgxMatDatetimePickerModule, MatDatepickerModule, MatTabsModule],
+  imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule, MatInputModule, MatGridListModule, MatListModule, MatButtonModule, MatDialogModule, ReactiveFormsModule, FlexModule, MatSelectModule, MatToolbarModule, FlexLayoutModule, MatIconModule, NgxMatDatetimePickerModule, MatDatepickerModule, MatTabsModule, MatCardModule],
   exports: [TranslateModule, WebviewDirective, FormsModule, TestComponent, TableBuilderComponent, InfoBuilderComponent, AddressFormComponent, ToolbarComponent, CalendarComponent, FilterableClickableListComponent, LoadingComponent]
 })
 export class SharedModule {

@@ -2,8 +2,8 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscriber} from 'rxjs';
 import {CalendarEntry, DefaultService} from 'eisenstecken-openapi-angular-library';
 import {first, map} from 'rxjs/operators';
-import * as moment from 'moment';
 import {Router} from '@angular/router';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-calendar-day',

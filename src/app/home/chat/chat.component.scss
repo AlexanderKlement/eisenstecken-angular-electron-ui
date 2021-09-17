@@ -4,29 +4,29 @@
 .chat{
   overflow: hidden;
 }
-/* width */
+/* width
 .chat-message-box::-webkit-scrollbar {
   width: 8px;
 }
 
-/* Track */
+/* Track
 .chat-message-box::-webkit-scrollbar-thumb {
   background: #fdc400;
 }
 
-/* Handle */
+/* Handle
 .chat-message-box::-webkit-scrollbar-track {
   background: #eee;
 }
 
-/* Handle on hover */
+/* Handle on hover
 .chat-message-box::-webkit-scrollbar-thumb:hover {
   background: #fcaf00;
 }
-/* Handle on hover */
+/* Handle on hover
 .chat-message-box::-webkit-scrollbar-track:hover {
   background: #bbb;
-}
+}*/
 
 textarea {
   resize: none !important;

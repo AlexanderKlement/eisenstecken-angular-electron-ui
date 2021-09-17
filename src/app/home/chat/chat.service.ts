@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {DefaultService, ChatMessageCreate, ChatMessage, ChatRecipient} from 'eisenstecken-openapi-angular-library';
 import {Observable, Subscriber} from 'rxjs';
 import {first} from 'rxjs/operators';
@@ -72,12 +72,12 @@ export class ChatService {
     this.pushUnreadMessageCountToSubscriber();
   }
 
-  public getRecipients(): Observable<ChatRecipient[]>{
+  public getRecipients(): Observable<ChatRecipient[]> {
     return this.api.readChatRecipientsChatsRecipientsGet();
   }
 
   public sendMessage(message: string, sendTo: number): Observable<ChatMessage> {
-    const chatMessage: ChatMessageCreate = {text:message};
+    const chatMessage: ChatMessageCreate = {text: message};
     return this.api.createChatMessageChatsUserIdPost(sendTo, chatMessage);
   }
 
