@@ -1,8 +1,8 @@
 <div fxLayout="column" fxLayoutAlign="space-between center" class="note" fxFlexFill>
-  <div class="note-box" #noteBox fxLayout="column" fxLayoutAlign="space-around center">
-    <app-single-note *ngFor="let note of notes; let last = last" [note]="note">
-    {{last ? scrollToBottom() : ''}}
-    </app-single-note>
-  </div>
+  <mat-grid-list cols="2" fxFlexFill>
+    <mat-grid-tile class="single-note-container" *ngFor="let note of notes; let last = last">
+      <app-single-note [note]="note" fxFlexFill></app-single-note>
+    </mat-grid-tile>
+  </mat-grid-list>
   <button mat-raised-button (click)="newNoteClicked()">Neu</button>
 </div>
