@@ -1,8 +1,8 @@
-<div>
-  <a routerLink={{tile.link}}>
-    <div class="container">
-      <img class="img-tile" alt="{{tile.title}}" src="assets/images/{{tile.image}}">
-    </div>
-  </a>
-  <p>{{tile.title}}</p>
-</div>
+<mat-card (click)="onTileClicked(tile.link)">
+    <mat-card-content>
+        <button mat-icon-button mat-flat-button>
+            <mat-icon>{{tile.icon}}</mat-icon>
+        </button>
+        <span>{{tile.title}}</span>
+    </mat-card-content>
+</mat-card>

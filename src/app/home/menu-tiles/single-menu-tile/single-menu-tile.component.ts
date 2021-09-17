@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MenuTileDetail} from "../menu-tile.settings";
+import {MenuTileDetail} from '../menu-tile.settings';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-single-menu-tile',
@@ -10,9 +11,13 @@ export class SingleMenuTileComponent implements OnInit {
 
   @Input() tile: MenuTileDetail;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  onTileClicked(destination: string): void {
+    this.router.navigateByUrl(destination);
   }
 
 

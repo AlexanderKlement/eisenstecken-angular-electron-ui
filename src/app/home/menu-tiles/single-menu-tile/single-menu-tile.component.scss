@@ -1,8 +1,22 @@
-.container {
-  width: 48px;
-  height: 48px;
+mat-card {
+  height: 110px;
+  width: 110px;
 }
 
-.img-tile {
+mat-card-content {
+  position: relative;
+  height: 100%;
   width: 100%;
 }
+
+button {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+span {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+}
+

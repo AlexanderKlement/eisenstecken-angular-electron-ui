@@ -3,7 +3,7 @@ import {Right} from 'eisenstecken-openapi-angular-library';
 
 export interface MenuTileDetail {
     title: string;
-    image: string;
+    icon: string;
     link: string;
 }
 
@@ -12,30 +12,31 @@ export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
     rights.forEach((right) => {
         switch (right.key) {
             case 'clients:all':
-                menuTileArray.push({title: 'Kunden', image: '001-shopping-cart.png', link: '/client'});
+                menuTileArray.push({title: 'Kunden', icon: 'group', link: '/client'});
                 return;
             case 'jobs:all':
-                menuTileArray.push({title: 'Auftrag', image: '001-shopping-cart.png', link: '/job'});
+                menuTileArray.push({title: 'Auftrag', icon: 'domain', link: '/job'});
                 return;
             case 'users:all':
-                menuTileArray.push({title: 'Benutzer', image: '001-shopping-cart.png', link: '/user'});
+                menuTileArray.push({title: 'Benutzer', icon: 'person', link: '/user'});
                 return;
             case 'orders:all':
-                menuTileArray.push({title: 'Bestellungen', image: '001-shopping-cart.png', link: '/order'});
+                menuTileArray.push({title: 'Bestellungen', icon: 'local_grocery_store', link: '/order'});
                 return;
             case 'ingoing_invoices:all':
             case 'outgoing_invoices:all':
-                menuTileArray.push({title: 'Rechnungen', image: '001-shopping-cart.png', link: '/invoice'});
+                menuTileArray.push({title: 'Rechnungen', icon: 'money', link: '/invoice'});
                 return;
             case 'articles:all':
-                menuTileArray.push({title: 'Nothing', image: '001-shopping-cart.png', link: '/'});
+                menuTileArray.push({title: 'Nothing', icon: 'nature', link: '/'});
                 return;
             case 'parameters:set':
-                menuTileArray.push({title: 'Einstellungen', image: '044-settings.png', link: '/settings'});
+                menuTileArray.push({title: 'Einstellungen', icon: 'settings', link: '/settings'});
                 return;
             case 'suppliers:all':
-                menuTileArray.push({title: 'Lieferanten', image: '044-settings.png', link: '/supplier'});
+                menuTileArray.push({title: 'Lieferanten', icon: 'local_shipping', link: '/supplier'});
         }
     });
+    // TODO: remove duplicates;
     return menuTileArray;
 }
