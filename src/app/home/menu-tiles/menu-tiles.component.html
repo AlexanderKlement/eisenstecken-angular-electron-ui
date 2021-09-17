@@ -1,6 +1,7 @@
- <mat-grid-list cols="3" class="menu-tile-grid-layout">
+ <div class="menu-tiles-container">
+   <mat-grid-list cols="3" class="menu-tile-grid-layout">
     <mat-grid-tile *ngFor="let menuTile of (menuTiles$ | async)" >
         <app-single-menu-tile [tile]="menuTile"></app-single-menu-tile>
     </mat-grid-tile>
   </mat-grid-list>
-
+ </div>

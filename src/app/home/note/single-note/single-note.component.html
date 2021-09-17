@@ -2,12 +2,11 @@
   <div class="pin"></div>
   <span (click)="deleteNoteClicked()" class="material-icons close">delete</span>
   <div class="text">
-    <strong>Text</strong>
-    <textarea [formControl]="singleNoteTextArea" [class.xs]="note.text.length > 50"
-              [class.s]="note.text.length > 40 && note.text.length <= 50"
-              [class.m]="note.text.length > 30 && note.text.length <= 40"
-              [class.l]="note.text.length > 20 && note.text.length <= 30"
-              [class.xl]="note.text.length <= 20"
+    <textarea [formControl]="singleNoteTextArea" [class.xs]="note.text.length > 105"
+              [class.s]="note.text.length > 85 && note.text.length <= 105"
+              [class.m]="note.text.length > 65 && note.text.length <= 85"
+              [class.l]="note.text.length > 40 && note.text.length <= 65"
+              [class.xl]="note.text.length <= 40"
               class="note-text">{{note.text}}</textarea>
   </div>
 </div>

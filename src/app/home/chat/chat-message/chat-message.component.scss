@@ -1,17 +1,18 @@
-.chat-message{
-  border: 1px solid black;
+.chat-message {
+  box-shadow: 0 1px 0.5px 0px rgb(0 0 0 / 30%);
   width: 80%;
-  margin-top: 5px;
+  margin-top: 8px;
 }
 
-.received{
+.received {
   float: left;
 }
 
-.sent{
+.sent {
   float: right;
-  background-color: #feedb3;
+  background-color: rgb(220, 248, 198);
 }
+
 /*
 .sent::before{
   content: "";
