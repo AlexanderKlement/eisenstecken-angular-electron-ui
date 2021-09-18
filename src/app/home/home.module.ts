@@ -23,12 +23,14 @@ import {CalendarsChatFrameComponent} from './calendars-chat-frame/calendars-chat
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatIconModule} from '@angular/material/icon';
+import { InfoDialogComponent } from './info-dialog/info-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [HomeComponent, ChatComponent, ChatMessageComponent, NoteComponent, SingleNoteComponent, MenuTilesComponent, SingleMenuTileComponent, CalendarsChatFrameComponent],
+  declarations: [HomeComponent, ChatComponent, ChatMessageComponent, NoteComponent, SingleNoteComponent, MenuTilesComponent, SingleMenuTileComponent, CalendarsChatFrameComponent, InfoDialogComponent],
   exports: [
     ChatComponent
   ],
-    imports: [CommonModule, SharedModule, HomeRoutingModule, MatCardModule, FlexLayoutModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, ReactiveFormsModule, MatGridListModule, MatProgressSpinnerModule, MatTabsModule, MatIconModule]
+    imports: [CommonModule, SharedModule, HomeRoutingModule, MatCardModule, FlexLayoutModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, ReactiveFormsModule, MatGridListModule, MatProgressSpinnerModule, MatTabsModule, MatIconModule, MatDialogModule]
 })
 export class HomeModule {}

@@ -23,14 +23,14 @@ const routes: Routes = [
         //redirectTo: 'home',
         component: HomeComponent,
         pathMatch: 'full',
-        //data: { requiresLogin: true },
-        canActivate: [AccessGuard]
+        data: { requiresLogin: true },
+        //canActivate: [AccessGuard]
     },
     {
         path: 'calendar/:mode/:id',
         component: CalendarEditComponent,
         data: {requiresLogin: true},
-        canActivate: [AccessGuard]
+        //canActivate: [AccessGuard]
     },
     {
         path: '**',

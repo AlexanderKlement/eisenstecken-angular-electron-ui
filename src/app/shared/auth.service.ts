@@ -33,6 +33,7 @@ export class AuthService {
 
   doLogout(): void {
     this.removeToken();
+    this.router.navigateByUrl('login');
     console.log('Login Success');
   }
 
