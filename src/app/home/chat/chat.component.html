@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayoutAlign="space-between stretch" class="chat" fxFlexFill>
-  <div fxFlex="0" class="chat-message-box" #chatMsgBox>
-    <app-chat-message *ngFor="let message of messages; let last = last" [message]="message">
+  <div fxFlex="0" class="chat-message-box" #chatMsgBox [class.ivan]="ivan">
+    <app-chat-message *ngFor="let message of messages; let last = last" [message]="message" [ivan]="ivan">
       {{last ? scrollToBottom() : ''}}
     </app-chat-message>
   </div>

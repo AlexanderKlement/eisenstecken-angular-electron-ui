@@ -16,7 +16,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   messages: ChatMessage[] = [];
   recipients$: Observable<ChatRecipient[]>;
-
+  ivan: boolean;
   chatGroup: FormGroup = new FormGroup({
     messageInput : new FormControl(''),
     recipientSelect : new FormControl(0)
@@ -29,6 +29,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   constructor(private chatService: ChatService) {}
 
   ngOnInit(): void {
+    this.ivan = false;
     this.subscription = new Subscription();
     this.subscription.add(this.chatService.getMessages()
       .subscribe((message: ChatMessage) => {

@@ -1,5 +1,5 @@
 <div class="chat-message-container" [ngClass]="message.own ? 'sent' : 'received'">
-  <mat-card class="chat-message">
+  <mat-card class="chat-message" [class.ivan]="ivan">
     <mat-card-header>
       <mat-icon *ngIf="message.recipient !== null" title="{{message.recipient.firstname}}" class="private-message">
         lock

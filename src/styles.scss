@@ -9,6 +9,7 @@ body {
 /* width */
 ::-webkit-scrollbar {
   width: 8px;
+  box-shadow: -1px 0 0.5px 0 map.get($mat-accent,main);
 }
 
 /* Track */
