@@ -4,7 +4,7 @@ import { AppModule } from './app/app.module';
 import * as moment from 'moment';
 import * as Sentry from '@sentry/angular';
 import {Integrations} from '@sentry/tracing';
-/* TODO: activate agian
+
 Sentry.init({
   dsn: 'https://739b39d0b92749a485e48a80da87816e@sentry.kivi.bz.it/26',
   integrations: [
@@ -19,7 +19,7 @@ Sentry.init({
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
 });
-*/
+
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule)

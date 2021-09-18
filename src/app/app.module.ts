@@ -104,7 +104,7 @@ export function apiConfigFactory(): Configuration {
         [{
             provide: ErrorHandler,
             useValue: Sentry.createErrorHandler({
-                showDialog: true,
+                showDialog: false,
             }),
         },
             {
