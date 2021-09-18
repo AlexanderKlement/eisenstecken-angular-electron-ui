@@ -1,5 +1,5 @@
 <div class="chat-message-container" [ngClass]="message.own ? 'sent' : 'received'">
-  <mat-card class="chat-message">
+  <mat-card class="chat-message" [class.ivan]="ivan">
     <mat-card-header>
       <mat-icon *ngIf="message.recipient !== null" title="{{message.recipient.firstname}}" class="private-message">
         lock
@@ -10,8 +10,8 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p class="message">
-        {{ message.text }}
+      <p class="message" *ngFor="let text of message.text | splitTextNewline">
+        {{ text }}
       </p>
     </mat-card-content>
   </mat-card>

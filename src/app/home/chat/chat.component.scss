@@ -9,16 +9,23 @@ $primary: map-get($theme, primaryprimary);
 
   .chat-message-box {
     overflow-y: scroll;
-    background: map-get($mat-primary, lighter);
+    background: #fff;
     z-index: 1;
+    border-bottom: solid thin #eee;
+    padding-bottom: 8px;
 
+    &.ivan{
+      background: #eee;
+    }
     &:before {
       content: '';
       position: absolute;
       inset: 0 8px 0 0;
-      background-image: url('~assets/images/chat-bg.png');
       opacity: 0.06;
       background-repeat: repeat;
+    }
+    &.ivan:before{
+      background-image: url('~assets/images/chat-bg.png');
     }
   }
 
