@@ -13,3 +13,13 @@ export class MyFilterPipe implements PipeTransform {
     return items.filter(item => item.key.startsWith(filter));
   }
 }
+
+@Pipe({
+  name: 'splitTextNewline',
+  pure: false
+})
+export class SplitTextNewlinePipe implements PipeTransform {
+  transform(item: string): any {
+    return item.split('\n');
+  }
+}

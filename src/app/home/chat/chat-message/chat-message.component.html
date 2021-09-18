@@ -10,8 +10,8 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p class="message">
-        {{ message.text }}
+      <p class="message" *ngFor="let text of message.text | splitTextNewline">
+        {{ text }}
       </p>
     </mat-card-content>
   </mat-card>

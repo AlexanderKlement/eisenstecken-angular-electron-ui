@@ -15,7 +15,7 @@ $primary: map-get($theme, primaryprimary);
     padding-bottom: 8px;
 
     &.ivan{
-      background: map-get($mat-accent, lighter);
+      background: #eee;
     }
     &:before {
       content: '';

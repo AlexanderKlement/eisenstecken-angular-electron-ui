@@ -18,15 +18,16 @@ export class ChatComponent implements OnInit, OnDestroy {
   recipients$: Observable<ChatRecipient[]>;
   ivan: boolean;
   chatGroup: FormGroup = new FormGroup({
-    messageInput : new FormControl(''),
-    recipientSelect : new FormControl(0)
+    messageInput: new FormControl(''),
+    recipientSelect: new FormControl(0)
   });
 
   buttonLocked = false;
 
   subscription: Subscription;
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService) {
+  }
 
   ngOnInit(): void {
     this.ivan = false;
@@ -35,7 +36,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       .subscribe((message: ChatMessage) => {
         this.messages.push(message);
       }));
-    this.recipients$ =  this.chatService.getRecipients(); //unsubscribes automaticalco
+    this.recipients$ = this.chatService.getRecipients(); //unsubscribes automaticalco
     console.log('Chat component started');
   }
 
@@ -52,26 +53,38 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
-  public send(): void{
-    if(this.chatGroup.value.messageInput == null || this.chatGroup.value.messageInput.length === 0)
-      {return;}
+  public send(): void {
+    if (this.chatGroup.value.messageInput == null || this.chatGroup.value.messageInput.length === 0) {
+      return;
+    }
+    if (this.chatGroup.value.messageInput.replace('\n','') === '!beautify' ||
+      this.chatGroup.value.messageInput.replace('\n','') === '!whatsapp') {
+      this.ivan = true;
+      this.resetChatControl();
+      return;
+    }
+    if (this.chatGroup.value.messageInput.replace('\n','') === '!uglify') {
+      this.ivan = false;
+      this.resetChatControl();
+      return;
+    }
     this.lockSendButton();
     const chatMessageObservable = this.chatService.sendMessage(this.chatGroup.value.messageInput, this.chatGroup.value.recipientSelect);
     chatMessageObservable.pipe(first()).subscribe(() => {
-      this.resetChatControl();
-    }, (message) => {
-      console.error('Cannot send chat message');
-      console.error(message);
-    }, () => {
-      this.releaseSendButton();
-    }
+        this.resetChatControl();
+      }, (message) => {
+        console.error('Cannot send chat message');
+        console.error(message);
+      }, () => {
+        this.releaseSendButton();
+      }
     );
   }
 
   private resetChatControl() {
     this.chatGroup.reset({
-      messageInput : '',
-      recipientSelect : 0
+      messageInput: '',
+      recipientSelect: 0
     });
   }
 
