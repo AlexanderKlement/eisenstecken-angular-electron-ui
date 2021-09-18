@@ -1,10 +1,21 @@
 <h1 mat-dialog-title>Allgemeine Informationen</h1>
 <div mat-dialog-content>
-    <p>
-
-    </p>
+    <mat-tab-group>
+        <mat-tab label="Kontakte">
+            <app-table-builder title="Intern" [dataSource]="userDataSource"></app-table-builder>
+            <app-table-builder title="Andere" [dataSource]="contactDataSource"></app-table-builder>
+        </mat-tab>
+        <mat-tab label="Preise">
+            <app-table-builder title="Preise" [dataSource]="priceDataSource"></app-table-builder>
+        </mat-tab>
+        <mat-tab label="Technische Daten">
+            <app-table-builder title="Technische Daten" [dataSource]="technicalDataDataSource"></app-table-builder>
+        </mat-tab>
+        <mat-tab label="Zugangsdaten">
+            <app-table-builder title="Zugangsdaten" [dataSource]="credentialDataSource"></app-table-builder>
+        </mat-tab>
+    </mat-tab-group>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+    <button mat-button (click)="onCloseClick()">Schließen</button>
 </div>

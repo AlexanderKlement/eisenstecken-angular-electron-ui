@@ -56,7 +56,7 @@ export class UserComponent implements OnInit {
         {name: 'email', headerName: 'Email'},
         {name: 'tel', headerName: 'Telefon'}
       ],
-      (api) => api.readJobCountJobCountGet()
+      (api) => api.readUserCountUsersCountGet(),
     );
     this.userDataSource.loadData();
   }
