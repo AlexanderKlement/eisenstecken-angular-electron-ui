@@ -1,28 +1,89 @@
-.chat-message {
-  box-shadow: 0 1px 0.5px 0px rgb(0 0 0 / 30%);
+@use 'sass:map';
+@import '../../../../theme';
+
+.chat-message-container {
   width: 80%;
-  margin-top: 8px;
+  margin: 8px 0;
+
+  &.received {
+    float: left;
+
+    .chat-message {
+      background-color: white;
+      float: left;
+      border-top-left-radius: 0;
+      margin-left: 10px;
+
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -10px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 0 0 10px;
+        border-color: white transparent transparent transparent;
+      }
+    }
+  }
+
+  &.sent {
+    float: right;
+
+    .chat-message {
+      background-color: rgb(220, 248, 198);
+      float: right;
+      border-top-right-radius: 0;
+      margin-right: 10px;
+
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: -10px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 10px 0 0;
+        border-color: rgb(220, 248, 198) transparent transparent transparent;
+      }
+    }
+  }
+
+  .chat-message {
+    box-shadow: 0 1px 0.5px 0px rgb(0 0 0 / 30%);
+    max-width: calc(100% - 30px);
+    padding: 10px;
+    border-radius: 7.5px;
+
+    .chat-title {
+      white-space: nowrap;
+
+      small {
+        color: rgba(0, 0, 0, 0.54);
+        font-size: 14px;
+        font-weight: normal;
+        margin-right: 15px;
+      }
+    }
+
+    .private-message {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 18pt;
+      color: map.get($mat-accent, main);
+    }
+
+    .message {
+      margin: 0 16px;
+    }
+
+
+  }
+
 }
 
-.received {
-  float: left;
-}
-
-.sent {
-  float: right;
-  background-color: rgb(220, 248, 198);
-}
-
-/*
-.sent::before{
-  content: "";
-  position: absolute;
-  top: 0;
-  right: -10px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 5px 4.5px 0 4.5px;
-  border-color: black transparent transparent transparent;
-}
-*/

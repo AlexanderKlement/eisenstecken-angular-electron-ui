@@ -31,5 +31,9 @@ body {
   background: #ccc;
 }
 
+.mat-tab-body-wrapper{
+  flex-grow:1
+}
+
 
 // TODO: extract primary colors and use them on other places

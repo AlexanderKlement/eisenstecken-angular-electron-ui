@@ -1,14 +1,18 @@
-<mat-card class="chat-message" [ngClass]="message.own ? 'sent' : 'received'">
-  <mat-card-header>
-    <mat-card-title>
-      {{ message.sender.firstname }}
-      <mat-icon *ngIf="message.recipient !== null" title="{{message.recipient.firstname}}">lock</mat-icon>
-    </mat-card-title>
-    <mat-card-subtitle> {{ message.timestamp | date:'short' : 'UTC+4'}}</mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
-    <p>
-      {{ message.text }}
-    </p>
-  </mat-card-content>
-</mat-card>
+<div class="chat-message-container" [ngClass]="message.own ? 'sent' : 'received'">
+  <mat-card class="chat-message">
+    <mat-card-header>
+      <mat-icon *ngIf="message.recipient !== null" title="{{message.recipient.firstname}}" class="private-message">
+        lock
+      </mat-icon>
+      <mat-card-title class="chat-title">
+        {{ message.sender.firstname }}
+        <small>{{ message.timestamp | date:'short' : 'UTC+4'}}</small>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="message">
+        {{ message.text }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

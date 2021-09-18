@@ -17,6 +17,28 @@ import {first, tap} from 'rxjs/operators';
 import {MatSelectionList} from '@angular/material/list';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
+const titles = {
+  users: 'Benutzer',
+  calendars: 'Kalender',
+  vats: 'Mehrwertssteuer Einstellungen',
+  units: 'Einheiten',
+  suppliers: 'Lieferanten',
+  stocks: 'Lager',
+  rights: 'Rechte Verwaltung',
+  orders: 'Bestellungen',
+  offers: 'Angebote',
+  jobs: 'Aufträge',
+  parameters: 'Parameter Einstellungen',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  ingoing_invoices: 'Eingangsrechnungen',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  outgoing_invoices: 'Ausgangsrechnungen',
+  clients: 'Kundenverwaltung',
+  categories: 'Produkt-Kategorien',
+  articles: 'Produkte',
+  reminders: 'Mahnwesen',
+  payments: 'Zahlungen'
+};
 
 @Component({
   selector: 'app-user-edit',
@@ -30,7 +52,7 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
   userGroup: FormGroup;
   passwordGroup: FormGroup;
   availableRights: Right[];
-  availableRightCats: { key: string; open: boolean }[];
+  availableRightCats: { key: string; open: boolean; title: string }[];
   userRights: Right[];
   rightsLoaded = false;
 
@@ -59,10 +81,38 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
 
   onCategoryClick(category: string): void {
     this.availableRightCats = this.availableRightCats.map((cat) => {
-      if (cat.key === category)
-        {return {key: cat.key, open: !cat.open};}
-      else {return cat;}
+      if (cat.key === category) {
+        return {key: cat.key, open: !cat.open, title: cat.title};
+      } else {
+        return cat;
+      }
     });
+  }
+
+  onCategoryCheck(category: string, checkstate: 'unchecked' | 'checked' | 'indeterminate'): void {
+    switch (checkstate) {
+      case 'checked':
+        this.userRights = this.userRights.filter((userRight) => !userRight.key.startsWith(category));
+        break;
+      case 'indeterminate':
+      case 'unchecked':
+        this.availableRights.forEach((right) => {
+          if (right.key.startsWith(category) && this.userRights.filter((userRight) => userRight.id === right.id).length === 0) {
+            this.userRights.push(right);
+          }
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
+  onRightCheck(right: Right): void {
+    if (this.userRights.filter(userRight => userRight.id === right.id).length === 0) {
+      this.userRights.push(right);
+    } else {
+      this.userRights = this.userRights.filter((userRight) => userRight.id !== right.id);
+    }
   }
 
   ngOnInit(): void {
@@ -84,7 +134,11 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
         rights.forEach(right => {
           const rightKeyCat = right.key.split(':')[0];
           if (this.availableRightCats.filter(cat => cat.key === rightKeyCat).length === 0) {
-            this.availableRightCats.push({key: rightKeyCat, open: false});
+            let title = titles[rightKeyCat];
+            if (typeof title === 'undefined') {
+              title = 'Neue Kategorie';
+            }
+            this.availableRightCats.push({key: rightKeyCat, open: false, title});
           }
         });
         this.api.readUserUsersUserIdGet(this.id).pipe(first()).subscribe((user) => {
@@ -104,6 +158,22 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
     return false;
   }
 
+  userHasRightCategory(rightCategory: string): 'unchecked' | 'checked' | 'indeterminate' {
+    let hasAll = true;
+    let hasOne = false;
+    for (const right of this.availableRights) {
+      if (right.key.startsWith(rightCategory)) {
+        if (this.userHasRight(right.key)) {
+          hasOne = true;
+        }
+        if (!this.userHasRight(right.key)) {
+          hasAll = false;
+        }
+      }
+    }
+    return hasAll ? 'checked' : hasOne ? 'indeterminate' : 'unchecked';
+  }
+
   ngOnDestroy(): void {
     super.ngOnDestroy();
   }
@@ -120,6 +190,7 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
     this.id = user.id;
     this.navigationTarget = 'user/edit/' + user.id.toString();
     this.unlockFunction(() => {
+      this.userRights = user.rights;
       this.router.navigateByUrl(this.navigationTarget);
     });
     this.snackBar.open('Speichern erfolgreich!', 'Ok', {

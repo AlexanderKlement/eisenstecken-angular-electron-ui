@@ -35,12 +35,18 @@
         <div *ngIf="!rightsLoaded">
           <mat-spinner></mat-spinner>
         </div>
-        <mat-selection-list #rights *ngIf="rightsLoaded">
-          <div *ngFor="let cat of availableRightCats;" class="category {{cat.open ? 'open' : ''}}" (click)="onCategoryClick(cat.key)">
-            {{cat.key}}
+        <mat-selection-list #rights *ngIf="rightsLoaded" class="right-selection">
+          <div *ngFor="let cat of availableRightCats;" class="category {{cat.open ? 'open' : ''}}">
+            <div class="category-option">
+              <div class="clickable" (click)="onCategoryClick(cat.key)"></div>
+              <mat-pseudo-checkbox [state]="userHasRightCategory(cat.key)"
+                                   class="category-checkbox"
+                                   (click)="onCategoryCheck(cat.key,userHasRightCategory(cat.key))"></mat-pseudo-checkbox>
+              <div class="category-title">{{cat.title}}</div>
+            </div>
             <mat-list-option *ngFor="let right of availableRights | rightsFilter: cat.key;"
                              [selected]="userHasRight(right.key)"
-                             value="{{right.key}}">
+                             value="{{right.key}}" (click)="onRightCheck(right)">
               {{right.key}} : {{right.description}}
             </mat-list-option>
           </div>

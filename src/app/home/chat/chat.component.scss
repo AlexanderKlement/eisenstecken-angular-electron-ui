@@ -1,13 +1,34 @@
 @import '../../../styles.scss';
+
 $primary: map-get($theme, primaryprimary);
 
 
-.chat-message-box{
-  overflow-y: scroll;
-}
-.chat{
+.chat {
   overflow: hidden;
+  isolation: isolate;
+
+  .chat-message-box {
+    overflow-y: scroll;
+    background: map-get($mat-primary, lighter);
+    z-index: 1;
+
+    &:before {
+      content: '';
+      position: absolute;
+      inset: 0 8px 0 0;
+      background-image: url('~assets/images/chat-bg.png');
+      opacity: 0.06;
+      background-repeat: repeat;
+    }
+  }
+
+  .input-box {
+    z-index: 2;
+    background: white;
+  }
+
 }
+
 /* width
 .chat-message-box::-webkit-scrollbar {
   width: 8px;
