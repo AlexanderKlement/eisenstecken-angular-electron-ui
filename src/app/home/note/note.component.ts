@@ -18,6 +18,9 @@ export class NoteComponent implements OnInit {
     const noteObservable = this.api.readNoteEntriesNoteGet();
     noteObservable.subscribe((notes) => {
       this.notes = notes;
+      if(this.notes.length === 0){
+        this.newNoteClicked();
+      }
     });
   }
 

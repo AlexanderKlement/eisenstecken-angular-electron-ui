@@ -18,6 +18,8 @@ export class InfoDialogComponent implements OnInit {
     constructor(private api: DefaultService, public dialogRef: MatDialogRef<InfoDialogComponent>) {
     }
 
+    // TODO: add a parameter where they can add all they stuff they want and show it here
+
     ngOnInit():
         void {
         this.initUserDataSource();

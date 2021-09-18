@@ -9,6 +9,8 @@ export class SettingsComponent implements OnInit {
 
   constructor() { }
 
+  // TODO: add the settigns for credentials, price, contacts and technical data
+
   ngOnInit(): void {
   }
 }
