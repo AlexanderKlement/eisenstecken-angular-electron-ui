@@ -15,6 +15,8 @@ import {FlexModule} from '@angular/flex-layout';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import { InfoSettingsComponent } from './info-settings/info-settings.component';
+import {MatListModule} from '@angular/material/list';
 
 
 @NgModule({
@@ -26,16 +28,18 @@ import {MatButtonModule} from '@angular/material/button';
     OrderSettingsComponent,
     ReminderSettingsComponent,
     GeneralSettingsComponent,
+    InfoSettingsComponent,
   ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatTabsModule,
-    ReactiveFormsModule,
-    FlexModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule
-  ]
+    imports: [
+        CommonModule,
+        SharedModule,
+        MatTabsModule,
+        ReactiveFormsModule,
+        FlexModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatListModule
+    ]
 })
 export class SettingsModule { }

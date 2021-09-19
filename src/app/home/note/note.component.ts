@@ -8,6 +8,8 @@ import {DefaultService, Note, NoteCreate} from 'eisenstecken-openapi-angular-lib
 })
 export class NoteComponent implements OnInit {
 
+  @ViewChild('noteBox') noteBox: ElementRef;
+
   notes: Note[] = [];
 
   constructor(private api: DefaultService) {
@@ -23,8 +25,6 @@ export class NoteComponent implements OnInit {
       }
     });
   }
-
-  @ViewChild('noteBox') noteBox: ElementRef;
 
   public scrollToBottom(): void {
     try {

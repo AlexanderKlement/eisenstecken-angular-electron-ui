@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../shared/auth.service';
 import {InfoDialogComponent} from './info-dialog/info-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
+import {FormArray, FormGroup} from '@angular/forms';
 
 @Component({
     selector: 'app-home',
@@ -29,7 +30,5 @@ export class HomeComponent implements OnInit {
         console.log('Logout clicked');
         this.authService.doLogout();
     }
-
-
 }
 

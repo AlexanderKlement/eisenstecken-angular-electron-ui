@@ -2,13 +2,9 @@
   <img class="logo" src="assets/logos/ESS-Logo-RGB-Black.png" alt="Eisenstecken-logo" (click)="homeClicked()">
   <span class="example-spacer"></span>
   <div>
-    <!--<button mat-icon-button mat-raised-button (click)="homeClicked()">
-      <mat-icon>home</mat-icon>
-    </button>-->
     <a *ngFor="let button of buttonList" (click)="buttonClicked(button)" mat-button>{{button.name}}</a>
     <button mat-icon-button mat-raised-button (click)="backClicked()">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <a *ngFor="let button of buttonList" (click)="buttonClicked(button)" mat-button>{{button.name}}</a>
   </div>
 </mat-toolbar>

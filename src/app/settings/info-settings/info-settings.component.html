@@ -1,0 +1,40 @@
+<div class="window-container">
+    <mat-tab-group>
+        <mat-tab label="Kontakte">
+            <form (ngSubmit)="onSubmitContacts()" [formGroup]="contactGroup">
+                <div fxLayout="column" fxLayoutAlign="space-around center">
+                    <mat-list formArrayName="contacts">
+                        <mat-list-item *ngFor="let contact of getContactFormArray().controls; let i = index"
+                                       [formGroupName]="i">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Name</mat-label>
+                                <input class="form-control" formControlName="name" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Telefon</mat-label>
+                                <input class="form-control" formControlName="tel" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Mail</mat-label>
+                                <input class="form-control" formControlName="mail" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Bemerkung</mat-label>
+                                <input class="form-control" formControlName="note" matInput>
+                            </mat-form-field>
+                        </mat-list-item>
+                    </mat-list>
+                    <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+                </div>
+            </form>
+            <pre> {{contactGroup.value | json}} </pre>
+
+        </mat-tab>
+        <mat-tab label="Preise">
+        </mat-tab>
+        <mat-tab label="Zugangsdaten">
+        </mat-tab>
+        <mat-tab label="Technische Daten">
+        </mat-tab>
+    </mat-tab-group>
+</div>

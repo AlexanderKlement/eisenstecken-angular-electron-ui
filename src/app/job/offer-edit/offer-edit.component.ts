@@ -45,6 +45,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     if (descriptiveArticle === undefined) {
       return new FormGroup({
         description: new FormControl(''),
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         sub_descriptive_articles: new FormArray([
           OfferEditComponent.initSubDescriptiveArticles()
         ])
@@ -56,6 +57,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       });
       return new FormGroup({
         description: new FormControl(descriptiveArticle.description),
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         sub_descriptive_articles: new FormArray(subDescriptiveArticles)
       });
     }
@@ -66,6 +68,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       return new FormGroup({
         description: new FormControl(''),
         amount: new FormControl(1),
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         single_price: new FormControl(0.0),
         alternative: new FormControl(false)
       });
@@ -73,6 +76,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
       return new FormGroup({
         description: new FormControl(subDescriptiveArticle.description),
         amount: new FormControl(subDescriptiveArticle.amount),
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         single_price: new FormControl(subDescriptiveArticle.single_price),
         alternative: new FormControl(subDescriptiveArticle.alternative)
       });
@@ -102,7 +106,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     this.initOfferGroup();
     if (this.createMode) {
       this.routeParams.subscribe((params) => {
-        this.jobId = parseInt(params.job_id);
+        this.jobId = parseInt(params.job_id, 10);
         if (isNaN(this.jobId)) {
           console.error('OfferEdit: Cannot determine job id');
           this.router.navigateByUrl(this.navigationTarget);
@@ -125,9 +129,11 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
           name: '',
           amount: subDescriptiveArticleControl.get('amount').value,
           description: subDescriptiveArticleControl.get('description').value,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           single_price: subDescriptiveArticleControl.get('single_price').value,
           discount: 0,
           alternative: subDescriptiveArticleControl.get('alternative').value,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           vat_id: 1,
         };
         subDescriptiveArticleArray.push(subDescriptiveArticle);
@@ -136,10 +142,13 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         name: '',
         amount: 0,
         description: descriptiveArticleControl.get('description').value,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         single_price: 0,
         discount: 0,
         alternative: false,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         descriptive_articles: subDescriptiveArticleArray,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         vat_id: 1,
       };
       descriptiveArticles.push(descriptiveArticle);
@@ -149,14 +158,20 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     if (this.createMode) {
       const offerCreate: OfferCreate = {
         date: OfferEditComponent.formatDate(this.offerGroup.get('date').value),
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         in_price_included: this.offerGroup.get('in_price_included').value,
         validity: this.offerGroup.get('validity').value,
         payment: this.offerGroup.get('payment').value,
         delivery: this.offerGroup.get('delivery').value,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         job_id: this.jobId,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         vat_id: this.offerGroup.get('vat_id').value,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         descriptive_articles: descriptiveArticles,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         discount_amount: this.offerGroup.get('discount_amount').value,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         material_description: this.offerGroup.get('material_description').value
       };
       this.api.createOfferOfferPost(offerCreate).pipe(first()).subscribe((offer) => {
@@ -169,13 +184,18 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     } else {
       const offerUpdate: OfferUpdate = {
         date: OfferEditComponent.formatDate(this.offerGroup.get('date').value),
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         in_price_included: this.offerGroup.get('in_price_included').value,
         validity: this.offerGroup.get('validity').value,
         payment: this.offerGroup.get('payment').value,
         delivery: this.offerGroup.get('delivery').value,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         descriptive_articles: descriptiveArticles,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         vat_id: this.offerGroup.get('vat_id').value,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         discount_amount: this.offerGroup.get('discount_amount').value,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         material_description: this.offerGroup.get('material_description').value
       };
       this.api.updateOfferOfferOfferIdPut(this.id, offerUpdate).subscribe((offer) => {
@@ -204,12 +224,15 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
           this.getDescriptiveArticles().push(OfferEditComponent.initDescriptiveArticles(descriptiveArticle));
         });
         this.offerGroup.patchValue({
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           in_price_included: offer.in_price_included,
           validity: offer.validity,
           payment: offer.payment,
           delivery: offer.delivery,
           //date: offer.date, //remove this line if always today's date should be shown -> and vice versa
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           discount_amount: offer.discount_amount,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           material_description: offer.material_description
         });
         this.jobId = offer.job_id;
@@ -299,14 +322,19 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
 
   private initOfferGroup() {
     this.offerGroup = new FormGroup({
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       in_price_included: new FormControl(''),
       validity: new FormControl(''),
       payment: new FormControl(''),
       delivery: new FormControl(''),
       date: new FormControl((new Date()).toISOString()),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       vat_id: new FormControl(2),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       discount_amount: new FormControl(0),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       material_description: new FormControl(''),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       descriptive_articles: new FormArray([
         OfferEditComponent.initDescriptiveArticles()
       ]),

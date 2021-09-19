@@ -1,12 +1,13 @@
+<div class="window-container">
 <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
   <div fxLayout="column" fxLayoutAlign="space-around center" >
     <mat-form-field appearance="fill">
       <mat-label>Titelseite Einleitung - Deutsch:</mat-label>
-      <textarea class="form-control" formControlName="offer_title_introduction_de" matInput></textarea>
+      <textarea  rows="10" class="form-control" formControlName="offer_title_introduction_de" matInput></textarea>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Titelseite Einleitung - Italienisch:</mat-label>
-      <textarea class="form-control" formControlName="offer_title_introduction_it" matInput></textarea>
+      <textarea rows="10" class="form-control" formControlName="offer_title_introduction_it" matInput></textarea>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Im Preis eingegriffen - Deutsch: </mat-label>
@@ -60,5 +61,5 @@
   </div>
 
 </form>
-
+</div>
 <pre> {{formGroup.value | json}} </pre>
