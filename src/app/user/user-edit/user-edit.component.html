@@ -22,6 +22,20 @@
             <mat-label>Telefon</mat-label>
             <input class="form-control" formControlName="tel" matInput>
           </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Handy</mat-label>
+            <input class="form-control" formControlName="handy" matInput>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Kurzwahl</mat-label>
+            <input class="form-control" formControlName="dial" matInput>
+          </mat-form-field>
+          <mat-checkbox formControlName="employee"
+                        title="Ist dieser Account auch ein Angestellter?">Angestellter
+          </mat-checkbox>
+          <mat-checkbox formControlName="office"
+                        title="Arbeitet der Angestellte im Büro?">Büro
+          </mat-checkbox>
           <mat-form-field *ngIf="createMode">
             <mat-label>Password</mat-label>
             <input class="form-control" formControlName="password" matInput>

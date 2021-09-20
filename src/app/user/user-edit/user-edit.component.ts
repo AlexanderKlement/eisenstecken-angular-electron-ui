@@ -123,7 +123,11 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
             secondname: new FormControl(''),
             email: new FormControl(''),
             tel: new FormControl(''),
-            password: new FormControl('')
+            password: new FormControl(''),
+            handy: new FormControl(''),
+            office: new FormControl(false),
+            employee: new FormControl(true),
+            dial: new FormControl('')
         });
         this.passwordGroup = new FormGroup({
             password: new FormControl('')
@@ -211,9 +215,10 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
                 firstname: this.userGroup.get('firstname').value,
                 secondname: this.userGroup.get('secondname').value,
                 password: this.userGroup.get('password').value,
-                handy: '',
-                _short: '',
-                employee: true //TODO: add the components to the html
+                handy: this.userGroup.get('handy').value,
+                dial: this.userGroup.get('dial').value,
+                employee: this.userGroup.get('employee').value,
+                office: this.userGroup.get('office').value,
             };
             this.api.createUserUsersPost(userCreate).pipe(first()).subscribe((user) => {
                 this.createUpdateSuccess(user);
@@ -228,9 +233,10 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
                 tel: this.userGroup.get('tel').value,
                 firstname: this.userGroup.get('firstname').value,
                 secondname: this.userGroup.get('secondname').value,
-                handy: '',
-                _short: '',
-                employee: true
+                handy: this.userGroup.get('handy').value,
+                dial: this.userGroup.get('dial').value,
+                employee: this.userGroup.get('employee').value,
+                office: this.userGroup.get('office').value,
             };
             this.api.updateUserUsersUserIdPut(this.id, userUpdate).pipe(first()).subscribe((user) => {
                 this.createUpdateSuccess(user);

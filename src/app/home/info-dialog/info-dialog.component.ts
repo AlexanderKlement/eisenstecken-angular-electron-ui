@@ -44,7 +44,7 @@ export class InfoDialogComponent implements OnInit {
                                 tel: dataSource.tel,
                                 handy: dataSource.handy,
                                 // eslint-disable-next-line no-underscore-dangle
-                                _short: dataSource._short,
+                                dial: dataSource.dial,
                             },
                             route: () => {
                             }
@@ -57,7 +57,7 @@ export class InfoDialogComponent implements OnInit {
                 {name: 'email', headerName: 'Email'},
                 {name: 'tel', headerName: 'Telefon'},
                 {name: 'handy', headerName: 'Handy'},
-                {name: '_short', headerName: 'Kurzwahl'},
+                {name: 'dial', headerName: 'Kurzwahl'},
             ],
             (api) => api.readUserCountUsersEmployeeCountGet()
         );

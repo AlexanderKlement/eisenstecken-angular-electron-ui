@@ -13,6 +13,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatListModule} from "@angular/material/list";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -20,18 +21,19 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     UserComponent,
     UserEditComponent
   ],
-  imports: [
-    CommonModule,
-    UserRoutingModule,
-    SharedModule,
-    MatTabsModule,
-    FlexModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatListModule,
-    MatProgressSpinnerModule
-  ]
+    imports: [
+        CommonModule,
+        UserRoutingModule,
+        SharedModule,
+        MatTabsModule,
+        FlexModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatListModule,
+        MatProgressSpinnerModule,
+        MatCheckboxModule
+    ]
 })
 export class UserModule { }

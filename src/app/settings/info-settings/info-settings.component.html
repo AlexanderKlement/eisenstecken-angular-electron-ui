@@ -3,9 +3,10 @@
         <mat-tab label="Kontakte">
             <form (ngSubmit)="onSubmitContacts()" [formGroup]="contactGroup">
                 <div fxLayout="column" fxLayoutAlign="space-around center">
-                    <mat-list formArrayName="contacts">
-                        <mat-list-item *ngFor="let contact of getContactFormArray().controls; let i = index"
-                                       [formGroupName]="i">
+                    <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="contacts">
+                        <div fxLayout="row" fxLayoutAlign="space-around start"
+                             *ngFor="let contact of getContactFormArray().controls; let i = index"
+                             [formGroupName]="i">
                             <mat-form-field appearance="fill">
                                 <mat-label>Name</mat-label>
                                 <input class="form-control" formControlName="name" matInput>
@@ -22,19 +23,130 @@
                                 <mat-label>Bemerkung</mat-label>
                                 <input class="form-control" formControlName="note" matInput>
                             </mat-form-field>
-                        </mat-list-item>
-                    </mat-list>
-                    <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+                            <button type="button" mat-fab (click)="removeContactAt(i)">
+                                <mat-icon>
+                                    delete
+                                </mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                        <button type="button" mat-raised-button (click)="addNewContact()">Neue Zeile</button>
+                        <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+                    </div>
                 </div>
             </form>
             <pre> {{contactGroup.value | json}} </pre>
-
         </mat-tab>
         <mat-tab label="Preise">
+            <form (ngSubmit)="onSubmitPrices()" [formGroup]="priceGroup">
+                <div fxLayout="column" fxLayoutAlign="space-around center">
+                    <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="prices">
+                        <div fxLayout="row" fxLayoutAlign="space-around start"
+                             *ngFor="let price of getPriceFormArray().controls; let i = index"
+                             [formGroupName]="i">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Name</mat-label>
+                                <input class="form-control" formControlName="name" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Preis</mat-label>
+                                <input class="form-control" formControlName="price" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Kommentar</mat-label>
+                                <input class="form-control" formControlName="comment" matInput>
+                            </mat-form-field>
+                            <button type="button" mat-fab (click)="removePriceAt(i)">
+                                <mat-icon>
+                                    delete
+                                </mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                        <button type="button" mat-raised-button (click)="addNewPrice()">Neue Zeile</button>
+                        <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+                    </div>
+                </div>
+            </form>
+            <pre> {{priceGroup.value | json}} </pre>
         </mat-tab>
         <mat-tab label="Zugangsdaten">
+            <form (ngSubmit)="onSubmitCredentials()" [formGroup]="credentialGroup">
+                <div fxLayout="column" fxLayoutAlign="space-around center">
+                    <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="credentials">
+                        <div fxLayout="row" fxLayoutAlign="space-around start"
+                             *ngFor="let credential of getCredentialFormArray().controls; let i = index"
+                             [formGroupName]="i">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Name</mat-label>
+                                <input class="form-control" formControlName="name" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Benutzername</mat-label>
+                                <input class="form-control" formControlName="username" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Password</mat-label>
+                                <input class="form-control" formControlName="password" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Link/Kommentar</mat-label>
+                                <input class="form-control" formControlName="url" matInput>
+                            </mat-form-field>
+                            <button type="button" mat-fab (click)="removeCredentialAt(i)">
+                                <mat-icon>
+                                    delete
+                                </mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                        <button type="button" mat-raised-button (click)="addNewCredential()">Neue Zeile</button>
+                        <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+                    </div>
+                </div>
+            </form>
+            <pre> {{credentialGroup.value | json}} </pre>
         </mat-tab>
         <mat-tab label="Technische Daten">
+            <form (ngSubmit)="onSubmitTechnicalData()" [formGroup]="technicalDataGroup">
+                <div fxLayout="column" fxLayoutAlign="space-around center">
+                    <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="technicalData">
+                        <div fxLayout="row" fxLayoutAlign="space-around start"
+                             *ngFor="let technicalData of getTechnicalDataFormArray().controls; let i = index"
+                             [formGroupName]="i">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Name</mat-label>
+                                <input class="form-control" formControlName="name" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Höhe</mat-label>
+                                <input class="form-control" formControlName="height" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Breite</mat-label>
+                                <input class="form-control" formControlName="width" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Länge</mat-label>
+                                <input class="form-control" formControlName="length" matInput>
+                            </mat-form-field>
+                            <button type="button" mat-fab (click)="removeTechnicalDataAt(i)">
+                                <mat-icon>
+                                    delete
+                                </mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                        <button type="button" mat-raised-button (click)="addNewTechnicalData()">Neue Zeile</button>
+                        <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+                    </div>
+                </div>
+            </form>
+            <pre> {{technicalDataGroup.value | json}} </pre>
         </mat-tab>
     </mat-tab-group>
 </div>

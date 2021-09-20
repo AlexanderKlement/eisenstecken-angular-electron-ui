@@ -17,6 +17,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import { InfoSettingsComponent } from './info-settings/info-settings.component';
 import {MatListModule} from '@angular/material/list';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import {MatListModule} from '@angular/material/list';
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
-        MatListModule
+        MatListModule,
+        MatIconModule
     ]
 })
 export class SettingsModule { }
