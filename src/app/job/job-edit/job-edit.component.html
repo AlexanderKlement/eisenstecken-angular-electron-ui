@@ -1,11 +1,14 @@
 <app-toolbar [beforeBackFunction]="unlockFunction"></app-toolbar>
-<h1 *ngIf="createMode && !subMode">Auftrag erstellen</h1>
-<h1 *ngIf="!createMode && !subMode">Auftrag bearbeiten</h1>
-<h1 *ngIf="createMode && subMode">Unterauftrag erstellen</h1>
-<h1 *ngIf="!createMode && subMode">Unterauftrag bearbeiten</h1>
-<form (ngSubmit)="onSubmit()" [formGroup]="jobGroup">
-    <div fxLayout="column" fxLayoutAlign="space-around center" >
-      <mat-checkbox *ngIf="!subMode" class="form-control" [disabled]="!createMode" formControlName="minijob">Kleinstauftrag</mat-checkbox>
+<div class="window-container">
+  <h1 *ngIf="createMode && !subMode">Auftrag erstellen</h1>
+  <h1 *ngIf="!createMode && !subMode">Auftrag bearbeiten</h1>
+  <h1 *ngIf="createMode && subMode">Unterauftrag erstellen</h1>
+  <h1 *ngIf="!createMode && subMode">Unterauftrag bearbeiten</h1>
+  <form (ngSubmit)="onSubmit()" [formGroup]="jobGroup">
+    <div fxLayout="column" fxLayoutAlign="space-around center">
+      <mat-checkbox *ngIf="!subMode" class="form-control" [disabled]="!createMode" formControlName="minijob">
+        Kleinstauftrag
+      </mat-checkbox>
       <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
         <input class="form-control" formControlName="name" matInput>
@@ -14,9 +17,8 @@
         <mat-label>Beschreibung</mat-label>
         <input class="form-control" formControlName="description" matInput>
       </mat-form-field>
-      <app-address-form  *ngIf="!subMode" [address]="getAddressGroup()"></app-address-form>
+      <app-address-form *ngIf="!subMode" [address]="getAddressGroup()" fxFlexFill></app-address-form>
       <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
     </div>
-</form>
-
-
+  </form>
+</div>
