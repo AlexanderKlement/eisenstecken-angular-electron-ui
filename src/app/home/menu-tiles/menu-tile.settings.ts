@@ -27,14 +27,14 @@ export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
             case 'outgoing_invoices:all':
                 menuTileArray.push({title: 'Rechnungen', icon: 'money', link: '/invoice'});
                 return;
-            case 'articles:all':
-                menuTileArray.push({title: 'Nothing', icon: 'nature', link: '/'});
-                return;
             case 'parameters:set':
                 menuTileArray.push({title: 'Einstellungen', icon: 'settings', link: '/settings'});
                 return;
             case 'suppliers:all':
                 menuTileArray.push({title: 'Lieferanten', icon: 'local_shipping', link: '/supplier'});
+                return;
+            case 'hours:insert':
+                menuTileArray.push({title: 'Arbeitstag', icon: 'schedule', link: '/work_days'});
         }
     });
     // TODO: remove duplicates;

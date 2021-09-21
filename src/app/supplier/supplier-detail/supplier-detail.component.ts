@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {InfoDataSource} from '../../shared/components/info-builder/info-builder.datasource';
-import {DefaultService, Order, Supplier} from 'eisenstecken-openapi-angular-library';
+import {DefaultService, Order, OrderBundle, OrderBundleCreate, Supplier} from 'eisenstecken-openapi-angular-library';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
@@ -8,8 +8,8 @@ import {InfoBuilderComponent} from '../../shared/components/info-builder/info-bu
 import {shell} from 'electron';
 import {isElectron} from '../../app.component';
 import {MatDialog} from '@angular/material/dialog';
-import {OrderDialogComponent} from './order-dialog/order-dialog.component';
-import {map} from 'rxjs/operators';
+import {OrderDateReturnData, OrderDialogComponent} from './order-dialog/order-dialog.component';
+import {first, map} from 'rxjs/operators';
 
 @Component({
     selector: 'app-supplier-detail',
@@ -197,27 +197,41 @@ export class SupplierDetailComponent implements OnInit {
         this.deliveredOrderDataSource.loadData();
     }
 
-    private sendOrderButtonClicked(): void  {
+    private sendOrderButtonClicked(): void {
         const dialogRef = this.dialog.open(OrderDialogComponent, {
-            width: '250px',
-            data: {name: this.api.readSupplierSupplierSupplierIdGet(this.id).pipe(
-                map((supplier) => supplier.displayable_name)),
+            width: '400px',
+            data: {
+                name: this.api.readSupplierSupplierSupplierIdGet(this.id).pipe(
+                    map((supplier) => supplier.displayable_name)),
                 orders: this.api.readOrdersOrderSupplierSupplierIdGet(this.id, 0, 1000, '', 'CREATED')
             }
         });
 
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed');
-            if(Array.isArray(result) && result.length > 0 && typeof result[0] == 'string')
-                {this.ordersToOrderSelected(result);}
-            else {
+            if (result.kind === 'OrderDateReturnData') {
+                this.ordersToOrderSelected(result);
+            } else {
                 console.error('Cannot order: data type is wrong!');
                 console.error(result);
             }
         });
     }
 
-    private ordersToOrderSelected(orderIds: string[]): void {
+    private ordersToOrderSelected(orderDateReturnData: OrderDateReturnData): void {
+        this.api.readSupplierSupplierSupplierIdGet(this.id).pipe(first()).subscribe((supplier) => {
+            const orderBundle: OrderBundleCreate = {
+                description: '',
+                orders: orderDateReturnData.orders,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                delivery_date: orderDateReturnData.date,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                order_from_id: supplier.orderable.id
+            };
+            this.api.createOrderBundleOrderBundleOrderBundlePost(orderBundle).pipe(first()).subscribe(() => {
+                window.location.reload();
+            });
+        });
 
     }
 }

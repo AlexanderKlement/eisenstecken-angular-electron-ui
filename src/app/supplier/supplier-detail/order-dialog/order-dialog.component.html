@@ -1,13 +1,25 @@
 <h1 mat-dialog-title>{{data.name | async}} versenden</h1>
 <div mat-dialog-content>
-    <p>Welche Bestellungen sollen versand werden?</p>
-    <mat-selection-list #orders>
-        <mat-list-option *ngFor="let order of data.orders | async" value="{{order.id}}">
-            {{order.order_to.name}}
-        </mat-list-option>
-    </mat-selection-list>
+    <div fxLayout="column" fxLayoutAlign="space-around center">
+        <p>Welche Bestellungen sollen versand werden?</p>
+        <mat-selection-list #orders>
+            <mat-list-option *ngFor="let order of data.orders | async" value="{{order.id}}">
+                {{order.order_to.name}}
+            </mat-list-option>
+        </mat-selection-list>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Lieferung erfolgt spätestens:</mat-label>
+            <input matInput [formControl]="dateControl" [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div *ngIf="error">
+            <p>Bitte Datum und mindestens eine Bestellung auswählen</p>
+        </div>
+    </div>
 </div>
 <mat-dialog-actions>
     <button mat-button (click)="onCancelClick()">Abbrechen</button>
-    <button mat-button [mat-dialog-close]="getSelectedKeys()">Ok</button>
+    <button mat-button [mat-dialog-close]="getReturnData()">Ok</button>
 </mat-dialog-actions>

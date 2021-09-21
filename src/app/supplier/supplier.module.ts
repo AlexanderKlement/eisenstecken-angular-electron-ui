@@ -18,6 +18,7 @@ import { OrderDialogComponent } from './supplier-detail/order-dialog/order-dialo
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatListModule} from '@angular/material/list';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
         MatTabsModule,
         MatDialogModule,
         MatListModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatDatepickerModule
     ]
 })
 export class SupplierModule { }
