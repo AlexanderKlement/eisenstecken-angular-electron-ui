@@ -26,8 +26,8 @@ export class ProductsListComponent implements OnInit {
     @Input() orderId: number;
     @Input() available: boolean;
 
-    @Output() onRefreshOrderedArticleListEmitter = new EventEmitter();
-    @Output() onRefreshAvailableArticleListEmitter = new EventEmitter();
+    @Output() refreshOrderedArticleListEmitter = new EventEmitter();
+    @Output() refreshAvailableArticleListEmitter = new EventEmitter();
 
     search: FormControl;
     searchAvailableArticles$: Observable<Article[]>;
@@ -40,25 +40,36 @@ export class ProductsListComponent implements OnInit {
 
     private static mapDialogData2ArticleUpdate(dialogData: DialogData): ArticleUpdate {
         return {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             mod_number: dialogData.mod_number,
             price: dialogData.price,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             unit_id: dialogData.unit_id,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             name_de: dialogData.name,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             name_it: dialogData.name,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             description_de: dialogData.custom_description,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             description_it: dialogData.custom_description,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             vat_id: dialogData.vat_id,
         };
     }
 
-    private static mapDialogData2OrderedArticleCreate(dialogData: DialogData, article_id: number): OrderedArticleCreate {
+    private static mapDialogData2OrderedArticleCreate(dialogData: DialogData, articleId: number): OrderedArticleCreate {
         console.log(dialogData);
         return {
             amount: dialogData.amount,
             discount: dialogData.discount,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             vat_id: dialogData.vat_id,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             custom_description: dialogData.custom_description,
-            article_id,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            article_id: articleId,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             ordered_unit_id: dialogData.unit_id,
             price: dialogData.price
         };
@@ -69,12 +80,16 @@ export class ProductsListComponent implements OnInit {
             title,
             amount: 0,
             discount: 0,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             custom_description: article.description.translation,
             name: article.name.translation,
             description: article.description.translation,
             price: article.price,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             mod_number: article.mod_number,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             vat_id: article.vat.id,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             unit_id: article.unit.id
         };
     }
@@ -111,7 +126,8 @@ export class ProductsListComponent implements OnInit {
                         return of(this.orderedArticles);
                     }
                     filterString = filterString.toLowerCase();
-                    return of(this.orderedArticles.filter((element) => element.article.name.translation.toLowerCase().indexOf(filterString) >= 0));
+                    return of(this.orderedArticles.filter((element) =>
+                        element.article.name.translation.toLowerCase().indexOf(filterString) >= 0));
                 }));
         }
     }
@@ -121,10 +137,12 @@ export class ProductsListComponent implements OnInit {
         const closeFunction = (result: any) => {
             const orderedArticleCreate = ProductsListComponent.mapDialogData2OrderedArticleCreate(result, article.id);
             const articleUpdate = ProductsListComponent.mapDialogData2ArticleUpdate(result);
-            this.api.copyArticleAndModifyArticleArticleIdPost(article.id, articleUpdate).pipe(first()).subscribe((article) => {
-                orderedArticleCreate.article_id = article.id;
+            this.api.copyArticleAndModifyArticleArticleIdPost(article.id, articleUpdate).pipe(first())
+                .subscribe((patchArticle) => {
+                orderedArticleCreate.article_id = patchArticle.id;
                 this.refreshAvailableOrderList();
-                this.api.addOrderedArticleToOrderOrderOrderedArticleOrderIdPut(this.orderId, orderedArticleCreate).pipe(first()).subscribe(() => {
+                this.api.addOrderedArticleToOrderOrderOrderedArticleOrderIdPut(this.orderId, orderedArticleCreate)
+                    .pipe(first()).subscribe(() => {
                     this.refreshOrderedArticleList();
                 });
             });
@@ -137,9 +155,10 @@ export class ProductsListComponent implements OnInit {
         const closeFunction = (result: any) => {
             const orderedArticleCreate = ProductsListComponent.mapDialogData2OrderedArticleCreate(result, article.id);
             const articleUpdate = ProductsListComponent.mapDialogData2ArticleUpdate(result);
-            this.api.patchArticleArticleArticleIdPatch(article.id, articleUpdate).pipe(first()).subscribe((article) => {
-                orderedArticleCreate.article_id = article.id;
-                this.api.addOrderedArticleToOrderOrderOrderedArticleOrderIdPut(this.orderId, orderedArticleCreate).pipe(first()).subscribe(() => {
+            this.api.patchArticleArticleArticleIdPatch(article.id, articleUpdate).pipe(first()).subscribe((patchArticle) => {
+                orderedArticleCreate.article_id = patchArticle.id;
+                this.api.addOrderedArticleToOrderOrderOrderedArticleOrderIdPut(this.orderId, orderedArticleCreate)
+                    .pipe(first()).subscribe(() => {
                     this.refreshOrderedArticleList();
                 });
             });
@@ -158,11 +177,14 @@ export class ProductsListComponent implements OnInit {
     editButtonClicked(orderedArticle: OrderedArticle): void {
         const dialogData$ = this.createEditDialogData(orderedArticle, 'Produkt bearbeiten');
         const closeFunction = (result: any) => {
-            const orderedArticleCreate = ProductsListComponent.mapDialogData2OrderedArticleCreate(result, orderedArticle.article.id);
+            const orderedArticleCreate = ProductsListComponent
+                .mapDialogData2OrderedArticleCreate(result, orderedArticle.article.id);
             const articleUpdate = ProductsListComponent.mapDialogData2ArticleUpdate(result);
-            this.api.patchArticleArticleArticleIdPatch(orderedArticle.article.id, articleUpdate).pipe(first()).subscribe((article) => {
+            this.api.patchArticleArticleArticleIdPatch(orderedArticle.article.id, articleUpdate)
+                .pipe(first()).subscribe((article) => {
                 orderedArticleCreate.article_id = article.id;
-                this.api.updateOrderedArticleOrderArticleOrderedArticleIdPut(orderedArticle.id, orderedArticleCreate).pipe(first()).subscribe(() => {
+                this.api.updateOrderedArticleOrderArticleOrderedArticleIdPut(orderedArticle.id, orderedArticleCreate)
+                    .pipe(first()).subscribe(() => {
                     this.refreshOrderedArticleList();
                 });
             });
@@ -173,7 +195,8 @@ export class ProductsListComponent implements OnInit {
     }
 
     removeButtonClicked(orderedArticle: OrderedArticle): void {
-        this.api.deleteOrdererArticleOrderOrderedArticleOrderedArticleIdDelete(orderedArticle.id).pipe(first()).subscribe((success) => {
+        this.api.deleteOrdererArticleOrderOrderedArticleOrderedArticleIdDelete(orderedArticle.id)
+            .pipe(first()).subscribe((success) => {
             if (success) {
                 this.refreshOrderedArticleList();
             } //TODO: error handling
@@ -182,7 +205,7 @@ export class ProductsListComponent implements OnInit {
     }
 
     private refreshOrderedArticleList(): void {
-        this.onRefreshOrderedArticleListEmitter.emit();
+        this.refreshOrderedArticleListEmitter.emit();
     }
 
     private createEditDialogData(orderedArticle: OrderedArticle, title: string): Observable<DialogData> {
@@ -201,6 +224,6 @@ export class ProductsListComponent implements OnInit {
     }
 
     private refreshAvailableOrderList() {
-        this.onRefreshAvailableArticleListEmitter.emit();
+        this.refreshAvailableArticleListEmitter.emit();
     }
 }

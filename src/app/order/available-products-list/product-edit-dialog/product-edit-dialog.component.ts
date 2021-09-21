@@ -1,18 +1,22 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Observable} from "rxjs";
-import {DefaultService, Unit, Vat} from "eisenstecken-openapi-angular-library";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Observable} from 'rxjs';
+import {DefaultService, Unit, Vat} from 'eisenstecken-openapi-angular-library';
 
 export interface DialogData {
   title: string;
   name: string;
   description: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   custom_description: string;
   amount: number;
   discount: number;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   unit_id?: number;
   price: number;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   mod_number: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   vat_id: number;
 }
 
