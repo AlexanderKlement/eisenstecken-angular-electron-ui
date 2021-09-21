@@ -4,12 +4,12 @@ import {
     Client, Contact, Credential,
     IngoingInvoice,
     Job,
-    Offer, Order,
+    Offer, Order, OrderBundle,
     OutgoingInvoice, Price, Supplier, TechnicalData,
     User
 } from 'eisenstecken-openapi-angular-library';
 
-export type DataSourceClass = Client | User | Calendar | Job | Offer | Article |
+export type DataSourceClass = Client | User | Calendar | Job | Offer | Article | OrderBundle |
     OutgoingInvoice | IngoingInvoice | Supplier | Order | Contact | Price | TechnicalData | Credential;
 
 export type RecursiveKeyOf<T, Prefix extends string = never> =

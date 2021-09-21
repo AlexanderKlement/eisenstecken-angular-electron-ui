@@ -5,11 +5,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {InfoBuilderComponent} from '../../shared/components/info-builder/info-builder.component';
-import {shell} from 'electron';
-import {isElectron} from '../../app.component';
 import {MatDialog} from '@angular/material/dialog';
 import {OrderDateReturnData, OrderDialogComponent} from './order-dialog/order-dialog.component';
 import {first, map} from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-supplier-detail',
@@ -22,8 +21,8 @@ export class SupplierDetailComponent implements OnInit {
     public infoDataSource: InfoDataSource<Supplier>;
     public id: number;
     createdOrderDataSource: TableDataSource<Order>;
-    orderedOrderDataSource: TableDataSource<Order>;
-    deliveredOrderDataSource: TableDataSource<Order>;
+    orderedOrderDataSource: TableDataSource<OrderBundle>;
+    deliveredOrderDataSource: TableDataSource<OrderBundle>;
     buttons: CustomButton[] = [
         {
             name: 'Bearbeiten',
@@ -135,62 +134,58 @@ export class SupplierDetailComponent implements OnInit {
         this.orderedOrderDataSource = new TableDataSource(
             this.api,
             (api, filter, sortDirection, skip, limit) =>
-                api.readOrdersOrderSupplierSupplierIdGet(this.id, skip, limit, filter, 'DELIVERED'),
+                api.readOrderBundleBySupplierOrderBundleSupplierSupplierIdGet(this.id, skip, limit, filter, 'DELIVERED'),
             (dataSourceClasses) => {
                 const rows = [];
                 dataSourceClasses.forEach((dataSource) => {
                     rows.push(
                         {
                             values: {
-                                id: dataSource.id,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                'order_to.name': dataSource.order_to.name,
+                                create_date: moment(dataSource.create_date).format('LLLL'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                description: dataSource.description
+                                delivery_date: moment(dataSource.delivery_date).format('L')
                             },
                             route: () => {
-                                this.router.navigateByUrl('/order/' + dataSource.id.toString());
+                                this.router.navigateByUrl('/order_bundle/' + dataSource.id.toString());
                             }
                         });
                 });
                 return rows;
             },
             [
-                {name: 'id', headerName: 'ID'},
-                {name: 'order_to.name', headerName: 'Ziel'},
-                {name: 'description', headerName: 'Beschreibung'}
+                {name: 'create_date', headerName: 'Bestelldatum'},
+                {name: 'delivery_date', headerName: 'Lieferdatum'},
             ],
-            (api) => api.readOrderCountOrderSupplierSupplierIdCountGet(supplierId, 'DELIVERED')
+            (api) => api.readCountOfOrderBundleBySupplierAndStatusOrderBundleSupplierSupplierIdCountGet(supplierId, 'DELIVERED')
         );
         this.deliveredOrderDataSource = new TableDataSource(
             this.api,
             (api, filter, sortDirection, skip, limit) =>
-                api.readOrdersOrderSupplierSupplierIdGet(this.id, skip, limit, filter, 'ORDERED'),
+                api.readOrderBundleBySupplierOrderBundleSupplierSupplierIdGet(this.id, skip, limit, filter, 'ORDERED'),
             (dataSourceClasses) => {
                 const rows = [];
                 dataSourceClasses.forEach((dataSource) => {
                     rows.push(
                         {
                             values: {
-                                id: dataSource.id,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                'order_to.name': dataSource.order_to.name,
+                                create_date: moment(dataSource.create_date).format('LLLL'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                description: dataSource.description
+                                delivery_date: moment(dataSource.delivery_date).format('L')
                             },
                             route: () => {
-                                this.router.navigateByUrl('/order/' + dataSource.id.toString());
+                                this.router.navigateByUrl('/order_bundle/' + dataSource.id.toString());
                             }
                         });
                 });
                 return rows;
             },
             [
-                {name: 'id', headerName: 'ID'},
-                {name: 'order_to.name', headerName: 'Ziel'},
-                {name: 'description', headerName: 'Beschreibung'}
+                {name: 'create_date', headerName: 'Bestelldatum'},
+                {name: 'delivery_date', headerName: 'Lieferdatum'},
             ],
-            (api) => api.readOrderCountOrderSupplierSupplierIdCountGet(supplierId, 'ORDERED')
+            (api) => api.readCountOfOrderBundleBySupplierAndStatusOrderBundleSupplierSupplierIdCountGet(supplierId, 'ORDERED')
         );
         this.createdOrderDataSource.loadData();
         this.orderedOrderDataSource.loadData();
@@ -209,12 +204,7 @@ export class SupplierDetailComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed');
-            if (result.kind === 'OrderDateReturnData') {
-                this.ordersToOrderSelected(result);
-            } else {
-                console.error('Cannot order: data type is wrong!');
-                console.error(result);
-            }
+            this.ordersToOrderSelected(result);
         });
     }
 
