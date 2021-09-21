@@ -4,10 +4,18 @@ import {Order} from 'eisenstecken-openapi-angular-library';
 import {MatSelectionList} from '@angular/material/list';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
+import * as moment from 'moment';
+import {MatDatepicker} from '@angular/material/datepicker';
+import {FormControl} from '@angular/forms';
 
 export interface OrderDialogData {
     name: Observable<string>;
     orders: Observable<Order[]>;
+}
+
+export interface OrderDateReturnData {
+    orders: number[];
+    date: string;
 }
 
 @Component({
@@ -18,7 +26,10 @@ export interface OrderDialogData {
 export class OrderDialogComponent implements OnInit {
 
     @ViewChild('orders') ordersSelected: MatSelectionList;
+    @ViewChild('date') dateSelected: MatDatepicker<Date>;
     ordersReady = false;
+    dateControl: FormControl;
+    error = false;
 
     constructor(public dialogRef: MatDialogRef<OrderDialogComponent>,
                 @Inject(MAT_DIALOG_DATA) public data: OrderDialogData) {
@@ -28,6 +39,7 @@ export class OrderDialogComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.dateControl = new FormControl(new Date());
     }
 
     onCancelClick(): void {
@@ -41,5 +53,20 @@ export class OrderDialogComponent implements OnInit {
             console.warn('OrderDialogComponent: Cannot get selected Options');
             return [];
         }
+    }
+
+    getReturnData(): OrderDateReturnData {
+        if(this.error){
+            return;
+        }
+        const date =  moment(this.dateControl.value);
+        const keys =  this.getSelectedKeys();
+        if(!date.isValid() || keys.length === 0){
+            this.error = true;
+        }
+        return {
+            orders : keys,
+            date : date.format()
+        };
     }
 }
