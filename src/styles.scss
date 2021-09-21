@@ -1,8 +1,9 @@
 @use 'sass:map';
 @import "theme";
 
-body {
+body, html {
   margin: 0 !important;
+  height: 100% !important;
 }
 
 

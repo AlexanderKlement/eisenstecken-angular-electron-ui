@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import {Observable, Subscriber, combineLatest} from "rxjs";
+import {Component, OnInit} from '@angular/core';
+import {Observable, Subscriber, combineLatest} from 'rxjs';
 import {
   ListItem,
   SupportedListElements
-} from "../shared/components/filterable-clickable-list/filterable-clickable-list.types";
-import {Article, DefaultService, OrderableType, OrderedArticle} from "eisenstecken-openapi-angular-library";
-import {first} from "rxjs/operators";
+} from '../shared/components/filterable-clickable-list/filterable-clickable-list.types';
+import {Article, DefaultService, OrderableType, OrderedArticle} from 'eisenstecken-openapi-angular-library';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-order',
@@ -15,27 +15,30 @@ import {first} from "rxjs/operators";
 export class OrderComponent implements OnInit {
 
 
-  toListName = "Bestelle für Aufträge oder Lager";
-  toList$ : Observable<ListItem[]>; //Here go stocks and suppliers
+  toListName = 'Bestelle für Aufträge oder Lager';
+  toList$: Observable<ListItem[]>; //Here go stocks and suppliers
   toListSubscriber: Subscriber<ListItem[]>;
   toListSelected: ListItem;
 
-  fromListName = "Bestelle von Lieferanten oder Lager";
+  fromListName = 'Bestelle von Lieferanten oder Lager';
   fromList$: Observable<ListItem[]>;
   fromListSubscriber: Subscriber<ListItem[]>;
   fromListSelected: ListItem;
 
-  availableProductListName = "Verfügbare Produkte";
+  availableProductListName = 'Verfügbare Produkte';
   availableProducts$: Observable<Article[]>;
   availableProductsSubscriber: Subscriber<Article[]>;
 
-  orderedProductListName = "Bestellte Produkte";
+  orderedProductListName = 'Bestellte Produkte';
   orderedProducts$: Observable<OrderedArticle[]>;
   orderedProductsSubscriber: Subscriber<OrderedArticle[]>;
 
+  step = 0;
+
   lastOrderId: number;
 
-  constructor(private api: DefaultService) { }
+  constructor(private api: DefaultService) {
+  }
 
   ngOnInit(): void {
     this.toList$ = new Observable<ListItem[]>((toListSubscriber) => {
@@ -53,9 +56,9 @@ export class OrderComponent implements OnInit {
     });
   }
 
-  private loadToList(){
+  private loadToList() {
     const stocks$ = this.api.readStocksStockGet().pipe(first());
-    const jobs$ = this.api.getJobsByStatusJobStatusJobStatusGet("JOBSTATUS_CREATED").pipe(first());
+    const jobs$ = this.api.getJobsByStatusJobStatusJobStatusGet('JOBSTATUS_CREATED').pipe(first());
 
     combineLatest([stocks$, jobs$]).subscribe(([stocks, jobs]) => {
       const stockListItems = OrderComponent.createListItems(stocks);
@@ -67,7 +70,7 @@ export class OrderComponent implements OnInit {
 
   private static createListItems(supportedListElements: SupportedListElements[]): ListItem[] {
     const listItems: ListItem[] = [];
-    for (const elem of supportedListElements){
+    for (const elem of supportedListElements) {
       const listItem: ListItem = {
         name: elem.displayable_name,
         item: elem,
@@ -82,7 +85,7 @@ export class OrderComponent implements OnInit {
     const stocks$ = this.api.readStocksStockGet().pipe(first());
     const suppliers$ = this.api.readSuppliersSupplierGet().pipe(first());
 
-    if(withStocks){
+    if (withStocks) {
       combineLatest([stocks$, suppliers$]).subscribe(([stocks, jobs]) => {
         const stockListItems = OrderComponent.createListItems(stocks);
         const jobListItems = OrderComponent.createListItems(jobs);
@@ -97,15 +100,17 @@ export class OrderComponent implements OnInit {
 
   }
 
-  toListItemClicked(listItem: ListItem) :void {
+  toListItemClicked(listItem: ListItem): void {
     this.resetProductWindows();
     this.decideWhichFromListToLoad(listItem);
-    this.toListSelected=listItem;
+    this.toListSelected = listItem;
+    this.step = 1;
   }
 
   fromListItemClicked(listItem: ListItem): void {
+    this.step = 2;
     this.resetProductWindows();
-    this.fromListSelected=listItem;
+    this.fromListSelected = listItem;
     this.loadAvailableArticles();
     this.loadOrderedArticles();
   }
@@ -119,7 +124,7 @@ export class OrderComponent implements OnInit {
         break;
       }
       case OrderableType.Job: {
-        console.error("OrderComponent: an item with type JOB has been clicked in FROM list");
+        console.error('OrderComponent: an item with type JOB has been clicked in FROM list');
         break;
       }
       case OrderableType.Supplier: {
@@ -150,25 +155,27 @@ export class OrderComponent implements OnInit {
         break;
       }
       case OrderableType.Supplier: {
-        console.error("OrderComponent: an item with type SUPPLIER has been clicked in TO list");
+        console.error('OrderComponent: an item with type SUPPLIER has been clicked in TO list');
         break;
       }
     }
   }
 
   private resetProductWindows(): void {
-    if(this.availableProductsSubscriber !== undefined)
+    if (this.availableProductsSubscriber !== undefined) {
       this.availableProductsSubscriber.next([]);
-    if(this.orderedProductsSubscriber !== undefined)
+    }
+    if (this.orderedProductsSubscriber !== undefined) {
       this.orderedProductsSubscriber.next([]);
+    }
   }
 
 
-  refreshOrderedProducts() : void {
+  refreshOrderedProducts(): void {
     this.loadOrderedArticles();
   }
 
-  refreshAvailableProducts() :void {
+  refreshAvailableProducts(): void {
     this.loadAvailableArticles();
   }
 }

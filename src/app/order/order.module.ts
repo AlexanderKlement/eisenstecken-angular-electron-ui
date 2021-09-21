@@ -16,6 +16,7 @@ import { ProductEditDialogComponent } from './available-products-list/product-ed
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -25,20 +26,21 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
     ProductEditDialogComponent,
     OrderDetailComponent
   ],
-  imports: [
-    CommonModule,
-    MatGridListModule,
-    FlexLayoutModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatListModule,
-    MatTooltipModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatSelectModule
-  ]
+    imports: [
+        CommonModule,
+        MatGridListModule,
+        FlexLayoutModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatListModule,
+        MatTooltipModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatSelectModule,
+        MatIconModule
+    ]
 })
 export class OrderModule { }

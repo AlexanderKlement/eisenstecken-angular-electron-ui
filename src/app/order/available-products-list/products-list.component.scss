@@ -1,0 +1,29 @@
+.heading {
+  text-align: center;
+}
+
+mat-form-field {
+  min-width: 180px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.article {
+
+  &:hover {
+    background: rgba(44, 44, 44, 0.04)
+  }
+
+  mat-form-field {
+    cursor: pointer;
+    min-width: 80px;
+  }
+
+  input {
+    cursor: pointer;
+  }
+
+}
+
+
+

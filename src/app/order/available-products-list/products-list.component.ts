@@ -149,7 +149,7 @@ export class ProductsListComponent implements OnInit {
 
     openDialog(dialogData: DialogData, closeFunction: (result: any) => void): void {
         const dialogRef = this.dialog.open(ProductEditDialogComponent, {
-            width: '250px',
+            width: '550px',
             data: dialogData
         });
         dialogRef.afterClosed().subscribe(closeFunction);
