@@ -34,7 +34,7 @@ export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
                 menuTileArray.push({title: 'Lieferanten', icon: 'local_shipping', link: '/supplier'});
                 return;
             case 'hours:insert':
-                menuTileArray.push({title: 'Arbeitstag', icon: 'schedule', link: '/work_days'});
+                menuTileArray.push({title: 'Arbeitstag', icon: 'schedule', link: '/work_day'});
         }
     });
     // TODO: remove duplicates;

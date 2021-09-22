@@ -1301,7 +1301,7 @@
 
 "@es-joy/jsdoccomment@0.10.8":
   version "0.10.8"
-  resolved "https://registry.yarnpkg.com/@es-joy/jsdoccomment/-/jsdoccomment-0.10.8.tgz#b3152887e25246410ed4ea569a55926ec13b2b05"
+  resolved "https://registry.npmjs.org/@es-joy/jsdoccomment/-/jsdoccomment-0.10.8.tgz"
   integrity sha512-3P1JiGL4xaR9PoTKUHa2N/LKwa2/eUdRqGwijMWWgBqbFEqJUVpmaOi2TcjcemrsRMgFLBzQCK4ToPhrSVDiFQ==
   dependencies:
     comment-parser "1.2.4"
@@ -3642,7 +3642,7 @@ commander@^7.2.0:
 
 comment-parser@1.2.4:
   version "1.2.4"
-  resolved "https://registry.yarnpkg.com/comment-parser/-/comment-parser-1.2.4.tgz#489f3ee55dfd184a6e4bffb31baba284453cb760"
+  resolved "https://registry.npmjs.org/comment-parser/-/comment-parser-1.2.4.tgz"
   integrity sha512-pm0b+qv+CkWNriSTMsfnjChF9kH0kxz55y44Wo5le9qLxMj5xDQAaEd9ZN1ovSuk9CsrncWaFwgpOMg7ClJwkw==
 
 commondir@^1.0.1:
@@ -4751,10 +4751,10 @@ ee-first@1.1.1:
   resolved "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
-eisenstecken-openapi-angular-library@7.8.6:
-  version "7.8.6"
-  resolved "https://registry.yarnpkg.com/eisenstecken-openapi-angular-library/-/eisenstecken-openapi-angular-library-7.8.6.tgz#d28d481f91b40f6d37d10092dfcdf61f19ff018b"
-  integrity sha512-4BVBICBkW/cchbt8z8wd/gMMxfb1AleXLT9cpGr+BHffoHeS3TU9HdT66AnyxIu6xWiFgxgsTjUvLxa3QxI2rg==
+eisenstecken-openapi-angular-library@7.8.8:
+  version "7.8.8"
+  resolved "https://registry.yarnpkg.com/eisenstecken-openapi-angular-library/-/eisenstecken-openapi-angular-library-7.8.8.tgz#5eb4625c29ae94395fa867f337d1f5ccfc3aaeee"
+  integrity sha512-kgnUBOR/hoOrYpNCOEpCxWW9I2cK9D6gI9JY+0MvPzsQnUG89dChKyABWEMD+8oRtx6My+JJjM0ea15hgpPVhQ==
   dependencies:
     tslib "^2.1.0"
 
@@ -5052,7 +5052,7 @@ eslint-plugin-import@2.23.4:
 
 eslint-plugin-jsdoc@36.1.0:
   version "36.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-36.1.0.tgz#8dfe5f27edfb6aa3812e6d86ccaea849ddc86b03"
+  resolved "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-36.1.0.tgz"
   integrity sha512-Qpied2AJCQcScxfzTObLKRiP5QgLXjMU/ITjBagEV5p2Q/HpumD1EQtazdRYdjDSwPmXhwOl2yquwOGQ4HOJNw==
   dependencies:
     "@es-joy/jsdoccomment" "0.10.8"
@@ -6909,7 +6909,7 @@ jsbn@~0.1.0:
 
 jsdoc-type-pratt-parser@1.1.1, jsdoc-type-pratt-parser@^1.1.1:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/jsdoc-type-pratt-parser/-/jsdoc-type-pratt-parser-1.1.1.tgz#10fe5e409ba38de22a48b555598955a26ff0160f"
+  resolved "https://registry.npmjs.org/jsdoc-type-pratt-parser/-/jsdoc-type-pratt-parser-1.1.1.tgz"
   integrity sha512-uelRmpghNwPBuZScwgBG/OzodaFk5RbO5xaivBdsAY70icWfShwZ7PCMO0x1zSkOa8T1FzHThmrdoyg/0AwV5g==
 
 jsesc@^2.5.1:

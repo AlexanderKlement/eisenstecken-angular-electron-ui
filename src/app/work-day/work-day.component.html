@@ -1,0 +1,39 @@
+<app-toolbar [buttonList]="buttons"></app-toolbar>
+<div fxLayout="column" fxLayoutAlign="space-around center">
+    <div *ngIf="workDayStarted" [formGroup]="workDayFinishGroup">
+        <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="work_sections">
+            <h4>Auf Auträge aufteilen: {{minutesToDisplayableString(maxMinutes)}}</h4>
+            <p>Information: Minuten die vergehen während dieses Formular ausgefüllt wird, zählen zu
+                Instandhaltungsarbeiten</p>
+            <div *ngFor="let workSection of getWorkSections().controls; let i = index">
+                <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Auftrag</mat-label>
+                        <input class="form-control" readonly formControlName="name" matInput>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Minuten</mat-label>
+                        <input class="form-control" formControlName="minutes" (change)="onMinuteChange(i)" matInput>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Zeit</mat-label>
+                        <input class="form-control" formControlName="readable_time" readonly matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+
+        </div>
+        <div *ngIf="!workDayStarted">
+            <button mat-raised-button type="button" (click)="onWorkDayStartClick()">
+                Arbeitsabschnitt starten
+            </button>
+        </div>
+    </div>
+</div>
+<pre> {{workDayFinishGroup.value | json}} </pre>

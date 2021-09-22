@@ -46,6 +46,7 @@ import {InvoiceModule} from './invoice/invoice.module';
 import {SupplierComponent} from './supplier/supplier.component';
 import {SupplierModule} from './supplier/supplier.module';
 import {getGermanPaginatorIntl} from './shared/components/table-builder/table-builder.datasource';
+import {WorkDayModule} from './work-day/work-day.module';
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -76,6 +77,7 @@ export function apiConfigFactory(): Configuration {
         OrderModule,
         LoginModule,
         InvoiceModule,
+        WorkDayModule,
         ApiModule.forRoot(apiConfigFactory),
         AppRoutingModule,
         FlexLayoutModule,
