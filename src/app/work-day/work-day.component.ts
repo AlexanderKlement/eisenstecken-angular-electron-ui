@@ -4,9 +4,8 @@ import {
     DefaultService,
     Drive,
     EatingPlace,
-    Expense,
-    WorkDay,
-    WorkSection
+    Expense, JobSection,
+    WorkDay, WorkDayStart
 } from 'eisenstecken-openapi-angular-library';
 import {first, skip,} from 'rxjs/operators';
 import {Observable, ReplaySubject} from 'rxjs';
@@ -83,7 +82,7 @@ export class WorkDayComponent implements OnInit {
         });
     }
 
-    initWorkSection(workSection: WorkSection): FormGroup {
+    initWorkSection(workSection: JobSection): FormGroup {
         return this.initWorkSectionManually(workSection.minutes,
             workSection.job === undefined ? 0 : workSection.job.id,
             workSection.job === undefined ? 'Instandhaltung' : workSection.job.displayable_name);
@@ -144,7 +143,10 @@ export class WorkDayComponent implements OnInit {
     }
 
     onWorkDayStartClick() {
-        this.api.startWorkDayWorkDayStartPost({}).pipe(first()).subscribe((workDay) => {
+        const workDayStart: WorkDayStart = {
+            code : 'TEST'
+        };
+        this.api.startWorkPhaseWorkDayStartPost(workDayStart).pipe(first()).subscribe((workDay) => {
             if (workDay === undefined) {
                 console.error('Could not start workday, maybe it was already started elsewhere');
             } else {
@@ -231,7 +233,7 @@ export class WorkDayComponent implements OnInit {
         this.setMinutesAt(length - 1, value);
     }
 
-    getMinutesSum(skipIndex ?: number): number {
+    getMinutesSum(skipIndex?: number): number {
         let totalMinutes = 0;
         this.getWorkSections().controls.forEach((element, index) => {
             if (skipIndex !== undefined && skipIndex === index) {

@@ -1,22 +1,25 @@
+@use 'sass:map';
+@import "../../../../theme";
+
 .mat-toolbar {
   &.created {
-    background: #ff0000;
-    color: #fff;
+    background: #EAEAEA;
+    color: map.get($mat-accent, main);
   }
 
   &.accepted {
-    background: #00ffd8;
-    color: #000;
+    background: #90EE90;
+    color: map.get($mat-accent, main);
   }
 
-  &.finished {
-    background: #467b46;
-    color: #fff;
+  &.completed {
+    background: map.get($mat-primary, 200);
+    color: map.get($mat-accent, main);
   }
 
-  &.other {
-    background: #bda7a7;
-    color: #000000;
+  &.declined {
+    background: #F08080;
+    color: map.get($mat-accent, main);
   }
 }
 
