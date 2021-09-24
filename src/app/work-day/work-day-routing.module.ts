@@ -7,6 +7,11 @@ const routes: Routes = [
     path: 'work_day',
     component: WorkDayComponent,
     data:{requiresLogin: true}
+  },
+  {
+    path: 'work_day/show',
+    component: WorkDayComponent,
+    data:{requiresLogin: true}
   }
 ];
 

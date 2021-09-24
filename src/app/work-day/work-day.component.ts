@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {
     Car,
     DefaultService,
-    Drive,
+    Drive, DriveCreate,
     EatingPlace,
-    Expense, JobSection,
-    WorkDay, WorkDayStart
+    Expense, ExpenseCreate, JobSection, JobSectionCreate,
+    WorkDay, WorkDayFinish, WorkDayStart, WorkDayStop
 } from 'eisenstecken-openapi-angular-library';
 import {first, skip,} from 'rxjs/operators';
 import {Observable, ReplaySubject} from 'rxjs';
@@ -14,6 +14,8 @@ import {
     FormControl,
     FormGroup, Validators,
 } from '@angular/forms';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -23,7 +25,6 @@ import {
 })
 export class WorkDayComponent implements OnInit {
     buttons: [];
-    workDayStarted: boolean;
     workDay: WorkDay;
 
     workDayFinishGroup: FormGroup;
@@ -33,22 +34,39 @@ export class WorkDayComponent implements OnInit {
 
     maxMinutes = 0;
 
-    constructor(private api: DefaultService) {
+    workDayStartable = false;
+    workDayStopable = false;
+    workDayFinishable = false;
+    workDayError: boolean;
+
+    lenghtString?: string = undefined;
+
+    submitted = false;
+
+    constructor(private api: DefaultService, private snackBar: MatSnackBar, private router: Router) {
     }
 
     ngOnInit(): void {
         this.initWorkDayFinishGroup();
-        this.api.getCurrentWorkDayWorkDayCurrentGet().pipe(first()).subscribe((workDay) => {
-            if (workDay !== undefined) {
-                this.workDay = workDay;
-                if (workDay.finished) {
-                    console.log('Finished');
+        this.api.getAvailableWorkDayActionsWorkDayAvailableActionsGet().pipe(first())
+            .subscribe((actions) => {
+                if (actions.error) {
+                    this.workDayStartable = false;
+                    this.workDayFinishable = false;
+                    this.workDayStopable = false;
+                    this.workDayError = true;
                 } else {
-                    this.initWorkDayFinishSection(workDay);
+                    this.workDayStartable = actions.startable;
+                    this.workDayStopable = actions.stopable;
+                    this.workDayFinishable = actions.finishable;
                 }
-            }
-            this.workDayStarted = (workDay !== undefined);
-        });
+                if (this.workDayFinishable) {
+                    this.api.getCurrentWorkDayWorkDayCurrentGet().pipe(first()).subscribe((workDay) => {
+                        this.initWorkDayFinishSection(workDay);
+                    });
+                }
+                console.log(actions);
+            });
     }
 
     initWorkDayFinishSection(workDay: WorkDay): void {
@@ -63,32 +81,36 @@ export class WorkDayComponent implements OnInit {
         this.api.getJobsByStatusJobStatusJobStatusGet('JOBSTATUS_ACCEPTED').pipe(first())
             .subscribe((jobs) => {
                 for (const job of jobs) {
-                    this.getWorkSections().push(this.initWorkSectionManually(0, job.id, job.displayable_name));
+                    if (job.is_main) { //TODO: change this to get only main from start
+                        this.getJobSections().push(this.initJobSectionManually(0, job.id, job.displayable_name));
+                    }
                 }
-                this.getWorkSections().push(this.initWorkSectionManually(workDay.length_minutes, 0, 'Instandhaltung'));
+                this.getJobSections().push(this.initJobSectionManually(workDay.length_minutes, 0, 'Instandhaltung'));
             });
     }
 
     initWorkDayFinishGroup(): void {
         this.workDayFinishGroup = new FormGroup({
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            work_sections: new FormArray([]),
+            job_sections: new FormArray([]),
             expenses: new FormArray([
                 this.initExpense()
             ]),
             drives: new FormArray([
-                //this.initDrive()
-            ])
+                this.initDrive()
+            ]),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            eating_place_id: new FormControl(1)
         });
     }
 
-    initWorkSection(workSection: JobSection): FormGroup {
-        return this.initWorkSectionManually(workSection.minutes,
+    initJobSection(workSection: JobSection): FormGroup {
+        return this.initJobSectionManually(workSection.minutes,
             workSection.job === undefined ? 0 : workSection.job.id,
             workSection.job === undefined ? 'Instandhaltung' : workSection.job.displayable_name);
     }
 
-    initWorkSectionManually(minutes: number, jobId: number, name: string): FormGroup {
+    initJobSectionManually(minutes: number, jobId: number, name: string): FormGroup {
         return new FormGroup({
             minutes: new FormControl(minutes, Validators.pattern('^\\+?(0|[1-9]\\d*)$')),
             // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -104,7 +126,7 @@ export class WorkDayComponent implements OnInit {
         if (expense === undefined) {
             return new FormGroup({
                 name: new FormControl(''),
-                amount: new FormControl(0)
+                amount: new FormControl('')
             });
         } else {
             return new FormGroup({
@@ -138,22 +160,10 @@ export class WorkDayComponent implements OnInit {
         return this.workDayFinishGroup.get('expenses') as FormArray;
     }
 
-    getWorkSections(): FormArray {
-        return this.workDayFinishGroup.get('work_sections') as FormArray;
+    getJobSections(): FormArray {
+        return this.workDayFinishGroup.get('job_sections') as FormArray;
     }
 
-    onWorkDayStartClick() {
-        const workDayStart: WorkDayStart = {
-            code : 'TEST'
-        };
-        this.api.startWorkPhaseWorkDayStartPost(workDayStart).pipe(first()).subscribe((workDay) => {
-            if (workDay === undefined) {
-                console.error('Could not start workday, maybe it was already started elsewhere');
-            } else {
-                window.location.reload();
-            }
-        });
-    }
 
     onMinuteChange(index: number): void {
         this.distributeMinutes(index);
@@ -171,7 +181,7 @@ export class WorkDayComponent implements OnInit {
     calculateTimeDisplay(index: number): void {
         const currentMinutes = this.getMinutesAt(index);
         const hourString = this.minutesToDisplayableString(currentMinutes);
-        this.getWorkSections().at(index).get('readable_time').setValue(hourString);
+        this.getJobSections().at(index).get('readable_time').setValue(hourString);
     }
 
     distributeMinutes(index: number): void {
@@ -191,7 +201,7 @@ export class WorkDayComponent implements OnInit {
             console.error('WorkDayComponent: The distributed Minutes do not correspond with the total available minutes -> RESET');
             this.resetMinutes();
         }
-        this.getWorkSections().controls.forEach((_, index) => {
+        this.getJobSections().controls.forEach((_, index) => {
             if (this.getMinutesAt(index) < 0) {
                 console.error('WorkDayComponent: There is at least 1 negative minute amount present -> RESET');
                 this.resetMinutes();
@@ -200,47 +210,168 @@ export class WorkDayComponent implements OnInit {
     }
 
     refreshDisplayableMinutes(): void {
-        this.getWorkSections().controls.forEach((_, index) => {
+        this.getJobSections().controls.forEach((_, index) => {
             this.calculateTimeDisplay(index);
         });
     }
 
     resetMinutes(): void {
-        this.getWorkSections().controls.forEach((_, index) => {
+        this.getJobSections().controls.forEach((_, index) => {
             this.setMinutesAt(index, 0);
         });
         this.setMinutesAtLast(this.maxMinutes);
     }
 
     setMinutesAt(index: number, value: number) {
-        this.getWorkSections().at(index).get('minutes').setValue(value.toString(), {emitEvent: false});
+        this.getJobSections().at(index).get('minutes').setValue(value.toString(), {emitEvent: false});
     }
 
     getMinutesAt(index: number):
         number {
-        return parseInt(this.getWorkSections().at(index).get('minutes').value, 10);
+        return parseInt(this.getJobSections().at(index).get('minutes').value, 10);
     }
 
     getMinutesAtLast(): number {
-        const length = this.getWorkSections().controls.length;
+        const length = this.getJobSections().controls.length;
         return this.getMinutesAt(length - 1);
     }
 
     setMinutesAtLast(value: number):
         void {
-        const length = this.getWorkSections().controls.length;
+        const length = this.getJobSections().controls.length;
         console.log('Setting minutes at last: ' + value.toString());
         this.setMinutesAt(length - 1, value);
     }
 
     getMinutesSum(skipIndex?: number): number {
         let totalMinutes = 0;
-        this.getWorkSections().controls.forEach((element, index) => {
+        this.getJobSections().controls.forEach((element, index) => {
             if (skipIndex !== undefined && skipIndex === index) {
                 return;
             }
             totalMinutes += parseInt(element.get('minutes').value, 10);
         });
         return totalMinutes;
+    }
+
+    onWorkDayStartClick() {
+        this.submitted = true;
+        const workDayStart: WorkDayStart = {
+            code: 'TEST'
+        };
+        this.api.startWorkPhaseWorkDayStartPost(workDayStart).pipe(first()).subscribe((workDay) => {
+                if (workDay === undefined) {
+                    this.onError('Could not start workday, maybe it was already started elsewhere');
+                } else {
+                    window.location.reload();
+                }
+            },
+            (error) => {
+                this.onError(error);
+            });
+    }
+
+    onError(error: any) {
+        this.submitted = false;
+        console.error(error);
+        this.snackBar.open('Fehler: Aktion konnte nicht ausgeführt werden');
+    }
+
+    onWorkDayStopClick() {
+        this.submitted = true;
+        const workDayStop: WorkDayStop = {
+            code: 'TEST'
+        };
+        this.api.stopWorkPhaseWorkDayStopPost(workDayStop).pipe(first()).subscribe((workDay) => {
+                if (workDay === undefined) {
+                    this.onError('Could not stop workday, maybe it was already stopped somewhere else');
+                } else {
+                    window.location.reload();
+                }
+            },
+            (error) => {
+                this.onError(error);
+            });
+    }
+
+    onRemoveExpenseClick(index: number): void {
+        this.getExpenses().removeAt(index);
+    }
+
+    onAddExpenseClick(): void {
+        this.getExpenses().push(this.initExpense());
+    }
+
+    expenseRemovable(): boolean {
+        return this.getExpenses().length !== 0;
+    }
+
+    driveRemovable(): boolean {
+        return this.getDrives().length !== 0;
+    }
+
+    onRemoveDriveClick(i: number): void {
+        this.getDrives().removeAt(i);
+    }
+
+    onAddCarClick(): void {
+        this.getDrives().push(this.initDrive());
+    }
+
+    onWorkDayFinishSubmit(): void {
+        this.submitted = true;
+
+        const jobSections: JobSectionCreate[] = [];
+        //job_sections:
+        this.getJobSections().controls.forEach((jobSectionControl) => {
+            jobSections.push({
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                job_id: jobSectionControl.get('job_id').value,
+                minutes: parseInt(jobSectionControl.get('minutes').value, 10),
+            });
+        });
+
+        //expenses:
+        const expenses: ExpenseCreate[] = [];
+        this.getExpenses().controls.forEach((expenseControl) => {
+            if (parseFloat(expenseControl.get('amount').value) > 0) {
+                expenses.push({
+                    name: expenseControl.get('name').value,
+                    amount: parseFloat(expenseControl.get('amount').value),
+                });
+            }
+        });
+        //drives
+
+        const drives: DriveCreate[] = [];
+        this.getDrives().controls.forEach((driveControl) => {
+            if (parseFloat(driveControl.get('km').value) > 0) {
+                drives.push({
+                    km: parseFloat(driveControl.get('km').value),
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    car_id: parseInt(driveControl.get('car_id').value, 10),
+                });
+            }
+        });
+
+        const workDay: WorkDayFinish = {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            eating_place_id: parseInt(this.workDayFinishGroup.get('eating_place_id').value, 10),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            job_sections: jobSections,
+            expenses,
+            drives,
+        };
+        //workday
+
+        this.api.finishWorkDayWorkDayFinishPost(workDay).pipe(first()).subscribe((newWorkDay) => {
+            if (newWorkDay !== undefined) {
+                this.router.navigateByUrl('work_day/show');
+            } else {
+                this.onError(newWorkDay);
+            }
+        }, (error) => {
+            this.onError(error);
+        });
     }
 }
