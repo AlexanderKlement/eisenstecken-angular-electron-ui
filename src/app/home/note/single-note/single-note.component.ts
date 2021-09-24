@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {DefaultService, Note, NoteCreate} from 'eisenstecken-openapi-angular-library';
 import {FormControl} from '@angular/forms';
 import {Subscription} from 'rxjs';
@@ -9,9 +9,10 @@ import {distinctUntilChanged} from 'rxjs/operators';
   templateUrl: './single-note.component.html',
   styleUrls: ['./single-note.component.scss']
 })
-export class SingleNoteComponent implements OnInit {
+export class SingleNoteComponent implements OnInit, OnDestroy {
 
   @Input() note: Note;
+  @Output() noteDeleted = new EventEmitter<Note>();
   noteVisible = true;
 
   public subscriptions = new Subscription();
@@ -32,7 +33,6 @@ export class SingleNoteComponent implements OnInit {
       }));
   }
 
-
   public ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -40,6 +40,7 @@ export class SingleNoteComponent implements OnInit {
   deleteNoteClicked(): void {
     this.api.deleteNoteEntryNoteNoteIdDelete(this.note.id).subscribe(() => {
       this.noteVisible = false; //TODO: if the spacing is uneven, maybe emit something to parent, remove the note and then rerender notes
+      this.noteDeleted.emit(this.note);
     });
   }
 }

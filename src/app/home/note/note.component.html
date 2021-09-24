@@ -1,7 +1,7 @@
 <div class="note" fxFlexFill fxLayout="column" fxLayoutAlign="center stretch">
   <mat-grid-list cols="2" class="note-list" fxFlex="50">
     <mat-grid-tile class="single-note-container" *ngFor="let note of notes; let last = last">
-      <app-single-note [note]="note" fxFlexFill></app-single-note>
+      <app-single-note (noteDeleted)="deleteNote(note)" [note]="note" fxFlexFill></app-single-note>
     </mat-grid-tile>
   </mat-grid-list>
   <div fxFlex="10">
