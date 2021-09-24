@@ -20,7 +20,7 @@ export class NoteComponent implements OnInit {
 
     ngOnInit(): void {
         const noteObservable = this.api.readNoteEntriesNoteGet();
-        noteObservable.subscribe((notes) => {
+        noteObservable.pipe(first()).subscribe((notes) => {
             this.notes = notes;
             if (this.notes.length === 0) {
                 this.newNoteClicked();
@@ -48,9 +48,9 @@ export class NoteComponent implements OnInit {
         return this.notes.length < this.maxNotes;
     }
 
-    deleteNote($note: Note) {
+    deleteNote(note: Note) {
         this.notes.forEach((element, index) => {
-            if (element.id === $note.id) {
+            if (element.id === note.id) {
                 this.notes.splice(index, 1);
             }
         });
