@@ -1,7 +1,7 @@
 <app-toolbar [buttonList]="buttons"></app-toolbar>
 <div fxLayout="column" fxLayoutAlign="space-around center">
     <p *ngIf="workDayError">Fehler: Bitte im Büro korrigieren lassen</p>
-    <p *ngIf="!workDayError && lenghtString">Länge Arbietstag: {{lenghtString}}</p>
+    <p *ngIf="!workDayError && lengthString">Länge Arbietstag: {{lengthString}}</p>
     <div *ngIf="workDayStartable && !disabled">
         <button mat-raised-button type="button" (click)="onWorkDayStartClick()">
             Neuen Arbeitsabschnitt starten

@@ -40,7 +40,7 @@ export class WorkDayComponent implements OnInit {
     workDayFinishable = false;
     workDayError: boolean;
 
-    lenghtString?: string = undefined;
+    lengthString?: string = undefined;
 
     submitted = false;
     disabled = false;
@@ -175,13 +175,11 @@ export class WorkDayComponent implements OnInit {
         return this.workDayFinishGroup.get('job_sections') as FormArray;
     }
 
-
     onMinuteChange(index: number): void {
         this.distributeMinutes(index);
         this.checkMinutes();
         this.refreshDisplayableMinutes();
     }
-
 
     minutesToDisplayableString(minutes: number): string {
         const hours = Math.floor(minutes / 60);

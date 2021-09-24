@@ -10,7 +10,6 @@ export class ChatService {
 
   // TODO: Nachrichten kommen oft nicht an
   // TODO: Mehrzeilige Nachichten haben nicht den gewünschten effekt
-  // TODO: Datum wird nicht als UTC angenommen
 
   private secondsBetweenNewMessageCheck = 10;
 
