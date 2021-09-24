@@ -1,11 +1,13 @@
 <div class="note" fxFlexFill fxLayout="column" fxLayoutAlign="center stretch">
-  <mat-grid-list cols="2" class="note-list" fxFlex="50">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button *ngIf="addNoteAvailable()" mat-fab (click)="newNoteClicked()" class="new-note-btn" title="Neue Notiz">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <mat-grid-list cols="2" class="note-list">
     <mat-grid-tile class="single-note-container" *ngFor="let note of notes; let last = last">
       <app-single-note (noteDeleted)="deleteNote(note)" [note]="note" fxFlexFill></app-single-note>
     </mat-grid-tile>
   </mat-grid-list>
-  <div fxFlex="10">
-    <button *ngIf="addNoteAvailable()" mat-raised-button (click)="newNoteClicked()" class="new-note-btn">Neue Notiz
-    </button>
-  </div>
 </div>
+
