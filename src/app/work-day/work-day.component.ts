@@ -16,6 +16,7 @@ import {
 } from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
+import {CustomButton} from '../shared/components/toolbar/toolbar.component';
 
 
 @Component({
@@ -24,7 +25,7 @@ import {Router} from '@angular/router';
     styleUrls: ['./work-day.component.scss']
 })
 export class WorkDayComponent implements OnInit {
-    buttons: [];
+
     workDay: WorkDay;
 
     workDayFinishGroup: FormGroup;
@@ -42,6 +43,16 @@ export class WorkDayComponent implements OnInit {
     lenghtString?: string = undefined;
 
     submitted = false;
+    disabled = false;
+
+    buttons: CustomButton[] = [
+        {
+            name: 'Test disabled',
+            navigate: (): void => {
+                this.disabled = !this.disabled;
+            }
+        },
+    ];
 
     constructor(private api: DefaultService, private snackBar: MatSnackBar, private router: Router) {
     }
@@ -366,7 +377,7 @@ export class WorkDayComponent implements OnInit {
 
         this.api.finishWorkDayWorkDayFinishPost(workDay).pipe(first()).subscribe((newWorkDay) => {
             if (newWorkDay !== undefined) {
-                this.router.navigateByUrl('work_day/show');
+                window.location.reload();
             } else {
                 this.onError(newWorkDay);
             }

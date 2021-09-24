@@ -2,97 +2,100 @@
 <div fxLayout="column" fxLayoutAlign="space-around center">
     <p *ngIf="workDayError">Fehler: Bitte im Büro korrigieren lassen</p>
     <p *ngIf="!workDayError && lenghtString">Länge Arbietstag: {{lenghtString}}</p>
-    <div *ngIf="workDayStartable">
+    <div *ngIf="workDayStartable && !disabled">
         <button mat-raised-button type="button" (click)="onWorkDayStartClick()">
             Neuen Arbeitsabschnitt starten
         </button>
     </div>
-    <div *ngIf="workDayStopable">
+    <div *ngIf="workDayStopable && !disabled">
         <button mat-raised-button type="button" (click)="onWorkDayStopClick()">
             Derzeitigen Arbeitsabschnitt stoppen
         </button>
     </div>
     <form *ngIf="workDayFinishable" [formGroup]="workDayFinishGroup" (submit)="onWorkDayFinishSubmit()">
-        <div fxLayout="column" fxLayoutAlign="space-around center">
-            <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="job_sections">
-                <h4>Auf Auträge aufteilen: {{minutesToDisplayableString(maxMinutes)}}</h4>
-                <div *ngFor="let workSection of getJobSections().controls; let i = index">
-                    <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Auftrag</mat-label>
-                            <input class="form-control" readonly formControlName="name" matInput>
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Minuten</mat-label>
-                            <input class="form-control" formControlName="minutes" (change)="onMinuteChange(i)" matInput>
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Zeit</mat-label>
-                            <input class="form-control" formControlName="readable_time" readonly matInput>
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-            <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="expenses">
-                <h4>Ausgaben eintragen</h4>
-                <div *ngFor="let expense of getExpenses().controls; let i = index">
-                    <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Beschreibung</mat-label>
-                            <input class="form-control" formControlName="name" matInput>
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Euro</mat-label>
-                            <input class="form-control" formControlName="amount" matInput>
-                        </mat-form-field>
-                        <button mat-fab (click)="onRemoveExpenseClick(i)">
-                            <mat-icon>remove</mat-icon>
-                        </button>
-                    </div>
-                </div>
-                <button mat-fab (click)="onAddExpenseClick()">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div>
-            <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="drives">
-                <h4>Fahrten eintragen</h4>
-                <div *ngFor="let drive of getDrives().controls; let i = index">
-                    <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Distanz</mat-label>
-                            <input class="form-control" formControlName="km" matInput>
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Auto</mat-label>
-                            <mat-select formControlName="car_id">
-                                <mat-option *ngFor="let car of cars$ |  async" [value]="car.id">
-                                    {{car.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <button mat-fab (click)="onRemoveDriveClick(i)">
-                            <mat-icon>remove</mat-icon>
-                        </button>
-                    </div>
-                </div>
-                <button mat-fab (click)="onAddCarClick()">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div>
-
+        <fieldset [disabled]="disabled">
             <div fxLayout="column" fxLayoutAlign="space-around center">
-                <h4>Essen eintragen</h4>
-                <mat-form-field appearance="fill">
-                    <mat-label>Gasthaus</mat-label>
-                    <mat-select formControlName="eating_place_id">
-                        <mat-option *ngFor="let eatingPlace of eatingPlaces$ |  async" [value]="eatingPlace.id">
-                            {{eatingPlace.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="job_sections">
+                    <h4>Auf Auträge aufteilen: {{minutesToDisplayableString(maxMinutes)}}</h4>
+                    <div *ngFor="let workSection of getJobSections().controls; let i = index">
+                        <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Auftrag</mat-label>
+                                <input class="form-control" readonly formControlName="name" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Minuten</mat-label>
+                                <input class="form-control" formControlName="minutes" (change)="onMinuteChange(i)"
+                                       matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Zeit</mat-label>
+                                <input class="form-control" formControlName="readable_time" readonly matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="expenses">
+                    <h4>Ausgaben eintragen</h4>
+                    <div *ngFor="let expense of getExpenses().controls; let i = index">
+                        <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Beschreibung</mat-label>
+                                <input class="form-control" formControlName="name" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Euro</mat-label>
+                                <input class="form-control" formControlName="amount" matInput>
+                            </mat-form-field>
+                            <button mat-fab (click)="onRemoveExpenseClick(i)">
+                                <mat-icon>remove</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <button mat-fab (click)="onAddExpenseClick()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="drives">
+                    <h4>Fahrten eintragen</h4>
+                    <div *ngFor="let drive of getDrives().controls; let i = index">
+                        <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Distanz</mat-label>
+                                <input class="form-control" formControlName="km" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Auto</mat-label>
+                                <mat-select formControlName="car_id" disabled="disabled">
+                                    <mat-option *ngFor="let car of cars$ |  async" [value]="car.id">
+                                        {{car.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <button mat-fab (click)="onRemoveDriveClick(i)">
+                                <mat-icon>remove</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <button mat-fab (click)="onAddCarClick()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="space-around center">
+                    <h4>Essen eintragen</h4>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Gasthaus</mat-label>
+                        <mat-select formControlName="eating_place_id" disabled="disabled">
+                            <mat-option *ngFor="let eatingPlace of eatingPlaces$ |  async" [value]="eatingPlace.id">
+                                {{eatingPlace.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <button *ngIf="!disabled" type="submit" [disabled]="submitted" mat-raised-button>Arbeitstag abschließen</button>
             </div>
-            <button type="submit" [disabled]="submitted" mat-raised-button>Arbeitstag abschließen</button>
-        </div>
+        </fieldset>
     </form>
 </div>
 <pre> {{workDayFinishGroup.value | json}} </pre>
