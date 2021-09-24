@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DefaultService, Note, NoteCreate} from "eisenstecken-openapi-angular-library";
-import {FormControl} from "@angular/forms";
-import {Subscription} from "rxjs";
-import {distinctUntilChanged} from "rxjs/operators";
+import {DefaultService, Note, NoteCreate} from 'eisenstecken-openapi-angular-library';
+import {FormControl} from '@angular/forms';
+import {Subscription} from 'rxjs';
+import {distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-single-note',
@@ -18,7 +18,8 @@ export class SingleNoteComponent implements OnInit {
 
   singleNoteTextArea = new FormControl();
 
-  constructor(private api: DefaultService) { }
+  constructor(private api: DefaultService) {
+  }
 
   ngOnInit(): void {
     this.singleNoteTextArea.setValue(this.note.text);
@@ -26,18 +27,17 @@ export class SingleNoteComponent implements OnInit {
     this.subscriptions.add(this.singleNoteTextArea.valueChanges
       .pipe(distinctUntilChanged()) // makes sure the value has actually changed.
       .subscribe(data => {
-        const noteCreate:NoteCreate = {text : data};
+        const noteCreate: NoteCreate = {text: data};
         this.api.updateNoteEntryNoteNoteIdPut(this.note.id, noteCreate).subscribe();
       }));
   }
 
 
-  public ngOnDestroy(): void
-  {
+  public ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  deleteNoteClicked() :void {
+  deleteNoteClicked(): void {
     this.api.deleteNoteEntryNoteNoteIdDelete(this.note.id).subscribe(() => {
       this.noteVisible = false; //TODO: if the spacing is uneven, maybe emit something to parent, remove the note and then rerender notes
     });
