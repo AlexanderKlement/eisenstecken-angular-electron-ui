@@ -34,8 +34,9 @@ export class CalendarEditComponent implements OnInit {
 
     calendarId: number;
     calendarEntryId: number; //maybe these two need to be replaced by param
-    calendarEntry$: Observable<CalendarEntry>;
     calendarGroup: FormGroup;
+
+    ready = false;
 
     primaryTheme: NgxMaterialTimepickerTheme = {
         dial: {
@@ -51,49 +52,48 @@ export class CalendarEditComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.createCalendarGroup();
         if (this.data.calendarEntryId === undefined) {
             this.createMode = true;
             this.calendarId = this.data.calendarId;
             if (isNaN(this.calendarId)) {
                 console.error('CalendarEditComponent: Cannot parse CalendarId');
             }
+            this.createCalendarGroup();
+            this.ready = true;
         } else {
             this.createMode = false;
             this.calendarEntryId = this.data.calendarEntryId;
-            this.calendarEntry$ = this.api.readCalendarEntryCalendarCalendarEntryIdGet(this.calendarEntryId);
-            this.fillCalendarGroup();
+            this.api.readCalendarEntryCalendarCalendarEntryIdGet(this.calendarEntryId).subscribe((calendarEntry) => {
+                this.createCalendarGroup(calendarEntry);
+                this.ready = true;
+            });
         }
     }
 
-    createCalendarGroup(): void {
-        this.calendarGroup = new FormGroup({
-            title: new FormControl('', Validators.required),
-            description: new FormControl(''),
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            date: new FormControl(new Date(), Validators.required),
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            start_time: new FormControl('', Validators.pattern('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$')),
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            end_time: new FormControl('', Validators.pattern('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'))
-        }, {validators: timeValidator});
-    }
+    createCalendarGroup(calendarEntry?: CalendarEntry): void {
+        let title = '';
+        let date = new Date();
+        let description = '';
+        let startTime = '';
+        let endTime = '';
+        if (calendarEntry !== undefined) {
+            title = calendarEntry.title;
+            description = calendarEntry.description;
+            date = moment(calendarEntry.start_time).toDate();
+            startTime = moment(calendarEntry.start_time).format('HH:mm');
+            endTime = moment(calendarEntry.end_time).format('HH:mm');
+        }
 
-    fillCalendarGroup(): void {
-        this.calendarEntry$.pipe(first())
-            .subscribe(calendarEntry => {
-                console.log(moment(calendarEntry.start_time).format('DD.MM.YYYY'));
-                this.calendarGroup.patchValue({
-                    title: calendarEntry.title,
-                    description: calendarEntry.description,
-                    date: moment(calendarEntry.start_time), // TODO: auto select this date on edit
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    start_time: moment(calendarEntry.start_time).format('HH:mm'),
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    end_time: moment(calendarEntry.end_time).format('HH:mm'),
-                });
-                this.calendarGroup.get('date').setValue(moment(calendarEntry.start_time).format('DD.MM.YYYY'));
-            });
+        this.calendarGroup = new FormGroup({
+            title: new FormControl(title, Validators.required),
+            description: new FormControl(description),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            date: new FormControl(date, Validators.required),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            start_time: new FormControl(startTime, Validators.pattern('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$')),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            end_time: new FormControl(endTime, Validators.pattern('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'))
+        }, {validators: timeValidator});
 
     }
 
@@ -113,6 +113,7 @@ export class CalendarEditComponent implements OnInit {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             end_time: endDate.format()
         };
+        console.log('Submitting calendar entry');
         if (this.createMode) {
             this.api.createCalendarEntryCalendarCalendarIdPost(this.calendarId, calendarEntryCreate).pipe(first()).subscribe(
                 (calendarEntry) => {

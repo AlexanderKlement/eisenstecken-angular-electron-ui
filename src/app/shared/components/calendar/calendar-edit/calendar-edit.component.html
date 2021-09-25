@@ -1,7 +1,10 @@
 <h1 mat-dialog-title *ngIf="createMode">Kalendereintrag erstellen</h1>
 <h1 mat-dialog-title *ngIf="!createMode">Kalendereintrag bearbeiten</h1>
 <div class="window-container" mat-dialog-content>
-    <form (ngSubmit)="onSubmit()" [formGroup]="calendarGroup">
+    <div class="spinner-container" *ngIf="!ready">
+        <mat-spinner></mat-spinner>
+    </div>
+    <form *ngIf="ready" (ngSubmit)="onSubmit()" [formGroup]="calendarGroup">
         <div fxLayout="column" fxLayoutAlign="space-around center">
             <mat-form-field appearance="fill">
                 <mat-label>Titel</mat-label>
@@ -13,9 +16,9 @@
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Datum</mat-label>
-                <input matInput formControlName="date" [matDatepicker]="day_picker">
-                <mat-datepicker-toggle matSuffix [for]="day_picker"></mat-datepicker-toggle>
-                <mat-datepicker #day_picker></mat-datepicker>
+                <input matInput formControlName="date" [matDatepicker]="date">
+                <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                <mat-datepicker #date></mat-datepicker>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Start</mat-label>
@@ -36,10 +39,11 @@
                 Startzeit sollte vor Endzeit liegen
             </div>
             <div fxLayout="row" fxLayoutAlign="space-between center">
-                <button mat-button (click)="onCancel()">Abbrechen</button>
+                <button  type="button" mat-button (click)="onCancel()">Abbrechen</button>
+                <button type="button" *ngIf="!createMode" mat-button (click)="onDelete()">Löschen</button>
                 <button mat-button [disabled]="submitted || !calendarGroup.valid" (click)="onSubmit()">Ok</button>
-                <button *ngIf="!createMode" mat-button (click)="onDelete()">Löschen</button>
             </div>
         </div>
     </form>
 </div>
+
