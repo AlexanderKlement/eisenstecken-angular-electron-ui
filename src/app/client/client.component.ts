@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {TableDataSource} from '../shared/components/table-builder/table-builder.datasource';
 import {DefaultService, Client} from 'eisenstecken-openapi-angular-library';
 import {Router} from '@angular/router';
-import {CustomButton} from "../shared/components/toolbar/toolbar.component";
+import {CustomButton} from '../shared/components/toolbar/toolbar.component';
 
 @Component({
   selector: 'app-client',

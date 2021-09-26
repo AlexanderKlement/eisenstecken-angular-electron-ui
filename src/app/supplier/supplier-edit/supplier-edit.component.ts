@@ -56,6 +56,8 @@ export class SupplierEditComponent extends BaseEditComponent<Supplier> implement
             mail2: this.supplierGroup.get('mail2').value,
             tel1: this.supplierGroup.get('tel1').value,
             tel2: this.supplierGroup.get('tel2').value,
+            contact_person: '',
+            destination_code: '',
             address: {
                 name: this.supplierGroup.get('name').value,
                 // eslint-disable-next-line @typescript-eslint/naming-convention

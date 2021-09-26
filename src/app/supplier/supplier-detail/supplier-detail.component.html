@@ -1,13 +1,13 @@
 <app-toolbar [buttonList]="buttons"></app-toolbar>
 <app-info-builder [dataSource]="infoDataSource"></app-info-builder>
 <mat-tab-group>
-    <mat-tab label="Offen">
-        <app-table-builder [dataSource]="createdOrderDataSource" title="Offene Bestellungen"></app-table-builder>
+    <mat-tab label="Bestellte Artikel">
+        <app-table-builder [dataSource]="createdOrderDataSource" title="Bestellte Artikel"></app-table-builder>
     </mat-tab>
-    <mat-tab label="Bestellt">
-        <app-table-builder [dataSource]="orderedOrderDataSource" title="Bestellte Bestellungen"></app-table-builder>
+    <mat-tab label="Verschickte Bestellungen">
+        <app-table-builder [dataSource]="orderedOrderDataSource" title="Verschickte Bestellungen"></app-table-builder>
     </mat-tab>
-    <mat-tab label="Erhalten">
+    <mat-tab label="Erhaltene Bestellungen">
         <app-table-builder [dataSource]="deliveredOrderDataSource" title="Erhaltene Bestellungen"></app-table-builder>
     </mat-tab>
 </mat-tab-group>

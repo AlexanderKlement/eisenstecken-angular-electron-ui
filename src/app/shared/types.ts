@@ -9,8 +9,8 @@ import {
     User
 } from 'eisenstecken-openapi-angular-library';
 
-export type DataSourceClass = Client | User | Calendar | Job | Offer | Article | OrderBundle |
-    OutgoingInvoice | IngoingInvoice | Supplier | Order | Contact | Price | TechnicalData | Credential;
+export type DataSourceClass = Client | User | Calendar | Job | Offer | Article | OrderBundle | Order |
+    OutgoingInvoice | IngoingInvoice | Supplier |  Contact | Price | TechnicalData | Credential;
 
 export type RecursiveKeyOf<T, Prefix extends string = never> =
   T extends string | number | bigint | boolean

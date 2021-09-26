@@ -134,34 +134,6 @@ export class SupplierDetailComponent implements OnInit {
         this.orderedOrderDataSource = new TableDataSource(
             this.api,
             (api, filter, sortDirection, skip, limit) =>
-                api.readOrderBundleBySupplierOrderBundleSupplierSupplierIdGet(this.id, skip, limit, filter, 'DELIVERED'),
-            (dataSourceClasses) => {
-                const rows = [];
-                dataSourceClasses.forEach((dataSource) => {
-                    rows.push(
-                        {
-                            values: {
-                                // eslint-disable-next-line @typescript-eslint/naming-convention
-                                create_date: moment(dataSource.create_date).format('LLLL'),
-                                // eslint-disable-next-line @typescript-eslint/naming-convention
-                                delivery_date: moment(dataSource.delivery_date).format('L')
-                            },
-                            route: () => {
-                                this.router.navigateByUrl('/order_bundle/' + dataSource.id.toString());
-                            }
-                        });
-                });
-                return rows;
-            },
-            [
-                {name: 'create_date', headerName: 'Bestelldatum'},
-                {name: 'delivery_date', headerName: 'Lieferdatum'},
-            ],
-            (api) => api.readCountOfOrderBundleBySupplierAndStatusOrderBundleSupplierSupplierIdCountGet(supplierId, 'DELIVERED')
-        );
-        this.deliveredOrderDataSource = new TableDataSource(
-            this.api,
-            (api, filter, sortDirection, skip, limit) =>
                 api.readOrderBundleBySupplierOrderBundleSupplierSupplierIdGet(this.id, skip, limit, filter, 'ORDERED'),
             (dataSourceClasses) => {
                 const rows = [];
@@ -186,6 +158,34 @@ export class SupplierDetailComponent implements OnInit {
                 {name: 'delivery_date', headerName: 'Lieferdatum'},
             ],
             (api) => api.readCountOfOrderBundleBySupplierAndStatusOrderBundleSupplierSupplierIdCountGet(supplierId, 'ORDERED')
+        );
+        this.deliveredOrderDataSource = new TableDataSource(
+            this.api,
+            (api, filter, sortDirection, skip, limit) =>
+                api.readOrderBundleBySupplierOrderBundleSupplierSupplierIdGet(this.id, skip, limit, filter, 'DELIVERED'),
+            (dataSourceClasses) => {
+                const rows = [];
+                dataSourceClasses.forEach((dataSource) => {
+                    rows.push(
+                        {
+                            values: {
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                create_date: moment(dataSource.create_date).format('LLLL'),
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                delivery_date: moment(dataSource.delivery_date).format('L')
+                            },
+                            route: () => {
+                                this.router.navigateByUrl('/order_bundle/' + dataSource.id.toString());
+                            }
+                        });
+                });
+                return rows;
+            },
+            [
+                {name: 'create_date', headerName: 'Bestelldatum'},
+                {name: 'delivery_date', headerName: 'Lieferdatum'},
+            ],
+            (api) => api.readCountOfOrderBundleBySupplierAndStatusOrderBundleSupplierSupplierIdCountGet(supplierId, 'DELIVERED')
         );
         this.createdOrderDataSource.loadData();
         this.orderedOrderDataSource.loadData();

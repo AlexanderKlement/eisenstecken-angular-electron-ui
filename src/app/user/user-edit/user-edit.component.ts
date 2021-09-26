@@ -219,6 +219,7 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
                 dial: this.userGroup.get('dial').value,
                 employee: this.userGroup.get('employee').value,
                 office: this.userGroup.get('office').value,
+                cost: 0.0, //TODO: add this field
             };
             this.api.createUserUsersPost(userCreate).pipe(first()).subscribe((user) => {
                 this.createUpdateSuccess(user);
@@ -237,6 +238,7 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
                 dial: this.userGroup.get('dial').value,
                 employee: this.userGroup.get('employee').value,
                 office: this.userGroup.get('office').value,
+                cost: 0.0 //TODO: add this as field
             };
             this.api.updateUserUsersUserIdPut(this.id, userUpdate).pipe(first()).subscribe((user) => {
                 this.createUpdateSuccess(user);
