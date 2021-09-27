@@ -65,7 +65,7 @@ export class SupplierDetailComponent implements OnInit {
             this.api.readSupplierSupplierSupplierIdGet(id),
             [
                 {
-                    property: 'orderable.name',
+                    property: 'name',
                     name: 'Name'
                 },
                 {
@@ -113,7 +113,7 @@ export class SupplierDetailComponent implements OnInit {
                             values: {
                                 id: dataSource.id,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                'order_to.name': dataSource.order_to.name,
+                                'order_to.displayable_name': dataSource.order_to.displayable_name,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 description: dataSource.description
                             },
@@ -126,7 +126,7 @@ export class SupplierDetailComponent implements OnInit {
             },
             [
                 {name: 'id', headerName: 'ID'},
-                {name: 'order_to.name', headerName: 'Ziel'},
+                {name: 'order_to.displayable_name', headerName: 'Ziel'},
                 {name: 'description', headerName: 'Beschreibung'}
             ],
             (api) => api.readOrderCountOrderSupplierSupplierIdCountGet(supplierId, 'CREATED')
@@ -216,7 +216,7 @@ export class SupplierDetailComponent implements OnInit {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 delivery_date: orderDateReturnData.date,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                order_from_id: supplier.orderable.id
+                order_from_id: supplier.id
             };
             this.api.createOrderBundleOrderBundleOrderBundlePost(orderBundle).pipe(first()).subscribe(() => {
                 window.location.reload();

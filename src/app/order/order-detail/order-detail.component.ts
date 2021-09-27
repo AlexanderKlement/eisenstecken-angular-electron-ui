@@ -64,7 +64,7 @@ export class OrderDetailComponent implements OnInit {
         this.articleDataSource = new TableDataSource(
             this.api,
             (api, filter, sortDirection, skip, limit) =>
-                api.readOrderedArticlesByOrderOrderOrderedArticleOrderIdGet(this.orderId, skip, limit, filter),
+                api.readOrderedArticlesByOrderOrderedArticleOrderOrderIdGet(this.orderId, skip, limit, filter),
             (dataSourceClasses) => {
                 const rows = [];
                 dataSourceClasses.forEach((dataSource) => {
@@ -90,7 +90,7 @@ export class OrderDetailComponent implements OnInit {
                 {name: 'article.description.translation_de', headerName: 'Beschreibung'},
                 {name: 'article.unit.name.translation_de', headerName: 'Einheit'}
             ],
-            (api) => api.readOrderedArticleCountByOrderOrderOrderedArticleOrderIdCountGet(this.orderId)
+            (api) => api.readOrderedArticleCountByOrderOrderedArticleOrderOrderIdCountGet(this.orderId)
         );
         this.articleDataSource.loadData();
     }

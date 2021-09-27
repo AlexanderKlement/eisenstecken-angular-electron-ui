@@ -107,7 +107,7 @@ export class SupplierEditComponent extends BaseEditComponent<Supplier> implement
             this.data$.pipe(tap(client => this.supplierGroup.patchValue(client))).subscribe((client) => {
                     this.supplierGroup.patchValue({
                         language: client.language.code,
-                        name: client.orderable.name,
+                        name: client.name,
                         address: {
                             country: client.address.country.code
                         }

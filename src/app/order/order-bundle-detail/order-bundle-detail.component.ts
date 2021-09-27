@@ -84,11 +84,8 @@ export class OrderBundleDetailComponent implements OnInit {
                     rows.push(
                         {
                             values: {
-                                id: dataSource.id,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 'order_to.name': dataSource.order_to.name,
-                                // eslint-disable-next-line @typescript-eslint/naming-convention
-                                description: dataSource.description
                             },
                             route: () => {
                                 this.router.navigateByUrl('/order/' + dataSource.id.toString());
@@ -98,9 +95,7 @@ export class OrderBundleDetailComponent implements OnInit {
                 return rows;
             },
             [
-                {name: 'id', headerName: 'ID'},
-                {name: 'order_to.name', headerName: 'Ziel'},
-                {name: 'description', headerName: 'Beschreibung'}
+                {name: 'order_to.name', headerName: 'Ziel'}
             ],
             (api) => api.readOrdersByOrderBundleOrderBundleOrdersOrderBundleIdCountGet(this.orderBundleId)
         );
