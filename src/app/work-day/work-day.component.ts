@@ -7,7 +7,7 @@ import {
     Expense, ExpenseCreate, JobSection, JobSectionCreate,
     WorkDay, WorkDayFinish, WorkDayStart, WorkDayStop
 } from 'eisenstecken-openapi-angular-library';
-import {first, skip,} from 'rxjs/operators';
+import {first} from 'rxjs/operators';
 import {Observable, ReplaySubject} from 'rxjs';
 import {
     FormArray,

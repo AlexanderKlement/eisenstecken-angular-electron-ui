@@ -38,7 +38,7 @@ export class CalendarDayComponent implements OnInit, OnDestroy {
 
     formatDate = (date: string): string => moment(date).format('LT');
 
-    formatCalendarEntryDates(calendarEntries: CalendarEntry[]): CalendarEntry[] {
+    formatCalendarEntryDates(calendarEntries: CalendarEntry[]): CalendarEntry[] { //TODO check what this function is doing
         calendarEntries.forEach((calendarEntry) => {
             calendarEntry.start_time = this.formatDate(calendarEntry.start_time);
             calendarEntry.end_time = this.formatDate(calendarEntry.end_time);
@@ -64,6 +64,10 @@ export class CalendarDayComponent implements OnInit, OnDestroy {
                 this.calendar.refreshCalendar(parseInt(result.calendar.id, 10), this.day);
             }
         });
+    }
+
+    getCalendarStartEndTime(calendar: CalendarEntry): string {
+        return moment(calendar.start_time).format('LT') + '-' + moment(calendar.end_time).format('LT');
     }
 
     private setTitle(): void {

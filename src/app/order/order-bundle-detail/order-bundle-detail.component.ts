@@ -4,6 +4,7 @@ import {DefaultService, Order, OrderBundle, Supplier} from 'eisenstecken-openapi
 import {InfoDataSource} from '../../shared/components/info-builder/info-builder.datasource';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {ActivatedRoute, Router} from '@angular/router';
+import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 
 @Component({
     selector: 'app-order-bundle-detail',
@@ -15,6 +16,16 @@ export class OrderBundleDetailComponent implements OnInit {
     infoDataSource: InfoDataSource<OrderBundle>;
 
     orderBundleId: number;
+
+    buttons: CustomButton[] = [
+        {
+            name: 'Preise eintragen',
+            navigate: (): void => {
+                this.router.navigateByUrl('/order_bundle/price/' + this.orderBundleId.toString());
+            }
+        }
+    ];
+
 
     constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router) {
 
@@ -48,6 +59,10 @@ export class OrderBundleDetailComponent implements OnInit {
                 {
                     property: 'delivery_date',
                     name: 'Bestelldatum'
+                },
+                {
+                    property: 'user.fullname',
+                    name: 'Bestellung versendet:'
                 }
             ],
             '/order/' + this.orderBundleId.toString(),
@@ -89,5 +104,6 @@ export class OrderBundleDetailComponent implements OnInit {
             ],
             (api) => api.readOrdersByOrderBundleOrderBundleOrdersOrderBundleIdCountGet(this.orderBundleId)
         );
+        this.orderDataSource.loadData();
     }
 }
