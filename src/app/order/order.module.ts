@@ -18,6 +18,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import {MatIconModule} from '@angular/material/icon';
 import { OrderBundleDetailComponent } from './order-bundle-detail/order-bundle-detail.component';
+import { OrderBundleEditComponent } from './order-bundle-edit/order-bundle-edit.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { OrderBundleDetailComponent } from './order-bundle-detail/order-bundle-d
     ProductsListComponent,
     ProductEditDialogComponent,
     OrderDetailComponent,
-    OrderBundleDetailComponent
+    OrderBundleDetailComponent,
+    OrderBundleEditComponent
   ],
     imports: [
         CommonModule,

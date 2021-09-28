@@ -5,6 +5,10 @@ import {InfoDataSource} from '../../shared/components/info-builder/info-builder.
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import {first} from 'rxjs/operators';
+import {LockService} from '../../shared/lock.service';
 
 @Component({
     selector: 'app-order-bundle-detail',
@@ -21,13 +25,24 @@ export class OrderBundleDetailComponent implements OnInit {
         {
             name: 'Preise eintragen',
             navigate: (): void => {
-                this.router.navigateByUrl('/order_bundle/price/' + this.orderBundleId.toString());
+                this.locker.getLockAndTryNavigate(
+                    this.api.islockedOrderBundleOrderBundleIslockedOrderBundleIdGet(this.orderBundleId),
+                    this.api.lockOrderBundleOrderBundleLockOrderBundleIdPost(this.orderBundleId),
+                    this.api.unlockOrderBundleOrderBundleUnlockOrderBundleIdPost(this.orderBundleId),
+                    'order_bundle/edit/' + this.orderBundleId.toString()
+                );
             }
-        }
+        },
+        {
+            name: 'Löschen',
+            navigate: (): void => {
+                this.orderDeleteClicked();
+            }
+        },
     ];
 
 
-    constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router) {
+    constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router, public dialog: MatDialog, private locker: LockService) {
 
     }
 
@@ -41,6 +56,30 @@ export class OrderBundleDetailComponent implements OnInit {
             }
             this.initOrderDataSource();
             this.initInfoDataSource();
+        });
+    }
+
+    orderDeleteClicked(): void {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Versendete Bestellung löschen?',
+                text: 'Versendete Besellung wirklich löschen? Die einzelnen Artikel können' +
+                    ' danach wieder im Bestellung-Fenster bearbeitet werden.'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.api.deleteOrderBundleOrderBundleOrderBundleIdDelete(this.orderBundleId).pipe(first()).subscribe(success => {
+                    if (success) {
+                        window.location.reload();
+                    } else {
+                        // TODO: show error snackbar here
+                        console.error('Could not delete order bundle');
+                    }
+                });
+
+            }
         });
     }
 

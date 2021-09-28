@@ -218,7 +218,7 @@ export class SupplierDetailComponent implements OnInit {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 order_from_id: supplier.id
             };
-            this.api.createOrderBundleOrderBundleOrderBundlePost(orderBundle).pipe(first()).subscribe(() => {
+            this.api.createOrderBundleOrderBundlePost(orderBundle).pipe(first()).subscribe(() => {
                 window.location.reload();
             });
         });

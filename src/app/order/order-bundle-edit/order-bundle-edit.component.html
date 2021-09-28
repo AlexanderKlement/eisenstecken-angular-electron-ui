@@ -1,0 +1,52 @@
+<app-toolbar [beforeBackFunction]="unlockFunction"></app-toolbar>
+<div class="window-container">
+    <h1>Preise eintragen</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="orderBundleGroup">
+        <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="orders">
+            <div *ngFor="let order of getOrderFormArray().controls; let i = index"
+                 class="descriptive-article" fxLayout="column" fxLayoutAlign="start stretch" [formGroupName]="i">
+                <div fxLayout="row" fxLayoutAlign="space-around center">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Bestellung</mat-label>
+                        <input readonly matInput formControlName="order_from">
+                    </mat-form-field>
+                    <mat-icon>
+                        chevron_right
+                    </mat-icon>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Bestellung</mat-label>
+                        <input readonly matInput formControlName="order_to">
+                    </mat-form-field>
+                </div>
+                <div formArrayName="articles">
+                    <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="j"
+                         *ngFor="let article of getArticlesAt(i).controls; let j = index">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Name</mat-label>
+                            <input readonly matInput formControlName="name">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Menge</mat-label>
+                            <input readonly matInput formControlName="amount">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Mod Nummer</mat-label>
+                            <input readonly matInput formControlName="mod_number">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Einheit</mat-label>
+                            <input readonly matInput formControlName="unit">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Preis</mat-label>
+                            <input matInput formControlName="price">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <button mat-raised-button type="submit">Speichern</button>
+        </div>
+    </form>
+</div>
+
+<pre> {{orderBundleGroup.value | json}} </pre>

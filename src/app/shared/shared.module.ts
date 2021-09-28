@@ -37,9 +37,10 @@ import {LoadingComponent} from './components/loading/loading.component';
 import {MatCardModule} from '@angular/material/card';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {SplitTextNewlinePipe, MyFilterPipe} from './pipes/my-pipe';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent, InfoBuilderComponent, LockDialogComponent, BaseEditComponent, WarningDialogComponent, AddressFormComponent, ToolbarComponent, CalendarComponent, CalendarEditComponent, CalendarDayComponent, FilterableClickableListComponent, LoadingComponent, MyFilterPipe, SplitTextNewlinePipe],
+  declarations: [PageNotFoundComponent, WebviewDirective, TestComponent, TableBuilderComponent, InfoBuilderComponent, LockDialogComponent, BaseEditComponent, WarningDialogComponent, AddressFormComponent, ToolbarComponent, CalendarComponent, CalendarEditComponent, CalendarDayComponent, FilterableClickableListComponent, LoadingComponent, MyFilterPipe, SplitTextNewlinePipe, ConfirmDialogComponent],
   imports: [CommonModule, TranslateModule, FormsModule, MatCheckboxModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule, MatInputModule, MatGridListModule, MatListModule, MatButtonModule, MatDialogModule, ReactiveFormsModule, FlexModule, MatSelectModule, MatToolbarModule, FlexLayoutModule, MatIconModule, MatDatepickerModule, MatTabsModule, MatCardModule, NgxMaterialTimepickerModule.setLocale('de-DE')],
   exports: [TranslateModule, WebviewDirective, FormsModule, TestComponent, TableBuilderComponent, InfoBuilderComponent, AddressFormComponent, ToolbarComponent, CalendarComponent, FilterableClickableListComponent, LoadingComponent, MyFilterPipe, SplitTextNewlinePipe]
 })
