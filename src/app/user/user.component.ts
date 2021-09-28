@@ -36,8 +36,6 @@ export class UserComponent implements OnInit {
             {
               values: {
                 fullname: dataSource.fullname,
-                email : dataSource.email,
-                tel: dataSource.tel
               },
               route : () => {
                 this.locker.getLockAndTryNavigate(
@@ -53,8 +51,6 @@ export class UserComponent implements OnInit {
       },
       [
         {name: 'fullname', headerName: 'Name'},
-        {name: 'email', headerName: 'Email'},
-        {name: 'tel', headerName: 'Telefon'}
       ],
       (api) => api.readUserCountUsersCountGet(),
     );

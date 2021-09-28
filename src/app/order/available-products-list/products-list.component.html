@@ -26,10 +26,11 @@
         <mat-label>Menge</mat-label>
         <input matInput value="{{orderedArticle.amount}}" readonly>
       </mat-form-field>
+      <!--
       <mat-form-field fxFlex="25">
         <mat-label>Einheit</mat-label>
         <input matInput value="{{orderedArticle.ordered_unit.name.translation}}" readonly>
-      </mat-form-field>
+      </mat-form-field> -->
       <div fxFlex="23">
         <button mat-button mat-icon-button (click)="editButtonClicked(orderedArticle)" title="Bearbeiten">
           <mat-icon>edit</mat-icon>

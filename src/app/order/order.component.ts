@@ -25,11 +25,11 @@ export class OrderComponent implements OnInit {
     fromListSubscriber: Subscriber<ListItem[]>;
     fromListSelected: ListItem;
 
-    availableProductListName = 'Verfügbare Produkte';
+    availableProductListName = 'Artikel';
     availableProducts$: Observable<Article[]>;
     availableProductsSubscriber: Subscriber<Article[]>;
 
-    orderedProductListName = 'Bestellte Produkte';
+    orderedProductListName = 'Bestellungen';
     orderedProducts$: Observable<OrderedArticle[]>;
     orderedProductsSubscriber: Subscriber<OrderedArticle[]>;
 

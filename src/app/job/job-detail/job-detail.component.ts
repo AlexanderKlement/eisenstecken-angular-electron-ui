@@ -107,7 +107,7 @@ export class JobDetailComponent implements OnInit {
                     rows.push(
                         {
                             values: {
-                                'name': dataSource.name,
+                                name: dataSource.name,
                                 'client.name': dataSource.client.fullname,
                                 description: dataSource.description
                             },

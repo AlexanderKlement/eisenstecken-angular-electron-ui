@@ -24,6 +24,14 @@
         <mat-label>Tel2</mat-label>
         <input class="form-control" formControlName="tel2" matInput>
       </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Empfängerkodex</mat-label>
+        <input class="form-control" formControlName="contact_person" matInput>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Ansprechpartner</mat-label>
+        <input class="form-control" formControlName="destination_code" matInput>
+      </mat-form-field>
       <mat-form-field *ngIf="languageOptions$ | async as languageOptions">
         <mat-label>Sprache</mat-label>
         <mat-select formControlName="language">
