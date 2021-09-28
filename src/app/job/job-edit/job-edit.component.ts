@@ -31,6 +31,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
     jobTypeOptions$: Observable<JobType[]>;
 
     navigationTarget = 'job';
+
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
         super(api, router, route, dialog);
     }

@@ -43,10 +43,10 @@ import {ClientModule} from './client/client.module';
 import {UserModule} from './user/user.module';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {InvoiceModule} from './invoice/invoice.module';
-import {SupplierComponent} from './supplier/supplier.component';
 import {SupplierModule} from './supplier/supplier.module';
 import {getGermanPaginatorIntl} from './shared/components/table-builder/table-builder.datasource';
 import {WorkDayModule} from './work-day/work-day.module';
+import {RecalculationModule} from './recalculation/recalculation.module';
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -60,7 +60,7 @@ export function apiConfigFactory(): Configuration {
 }
 
 @NgModule({
-    declarations: [AppComponent, SupplierComponent],
+    declarations: [AppComponent],
     imports: [
         BrowserModule,
         FormsModule,
@@ -78,6 +78,7 @@ export function apiConfigFactory(): Configuration {
         LoginModule,
         InvoiceModule,
         WorkDayModule,
+        RecalculationModule,
         ApiModule.forRoot(apiConfigFactory),
         AppRoutingModule,
         FlexLayoutModule,

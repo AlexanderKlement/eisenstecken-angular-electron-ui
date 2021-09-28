@@ -14,6 +14,7 @@ import {SupplierRoutingModule} from './supplier/supplier-routing.module';
 import {OrderRoutingModule} from './order/order-routing.module';
 import {SettingsRoutingModule} from './settings/settings-routing.module';
 import {WorkDayRoutingModule} from './work-day/work-day-routing.module';
+import {RecalculationRoutingModule} from './recalculation/recalculation-routing.module';
 
 const routes: Routes = [
     {
@@ -21,7 +22,7 @@ const routes: Routes = [
         //redirectTo: 'home',
         component: HomeComponent,
         pathMatch: 'full',
-        data: { requiresLogin: true },
+        data: {requiresLogin: true},
         //canActivate: [AccessGuard]
     },
     {
@@ -44,6 +45,7 @@ const routes: Routes = [
         LoginRoutingModule,
         ClientRoutingModule,
         JobRoutingModule,
+        RecalculationRoutingModule,
         OrderRoutingModule,
         SettingsRoutingModule,
         InvoiceRoutingModule,

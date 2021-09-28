@@ -16,6 +16,7 @@ import {Observable} from 'rxjs';
 import {AbstractControl, FormArray, FormControl, FormGroup} from '@angular/forms';
 import {first, tap} from 'rxjs/operators';
 import {formatDate} from '@angular/common';
+import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-outgoing-invoice-edit',
@@ -91,7 +92,19 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
     }
 
     removeDescriptiveArticle(index: number): void {
-        this.getDescriptiveArticles().removeAt(index);
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Position löschen?',
+                text: 'Dieser Schritt kann nicht rückgängig gemacht werden.'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.getDescriptiveArticles().removeAt(index);
+            }
+        });
+
     }
 
     addDescriptiveArticleAt(index: number): void {
