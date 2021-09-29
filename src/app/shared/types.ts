@@ -1,16 +1,36 @@
 import {
     Article,
     Calendar,
-    Client, Contact, Credential,
+    Client, Contact, Credential, Fee,
     IngoingInvoice,
-    Job,
+    Job, Journey, Meal, MealSum,
     Offer, Order, OrderBundle, OrderedArticle,
     OutgoingInvoice, Price, Recalculation, Supplier, TechnicalData,
     User
 } from 'eisenstecken-openapi-angular-library';
 
-export type DataSourceClass = Client | User | Calendar | Job | Offer | Article | OrderBundle | Order | OrderedArticle |
-    OutgoingInvoice | IngoingInvoice | Supplier | Contact | Price | TechnicalData | Credential | Recalculation;
+export type DataSourceClass =
+    Client
+    | User
+    | Calendar
+    | Job
+    | Offer
+    | Article
+    | OrderBundle
+    | Order
+    | OrderedArticle
+    | OutgoingInvoice
+    | IngoingInvoice
+    | Supplier
+    | Contact
+    | Price
+    | TechnicalData
+    | Credential
+    | Recalculation
+    | Fee
+    | Meal
+    | MealSum
+    | Journey;
 
 export type RecursiveKeyOf<T, Prefix extends string = never> =
     T extends string | number | bigint | boolean

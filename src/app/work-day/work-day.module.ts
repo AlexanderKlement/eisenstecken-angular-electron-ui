@@ -11,11 +11,13 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
+import { WorkDayGeneralComponent } from './work-day-general/work-day-general.component';
 
 
 @NgModule({
   declarations: [
-    WorkDayComponent
+    WorkDayComponent,
+    WorkDayGeneralComponent
   ],
     imports: [
         CommonModule,

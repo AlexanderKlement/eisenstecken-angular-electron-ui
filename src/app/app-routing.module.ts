@@ -15,6 +15,7 @@ import {OrderRoutingModule} from './order/order-routing.module';
 import {SettingsRoutingModule} from './settings/settings-routing.module';
 import {WorkDayRoutingModule} from './work-day/work-day-routing.module';
 import {RecalculationRoutingModule} from './recalculation/recalculation-routing.module';
+import {EmployeeRoutingModule} from './employee/employee-routing.module';
 
 const routes: Routes = [
     {
@@ -51,7 +52,8 @@ const routes: Routes = [
         InvoiceRoutingModule,
         UserRoutingModule,
         SupplierRoutingModule,
-        WorkDayRoutingModule
+        WorkDayRoutingModule,
+        EmployeeRoutingModule
     ],
     exports: [RouterModule]
 })
