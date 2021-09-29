@@ -16,21 +16,16 @@ import {SettingsRoutingModule} from './settings/settings-routing.module';
 import {WorkDayRoutingModule} from './work-day/work-day-routing.module';
 import {RecalculationRoutingModule} from './recalculation/recalculation-routing.module';
 import {EmployeeRoutingModule} from './employee/employee-routing.module';
+import {AccessGuard} from './shared/access-guard.service';
 
 const routes: Routes = [
     {
         path: '',
         //redirectTo: 'home',
         component: HomeComponent,
-        pathMatch: 'full',
+        //pathMatch: 'full',
         data: {requiresLogin: true},
-        //canActivate: [AccessGuard]
-    },
-    {
-        path: 'calendar/:mode/:id',
-        component: CalendarEditComponent,
-        data: {requiresLogin: true},
-        //canActivate: [AccessGuard]
+        canActivate: [AccessGuard]
     },
     {
         path: '**',

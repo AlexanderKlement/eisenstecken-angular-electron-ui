@@ -46,6 +46,7 @@ export class EmployeeDetailComponent implements OnInit {
                     rows.push(
                         {
                             values: {
+                                date: dataSource.date,
                                 amount: dataSource.amount,
                                 reason: dataSource.reason,
                             },
@@ -57,8 +58,9 @@ export class EmployeeDetailComponent implements OnInit {
                 return rows;
             },
             [
+                {name: 'date', headerName: 'Datum'},
                 {name: 'reason', headerName: 'Grund'},
-                {name: 'amount', headerName: 'Menge'}, //TODO: add date here
+                {name: 'amount', headerName: 'Menge'},
             ],
             (api) => api.readFeeCountFeeCountGet(this.userId)
         );
@@ -76,8 +78,8 @@ export class EmployeeDetailComponent implements OnInit {
                     rows.push(
                         {
                             values: {
-                                'car.name': dataSource.car.name,
                                 date: dataSource.date,
+                                'car.name': dataSource.car.name,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 distance_km: dataSource.distance_km,
                             },
@@ -89,8 +91,8 @@ export class EmployeeDetailComponent implements OnInit {
                 return rows;
             },
             [
-                {name: 'car.name', headerName: 'Auto'},
                 {name: 'date', headerName: 'Datum'},
+                {name: 'car.name', headerName: 'Auto'},
                 {name: 'distance_km', headerName: 'Distanz [km]'},
             ],
             (api) => api.readJourneyCountJourneyCountGet(this.userId)
@@ -109,9 +111,9 @@ export class EmployeeDetailComponent implements OnInit {
                     rows.push(
                         {
                             values: {
-                                date: dataSource.date,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                'eating_place.name': dataSource.eating_place.name
+                                'eating_place.name': dataSource.eating_place.name,
+                                date: dataSource.date
                             },
                             route: () => {
                                 this.router.navigateByUrl('employee');
@@ -121,8 +123,8 @@ export class EmployeeDetailComponent implements OnInit {
                 return rows;
             },
             [
-                {name: 'date', headerName: 'Datum'},
                 {name: 'eating_place.name', headerName: 'Restaurant'},
+                {name: 'date', headerName: 'Datum'},
             ],
             (api) => api.readMealCountMealCountGet(this.userId)
         );
