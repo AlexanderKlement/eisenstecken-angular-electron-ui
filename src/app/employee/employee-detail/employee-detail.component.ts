@@ -3,6 +3,7 @@ import {TableDataSource} from '../../shared/components/table-builder/table-build
 import {Journey, Fee, Meal, DefaultService, WorkDay} from 'eisenstecken-openapi-angular-library';
 import {ActivatedRoute, Router} from '@angular/router';
 import {first} from 'rxjs/operators';
+import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 
 @Component({
     selector: 'app-employee-detail',
@@ -20,6 +21,16 @@ export class EmployeeDetailComponent implements OnInit {
     todayWorkDayLoading = true;
     finishWorkDay: WorkDay;
     todayWorkDay: WorkDay;
+
+    public buttons: CustomButton[] = [
+        {
+            name: 'Neuer Arbeitstag',
+            navigate: (): void => {
+                this.router.navigateByUrl('/work_day/new/' + this.userId.toString());
+            }
+        }
+    ];
+
 
     constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router) {
 

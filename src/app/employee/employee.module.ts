@@ -8,12 +8,14 @@ import { EmployeeDetailComponent } from './employee-detail/employee-detail.compo
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {WorkDayModule} from '../work-day/work-day.module';
+import { WorkDayNewComponent } from './work-day-new/work-day-new.component';
 
 
 @NgModule({
   declarations: [
     EmployeeComponent,
-    EmployeeDetailComponent
+    EmployeeDetailComponent,
+    WorkDayNewComponent
   ],
     imports: [
         CommonModule,

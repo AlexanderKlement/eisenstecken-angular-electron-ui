@@ -5,7 +5,7 @@ import {
     Drive, DriveCreate,
     EatingPlace,
     Expense, ExpenseCreate, JobSection, JobSectionCreate,
-    WorkDay, WorkDayFinish, WorkDayStart, WorkDayStop, WorkDayUpdate, WorkPhase, WorkPhaseCreate
+    WorkDay, WorkDayCreate, WorkDayFinish, WorkDayStart, WorkDayStop, WorkDayUpdate, WorkPhase, WorkPhaseCreate
 } from 'eisenstecken-openapi-angular-library';
 import {first} from 'rxjs/operators';
 import {Observable, ReplaySubject} from 'rxjs';
@@ -18,6 +18,8 @@ import {
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {NgxMaterialTimepickerTheme} from 'ngx-material-timepicker';
 import * as moment from 'moment';
+import {unwatchFile} from 'fs';
+import {Router} from '@angular/router';
 
 
 export const timeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -51,6 +53,7 @@ export class WorkDayGeneralComponent implements OnInit {
 
     @Input() workDay: WorkDay = undefined;
     @Input() admin = false;
+    @Input() userId?: number;
 
     workDayEditGroup: FormGroup;
     eatingPlaces$: Observable<EatingPlace[]>;
@@ -82,24 +85,30 @@ export class WorkDayGeneralComponent implements OnInit {
             clockHandColor: '#fdc400',
         }
     };
+    username = '';
 
 
-    constructor(private api: DefaultService, private snackBar: MatSnackBar) {
+    constructor(private api: DefaultService, private snackBar: MatSnackBar, private router: Router) {
     }
 
     ngOnInit(): void {
         this.initWorkDayFinishGroup();
         if (this.admin) {
-            if (this.workDay === undefined) {
-                console.error('WorkDayGeneral: You have to provide a workday if you load this component in admin mode');
-                return;
-            }
             this.workDayStartable = false;
             this.workDayFinishable = true;
             this.workDayStopable = false;
             this.workDayError = true;
             this.workDayCompleted = false;
-            this.initWorkDayEditSection(this.workDay);
+            if (this.workDay === undefined) {
+                if (this.userId === undefined || this.userId === null) {
+                    console.error('WorkDayGeneral: Cannot create new workDay without user id');
+                    return;
+                }
+                this.createMode = true;
+                this.initWorkDayEditSection();
+            } else {
+                this.initWorkDayEditSection(this.workDay);
+            }
             this.buttonText = 'Arbeitstag speichern';
         } else {
             this.api.getAvailableWorkDayActionsWorkDayAvailableActionsGet().pipe(first())
@@ -131,8 +140,7 @@ export class WorkDayGeneralComponent implements OnInit {
         }
     }
 
-    initWorkDayEditSection(workDay: WorkDay): void {
-        this.maxMinutes = workDay.length_minutes;
+    initWorkDayEditSection(workDay?: WorkDay): void {
 
         this.cars$ = new ReplaySubject<Car[]>(1);
         this.api.getCarsCarGet().pipe(first()).subscribe((cars) => {
@@ -147,46 +155,67 @@ export class WorkDayGeneralComponent implements OnInit {
                         this.getJobSections().push(this.initJobSectionManually(0, job.id, job.displayable_name));
                     }
                 }
-                this.getJobSections().push(this.initJobSectionManually(workDay.length_minutes, 0, 'Instandhaltung'));
+                let length = 0;
+                if (workDay !== undefined) {
+                    length = workDay.length_minutes;
+                }
+                this.getJobSections().push(this.initJobSectionManually(length, 0, 'Instandhaltung'));
             });
 
-        for (const workPhase of workDay.work_phases) {
-            this.getWorkPhases().push(this.initWorkPhase(workPhase));
+        if (workDay !== undefined) {
+            this.username = workDay.user.fullname;
+            this.maxMinutes = workDay.length_minutes;
+
+            for (const workPhase of workDay.work_phases) {
+                this.getWorkPhases().push(this.initWorkPhase(workPhase));
+                if (!this.admin) {
+                    this.getWorkPhases().disable();
+                }
+            }
+
+            this.workDayEditGroup.get('date').setValue(workDay.date);
             if (!this.admin) {
-                this.getWorkPhases().disable();
+                this.workDayEditGroup.get('date').disable();
             }
-        }
 
-        this.workDayEditGroup.get('date').setValue(workDay.date);
-        if (!this.admin) {
-            this.workDayEditGroup.get('date').disable();
-        }
+            if (workDay.expenses.length === 0) {
+                this.getExpenses().push(this.initExpense());
+            } else {
+                for (const expense of workDay.expenses) {
+                    this.getExpenses().push(this.initExpense(expense));
+                }
+            }
 
-        if (workDay.expenses.length === 0) {
+            if (workDay.drives.length === 0) {
+                this.getDrives().push(this.initDrive());
+            } else {
+                for (const drive of workDay.drives) {
+                    this.getDrives().push(this.initDrive(drive));
+                }
+            }
+
+            if (workDay.eating_place !== undefined && workDay.eating_place !== null) {
+                this.workDayEditGroup.get('eating_place_id').setValue(workDay.eating_place.id);
+            }
+
+            if ((this.workDayError || this.workDayCompleted) && !this.admin) {
+                console.warn('WorkDayGeneral: FormGroup is disabled');
+                this.workDayEditGroup.disable();
+                this.editDisabled = true;
+            }
+        } else {
+            this.api.readUserUsersUserIdGet(this.userId).pipe(first()).subscribe(user => {
+                this.username = user.fullname;
+            });
+            this.maxMinutes = 0;
+            this.getWorkPhases().push(this.initWorkPhase());
+            this.workDayEditGroup.get('date').setValue(new Date());
             this.getExpenses().push(this.initExpense());
-        } else {
-            for (const expense of workDay.expenses) {
-                this.getExpenses().push(this.initExpense(expense));
-            }
-        }
-
-        if (workDay.drives.length === 0) {
             this.getDrives().push(this.initDrive());
-        } else {
-            for (const drive of workDay.drives) {
-                this.getDrives().push(this.initDrive(drive));
-            }
+            this.workDayEditGroup.get('eating_place_id').setValue(1);
         }
 
-        if (workDay.eating_place !== undefined && workDay.eating_place !== null) { //TODO: check why eating_place is null
-            this.workDayEditGroup.get('eating_place_id').setValue(workDay.eating_place.id);
-        }
 
-        if ((this.workDayError || this.workDayCompleted) && !this.admin) {
-            console.warn('WorkDayGeneral: FormGroup is disabled');
-            this.workDayEditGroup.disable();
-            this.editDisabled = true;
-        }
     }
 
     initWorkDayFinishGroup(): void {
@@ -526,6 +555,30 @@ export class WorkDayGeneralComponent implements OnInit {
                     (newWorkDay) => {
                         if (newWorkDay !== undefined) {
                             window.location.reload();
+                        } else {
+                            this.onError(newWorkDay);
+                        }
+                    }, (error) => {
+                        this.onError(error);
+                    });
+            } else {
+                const workDayCreate: WorkDayCreate = {
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    eating_place_id: parseInt(this.workDayEditGroup.get('eating_place_id').value, 10),
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    job_sections: jobSections,
+                    expenses,
+                    drives,
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    work_phases: workPhases,
+                    date: date.format('YYYY-MM-DD'),
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    user_id: this.userId
+                };
+                this.api.createWorkDayWorkDayUserIdPost(this.userId, workDayCreate).pipe(first()).subscribe(
+                    (newWorkDay) => {
+                        if (newWorkDay !== undefined) {
+                            this.router.navigateByUrl('/employee/' + this.userId.toString());
                         } else {
                             this.onError(newWorkDay);
                         }

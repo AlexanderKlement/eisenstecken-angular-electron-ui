@@ -1,5 +1,6 @@
 <div class="window-container">
     <div fxLayout="column" fxLayoutAlign="space-around center">
+        <h4 *ngIf="username.length > 0">Benutzer: {{username}}</h4>
         <p *ngIf="workDayError && !admin">Fehler: Bitte im Büro korrigieren lassen</p>
         <p *ngIf="!workDayError && lengthString">Länge Arbeitstag: {{lengthString}}</p>
         <div *ngIf="workDayStartable">
