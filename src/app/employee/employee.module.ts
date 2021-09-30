@@ -7,6 +7,7 @@ import {SharedModule} from '../shared/shared.module';
 import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {WorkDayModule} from '../work-day/work-day.module';
 
 
 @NgModule({
@@ -14,12 +15,13 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     EmployeeComponent,
     EmployeeDetailComponent
   ],
-  imports: [
-    CommonModule,
-    EmployeeRoutingModule,
-    SharedModule,
-    MatTabsModule,
-    MatProgressSpinnerModule
-  ]
+    imports: [
+        CommonModule,
+        EmployeeRoutingModule,
+        SharedModule,
+        MatTabsModule,
+        MatProgressSpinnerModule,
+        WorkDayModule
+    ]
 })
 export class EmployeeModule { }

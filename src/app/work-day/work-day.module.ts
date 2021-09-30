@@ -12,13 +12,18 @@ import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import { WorkDayGeneralComponent } from './work-day-general/work-day-general.component';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 
 @NgModule({
-  declarations: [
-    WorkDayComponent,
-    WorkDayGeneralComponent
-  ],
+    declarations: [
+        WorkDayComponent,
+        WorkDayGeneralComponent
+    ],
+    exports: [
+        WorkDayGeneralComponent
+    ],
     imports: [
         CommonModule,
         WorkDayRoutingModule,
@@ -29,7 +34,9 @@ import { WorkDayGeneralComponent } from './work-day-general/work-day-general.com
         MatFormFieldModule,
         MatInputModule,
         MatIconModule,
-        MatSelectModule
+        MatSelectModule,
+        NgxMaterialTimepickerModule,
+        MatDatepickerModule
     ]
 })
 export class WorkDayModule { }

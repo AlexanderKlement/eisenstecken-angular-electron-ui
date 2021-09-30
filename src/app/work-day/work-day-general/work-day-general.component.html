@@ -1,7 +1,7 @@
 <div class="window-container">
     <div fxLayout="column" fxLayoutAlign="space-around center">
-        <p *ngIf="workDayError">Fehler: Bitte im Büro korrigieren lassen</p>
-        <p *ngIf="!workDayError && lengthString">Länge Arbietstag: {{lengthString}}</p>
+        <p *ngIf="workDayError && !admin">Fehler: Bitte im Büro korrigieren lassen</p>
+        <p *ngIf="!workDayError && lengthString">Länge Arbeitstag: {{lengthString}}</p>
         <div *ngIf="workDayStartable">
             <button mat-raised-button type="button" (click)="onWorkDayStartClick()">
                 Neuen Arbeitsabschnitt starten
@@ -13,8 +13,15 @@
             Derzeitigen Arbeitsabschnitt stoppen
         </button>
     </div>
-    <form *ngIf="workDayFinishable || workDayCompleted" [formGroup]="workDayEditGroup" (submit)="onWorkDayFinishSubmit()">
+    <form *ngIf="workDayFinishable || workDayCompleted" [formGroup]="workDayEditGroup"
+          (submit)="onWorkDayFinishSubmit()">
         <div fxLayout="column" fxLayoutAlign="space-around center">
+            <mat-form-field appearance="fill">
+                <mat-label>Datum</mat-label>
+                <input matInput formControlName="date" [matDatepicker]="date">
+                <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                <mat-datepicker #date></mat-datepicker>
+            </mat-form-field>
             <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="work_phases" fxFlexFill>
                 <h4>Arbeitsabschnitte:</h4>
                 <div *ngFor="let workPhases of getWorkPhases().controls; let i = index">
@@ -22,28 +29,41 @@
                          fxLayout.lt-sm="column">
                         <mat-form-field appearance="fill">
                             <mat-label>Start</mat-label>
-                            <input class="form-control" formControlName="checkin" matInput>
+                            <input formControlName="checkin" matInput [format]=24
+                                   autocomplete="disabled" [ngxTimepicker]="checkin_picker">
+                            <ngx-material-timepicker (closed)="onWorkPhaseChange()" [minutesGap]="5"
+                                                     [theme]="primaryTheme"
+                                                     #checkin_picker></ngx-material-timepicker>
                         </mat-form-field>
                         <mat-form-field appearance="fill">
                             <mat-label>Ende</mat-label>
-                            <input class="form-control" formControlName="checkout" matInput>
+                            <input formControlName="checkout" matInput [format]=24
+                                   autocomplete="disabled" [ngxTimepicker]="checkout_picker">
+                            <ngx-material-timepicker (closed)="onWorkPhaseChange()" [minutesGap]="5"
+                                                     [theme]="primaryTheme"
+                                                     #checkout_picker></ngx-material-timepicker>
                         </mat-form-field>
-                        <button *ngIf="admin" type="button" mat-button (click)="onRemoveExpenseClick(i)"
-                                title="Ausgabe entfernen"
+                        <button *ngIf="admin" type="button" mat-button (click)="onRemoveWorkPhaseClick(i)"
+                                title="Arbeitsabschnitt entfernen"
                                 fxFlex.lt-sm="0"
                                 class="remove-button">
                             <mat-icon>remove</mat-icon>
                         </button>
-                        <button *ngIf="admin" type="button" mat-fab (click)="onRemoveExpenseClick(i)"
-                                title="Ausgabe entfernen"
+                        <button *ngIf="admin" type="button" mat-fab (click)="onRemoveWorkPhaseClick(i)"
+                                title="Arbeitsabschnitt entfernen"
                                 fxFlex.gt-sm="0" class="remove-button-mobile">
                             <mat-icon>remove</mat-icon>
                         </button>
                     </div>
                 </div>
-                <button *ngIf="admin" mat-fab type="button" (click)="onAddExpenseClick()" title="Weitere Ausgabe hinzufügen">
+                <button *ngIf="admin" mat-fab type="button" (click)="onAddWorkPhaseClick()"
+                        title="Arbeitsabschnitt hinzufügen">
                     <mat-icon>add</mat-icon>
                 </button>
+                <div *ngIf="workDayEditGroup.errors"
+                     class="cross-validation-error-message alert alert-danger">
+                    Achtung: Zeiten für Arbeitsabschnitte stimmen nicht!
+                </div>
             </div>
             <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="job_sections" fxFlexFill>
                 <h4>Auf Auträge aufteilen: {{minutesToDisplayableString(maxMinutes)}}</h4>
@@ -56,7 +76,8 @@
                         </mat-form-field>
                         <mat-form-field appearance="fill">
                             <mat-label>Minuten</mat-label>
-                            <input class="form-control" type="number" [readonly]="editDisabled" formControlName="minutes"
+                            <input class="form-control" type="number" [readonly]="editDisabled"
+                                   formControlName="minutes"
                                    (change)="onMinuteChange(i)"
                                    matInput>
                         </mat-form-field>
@@ -94,7 +115,8 @@
                         </button>
                     </div>
                 </div>
-                <button *ngIf="!editDisabled" mat-fab type="button" (click)="onAddExpenseClick()" title="Weitere Ausgabe hinzufügen">
+                <button *ngIf="!editDisabled" mat-fab type="button" (click)="onAddExpenseClick()"
+                        title="Weitere Ausgabe hinzufügen">
                     <mat-icon>add</mat-icon>
                 </button>
             </div>
@@ -115,18 +137,21 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <button *ngIf="!editDisabled" type="button" mat-button (click)="onRemoveDriveClick(i)" title="Fahrt entfernen"
+                        <button *ngIf="!editDisabled" type="button" mat-button (click)="onRemoveDriveClick(i)"
+                                title="Fahrt entfernen"
                                 fxFlex.lt-sm="0"
                                 class="remove-button">
                             <mat-icon>remove</mat-icon>
                         </button>
-                        <button *ngIf="!editDisabled" type="button" mat-fab (click)="onRemoveDriveClick(i)" title="Fahrt entfernen"
+                        <button *ngIf="!editDisabled" type="button" mat-fab (click)="onRemoveDriveClick(i)"
+                                title="Fahrt entfernen"
                                 class="remove-button-mobile" fxFlex.gt-sm="0">
                             <mat-icon>remove</mat-icon>
                         </button>
                     </div>
                 </div>
-                <button *ngIf="!editDisabled" mat-fab type="button" (click)="onAddCarClick()" title="Weitere Fahrt hinzufügen">
+                <button *ngIf="!editDisabled" mat-fab type="button" (click)="onAddCarClick()"
+                        title="Weitere Fahrt hinzufügen">
                     <mat-icon>add</mat-icon>
                 </button>
             </div>
@@ -142,9 +167,11 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <button *ngIf="workDayFinishable || this.admin" type="submit" [disabled]="submitted" mat-raised-button>Arbeitstag
-                abschließen
+            <button *ngIf="workDayFinishable || this.admin" type="submit"
+                    [disabled]="submitted || !workDayEditGroup.valid" mat-raised-button>
+                {{buttonText}}
             </button>
+
         </div>
     </form>
 </div>

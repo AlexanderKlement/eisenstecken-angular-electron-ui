@@ -34,7 +34,7 @@
                 <ngx-material-timepicker [minutesGap]="5" [theme]="primaryTheme"
                                          #end_time_picker></ngx-material-timepicker>
             </mat-form-field>
-            <div *ngIf="!calendarGroup.errors?.timeValid"
+            <div *ngIf="calendarGroup.errors"
                  class="cross-validation-error-message alert alert-danger">
                 Startzeit sollte vor Endzeit liegen
             </div>

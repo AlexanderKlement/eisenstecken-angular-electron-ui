@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {Journey, Fee, Meal, DefaultService, WorkDay} from 'eisenstecken-openapi-angular-library';
 import {ActivatedRoute, Router} from '@angular/router';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-employee-detail',
@@ -27,13 +28,25 @@ export class EmployeeDetailComponent implements OnInit {
     ngOnInit(): void {
         this.route.params.subscribe(params => {
             this.userId = parseInt(params.id, 10);
+            this.initWorkDays();
             this.initFeeDataSource();
             this.initJourneyDataSource();
             this.initMealDataSource();
-            //this.api.read
         });
-
     }
+
+
+    private initWorkDays() {
+        this.api.getCurrentWorkDayByUserWorkDayCurrentUserIdGet(this.userId).pipe(first()).subscribe(workDay => {
+            this.todayWorkDay = workDay;
+            this.todayWorkDayLoading = false;
+        });
+        this.api.getFinishedWorkDayByUserWorkDayFinishedUserIdGet(this.userId).pipe(first()).subscribe(workDay => {
+            this.finishWorkDay = workDay;
+            this.finishedWorkDayLoading = false;
+        });
+    }
+
 
     private initFeeDataSource(): void {
         this.feeDataSource = new TableDataSource(

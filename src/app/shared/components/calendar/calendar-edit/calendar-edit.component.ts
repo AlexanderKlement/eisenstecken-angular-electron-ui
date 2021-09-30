@@ -8,14 +8,20 @@ import * as moment from 'moment';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 export const timeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const exampleDate = '07.07.1993';
     const startTime = control.get('start_time').value;
     const endTime = control.get('end_time').value;
-    if (!startTime || !endTime) {
+    console.log(startTime);
+    console.log(endTime);
+    if (startTime.length < 5 || endTime.length < 5) {
         return {timeValid: false};
     }
-    const startTimeMoment = moment(startTime, 'HH:mm');
-    const endTimeMoment = moment(endTime, 'HH:mm');
-    return endTimeMoment > startTimeMoment ? null : {timeValid: false};
+    const startTimeMoment = moment(exampleDate + ' ' + startTime, 'DD.MM.YYYY HH:mm');
+    const endTimeMoment = moment(exampleDate + ' ' + endTime, 'DD.MM.YYYY HH:mm');
+    if (!startTimeMoment.isValid() || !endTimeMoment.isValid()) {
+        return {timeValid: false};
+    }
+    return moment.duration(endTimeMoment.diff(startTimeMoment)).asMinutes() > 0 ? null : {timeValid: false};
 };
 
 export interface CalendarData {

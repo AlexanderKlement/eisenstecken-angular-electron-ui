@@ -5,18 +5,41 @@ import {
     Drive, DriveCreate,
     EatingPlace,
     Expense, ExpenseCreate, JobSection, JobSectionCreate,
-    WorkDay, WorkDayFinish, WorkDayStart, WorkDayStop, WorkPhase
+    WorkDay, WorkDayFinish, WorkDayStart, WorkDayStop, WorkDayUpdate, WorkPhase, WorkPhaseCreate
 } from 'eisenstecken-openapi-angular-library';
 import {first} from 'rxjs/operators';
 import {Observable, ReplaySubject} from 'rxjs';
 import {
+    AbstractControl,
     FormArray,
     FormControl,
-    FormGroup, Validators,
+    FormGroup, ValidationErrors, ValidatorFn, Validators,
 } from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {Router} from '@angular/router';
-import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
+import {NgxMaterialTimepickerTheme} from 'ngx-material-timepicker';
+import * as moment from 'moment';
+
+
+export const timeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    let valid = true;
+    for (const workPhase of (control.get('work_phases') as FormArray).controls) {
+        const exampleDate = '07.07.1993';
+        const startTime = workPhase.get('checkin').value;
+        const endTime = workPhase.get('checkout').value;
+        if (startTime.length < 5 || endTime.length < 5) {
+            return {timeValid: false};
+        }
+        const startTimeMoment = moment(exampleDate + ' ' + startTime, 'DD.MM.YYYY HH:mm');
+        const endTimeMoment = moment(exampleDate + ' ' + endTime, 'DD.MM.YYYY HH:mm');
+        if (!startTimeMoment.isValid() || !endTimeMoment.isValid()) {
+            return {timeValid: false};
+        }
+        if (moment.duration(endTimeMoment.diff(startTimeMoment)).asMinutes() <= 0) {
+            valid = false;
+        }
+    }
+    return valid ? null : {timeValid: false};
+};
 
 
 @Component({
@@ -45,11 +68,23 @@ export class WorkDayGeneralComponent implements OnInit {
     lengthString?: string = undefined;
 
     submitted = false;
-
+    createMode = false;
     editDisabled = false;
 
+    buttonText = 'Arbeitstag abschließen';
 
-    constructor(private api: DefaultService, private snackBar: MatSnackBar, private router: Router) {
+
+    primaryTheme: NgxMaterialTimepickerTheme = { // TODO : move this and calendar thingy to more prominent location
+        dial: {
+            dialBackgroundColor: '#fdc400',
+        },
+        clockFace: {
+            clockHandColor: '#fdc400',
+        }
+    };
+
+
+    constructor(private api: DefaultService, private snackBar: MatSnackBar) {
     }
 
     ngOnInit(): void {
@@ -59,7 +94,13 @@ export class WorkDayGeneralComponent implements OnInit {
                 console.error('WorkDayGeneral: You have to provide a workday if you load this component in admin mode');
                 return;
             }
+            this.workDayStartable = false;
+            this.workDayFinishable = true;
+            this.workDayStopable = false;
+            this.workDayError = true;
+            this.workDayCompleted = false;
             this.initWorkDayEditSection(this.workDay);
+            this.buttonText = 'Arbeitstag speichern';
         } else {
             this.api.getAvailableWorkDayActionsWorkDayAvailableActionsGet().pipe(first())
                 .subscribe((actions) => {
@@ -116,6 +157,11 @@ export class WorkDayGeneralComponent implements OnInit {
             }
         }
 
+        this.workDayEditGroup.get('date').setValue(workDay.date);
+        if (!this.admin) {
+            this.workDayEditGroup.get('date').disable();
+        }
+
         if (workDay.expenses.length === 0) {
             this.getExpenses().push(this.initExpense());
         } else {
@@ -132,7 +178,7 @@ export class WorkDayGeneralComponent implements OnInit {
             }
         }
 
-        if (workDay.eating_place !== undefined) {
+        if (workDay.eating_place !== undefined && workDay.eating_place !== null) { //TODO: check why eating_place is null
             this.workDayEditGroup.get('eating_place_id').setValue(workDay.eating_place.id);
         }
 
@@ -141,11 +187,11 @@ export class WorkDayGeneralComponent implements OnInit {
             this.workDayEditGroup.disable();
             this.editDisabled = true;
         }
-
     }
 
     initWorkDayFinishGroup(): void {
         this.workDayEditGroup = new FormGroup({
+            date: new FormControl(),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             work_phases: new FormArray([]),
             // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -154,7 +200,7 @@ export class WorkDayGeneralComponent implements OnInit {
             drives: new FormArray([]),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             eating_place_id: new FormControl(1)
-        },);
+        }, {validators: timeValidator});
     }
 
     initWorkPhase(workPhase?: WorkPhase): FormGroup {
@@ -165,11 +211,18 @@ export class WorkDayGeneralComponent implements OnInit {
             });
         } else {
             let checkout = workPhase.checkout;
+            let checkin = workPhase.checkin;
             if (checkout === undefined) {
-                checkout = workPhase.checkin;
+                checkout = checkin;
+            }
+            if (checkin.length >= 5) {
+                checkin = checkin.substr(0, 5);
+            }
+            if (checkout.length >= 5) {
+                checkout = checkout.substr(0, 5);
             }
             return new FormGroup({
-                checkin: new FormControl(workPhase.checkin),
+                checkin: new FormControl(checkin),
                 checkout: new FormControl(checkout)
             });
         }
@@ -309,10 +362,8 @@ export class WorkDayGeneralComponent implements OnInit {
         return this.getMinutesAt(length - 1);
     }
 
-    setMinutesAtLast(value: number):
-        void {
+    setMinutesAtLast(value: number): void {
         const length = this.getJobSections().controls.length;
-        console.log('Setting minutes at last: ' + value.toString());
         this.setMinutesAt(length - 1, value);
     }
 
@@ -435,17 +486,80 @@ export class WorkDayGeneralComponent implements OnInit {
             expenses,
             drives,
         };
-        //workday
 
-        this.api.finishWorkDayWorkDayFinishPost(workDay).pipe(first()).subscribe((newWorkDay) => {
-            if (newWorkDay !== undefined) {
-                window.location.reload();
-            } else {
-                this.onError(newWorkDay);
+
+        //workday
+        if (!this.admin) {
+            this.api.finishWorkDayWorkDayFinishPost(workDay).pipe(first()).subscribe((newWorkDay) => {
+                if (newWorkDay !== undefined) {
+                    window.location.reload();
+                } else {
+                    this.onError(newWorkDay);
+                }
+            }, (error) => {
+                this.onError(error);
+            });
+        } else {
+            const workPhases: WorkPhaseCreate[] = [];
+            this.getWorkPhases().controls.forEach((workPhaseControl) => {
+                workPhases.push({
+                    checkin: workPhaseControl.get('checkin').value,
+                    checkout: workPhaseControl.get('checkout').value,
+                });
+            });
+
+            const date = moment(this.workDayEditGroup.get('date').value);
+
+            if (!this.createMode) {
+                const workDayUpdate: WorkDayUpdate = {
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    eating_place_id: parseInt(this.workDayEditGroup.get('eating_place_id').value, 10),
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    job_sections: jobSections,
+                    expenses,
+                    drives,
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    work_phases: workPhases,
+                    date: date.format('YYYY-MM-DD')
+                };
+                this.api.createWorkDayWorkDayWorkDayIdPut(this.workDay.id, workDayUpdate).pipe(first()).subscribe(
+                    (newWorkDay) => {
+                        if (newWorkDay !== undefined) {
+                            window.location.reload();
+                        } else {
+                            this.onError(newWorkDay);
+                        }
+                    }, (error) => {
+                        this.onError(error);
+                    });
             }
-        }, (error) => {
-            this.onError(error);
-        });
+        }
     }
 
+    refreshMaxMinutes(): void {
+        let minutes = 0;
+        const exampleDate = '07.07.1993';
+        for (const workPhase of this.getWorkPhases().controls) {
+            const start = moment(exampleDate + ' ' + workPhase.get('checkin').value, 'DD.MM.YYYY HH:mm');
+            const stop = moment(exampleDate + ' ' + workPhase.get('checkout').value, 'DD.MM.YYYY HH:mm');
+            const duration = moment.duration(stop.diff(start)).asMinutes();
+            if (duration > 0) {
+                minutes += duration;
+            }
+        }
+        this.maxMinutes = minutes;
+    }
+
+    onRemoveWorkPhaseClick(i: number) {
+        this.getWorkPhases().removeAt(i);
+    }
+
+    onAddWorkPhaseClick() {
+        this.getWorkPhases().push(this.initWorkPhase());
+    }
+
+    onWorkPhaseChange() {
+        this.refreshMaxMinutes();
+        this.onMinuteChange(this.getJobSections().length - 1);
+    }
 }
