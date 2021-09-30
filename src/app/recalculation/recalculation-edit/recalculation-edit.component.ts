@@ -50,8 +50,6 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
         this.recalculationGroup = new FormGroup({
             // eslint-disable-next-line @typescript-eslint/naming-convention
             wood_amount: new FormControl(''),
-            orders: new FormArray([]),
-            workloads: new FormArray([]),
             expenses: new FormArray([]),
         });
 
@@ -66,13 +64,8 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
         });
     }
 
-    getOrdersFromArray(): FormArray {
-        return this.recalculationGroup.get('orders') as FormArray;
+
+    onSubmit() {
+
     }
-
-    initOrder(order): FormGroup {
-        return new FormGroup({});
-    }
-
-
 }

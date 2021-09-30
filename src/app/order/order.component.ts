@@ -94,7 +94,7 @@ export class OrderComponent implements OnInit {
 
     private loadToList() {
         const stocks$ = this.api.readStocksStockGet().pipe(first());
-        const jobs$ = this.api.getJobsByStatusJobStatusJobStatusGet('JOBSTATUS_CREATED').pipe(first());
+        const jobs$ = this.api.getJobsByStatusJobStatusJobStatusGet('JOBSTATUS_ACCEPTED').pipe(first());
 
         combineLatest([stocks$, jobs$]).subscribe(([stocks, jobs]) => {
             const stockListItems = OrderComponent.createListItems(stocks);

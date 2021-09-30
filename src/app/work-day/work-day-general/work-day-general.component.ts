@@ -36,7 +36,7 @@ export const timeValidator: ValidatorFn = (control: AbstractControl): Validation
         if (!startTimeMoment.isValid() || !endTimeMoment.isValid()) {
             return {timeValid: false};
         }
-        if (moment.duration(endTimeMoment.diff(startTimeMoment)).asMinutes() <= 0) {
+        if (moment.duration(endTimeMoment.diff(startTimeMoment)).asMinutes() < 0) {
             valid = false;
         }
     }
@@ -551,7 +551,7 @@ export class WorkDayGeneralComponent implements OnInit {
                     work_phases: workPhases,
                     date: date.format('YYYY-MM-DD')
                 };
-                this.api.createWorkDayWorkDayWorkDayIdPut(this.workDay.id, workDayUpdate).pipe(first()).subscribe(
+                this.api.updateWorkDayWorkDayWorkDayIdPut(this.workDay.id, workDayUpdate).pipe(first()).subscribe(
                     (newWorkDay) => {
                         if (newWorkDay !== undefined) {
                             window.location.reload();
