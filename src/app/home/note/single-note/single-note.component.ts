@@ -14,7 +14,6 @@ export class SingleNoteComponent implements OnInit, OnDestroy {
     @Input() note: Note;
     @Output() noteDeleted = new EventEmitter<Note>();
     noteVisible = true;
-
     public subscriptions = new Subscription();
 
     singleNoteTextArea = new FormControl();

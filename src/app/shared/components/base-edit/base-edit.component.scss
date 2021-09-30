@@ -1,12 +1,31 @@
 .window-container {
   padding: 0 20px;
+  max-width: 1872px !important;
+  width: 100%;
+  margin:0 auto;
 
-  form{
-    mat-form-field{
-      min-width: 180px;
-      max-width: 500px;
-      width: 100%;
-    }
+  /*  position: relative;
+  overflow: visible;
+  background: white;
+  &::before{
+    content: "";
+    position: absolute;
+    background: transparent;
+    left: 0;
+    top: 20px;
+    bottom: 10px;
+    z-index: -1;
+    right: 0;
+    box-shadow: 0px 0px 5px -3px rgb(0 0 0 / 20%), 0px 0px 10px 1px rgb(0 0 0 / 14%), 0px 0px 14px 2px rgb(0 0 0 / 12%);
   }
+  TODO this would show the container area, fits in some places but in other not so i removed it, maybe wee need it some time
+  */
 
+}
+form{
+  mat-form-field{
+    min-width: 180px;
+    max-width: 500px;
+    width: 100%;
+  }
 }

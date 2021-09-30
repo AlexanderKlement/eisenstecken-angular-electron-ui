@@ -1,33 +1,32 @@
-<div class="window-container">
-    <form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
-        <div fxLayout="column" fxLayoutAlign="space-around center">
-            <mat-form-field appearance="fill">
-                <mat-label>Name Bank 1</mat-label>
-                <input class="form-control" formControlName="invoice_bank_1_name" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>IBAN Bank 1</mat-label>
-                <input class="form-control" formControlName="invoice_bank_1_iban" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>BIC/SWIFT Bank 1</mat-label>
-                <input class="form-control" formControlName="invoice_bank_1_bic" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Name Bank 2</mat-label>
-                <input class="form-control" formControlName="invoice_bank_2_name" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>IBAN Bank 2</mat-label>
-                <input class="form-control" formControlName="invoice_bank_2_iban" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>BIC/SWIFT Bank 2</mat-label>
-                <input class="form-control" formControlName="invoice_bank_2_bic" matInput>
-            </mat-form-field>
-            <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
-        </div>
+<form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+  <div fxLayout="column" fxLayoutAlign="space-around center">
+    <mat-form-field appearance="fill">
+      <mat-label>Name Bank 1</mat-label>
+      <input class="form-control" formControlName="invoice_bank_1_name" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>IBAN Bank 1</mat-label>
+      <input class="form-control" formControlName="invoice_bank_1_iban" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>BIC/SWIFT Bank 1</mat-label>
+      <input class="form-control" formControlName="invoice_bank_1_bic" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Name Bank 2</mat-label>
+      <input class="form-control" formControlName="invoice_bank_2_name" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>IBAN Bank 2</mat-label>
+      <input class="form-control" formControlName="invoice_bank_2_iban" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>BIC/SWIFT Bank 2</mat-label>
+      <input class="form-control" formControlName="invoice_bank_2_bic" matInput>
+    </mat-form-field>
+    <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+  </div>
 
-    </form>
-</div>
+</form>
+
 <pre> {{formGroup.value | json}} </pre>
