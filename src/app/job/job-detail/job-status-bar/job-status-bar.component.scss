@@ -2,6 +2,7 @@
 @import "../../../../theme";
 
 .mat-toolbar {
+  margin-bottom: 10px;
   &.created {
     background: #EAEAEA;
     color: map.get($mat-accent, main);
