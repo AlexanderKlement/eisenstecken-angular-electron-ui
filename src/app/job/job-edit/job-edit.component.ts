@@ -31,6 +31,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
     jobTypeOptions$: Observable<JobType[]>;
 
     navigationTarget = 'job';
+
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
         super(api, router, route, dialog);
     }
@@ -135,8 +136,8 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
             this.data$.pipe(tap(job => this.jobGroup.patchValue(job))).subscribe((job) => {
                 this.subMode = job.is_sub;
                 this.jobGroup.patchValue({
-                    name: job.orderable.name,
-                    minijob: job.type.type === JobTypeType.JobytpeMini,
+                    name: job.name,
+                    minijob: job.is_mini,
                     address: {
                         country: job.address.country.code
                     }

@@ -40,7 +40,7 @@ export class SupplierComponent implements OnInit {
                         {
                             values: {
                                 id: dataSource.id,
-                                'orderable.name': dataSource.orderable.name
+                                'name': dataSource.name
                             },
                             route: () => {
                                 this.locker.getLockAndTryNavigate(
@@ -56,7 +56,7 @@ export class SupplierComponent implements OnInit {
             },
             [
                 {name: 'id', headerName: 'ID'},
-                {name: 'orderable.name', headerName: 'Name'}
+                {name: 'name', headerName: 'Name'}
             ],
             (api) => api.countOutgoingInvoicesOutgoingInvoiceCountGet()
         );

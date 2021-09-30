@@ -81,7 +81,7 @@ export class ClientDetailComponent implements OnInit {
               {
                 values: {
                   id: dataSource.id,
-                  'orderable.name': dataSource.orderable.name,
+                  'name': dataSource.name,
                   description: dataSource.description
                 },
                 route: () => {
@@ -93,7 +93,7 @@ export class ClientDetailComponent implements OnInit {
         },
         [
           {name: 'id', headerName: 'ID'},
-          {name: 'orderable.name', headerName: 'Name'},
+          {name: 'name', headerName: 'Name'},
           {name: 'description', headerName: 'Beschreibung'}
         ],
         (api) => api.readJobsByClientJobClientClientIdCountGet(this.id)

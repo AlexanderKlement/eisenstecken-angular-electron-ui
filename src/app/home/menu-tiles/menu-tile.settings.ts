@@ -35,6 +35,12 @@ export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
                 return;
             case 'hours:insert':
                 menuTileArray.push({title: 'Arbeitstag', icon: 'schedule', link: '/work_day'});
+                return;
+            case 'recalculations:all':
+                menuTileArray.push({title: 'Nachkalkulation', icon: 'calculate', link: '/recalculation'});
+                return;
+            case 'hours:modify':
+                menuTileArray.push({title: 'Angestellte', icon: 'work', link: '/employee'});
         }
     });
     // TODO: remove duplicates;

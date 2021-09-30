@@ -56,6 +56,10 @@ export class SupplierEditComponent extends BaseEditComponent<Supplier> implement
             mail2: this.supplierGroup.get('mail2').value,
             tel1: this.supplierGroup.get('tel1').value,
             tel2: this.supplierGroup.get('tel2').value,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            contact_person: this.supplierGroup.get('contact_person').value,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            destination_code: this.supplierGroup.get('destination_code').value,
             address: {
                 name: this.supplierGroup.get('name').value,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -105,7 +109,7 @@ export class SupplierEditComponent extends BaseEditComponent<Supplier> implement
             this.data$.pipe(tap(client => this.supplierGroup.patchValue(client))).subscribe((client) => {
                     this.supplierGroup.patchValue({
                         language: client.language.code,
-                        name: client.orderable.name,
+                        name: client.name,
                         address: {
                             country: client.address.country.code
                         }
@@ -124,6 +128,8 @@ export class SupplierEditComponent extends BaseEditComponent<Supplier> implement
             tel1: new FormControl(''),
             tel2: new FormControl(''),
             language: new FormControl('DE'),
+            contact_person: new FormControl(''),
+            destination_code: new FormControl(''),
             address: new FormGroup({
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 street_number: new FormControl(''),

@@ -107,7 +107,7 @@ export class JobDetailComponent implements OnInit {
                     rows.push(
                         {
                             values: {
-                                'orderable.name': dataSource.orderable.name,
+                                name: dataSource.name,
                                 'client.name': dataSource.client.fullname,
                                 description: dataSource.description
                             },
@@ -124,7 +124,7 @@ export class JobDetailComponent implements OnInit {
                 return rows;
             },
             [
-                {name: 'orderable.name', headerName: 'Name'},
+                {name: 'name', headerName: 'Name'},
                 {name: 'client.name', headerName: 'Kunde'},
                 {name: 'description', headerName: 'Beschreibung'}
             ],
@@ -217,7 +217,7 @@ export class JobDetailComponent implements OnInit {
             this.api.readJobJobJobIdGet(id),
             [
                 {
-                    property: 'orderable.name',
+                    property: 'name',
                     name: 'Name'
                 },
                 {

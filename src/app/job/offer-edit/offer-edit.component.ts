@@ -14,6 +14,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
 import {first, tap} from 'rxjs/operators';
 import {formatDate} from '@angular/common';
+import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-offer-edit',
@@ -278,7 +279,18 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     }
 
     removeDescriptiveArticle(index: number): void {
-        this.getDescriptiveArticles().removeAt(index);
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Position löschen?',
+                text: 'Dieser Schritt kann nicht rückgängig gemacht werden.'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.getDescriptiveArticles().removeAt(index);
+            }
+        });
     }
 
     addDescriptiveArticleAt(index: number): void {
@@ -298,7 +310,19 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     }
 
     removeDescriptiveSubArticle(descriptiveArticleControl: AbstractControl, j: number): void {
-        this.getSubDescriptiveArticles(descriptiveArticleControl).removeAt(j);
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Position löschen?',
+                text: 'Dieser Schritt kann nicht rückgängig gemacht werden.'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.getSubDescriptiveArticles(descriptiveArticleControl).removeAt(j);
+            }
+        });
+
     }
 
     addDescriptiveSubArticle(descriptiveArticleControl: AbstractControl, j: number): void {

@@ -4751,10 +4751,10 @@ ee-first@1.1.1:
   resolved "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
-eisenstecken-openapi-angular-library@7.9.1:
-  version "7.9.1"
-  resolved "https://registry.yarnpkg.com/eisenstecken-openapi-angular-library/-/eisenstecken-openapi-angular-library-7.9.1.tgz#6dabcfd066ab5fb87cd2d191ae6ef1a892e31644"
-  integrity sha512-BraTTPS95RJLBtC7MbIGHYH3VVA+lAjLb70AIXynprqAHJXuTkJokEs4wycTeW8i87lZrKgInYEVIs/C8mj/Uw==
+eisenstecken-openapi-angular-library@8.0.10:
+  version "8.0.10"
+  resolved "https://registry.yarnpkg.com/eisenstecken-openapi-angular-library/-/eisenstecken-openapi-angular-library-8.0.10.tgz#16f38c2bfd23843a24d4bbde792722ceabdafdd2"
+  integrity sha512-Xg3iMfcYGHWtBeLf4cxhJeXIB987TOUVofPIkcm/4Nqd4vygKtBMRj/jEkg5Bl51k2l1/wz0eLTKLmGK4lew3A==
   dependencies:
     tslib "^2.1.0"
 

@@ -25,11 +25,11 @@ export class OrderComponent implements OnInit {
     fromListSubscriber: Subscriber<ListItem[]>;
     fromListSelected: ListItem;
 
-    availableProductListName = 'Verfügbare Produkte';
+    availableProductListName = 'Artikel';
     availableProducts$: Observable<Article[]>;
     availableProductsSubscriber: Subscriber<Article[]>;
 
-    orderedProductListName = 'Bestellte Produkte';
+    orderedProductListName = 'Bestellungen';
     orderedProducts$: Observable<OrderedArticle[]>;
     orderedProductsSubscriber: Subscriber<OrderedArticle[]>;
 
@@ -46,7 +46,7 @@ export class OrderComponent implements OnInit {
             const listItem: ListItem = {
                 name: elem.displayable_name,
                 item: elem,
-                type: elem.orderable.type
+                type: elem.type
             };
             listItems.push(listItem);
         }
@@ -150,7 +150,7 @@ export class OrderComponent implements OnInit {
 
     private loadOrderedArticles(): void {
         this.api.readOrderFromToOrderFromOrderableFromIdToOrderableToIdGet(
-            this.fromListSelected.item.orderable.id, this.toListSelected.item.orderable.id).pipe(first())
+            this.fromListSelected.item.id, this.toListSelected.item.id).pipe(first())
             .subscribe((order) => {
                 this.lastOrderId = order.id;
                 this.orderedProductsSubscriber.next(order.articles);

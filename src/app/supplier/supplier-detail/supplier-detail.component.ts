@@ -65,7 +65,7 @@ export class SupplierDetailComponent implements OnInit {
             this.api.readSupplierSupplierSupplierIdGet(id),
             [
                 {
-                    property: 'orderable.name',
+                    property: 'name',
                     name: 'Name'
                 },
                 {
@@ -113,7 +113,7 @@ export class SupplierDetailComponent implements OnInit {
                             values: {
                                 id: dataSource.id,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                'order_to.name': dataSource.order_to.name,
+                                'order_to.displayable_name': dataSource.order_to.displayable_name,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 description: dataSource.description
                             },
@@ -126,40 +126,12 @@ export class SupplierDetailComponent implements OnInit {
             },
             [
                 {name: 'id', headerName: 'ID'},
-                {name: 'order_to.name', headerName: 'Ziel'},
+                {name: 'order_to.displayable_name', headerName: 'Ziel'},
                 {name: 'description', headerName: 'Beschreibung'}
             ],
             (api) => api.readOrderCountOrderSupplierSupplierIdCountGet(supplierId, 'CREATED')
         );
         this.orderedOrderDataSource = new TableDataSource(
-            this.api,
-            (api, filter, sortDirection, skip, limit) =>
-                api.readOrderBundleBySupplierOrderBundleSupplierSupplierIdGet(this.id, skip, limit, filter, 'DELIVERED'),
-            (dataSourceClasses) => {
-                const rows = [];
-                dataSourceClasses.forEach((dataSource) => {
-                    rows.push(
-                        {
-                            values: {
-                                // eslint-disable-next-line @typescript-eslint/naming-convention
-                                create_date: moment(dataSource.create_date).format('LLLL'),
-                                // eslint-disable-next-line @typescript-eslint/naming-convention
-                                delivery_date: moment(dataSource.delivery_date).format('L')
-                            },
-                            route: () => {
-                                this.router.navigateByUrl('/order_bundle/' + dataSource.id.toString());
-                            }
-                        });
-                });
-                return rows;
-            },
-            [
-                {name: 'create_date', headerName: 'Bestelldatum'},
-                {name: 'delivery_date', headerName: 'Lieferdatum'},
-            ],
-            (api) => api.readCountOfOrderBundleBySupplierAndStatusOrderBundleSupplierSupplierIdCountGet(supplierId, 'DELIVERED')
-        );
-        this.deliveredOrderDataSource = new TableDataSource(
             this.api,
             (api, filter, sortDirection, skip, limit) =>
                 api.readOrderBundleBySupplierOrderBundleSupplierSupplierIdGet(this.id, skip, limit, filter, 'ORDERED'),
@@ -186,6 +158,34 @@ export class SupplierDetailComponent implements OnInit {
                 {name: 'delivery_date', headerName: 'Lieferdatum'},
             ],
             (api) => api.readCountOfOrderBundleBySupplierAndStatusOrderBundleSupplierSupplierIdCountGet(supplierId, 'ORDERED')
+        );
+        this.deliveredOrderDataSource = new TableDataSource(
+            this.api,
+            (api, filter, sortDirection, skip, limit) =>
+                api.readOrderBundleBySupplierOrderBundleSupplierSupplierIdGet(this.id, skip, limit, filter, 'DELIVERED'),
+            (dataSourceClasses) => {
+                const rows = [];
+                dataSourceClasses.forEach((dataSource) => {
+                    rows.push(
+                        {
+                            values: {
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                create_date: moment(dataSource.create_date).format('LLLL'),
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                delivery_date: moment(dataSource.delivery_date).format('L')
+                            },
+                            route: () => {
+                                this.router.navigateByUrl('/order_bundle/' + dataSource.id.toString());
+                            }
+                        });
+                });
+                return rows;
+            },
+            [
+                {name: 'create_date', headerName: 'Bestelldatum'},
+                {name: 'delivery_date', headerName: 'Lieferdatum'},
+            ],
+            (api) => api.readCountOfOrderBundleBySupplierAndStatusOrderBundleSupplierSupplierIdCountGet(supplierId, 'DELIVERED')
         );
         this.createdOrderDataSource.loadData();
         this.orderedOrderDataSource.loadData();
@@ -216,9 +216,9 @@ export class SupplierDetailComponent implements OnInit {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 delivery_date: orderDateReturnData.date,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                order_from_id: supplier.orderable.id
+                order_from_id: supplier.id
             };
-            this.api.createOrderBundleOrderBundleOrderBundlePost(orderBundle).pipe(first()).subscribe(() => {
+            this.api.createOrderBundleOrderBundlePost(orderBundle).pipe(first()).subscribe(() => {
                 window.location.reload();
             });
         });

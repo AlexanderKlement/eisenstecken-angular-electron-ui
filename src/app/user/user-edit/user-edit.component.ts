@@ -127,7 +127,8 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
             handy: new FormControl(''),
             office: new FormControl(false),
             employee: new FormControl(true),
-            dial: new FormControl('')
+            dial: new FormControl(''),
+            cost: new FormControl('')
         });
         this.passwordGroup = new FormGroup({
             password: new FormControl('')
@@ -219,6 +220,7 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
                 dial: this.userGroup.get('dial').value,
                 employee: this.userGroup.get('employee').value,
                 office: this.userGroup.get('office').value,
+                cost:this.userGroup.get('cost').value,
             };
             this.api.createUserUsersPost(userCreate).pipe(first()).subscribe((user) => {
                 this.createUpdateSuccess(user);
@@ -237,6 +239,7 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
                 dial: this.userGroup.get('dial').value,
                 employee: this.userGroup.get('employee').value,
                 office: this.userGroup.get('office').value,
+                cost: this.userGroup.get('cost').value,
             };
             this.api.updateUserUsersUserIdPut(this.id, userUpdate).pipe(first()).subscribe((user) => {
                 this.createUpdateSuccess(user);

@@ -14,21 +14,18 @@ import {SupplierRoutingModule} from './supplier/supplier-routing.module';
 import {OrderRoutingModule} from './order/order-routing.module';
 import {SettingsRoutingModule} from './settings/settings-routing.module';
 import {WorkDayRoutingModule} from './work-day/work-day-routing.module';
+import {RecalculationRoutingModule} from './recalculation/recalculation-routing.module';
+import {EmployeeRoutingModule} from './employee/employee-routing.module';
+import {AccessGuard} from './shared/access-guard.service';
 
 const routes: Routes = [
     {
         path: '',
         //redirectTo: 'home',
         component: HomeComponent,
-        pathMatch: 'full',
-        data: { requiresLogin: true },
-        //canActivate: [AccessGuard]
-    },
-    {
-        path: 'calendar/:mode/:id',
-        component: CalendarEditComponent,
+        //pathMatch: 'full',
         data: {requiresLogin: true},
-        //canActivate: [AccessGuard]
+        canActivate: [AccessGuard]
     },
     {
         path: '**',
@@ -44,12 +41,14 @@ const routes: Routes = [
         LoginRoutingModule,
         ClientRoutingModule,
         JobRoutingModule,
+        RecalculationRoutingModule,
         OrderRoutingModule,
         SettingsRoutingModule,
         InvoiceRoutingModule,
         UserRoutingModule,
         SupplierRoutingModule,
-        WorkDayRoutingModule
+        WorkDayRoutingModule,
+        EmployeeRoutingModule
     ],
     exports: [RouterModule]
 })
