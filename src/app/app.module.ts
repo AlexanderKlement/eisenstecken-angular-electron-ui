@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {APP_INITIALIZER, ErrorHandler, LOCALE_ID, NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule, HttpClient} from '@angular/common/http';
+import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {CoreModule} from './core/core.module';
 import {SharedModule} from './shared/shared.module';
 import {AppRoutingModule} from './app-routing.module';
@@ -48,6 +48,7 @@ import {getGermanPaginatorIntl} from './shared/components/table-builder/table-bu
 import {WorkDayModule} from './work-day/work-day.module';
 import {RecalculationModule} from './recalculation/recalculation.module';
 import {EmployeeModule} from './employee/employee.module';
+import {GlobalHttpInterceptorService} from './global-http-inceptor.service';
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -144,7 +145,8 @@ export function apiConfigFactory(): Configuration {
                 provide: LOCALE_ID,
                 useValue: 'de-DE' // 'de-DE' for Germany, 'fr-FR' for France ...
             },
-            {provide: MatPaginatorIntl, useValue: getGermanPaginatorIntl()}
+            {provide: MatPaginatorIntl, useValue: getGermanPaginatorIntl()},
+            {provide: HTTP_INTERCEPTORS, useClass: GlobalHttpInterceptorService, multi: true}
         ],
     bootstrap: [AppComponent]
 })

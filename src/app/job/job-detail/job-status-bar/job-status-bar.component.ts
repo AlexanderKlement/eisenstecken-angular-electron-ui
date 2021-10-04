@@ -43,11 +43,14 @@ export class JobStatusBarComponent implements OnInit {
 
     public onStatusClicked(clickedJobStatus: JobStatus): void {
         this.api.updateJobStatusJobStatusJobIdPost(this.jobId, clickedJobStatus.status).pipe(first()).subscribe(newJobStatusType => {
-            this.getStatus(newJobStatusType).pipe(first()).subscribe(newJobStatus => {
-                this.selectedStatus = newJobStatus;
-                this.refresh();
+                this.getStatus(newJobStatusType).pipe(first()).subscribe(newJobStatus => {
+                    this.selectedStatus = newJobStatus;
+                    this.refresh();
+                });
+            },
+            error => {
+                console.log(error);
             });
-        });
     }
 
 
