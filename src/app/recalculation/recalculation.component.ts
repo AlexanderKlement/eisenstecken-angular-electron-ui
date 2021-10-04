@@ -24,7 +24,7 @@ export class RecalculationComponent implements OnInit {
         this.jobDataSource = new TableDataSource(
             this.api,
             (api, filter, sortDirection, skip, limit) =>
-                api.readMainjobsJobMainGet(skip, limit, filter, 'JOBSTATUS_COMPLETED')
+                api.readJobsJobGet(skip, limit, filter, undefined, 'JOBSTATUS_COMPLETED', true)
             ,
             (dataSourceClasses) => {
                 const rows = [];
@@ -48,7 +48,7 @@ export class RecalculationComponent implements OnInit {
                 {name: 'client.name', headerName: 'Kunde'},
                 {name: 'description', headerName: 'Beschreibung'}
             ],
-            (api) => api.readJobCountJobCountMainGet() // TODO add status here on next update
+            (api) => api.readJobCountJobCountGet('JOBSTATUS_COMPLETED', true)
         );
         this.jobDataSource.loadData();
     }

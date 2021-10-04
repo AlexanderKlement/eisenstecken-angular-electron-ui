@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DefaultService, JobStatus, JobStatusType} from 'eisenstecken-openapi-angular-library';
 import {Observable, ReplaySubject, Subject} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {first, map} from 'rxjs/operators';
+import {cli} from 'webdriver-manager/built/lib/cli_instance';
 
 @Component({
     selector: 'app-job-status-bar',
@@ -10,12 +11,11 @@ import {map} from 'rxjs/operators';
 })
 export class JobStatusBarComponent implements OnInit {
 
+    @Input() jobId: number;
     public jobStatusList: ReplaySubject<JobStatus[]>;
     public toolBarColor = 'created';
-    public selectStatusSubject: Subject<JobStatus>;
-    public selectedStatusHeader: string;
-    @Input() selectedStatus: Observable<JobStatus>;
-    @Input() jobId: number;
+    public selectedStatus: JobStatus;
+    public loading = true;
 
 
     private colorMap = [
@@ -31,28 +31,25 @@ export class JobStatusBarComponent implements OnInit {
 
     ngOnInit(): void {
         this.jobStatusList = new ReplaySubject<JobStatus[]>(1);
-        this.api.getStatusOptionsJobStatusOptionsGet().subscribe((jobStatusList) => {
+        this.api.getStatusOptionsJobStatusOptionsGet().pipe(first()).subscribe((jobStatusList) => {
             this.jobStatusList.next(jobStatusList);
         });
-        this.selectStatusSubject = new Subject<JobStatus>();
-        this.selectStatusSubject.subscribe((selectedStatus) => {
-            this.setupBar(selectedStatus);
-            this.updateStatus(selectedStatus);
-        });
-        this.selectedStatus.subscribe((selectedStatus) => {
-            this.selectStatusSubject.next(selectedStatus);
+        this.api.readJobStatusJobStatusJobIdGet(this.jobId).pipe(first()).subscribe(jobStatus => {
+            this.selectedStatus = jobStatus;
+            this.refresh();
+            this.loading = false;
         });
     }
 
-    public statusClicked(status: string): void {
-        this.getStatus(status).subscribe((selectedStatus) => {
-            this.selectStatusSubject.next(selectedStatus);
+    public onStatusClicked(clickedJobStatus: JobStatus): void {
+        this.api.updateJobStatusJobStatusJobIdPost(this.jobId, clickedJobStatus.status).pipe(first()).subscribe(newJobStatusType => {
+            this.getStatus(newJobStatusType).pipe(first()).subscribe(newJobStatus => {
+                this.selectedStatus = newJobStatus;
+                this.refresh();
+            });
         });
     }
 
-    private updateStatus(selectedStatus): void {
-        this.api.updateJobStatusJobStatusJobIdPost(this.jobId, selectedStatus.status).subscribe();
-    }
 
     private getStatus(statusName: string): Observable<JobStatus> {
         return this.jobStatusList.pipe(map((jobStatusList) => {
@@ -66,19 +63,8 @@ export class JobStatusBarComponent implements OnInit {
         }));
     }
 
-    private setupBar(selectedStatus: JobStatus): void {
-        this.changeStatus(selectedStatus);
-        this.changeColor(selectedStatus);
-    }
-
-    private changeStatus(selectedStatus: JobStatus): void {
-        this.selectedStatusHeader = 'Status: ' + selectedStatus.text.translation;
-    }
-
-    private changeColor(selectedStatus: JobStatus): void {
-        if (selectedStatus != null) {
-            this.toolBarColor = this.getColorWithEnum(selectedStatus.status);
-        }
+    private refresh(): void {
+        this.toolBarColor = this.getColorWithEnum(this.selectedStatus.status);
     }
 
     private getColorWithEnum(enumString: string): string {

@@ -19,21 +19,12 @@ export class NoteComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        const noteObservable = this.api.readNoteEntriesNoteGet();
-        noteObservable.pipe(first()).subscribe((notes) => {
+        this.api.readNoteEntriesNoteGet().pipe(first()).subscribe((notes) => {
             this.notes = notes;
             if (this.notes.length === 0) {
                 this.newNoteClicked();
             }
         });
-    }
-
-    public scrollToBottom(): void {
-        try {
-            this.noteBox.nativeElement.scrollTop = this.noteBox.nativeElement.scrollHeight;
-        } catch (e) {
-            console.error(e);
-        }
     }
 
     public newNoteClicked(): void {

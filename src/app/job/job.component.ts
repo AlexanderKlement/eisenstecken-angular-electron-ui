@@ -18,7 +18,7 @@ export class JobComponent implements OnInit {
         this.jobDataSource = new TableDataSource(
             this.api,
             (api, filter, sortDirection, skip, limit) =>
-                api.readMainjobsJobMainGet(skip, limit, filter)
+                api.readJobsJobGet(skip, limit, filter, undefined, undefined, true)
             ,
             (dataSourceClasses) => {
                 const rows = [];
@@ -45,7 +45,7 @@ export class JobComponent implements OnInit {
                 {name: 'description', headerName: 'Beschreibung'},
                 {name: 'status.text.translation_de', headerName: 'Status'}
             ],
-            (api) => api.readJobCountJobCountMainGet()
+            (api) => api.readJobCountJobCountGet(undefined, true, undefined)
         );
         this.jobDataSource.loadData();
     }

@@ -148,7 +148,7 @@ export class WorkDayGeneralComponent implements OnInit {
         });
 
         this.eatingPlaces$ = this.api.getEatingPlacesEatingPlaceGet();
-        this.api.getJobsByStatusJobStatusJobStatusGet('JOBSTATUS_ACCEPTED').pipe(first())
+        this.api.readJobsJobGet(0, 1000, '', undefined, 'JOBSTATUS_ACCEPTED', true).pipe(first())
             .subscribe((jobs) => {
                 for (const job of jobs) {
                     if (job.is_main) { //TODO: change this to get only main from start

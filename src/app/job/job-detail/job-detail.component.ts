@@ -18,7 +18,6 @@ export class JobDetailComponent implements OnInit {
     @ViewChild(InfoBuilderComponent) child: InfoBuilderComponent<Job>;
 
     public infoDataSource: InfoDataSource<Job>;
-    public selectedJobStatus: Observable<JobStatus>;
     public jobId: number;
     public isMainJob = true;
 
@@ -85,7 +84,6 @@ export class JobDetailComponent implements OnInit {
                 return;
             }
             this.jobId = id;
-            this.selectedJobStatus = this.api.readJobJobJobIdGet(id).pipe(map((job): JobStatus => job.status));
             this.api.readJobJobJobIdGet(this.jobId).pipe(first()).subscribe((job) => {
                 this.isMainJob = job.is_main;
             });

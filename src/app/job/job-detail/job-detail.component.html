@@ -1,5 +1,5 @@
 <app-toolbar [buttonList]="isMainJob ? buttonsMain : buttonsSub"></app-toolbar>
-<app-job-status-bar *ngIf="isMainJob" [selectedStatus]="selectedJobStatus" [jobId]="jobId"></app-job-status-bar>
+<app-job-status-bar *ngIf="isMainJob" [jobId]="jobId"></app-job-status-bar>
 <div class="window-container">
   <app-info-builder [dataSource]="infoDataSource"></app-info-builder>
   <app-table-builder *ngIf="isMainJob" [dataSource]="subJobDataSource" title="Unteraufträge"></app-table-builder>
