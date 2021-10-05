@@ -3,7 +3,6 @@ import {
     DefaultService,
     Job,
     JobCreate,
-    JobType, JobTypeType,
     JobUpdate,
     Lock,
     SubJobCreate
@@ -13,7 +12,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BaseEditComponent} from '../../shared/components/base-edit/base-edit.component';
 import {MatDialog} from '@angular/material/dialog';
-import {tap} from 'rxjs/operators';
+import {first, tap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-job-edit',
@@ -28,7 +27,6 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
 
     jobGroup: FormGroup;
     submitted = false;
-    jobTypeOptions$: Observable<JobType[]>;
 
     navigationTarget = 'job';
 
@@ -71,7 +69,6 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
 
             });
         }
-        this.jobTypeOptions$ = this.api.getTypeOptionsJobTypeOptionsGet();
     }
 
     ngOnDestroy(): void {
@@ -134,8 +131,8 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
 
     observableReady(): void {
         super.observableReady();
-        if (!this.createMode) { //TODO: pipe all this values to first()
-            this.data$.pipe(tap(job => this.jobGroup.patchValue(job))).subscribe((job) => {
+        if (!this.createMode) {
+            this.data$.pipe(tap(job => this.jobGroup.patchValue(job)), first()).subscribe((job) => {
                 this.subMode = job.is_sub;
                 this.jobGroup.patchValue({
                     name: job.name,

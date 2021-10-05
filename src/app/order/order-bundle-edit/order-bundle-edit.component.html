@@ -41,6 +41,10 @@
                             <mat-label>Preis</mat-label>
                             <input matInput formControlName="price">
                         </mat-form-field>
+                        <button type="button" mat-button (click)="onRemoveArticleClick(i, j)"
+                                title="Bestellung entfernen">
+                            <mat-icon>delete</mat-icon>
+                        </button>
                     </div>
                 </div>
             </div>

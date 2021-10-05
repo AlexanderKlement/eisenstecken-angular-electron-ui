@@ -12,6 +12,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
 import {first, tap} from 'rxjs/operators';
 import {Form, FormArray, FormControl, FormGroup} from '@angular/forms';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-order-bundle-edit',
@@ -24,7 +26,7 @@ export class OrderBundleEditComponent extends BaseEditComponent<OrderBundle> imp
     navigationTarget = 'supplier';
     orderBundleGroup: FormGroup;
 
-    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
+    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog, private snackbar: MatSnackBar) {
         super(api, router, route, dialog);
     }
 
@@ -124,7 +126,34 @@ export class OrderBundleEditComponent extends BaseEditComponent<OrderBundle> imp
         });
     }
 
+    onRemoveArticleClick(i: number, j: number): void {
+        const articles = this.getArticlesAt(i);
+        const article = articles.at(j);
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Artikel löschen?',
+                text: 'Dieser Schritt kann nicht rückgängig gemacht werden.'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.api.deleteOrdererArticleOrderOrderedArticleOrderedArticleIdDelete(article.get('id').value).pipe(first())
+                    .subscribe(success => {
+                        if (success) {
+                            window.location.reload();
+                        } else {
+                            this.snackbar.open('Der Artikel konnte leider nicht gelöscht werden. Bitte probieren sie es später erneut'
+                                , 'Ok');
+                        }
+                    });
+            }
+        });
+    }
+
     protected observableReady() {
         super.observableReady();
     }
+
+
 }

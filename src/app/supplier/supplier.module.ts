@@ -20,6 +20,8 @@ import {MatListModule} from '@angular/material/list';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {SupplierComponent} from './supplier.component';
+import { StockDetailComponent } from './stock-detail/stock-detail.component';
+import { StockEditComponent } from './stock-edit/stock-edit.component';
 
 
 @NgModule({
@@ -27,7 +29,9 @@ import {SupplierComponent} from './supplier.component';
         SupplierComponent,
         SupplierDetailComponent,
         SupplierEditComponent,
-        OrderDialogComponent
+        OrderDialogComponent,
+        StockDetailComponent,
+        StockEditComponent
     ],
     imports: [
         CommonModule,

@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import {SupplierComponent} from './supplier.component';
 import {SupplierDetailComponent} from './supplier-detail/supplier-detail.component';
 import {SupplierEditComponent} from './supplier-edit/supplier-edit.component';
+import {StockDetailComponent} from './stock-detail/stock-detail.component';
+import {StockEditComponent} from './stock-edit/stock-edit.component';
 
 const routes: Routes = [
   {
@@ -18,6 +20,16 @@ const routes: Routes = [
   {
     path: 'supplier/edit/:id',
     component: SupplierEditComponent,
+    data:{requiresLogin: true}
+  },
+  {
+    path: 'stock/:id',
+    component: StockDetailComponent,
+    data:{requiresLogin: true}
+  },
+  {
+    path: 'stock/edit/:id',
+    component: StockEditComponent,
     data:{requiresLogin: true}
   },
 ];

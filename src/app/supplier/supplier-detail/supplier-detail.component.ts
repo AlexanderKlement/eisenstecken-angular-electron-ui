@@ -91,6 +91,15 @@ export class SupplierDetailComponent implements OnInit {
                 {
                     property: 'address.city',
                     name: 'Gemeinde'
+                },
+                {
+                    property: 'contact_person',
+                    name: 'Kontaktperson'
+                },
+                {
+                    property: 'destination_code',
+                    name: 'Empfängerkodex' +
+                        ''
                 }
             ],
             '/supplier/edit/' + this.id.toString(),

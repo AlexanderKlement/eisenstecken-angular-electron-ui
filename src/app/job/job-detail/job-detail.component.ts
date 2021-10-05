@@ -1,12 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {InfoDataSource} from '../../shared/components/info-builder/info-builder.datasource';
-import {Job, DefaultService, JobStatus, Offer, OutgoingInvoice} from 'eisenstecken-openapi-angular-library';
+import {Job, DefaultService, JobStatus, Offer, OutgoingInvoice, Order} from 'eisenstecken-openapi-angular-library';
 import {ActivatedRoute, Router} from '@angular/router';
 import {InfoBuilderComponent} from '../../shared/components/info-builder/info-builder.component';
 import {Observable} from 'rxjs';
 import {first, map} from 'rxjs/operators';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {LockService} from '../../shared/lock.service';
+import * as moment from 'moment';
+import {OrderStatusType} from 'eisenstecken-openapi-angular-library/model/orderStatusType';
 
 @Component({
     selector: 'app-job-detail',
@@ -37,7 +39,7 @@ export class JobDetailComponent implements OnInit {
             navigate: (): void => {
                 this.router.navigateByUrl('/outgoing_invoice/edit/new/' + this.jobId.toString());
             }
-        },  {
+        }, {
             name: 'Neuer Unterauftrag',
             navigate: (): void => {
                 this.router.navigateByUrl('/job/edit/new/' + this.jobId.toString() + '/sub');
@@ -68,6 +70,7 @@ export class JobDetailComponent implements OnInit {
     offerDataSource: TableDataSource<Offer>;
     outgoingInvoiceDataSource: TableDataSource<OutgoingInvoice>;
     subJobDataSource: TableDataSource<Job>;
+    orderDataSource: TableDataSource<Order>;
 
     constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute, private locker: LockService) {
     }
@@ -91,6 +94,7 @@ export class JobDetailComponent implements OnInit {
             this.initSubJobTable();
             this.initOutgoingInvoiceTable();
             this.initJobDetail(id);
+            this.initOrderTable();
         });
     }
 
@@ -168,10 +172,6 @@ export class JobDetailComponent implements OnInit {
         this.offerDataSource.loadData();
     }
 
-    //TODO: add text, to which mainjob this is (if subjob)
-    //TODO: remove orderstatus change if subjob
-    //TODO: change status of subjobs if mainjobstatus is changed
-
     initOutgoingInvoiceTable() {
         this.outgoingInvoiceDataSource = new TableDataSource(
             this.api,
@@ -210,6 +210,10 @@ export class JobDetailComponent implements OnInit {
         this.outgoingInvoiceDataSource.loadData();
     }
 
+    //TODO: add text, to which mainjob this is (if subjob)
+    //TODO: remove orderstatus change if subjob
+    //TODO: change status of subjobs if mainjobstatus is changed
+
     initJobDetail(id: number) {
         this.infoDataSource = new InfoDataSource<Job>(
             this.api.readJobJobJobIdGet(id),
@@ -244,5 +248,45 @@ export class JobDetailComponent implements OnInit {
             this.api.lockJobJobLockJobIdPost(this.jobId),
             this.api.unlockJobJobUnlockJobIdPost(this.jobId)
         );
+    }
+
+    private initOrderTable(): void {
+        this.orderDataSource = new TableDataSource(
+            this.api,
+            (api, filter, sortDirection, skip, limit) =>
+                api.readOrdersToOrderToOrderableToIdGet(this.jobId, skip, limit, filter),
+            (dataSourceClasses) => {
+                const rows = [];
+                dataSourceClasses.forEach((dataSource) => {
+                    rows.push(
+                        {
+                            values: {
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                'order_to.displayable_name': dataSource.order_to.displayable_name,
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                'order_from.displayable_name': dataSource.order_from.displayable_name,
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                create_date: moment(dataSource.create_date).format('L'),
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                delivery_date: dataSource.delivery_date === undefined ? '' : moment(dataSource.delivery_date).format('L'),
+                                status: dataSource.status,
+                            },
+                            route: () => {
+                                this.router.navigateByUrl('/order/' + dataSource.id.toString());
+                            }
+                        });
+                });
+                return rows;
+            },
+            [
+                {name: 'order_to.displayable_name', headerName: 'Ziel'},
+                {name: 'order_from.displayable_name', headerName: 'Herkunft'},
+                {name: 'create_date', headerName: 'Erstelldatum'},
+                {name: 'delivery_date', headerName: 'Lieferdatum'},
+                {name: 'status', headerName: 'Status'},
+            ],
+            (api) => api.readOrdersToCountOrderToOrderableToIdCountGet(this.jobId)
+        );
+        this.orderDataSource.loadData();
     }
 }
