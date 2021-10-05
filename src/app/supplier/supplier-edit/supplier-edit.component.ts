@@ -128,7 +128,9 @@ export class SupplierEditComponent extends BaseEditComponent<Supplier> implement
             tel1: new FormControl(''),
             tel2: new FormControl(''),
             language: new FormControl('DE'),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             contact_person: new FormControl(''),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             destination_code: new FormControl(''),
             address: new FormGroup({
                 // eslint-disable-next-line @typescript-eslint/naming-convention

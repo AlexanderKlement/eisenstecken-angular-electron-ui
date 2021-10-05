@@ -1,1 +1,10 @@
-<p>stock-detail works!</p>
+<app-toolbar [buttonList]="buttons"></app-toolbar>
+<app-info-builder [dataSource]="infoDataSource"></app-info-builder>
+<mat-tab-group>
+    <mat-tab label="Eingehend">
+        <app-table-builder [dataSource]="ingoingDataSource" title="Bestellungen"></app-table-builder>
+    </mat-tab>
+    <mat-tab label="Ausgehende">
+        <app-table-builder [dataSource]="outgoingDataSource" title="Bestellungen"></app-table-builder>
+    </mat-tab>
+</mat-tab-group>

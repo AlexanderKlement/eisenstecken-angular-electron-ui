@@ -52,12 +52,7 @@ export class SupplierComponent implements OnInit {
                                 name: dataSource.name
                             },
                             route: () => {
-                                this.locker.getLockAndTryNavigate(
-                                    this.api.islockedSupplierSupplierIslockedSupplierIdGet(dataSource.id),
-                                    this.api.lockSupplierSupplierLockSupplierIdPost(dataSource.id),
-                                    this.api.unlockSupplierSupplierUnlockSupplierIdPost(dataSource.id),
-                                    'supplier/' + dataSource.id.toString()
-                                );
+                                this.router.navigateByUrl('supplier/' + dataSource.id.toString());
                             }
                         });
                 });
@@ -87,12 +82,7 @@ export class SupplierComponent implements OnInit {
                                 name: dataSource.name
                             },
                             route: () => {
-                                this.locker.getLockAndTryNavigate(
-                                    this.api.islockedStockStockIslockedStockIdGet(dataSource.id),
-                                    this.api.lockStockStockLockStockIdPost(dataSource.id),
-                                    this.api.unlockStockStockUnlockStockIdPost(dataSource.id),
-                                    'stock/' + dataSource.id.toString()
-                                );
+                                this.router.navigateByUrl('stock/' + dataSource.id.toString());
                             }
                         });
                 });

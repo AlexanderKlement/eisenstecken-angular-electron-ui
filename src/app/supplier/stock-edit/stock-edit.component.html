@@ -1,1 +1,14 @@
-<p>stock-edit works!</p>
+<app-toolbar [beforeBackFunction]="unlockFunction"></app-toolbar>
+<div class="window-container">
+    <h1 *ngIf="createMode">Lager erstellen</h1>
+    <h1 *ngIf="!createMode">Lager bearbeiten</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="stockGroup">
+        <div fxLayout="column" fxLayoutAlign="space-around center">
+            <mat-form-field appearance="fill">
+                <mat-label>Name</mat-label>
+                <input class="form-control" formControlName="name" matInput>
+            </mat-form-field>
+            <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+        </div>
+    </form>
+</div>
