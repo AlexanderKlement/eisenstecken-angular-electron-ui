@@ -1,0 +1,7 @@
+@use 'sass:map';
+@use "../../../shared/components/base-edit/base-edit.component";
+@import "../../../../theme";
+
+.add-button{
+  background-color: map.get($mat-primary,main);
+}

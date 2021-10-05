@@ -4,9 +4,7 @@
 
 .menu-tile {
   .menu-tile-icon-container {
-
     z-index: -2;
-
     .menu-tile-icon {
       width: 100%;
       height: 100%;
@@ -14,6 +12,7 @@
       vertical-align: center;
       color: map.get($mat-accent, main);
       font-size: min(6.2vw, 120px);
+      z-index: -2;
     }
   }
 
@@ -22,6 +21,6 @@
     text-align: center;
     color: map.get($mat-accent, main);
     font-size: min(1vw, 20px);
-
+    font-weight: 500;
   }
 }

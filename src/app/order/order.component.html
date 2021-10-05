@@ -1,21 +1,21 @@
 <app-toolbar></app-toolbar>
 <div class="window-container order-container">
   <div fxLayout="row" fxLayoutAlign="space-between start" fxFlexFill class="container-group">
-    <div fxFlex="20" class="order-column" [class.active]="step >= 0" fxFlexFill>
+    <div fxFlex="24" class="order-column" [class.active]="step >= 0" fxFlexFill>
       <app-filterable-clickable-list [listElements$]="toList$" (onClickEventEmitter)="toListItemClicked($event)"
                                      [name]="toListName"></app-filterable-clickable-list>
     </div>
-    <div fxFlex="20" class="order-column" fxFlexFill [class.active]="step >= 1">
+    <div fxFlex="24" class="order-column" fxFlexFill [class.active]="step >= 1">
       <app-filterable-clickable-list [listElements$]="fromList$" (onClickEventEmitter)="fromListItemClicked($event)"
                                      [name]="fromListName"></app-filterable-clickable-list>
     </div>
-      <div fxFlex="29" class="order-column" fxFlexFill [class.active]="step >= 2">
+      <div fxFlex="24" class="order-column" fxFlexFill [class.active]="step >= 2">
         <app-products-list [availableProducts$]="availableProducts$" [name]="availableProductListName"
                            [orderId]="lastOrderId" [available]="true"
                            (refreshOrderedArticleListEmitter)="refreshOrderedProducts()"
                            (refreshAvailableArticleListEmitter)="refreshAvailableProducts()"></app-products-list>
       </div>
-      <div fxFlex="29" class="order-column" fxFlexFill [class.active]="step >= 2">
+      <div fxFlex="24" class="order-column" fxFlexFill [class.active]="step >= 2">
         <app-products-list [orderedProducts$]="orderedProducts$" [name]="orderedProductListName" [orderId]="lastOrderId"
                            [available]="false" (refreshOrderedArticleListEmitter)="refreshOrderedProducts()"
                            (refreshAvailableArticleListEmitter)="refreshAvailableProducts()"></app-products-list>
