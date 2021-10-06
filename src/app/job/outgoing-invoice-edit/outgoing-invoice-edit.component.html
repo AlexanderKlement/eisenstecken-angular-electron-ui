@@ -28,15 +28,15 @@
             </mat-form-field>
             <mat-form-field appearance="fill" fxFlex="22">
               <mat-label>Amount</mat-label>
-              <input class="form-control" formControlName="amount" matInput>
+              <input class="form-control" type=number formControlName="amount" matInput>
             </mat-form-field>
             <mat-form-field appearance="fill" fxFlex="22">
               <mat-label>Einzelpreis</mat-label>
-              <input class="form-control" formControlName="single_price" matInput>
+              <input class="form-control" type=number formControlName="single_price" matInput>
             </mat-form-field>
             <mat-form-field appearance="fill" fxFlex="22">
               <mat-label>Gesamtpreis</mat-label>
-              <input readonly class="form-control" formControlName="total_price" matInput>
+              <input readonly class="form-control" type=number formControlName="total_price" matInput>
             </mat-form-field>
             <div fxFlex="10" fxLayout="row" fxLayoutAlign="space-around center">
               <button type="button" mat-icon-button mat-raised-button (click)="removeDescriptiveArticle(i)"
@@ -50,7 +50,7 @@
       <div fxFlex="30" fxLayout="column" fxLayoutAlign="space-around center" fxFlexFill>
         <mat-form-field appearance="fill">
           <mat-label>Nummer</mat-label>
-          <input class="form-control" formControlName="number" matInput>
+          <input class="form-control" formControlName="number" type=number matInput>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Datum</mat-label>

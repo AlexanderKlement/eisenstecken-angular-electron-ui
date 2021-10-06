@@ -268,7 +268,7 @@ export class JobDetailComponent implements OnInit {
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 create_date: moment(dataSource.create_date).format('L'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                delivery_date: dataSource.delivery_date === undefined ? '' : moment(dataSource.delivery_date).format('L'),
+                                delivery_date: dataSource.delivery_date === null ? '' : moment(dataSource.delivery_date).format('L'),
                                 status: dataSource.status,
                             },
                             route: () => {

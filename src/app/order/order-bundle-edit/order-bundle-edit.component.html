@@ -27,7 +27,7 @@
                         </mat-form-field>
                         <mat-form-field appearance="fill">
                             <mat-label>Menge</mat-label>
-                            <input readonly matInput formControlName="amount">
+                            <input readonly matInput type=number formControlName="amount">
                         </mat-form-field>
                         <mat-form-field appearance="fill">
                             <mat-label>Mod Nummer</mat-label>
@@ -39,7 +39,7 @@
                         </mat-form-field>
                         <mat-form-field appearance="fill">
                             <mat-label>Preis</mat-label>
-                            <input matInput formControlName="price">
+                            <input matInput type=number formControlName="price">
                         </mat-form-field>
                         <button type="button" mat-button (click)="onRemoveArticleClick(i, j)"
                                 title="Bestellung entfernen">

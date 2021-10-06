@@ -53,11 +53,11 @@
               <div class="amount-price" fxLayout="column" fxLayoutAlign="start stretch" fxFlex="40">
                 <mat-form-field appearance="fill">
                   <mat-label>Menge</mat-label>
-                  <input class="form-control" formControlName="amount" matInput>
+                  <input class="form-control" type=number formControlName="amount" matInput>
                 </mat-form-field>
                 <mat-form-field appearance="fill">
                   <mat-label>Einzelpreis</mat-label>
-                  <input class="form-control" formControlName="single_price"
+                  <input class="form-control" type=number formControlName="single_price"
                          [value]="sub_descriptive_article.get('single_price').value | currency:'EUR'" matInput>
                 </mat-form-field>
               </div>
@@ -126,7 +126,7 @@
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Rabatt</mat-label>
-          <input class="form-control" [value]="discountAmount.value | currency:'EUR'"
+          <input class="form-control" type=number [value]="discountAmount.value | currency:'EUR'"
                  placeholder="Wird weggelassen wenn leer" matInput>
         </mat-form-field>
         <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>

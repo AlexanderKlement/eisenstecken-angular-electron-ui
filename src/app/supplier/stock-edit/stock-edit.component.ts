@@ -5,6 +5,7 @@ import {DefaultService, Lock, Stock, StockCreate, StockUpdate} from 'eisenstecke
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-stock-edit',
@@ -31,6 +32,11 @@ export class StockEditComponent extends BaseEditComponent<Stock> implements OnIn
     ngOnInit(): void {
         super.ngOnInit();
         this.initStockGroup();
+        if (!this.createMode) {
+            this.api.readStockStockStockIdGet(this.id).pipe(first()).subscribe(stock => {
+                this.stockGroup.get('name').setValue(stock.name);
+            });
+        }
     }
 
     ngOnDestroy() {

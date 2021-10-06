@@ -81,7 +81,7 @@ export class StockDetailComponent implements OnInit {
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 create_date: moment(dataSource.create_date).format('LLLL'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                delivery_date: moment(dataSource.delivery_date).format('L')
+                                delivery_date: dataSource.delivery_date !== null ? moment(dataSource.delivery_date).format('L') : '',
                             },
                             route: () => {
                                 this.router.navigateByUrl('/order/' + dataSource.id.toString());
@@ -112,7 +112,8 @@ export class StockDetailComponent implements OnInit {
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 create_date: moment(dataSource.create_date).format('LLLL'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                delivery_date: moment(dataSource.delivery_date).format('L')
+                                delivery_date: dataSource.delivery_date !== null ? moment(dataSource.delivery_date).format('L') : '',
+                                status: dataSource.status
                             },
                             route: () => {
                                 this.router.navigateByUrl('/order/' + dataSource.id.toString());

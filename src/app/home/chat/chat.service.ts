@@ -11,7 +11,7 @@ export class ChatService {
   // TODO: Nachrichten kommen oft nicht an
   // TODO: Mehrzeilige Nachichten haben nicht den gewünschten effekt
 
-  private secondsBetweenNewMessageCheck = 10;
+  private secondsBetweenNewMessageCheck = 300;
 
   private readonly messages$: Observable<ChatMessage>;
   private readonly amountOfUnreadMessages$: Observable<number>;
