@@ -14,13 +14,14 @@
 
   .note-list {
     max-height: 100%;
+    margin-top: 38px;
 
     .single-note-container {
       overflow: visible;
       max-width: clamp(10px, calc(100%), 300px);
       max-height: clamp(10px, calc(100%), 300px);
       padding-top: min(300px, calc((50% - 0.5px) * 1 + 0px)) !important;
-      top: 2vw !important;
+    //  top: 2vw !important;
 
       &:first-child,
       &:nth-child(4n) {
@@ -56,7 +57,7 @@
   }
 
   .new-note-btn {
-    margin-bottom: 10px;
+    margin-top:50px;
   }
 }
 

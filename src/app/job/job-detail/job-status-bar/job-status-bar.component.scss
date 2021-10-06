@@ -1,8 +1,9 @@
 @use 'sass:map';
+@use "../../../shared/components/base-edit/base-edit.component";
 @import "../../../../theme";
 
 .mat-toolbar {
-  margin-bottom: 10px;
+  margin: 10px 0;
   &.created {
     background: #EAEAEA;
     color: map.get($mat-accent, main);
