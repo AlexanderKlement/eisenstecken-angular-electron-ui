@@ -1,59 +1,62 @@
 <h1 mat-dialog-title>{{data.title}}</h1>
 <div mat-dialog-content fxLayout="column" fxLayoutAlign="start stretch">
-  <div fxLayout="row" fxLayoutAlign="space-between start">
-    <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
-      <input matInput [(ngModel)]="data.name">
-    </mat-form-field>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="space-between start">
-    <mat-form-field appearance="fill" fxFlexFill>
-      <mat-label>Beschreibung</mat-label>
-      <textarea matInput [(ngModel)]="data.custom_description"></textarea>
-    </mat-form-field>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="space-between start">
-    <mat-form-field appearance="fill">
-      <mat-label>Menge</mat-label>
-      <input matInput type=number [(ngModel)]="data.amount">
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Preis</mat-label>
-      <input matInput type=number [(ngModel)]="data.price">
-    </mat-form-field>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="space-between start">
+    <form (submit)="onAddClick()" [formGroup]="productEditGroup">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+            <mat-form-field appearance="fill">
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="name">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+            <mat-form-field appearance="fill" fxFlexFill>
+                <mat-label>Beschreibung</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+            <mat-form-field appearance="fill">
+                <mat-label>Menge</mat-label>
+                <input matInput type=number formControlName="amount">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Preis</mat-label>
+                <input matInput type=number formControlName="price">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between start">
 
-    <mat-form-field appearance="fill">
-      <mat-label>Rabatt</mat-label>
-      <input matInput type=number [(ngModel)]="data.discount">
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Mod Nummer</mat-label>
-      <input matInput [(ngModel)]="data.mod_number">
-    </mat-form-field>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="space-between start">
+            <mat-form-field appearance="fill">
+                <mat-label>Rabatt</mat-label>
+                <input matInput type=number formControlName="discount">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Mod Nummer</mat-label>
+                <input matInput formControlName="mod_number">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between start">
 
-    <mat-form-field appearance="fill">
-      <mat-label>Mehrwertsteuer</mat-label>
-      <mat-select [(ngModel)]="data.vat_id">
-        <mat-option *ngFor="let vat of vatOptions$ | async" [value]="vat.id">
-          {{vat.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Einheit</mat-label>
-      <mat-select [(ngModel)]="data.unit_id">
-        <mat-option *ngFor="let unit of unitOptions$ | async" [value]="unit.id">
-          {{unit.name.translation}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
+            <mat-form-field appearance="fill">
+                <mat-label>Mehrwertsteuer</mat-label>
+                <mat-select formControlName="vat_id">
+                    <mat-option *ngFor="let vat of vatOptions$ | async" [value]="vat.id">
+                        {{vat.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Einheit</mat-label>
+                <mat-select formControlName="unit_id">
+                    <mat-option *ngFor="let unit of unitOptions$ | async" [value]="unit.id">
+                        {{unit.name.translation}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+            <button type="button"  mat-button (click)="onNoClick()">Abbrechen</button>
+            <button type="submit" [disabled]="!productEditGroup.valid" mat-button class="add-button">Hinzufügen</button>
+        </div>
+    </form>
 </div>
-<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between start">
-  <button mat-button (click)="onNoClick()">Abbrechen</button>
-  <button mat-button [mat-dialog-close]="data" class="add-button">Hinzufügen</button>
-</div>
+

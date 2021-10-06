@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {
-    Article,
+    Article, ArticleCreate,
     ArticleUpdate,
     DefaultService,
     OrderedArticle,
@@ -11,6 +11,7 @@ import {FormControl} from '@angular/forms';
 import {debounceTime, first, startWith, switchMap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogData, ProductEditDialogComponent} from './product-edit-dialog/product-edit-dialog.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 @Component({
@@ -35,7 +36,7 @@ export class ProductsListComponent implements OnInit {
     orderedArticles: OrderedArticle[];
     articles: Article[];
 
-    constructor(public dialog: MatDialog, private api: DefaultService) {
+    constructor(public dialog: MatDialog, private api: DefaultService, private snackBar: MatSnackBar) {
     }
 
     private static mapDialogData2ArticleUpdate(dialogData: DialogData): ArticleUpdate {
@@ -58,6 +59,28 @@ export class ProductsListComponent implements OnInit {
         };
     }
 
+    private static mapDialogData2ArticleCreate(dialogData: DialogData): ArticleCreate {
+        return {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            mod_number: dialogData.mod_number,
+            price: dialogData.price,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            unit_id: dialogData.unit_id,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            name_de: dialogData.name,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            name_it: dialogData.name,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            description_de: dialogData.custom_description,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            description_it: dialogData.custom_description,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            vat_id: dialogData.vat_id,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            category_ids: []
+        };
+    }
+
     private static mapDialogData2OrderedArticleCreate(dialogData: DialogData, articleId: number): OrderedArticleCreate {
         console.log(dialogData);
         return {
@@ -75,7 +98,25 @@ export class ProductsListComponent implements OnInit {
         };
     }
 
-    private static createEmptyDialogData(article: Article, title: string): DialogData {
+    private static createEmptyDialogData(title: string, article?: Article): DialogData {
+        if (article === undefined) {
+            return {
+                title,
+                amount: 0,
+                discount: 0,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                custom_description: '',
+                name: '',
+                description: '',
+                price: 0.0,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                mod_number: '',
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                vat_id: 1,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                unit_id: 1
+            };
+        }
         return {
             title,
             amount: 0,
@@ -96,7 +137,8 @@ export class ProductsListComponent implements OnInit {
 
     ngOnInit(): void {
         this.search = new FormControl('');
-        if (this.available) {
+        if (this.available
+        ) {
             this.articles = [];
             this.availableProducts$.subscribe((products) => { //TODO: unsubscribe here
                 this.articles = products;
@@ -132,26 +174,29 @@ export class ProductsListComponent implements OnInit {
         }
     }
 
-    copyButtonClicked(article: Article): void {
-        const dialogData = ProductsListComponent.createEmptyDialogData(article, 'Produkt kopieren und hinzufügen');
+    copyButtonClicked(article: Article):
+        void {
+        const dialogData = ProductsListComponent.createEmptyDialogData('Produkt kopieren und hinzufügen', article);
         const closeFunction = (result: any) => {
             const orderedArticleCreate = ProductsListComponent.mapDialogData2OrderedArticleCreate(result, article.id);
             const articleUpdate = ProductsListComponent.mapDialogData2ArticleUpdate(result);
             this.api.copyArticleAndModifyArticleArticleIdPost(article.id, articleUpdate).pipe(first())
                 .subscribe((patchArticle) => {
-                orderedArticleCreate.article_id = patchArticle.id;
-                this.refreshAvailableOrderList();
-                this.api.addOrderedArticleToOrderOrderOrderedArticleOrderIdPut(this.orderId, orderedArticleCreate)
-                    .pipe(first()).subscribe(() => {
-                    this.refreshOrderedArticleList();
+                    orderedArticleCreate.article_id = patchArticle.id;
+                    this.refreshAvailableOrderList();
+                    this.api.addOrderedArticleToOrderOrderOrderedArticleOrderIdPut(this.orderId, orderedArticleCreate)
+                        .pipe(first()).subscribe(() => {
+                        this.refreshOrderedArticleList();
+                    });
                 });
-            });
         };
         this.openDialog(dialogData, closeFunction);
     }
 
-    orderButtonClicked(article: Article): void {
-        const dialogData = ProductsListComponent.createEmptyDialogData(article, 'Produkt hinzufügen');
+    orderButtonClicked(article: Article
+    ):
+        void {
+        const dialogData = ProductsListComponent.createEmptyDialogData('Produkt hinzufügen', article);
         const closeFunction = (result: any) => {
             const orderedArticleCreate = ProductsListComponent.mapDialogData2OrderedArticleCreate(result, article.id);
             const articleUpdate = ProductsListComponent.mapDialogData2ArticleUpdate(result);
@@ -166,7 +211,8 @@ export class ProductsListComponent implements OnInit {
         this.openDialog(dialogData, closeFunction);
     }
 
-    openDialog(dialogData: DialogData, closeFunction: (result: any) => void): void {
+    openDialog(dialogData: DialogData, closeFunction: (result: any) => void):
+        void {
         const dialogRef = this.dialog.open(ProductEditDialogComponent, {
             width: '550px',
             data: dialogData
@@ -174,7 +220,8 @@ export class ProductsListComponent implements OnInit {
         dialogRef.afterClosed().subscribe(closeFunction);
     }
 
-    editButtonClicked(orderedArticle: OrderedArticle): void {
+    editButtonClicked(orderedArticle: OrderedArticle):
+        void {
         const dialogData$ = this.createEditDialogData(orderedArticle, 'Produkt bearbeiten');
         const closeFunction = (result: any) => {
             const orderedArticleCreate = ProductsListComponent
@@ -199,19 +246,36 @@ export class ProductsListComponent implements OnInit {
             .pipe(first()).subscribe((success) => {
             if (success) {
                 this.refreshOrderedArticleList();
-            } //TODO: error handling
-
+            } else {
+                this.snackBar.open('Artikel konnte nicht gelöscht werden. Bitte probieren sie es später erneut', 'Ok');
+            }
         });
     }
 
-    private refreshOrderedArticleList(): void {
+    addButtonClicked(): void {
+        const dialogData = ProductsListComponent.createEmptyDialogData('Neuen Artikel hinzufügen');
+        const closeFunction = (result: any) => {
+            const newArticle = ProductsListComponent.mapDialogData2ArticleCreate(result);
+            this.api.createArticleArticlePost(newArticle).pipe(first()).subscribe(article => {
+                const orderedArticleCreate = ProductsListComponent.mapDialogData2OrderedArticleCreate(result, article.id);
+                this.api.addOrderedArticleToOrderOrderOrderedArticleOrderIdPut(this.orderId, orderedArticleCreate)
+                    .pipe(first()).subscribe(() => {
+                    this.refreshAvailableOrderList();
+                    this.refreshOrderedArticleList();
+                });
+            });
+        };
+        this.openDialog(dialogData, closeFunction);
+    }
+
+    refreshOrderedArticleList(): void {
         this.refreshOrderedArticleListEmitter.emit();
     }
 
-    private createEditDialogData(orderedArticle: OrderedArticle, title: string): Observable<DialogData> {
+    createEditDialogData(orderedArticle: OrderedArticle, title: string): Observable<DialogData> {
         return new Observable<DialogData>((dialogDataSubscriber) => {
             this.api.readVatByAmountVatVatAmountGet(orderedArticle.vat).pipe(first()).subscribe((vat) => {
-                const dialogData = ProductsListComponent.createEmptyDialogData(orderedArticle.article, title);
+                const dialogData = ProductsListComponent.createEmptyDialogData(title, orderedArticle.article);
                 dialogData.amount = orderedArticle.amount;
                 dialogData.discount = orderedArticle.discount;
                 dialogData.custom_description = orderedArticle.custom_description;
@@ -223,7 +287,9 @@ export class ProductsListComponent implements OnInit {
         });
     }
 
-    private refreshAvailableOrderList() {
+    refreshAvailableOrderList(): void {
         this.refreshAvailableArticleListEmitter.emit();
     }
+
+
 }

@@ -37,15 +37,15 @@ export class OrderDetailComponent implements OnInit {
             [
                 {
                     property: 'order_from.name',
-                    name: 'Name'
+                    name: 'Lieferant'
+                },
+                {
+                    property: 'order_to.name',
+                    name: 'Empfänger'
                 },
                 {
                     property: 'create_date',
                     name: 'Erstelldatum'
-                },
-                {
-                    property: 'delivery_date',
-                    name: 'Bestelldatum'
                 },
                 {
                     property: 'user.fullname',

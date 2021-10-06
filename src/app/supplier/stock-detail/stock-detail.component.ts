@@ -78,6 +78,7 @@ export class StockDetailComponent implements OnInit {
                             values: {
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 'order_from.displayable_name': dataSource.order_from.displayable_name,
+                                articles: dataSource.articles[0].article.name.translation,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 create_date: moment(dataSource.create_date).format('LLLL'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -92,6 +93,7 @@ export class StockDetailComponent implements OnInit {
             },
             [
                 {name: 'order_from.displayable_name', headerName: 'Lieferant'},
+                {name: 'articles', headerName: 'Artikel'},
                 {name: 'create_date', headerName: 'Bestelldatum'},
                 {name: 'delivery_date', headerName: 'Lieferdatum'},
             ],
@@ -111,6 +113,7 @@ export class StockDetailComponent implements OnInit {
                                 'order_to.displayable_name': dataSource.order_to.displayable_name,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 create_date: moment(dataSource.create_date).format('LLLL'),
+                                articles: dataSource.articles[0].article.name.translation,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 delivery_date: dataSource.delivery_date !== null ? moment(dataSource.delivery_date).format('L') : '',
                                 status: dataSource.status
@@ -124,6 +127,7 @@ export class StockDetailComponent implements OnInit {
             },
             [
                 {name: 'order_to.displayable_name', headerName: 'Auftrag'},
+                {name: 'articles', headerName: 'Artikel'},
                 {name: 'create_date', headerName: 'Bestelldatum'},
                 {name: 'delivery_date', headerName: 'Lieferdatum'},
             ],
