@@ -1,16 +1,17 @@
 <app-toolbar [buttonList]="buttons"></app-toolbar>
-<mat-tab-group>
-    <mat-tab label="Benutzer">
-        <app-table-builder [dataSource]="userDataSource"></app-table-builder>
-    </mat-tab>
-    <mat-tab label="Spesen">
-        <app-table-builder [dataSource]="feeDataSource"></app-table-builder>
-    </mat-tab>
-    <mat-tab label="Fahrten">
-        <app-table-builder [dataSource]="journeyDataSource"></app-table-builder>
-    </mat-tab>
-    <mat-tab label="Essen">
-        <app-table-builder [dataSource]="mealDataSource"></app-table-builder>
-    </mat-tab>
-</mat-tab-group>
-
+<div class="window-container">
+    <mat-tab-group>
+        <mat-tab label="Benutzer">
+            <app-table-builder [dataSource]="userDataSource"></app-table-builder>
+        </mat-tab>
+        <mat-tab label="Spesen">
+            <app-table-builder [dataSource]="feeDataSource"></app-table-builder>
+        </mat-tab>
+        <mat-tab label="Fahrten">
+            <app-table-builder [dataSource]="journeyDataSource"></app-table-builder>
+        </mat-tab>
+        <mat-tab label="Essen">
+            <app-table-builder [dataSource]="mealDataSource"></app-table-builder>
+        </mat-tab>
+    </mat-tab-group>
+</div>
