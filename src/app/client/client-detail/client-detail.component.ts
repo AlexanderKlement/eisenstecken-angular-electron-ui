@@ -16,7 +16,7 @@ export class ClientDetailComponent implements OnInit {
     @ViewChild(InfoBuilderComponent) child: InfoBuilderComponent<Client>;
     public infoDataSource: InfoDataSource<Client>;
     public tableDataSource: TableDataSource<Job>;
-    private id: number;
+    public id: number;
     public buttons: CustomButton[] = [
         {
             name: 'Bearbeiten',
@@ -47,12 +47,8 @@ export class ClientDetailComponent implements OnInit {
                 this.api.readClientClientClientIdGet(this.id),
                 [
                     {
-                        property: 'name',
+                        property: 'fullname',
                         name: 'Name'
-                    },
-                    {
-                        property: 'lastname',
-                        name: 'Nachname'
                     },
                     {
                         property: 'mail1',
@@ -61,7 +57,35 @@ export class ClientDetailComponent implements OnInit {
                     {
                         property: 'mail2',
                         name: 'Mail'
-                    }
+                    },
+                    {
+                        property: 'tel1',
+                        name: 'tel'
+                    },
+                    {
+                        property: 'tel2',
+                        name: 'tel'
+                    },
+                    {
+                        property: 'fiscal_code',
+                        name: 'Steuernummer'
+                    },
+                    {
+                        property: 'vat_number',
+                        name: 'P. IVA'
+                    },
+                    {
+                        property: 'codice_destinatario',
+                        name: 'Empfängerkodex'
+                    },
+                    {
+                        property: 'pec',
+                        name: 'PEC'
+                    },
+                    {
+                        property: 'language.name.translation',
+                        name: 'Sprache'
+                    },
                 ],
                 '/client/edit/' + this.id.toString(),
                 this.api.islockedClientClientIslockedClientIdGet(this.id),
@@ -90,7 +114,6 @@ export class ClientDetailComponent implements OnInit {
                     return rows;
                 },
                 [
-                    {name: 'id', headerName: 'ID'},
                     {name: 'name', headerName: 'Name'},
                     {name: 'description', headerName: 'Beschreibung'}
                 ],

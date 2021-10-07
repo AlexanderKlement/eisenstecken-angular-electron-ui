@@ -1,3 +1,44 @@
 <app-toolbar></app-toolbar>
+<div class="window-container">
+    <div fxLayout="column" fxLayoutAlign="space-around center">
+        <h3 *ngIf="createMode">Nachkalkulation erstellen:</h3>
+        <h3 *ngIf="!createMode">Nachkalkulation bearbeiten:</h3>
+        <h3>{{jobName$ | async}}</h3>
+    </div>
+    <form [formGroup]="recalculationGroup" (submit)="onSubmit()">
+        <div fxLayout="column" fxLayoutAlign="space-around center">
+            <mat-form-field appearance="fill">
+                <mat-label>Preis Holz</mat-label>
+                <input type=number class="form-control" formControlName="wood_amount" matInput>
+            </mat-form-field>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="expenses">
+            <div *ngFor="let expense of getExpenses().controls; let i = index" [formGroupName]="i" fxLayout="row"
+                 fxLayoutAlign="space-around center">
+                <mat-form-field appearance="fill">
+                    <mat-label>Bezeichnung</mat-label>
+                    <input class="form-control" formControlName="name" matInput>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Menge</mat-label>
+                    <input type=number class="form-control" formControlName="amount" matInput>
+                </mat-form-field>
+                <button type="button" mat-icon-button mat-raised-button (click)="removeExpenseAt(i)"
+                        [disabled]="i === 0" class="position-delete">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+            <button type="button" mat-button
+                    (click)="addExpense()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <app-table-builder [dataSource]="orderDataSource" title="Bestellungen"></app-table-builder>
+        <app-table-builder [dataSource]="workloadDataSource" title="Arbeitszeit"></app-table-builder>
+        <div fxLayout="column" fxLayoutAlign="space-around center">
+            <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+        </div>
 
+    </form>
+</div>
 <pre> {{recalculationGroup.value | json}} </pre>

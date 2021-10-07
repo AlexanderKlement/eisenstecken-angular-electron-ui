@@ -25,7 +25,7 @@ export class RecalculationDetailComponent implements OnInit {
                 this.router.navigateByUrl('recalculation');
                 return;
             }
-            this.api.readCalculationByJobRecalculationJobJobIdGet(this.jobId).pipe().subscribe(recalculation => {
+            this.api.readRecalculationByJobRecalculationJobJobIdGet(this.jobId).pipe().subscribe(recalculation => {
                 if (recalculation === undefined || recalculation === null) {
                     this.router.navigateByUrl('recalculation/edit/new/' + this.jobId.toString());
                     return;
