@@ -138,7 +138,7 @@ export class OrderBundleEditComponent extends BaseEditComponent<OrderBundle> imp
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.api.deleteOrdererArticleOrderOrderedArticleOrderedArticleIdDelete(article.get('id').value).pipe(first())
+                this.api.deleteOrderedArticleOrderedArticleOrderedArticleIdDelete(article.get('id').value).pipe(first())
                     .subscribe(success => {
                         if (success) {
                             window.location.reload();

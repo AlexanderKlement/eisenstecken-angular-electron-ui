@@ -230,7 +230,7 @@ export class ProductsListComponent implements OnInit {
             this.api.patchArticleArticleArticleIdPatch(orderedArticle.article.id, articleUpdate)
                 .pipe(first()).subscribe((article) => {
                 orderedArticleCreate.article_id = article.id;
-                this.api.updateOrderedArticleOrderArticleOrderedArticleIdPut(orderedArticle.id, orderedArticleCreate)
+                this.api.updateOrderedArticleOrderedArticleOrderedArticleIdPut(orderedArticle.id, orderedArticleCreate)
                     .pipe(first()).subscribe(() => {
                     this.refreshOrderedArticleList();
                 });
@@ -242,7 +242,7 @@ export class ProductsListComponent implements OnInit {
     }
 
     removeButtonClicked(orderedArticle: OrderedArticle): void {
-        this.api.deleteOrdererArticleOrderOrderedArticleOrderedArticleIdDelete(orderedArticle.id)
+        this.api.deleteOrderedArticleOrderedArticleOrderedArticleIdDelete(orderedArticle.id)
             .pipe(first()).subscribe((success) => {
             if (success) {
                 this.refreshOrderedArticleList();
