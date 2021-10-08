@@ -14,7 +14,7 @@ export const availableMenuTiles: MenuTileDetail[] = [
     {title: 'Nachkalkulationen', icon: 'calculate', link: '/recalculation', requiredRights: ['recalculations:all']},
     {title: 'Bestellungen', icon: 'local_grocery_store', link: '/order', requiredRights: ['orders:all']},
     {title: 'Lieferanten', icon: 'local_shipping', link: '/supplier', requiredRights: ['suppliers:all']},
-    {title: 'Lieferscheine', icon: 'assignment', link: '/delivery_docket', requiredRights: ['delivery_notes:all']},
+    {title: 'Lieferscheine', icon: 'assignment', link: '/delivery_note', requiredRights: ['delivery_notes:all']},
     {
         title: 'Rechnungen',
         icon: 'money',
