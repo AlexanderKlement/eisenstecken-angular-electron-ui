@@ -2,15 +2,15 @@
 <div class="window-container">
     <h1>Preise eintragen</h1>
     <form (ngSubmit)="onSubmit()" [formGroup]="orderBundleGroup">
-        <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="orders">
+        <div fxLayout="column" fxLayoutAlign="start stretch" formArrayName="orders" class="orders">
             <div *ngFor="let order of getOrderFormArray().controls; let i = index"
-                 class="descriptive-article" fxLayout="column" fxLayoutAlign="start stretch" [formGroupName]="i">
-                <div fxLayout="row" fxLayoutAlign="space-around center">
+                 class="order" fxLayout="column" fxLayoutAlign="start stretch" [formGroupName]="i">
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="header">
                     <mat-form-field appearance="fill">
                         <mat-label>Bestellung</mat-label>
                         <input readonly matInput formControlName="order_from">
                     </mat-form-field>
-                    <mat-icon>
+                    <mat-icon  class="arrow">
                         chevron_right
                     </mat-icon>
                     <mat-form-field appearance="fill">
@@ -18,32 +18,32 @@
                         <input readonly matInput formControlName="order_to">
                     </mat-form-field>
                 </div>
-                <div formArrayName="articles">
-                    <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="j"
-                         *ngFor="let article of getArticlesAt(i).controls; let j = index">
-                        <mat-form-field appearance="fill">
+                <div formArrayName="articles" class="articles">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" [formGroupName]="j"
+                         *ngFor="let article of getArticlesAt(i).controls; let j = index" class="article">
+                        <mat-form-field appearance="fill" fxFlex="18">
                             <mat-label>Name</mat-label>
                             <input readonly matInput formControlName="name">
                         </mat-form-field>
-                        <mat-form-field appearance="fill">
+                        <mat-form-field appearance="fill" fxFlex="18">
                             <mat-label>Menge</mat-label>
                             <input readonly matInput type=number formControlName="amount">
                         </mat-form-field>
-                        <mat-form-field appearance="fill">
+                        <mat-form-field appearance="fill" fxFlex="18">
                             <mat-label>Mod Nummer</mat-label>
                             <input readonly matInput formControlName="mod_number">
                         </mat-form-field>
-                        <mat-form-field appearance="fill">
+                        <mat-form-field appearance="fill" fxFlex="18">
                             <mat-label>Einheit</mat-label>
                             <input readonly matInput formControlName="unit">
                         </mat-form-field>
-                        <mat-form-field appearance="fill">
+                        <mat-form-field appearance="fill" fxFlex="18">
                             <mat-label>Preis</mat-label>
                             <input matInput type=number formControlName="price">
                         </mat-form-field>
                         <button type="button" mat-button (click)="onRemoveArticleClick(i, j)"
-                                title="Bestellung entfernen">
-                            <mat-icon>delete</mat-icon>
+                                title="Bestellung entfernen" class="delete-btn">
+                            <mat-icon class="delete-icon">delete</mat-icon>
                         </button>
                     </div>
                 </div>
@@ -54,4 +54,3 @@
 </div>
 
 <pre> {{orderBundleGroup.value | json}} </pre>
-<!-- TODO IVAN beautify -->
