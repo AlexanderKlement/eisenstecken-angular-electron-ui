@@ -171,9 +171,9 @@ export class RecalculationDetailComponent implements OnInit {
 
     private editButtonClicked(): void {
         this.locker.getLockAndTryNavigate(
-            this.api.islockedIngoingInvoiceIngoingInvoiceIslockedIngoingInvoiceIdGet(this.recalculation.id),
-            this.api.lockIngoingInvoiceIngoingInvoiceLockIngoingInvoiceIdPost(this.recalculation.id),
-            this.api.unlockIngoingInvoiceIngoingInvoiceUnlockIngoingInvoiceIdPost(this.recalculation.id),
+            this.api.islockedRecalculationRecalculationIslockedRecalculationIdGet(this.recalculation.id),
+            this.api.lockRecalculationRecalculationLockRecalculationIdPost(this.recalculation.id),
+            this.api.unlockRecalculationRecalculationUnlockRecalculationIdPost(this.recalculation.id),
             'recalculation/edit/' + this.recalculation.id.toString() + '/' + this.jobId.toString()
         );
     }
