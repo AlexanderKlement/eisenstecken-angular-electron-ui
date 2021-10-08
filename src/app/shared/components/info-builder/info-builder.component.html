@@ -1,4 +1,5 @@
-<!--<button mat-button (click)="editButtonClicked()">Bearbeiten</button>-->
+<!--<button mat-button (click)="editButtonClicked()">Bearbeiten</button> -->
+<h4>Information</h4>
 <div *ngIf="dataSource.data$ | async as data" fxLayout="row wrap">
   <div *ngFor="let info of dataSource.mapping; let i=index" fxFlex="25">
     <mat-form-field>
