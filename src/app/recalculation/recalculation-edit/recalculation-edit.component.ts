@@ -6,7 +6,7 @@ import {
     Expense, ExpenseCreate, Job,
     Lock, Order,
     Recalculation,
-    RecalculationCreate, Workload
+    RecalculationCreate, RecalculationUpdate, Workload
 } from 'eisenstecken-openapi-angular-library';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
@@ -62,6 +62,10 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
             );
             if (this.createMode) {
                 this.addExpense();
+            } else {
+                this.api.readRecalculationRecalculationRecalculationIdGet(this.id).pipe(first()).subscribe(recalculation => {
+                    this.fillFormGroup(recalculation);
+                });
             }
         });
 
@@ -126,6 +130,15 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
                 expenses
             };
             this.api.createRecalculationRecalculationJobIdPost(this.jobId, recalculationCreate).pipe(first()).subscribe(recalculation => {
+                this.router.navigateByUrl('recalculation/' + this.jobId);
+            });
+        } else {
+            const recalculationUpdate: RecalculationUpdate = {
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                wood_amount: this.recalculationGroup.get('wood_amount').value,
+                expenses
+            };
+            this.api.updateRecalculationRecalculationJobIdPut(this.jobId, recalculationUpdate).pipe(first()).subscribe(recalculation => {
                 this.router.navigateByUrl('recalculation/' + this.jobId);
             });
         }
