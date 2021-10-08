@@ -2,12 +2,13 @@ import {
     Article,
     Calendar,
     Client, Contact, Credential, Fee,
-    IngoingInvoice,
+    IngoingInvoice, Expense,
     Job, Journey, Meal, MealSum,
     Offer, Order, OrderBundle, OrderedArticle,
     OutgoingInvoice, Price, Recalculation, Stock, Supplier, TechnicalData,
     User, Workload
 } from 'eisenstecken-openapi-angular-library';
+
 
 export type DataSourceClass =
     Client
@@ -31,6 +32,7 @@ export type DataSourceClass =
     | Meal
     | MealSum
     | Stock
+    | Expense
     | Workload
     | Journey;
 

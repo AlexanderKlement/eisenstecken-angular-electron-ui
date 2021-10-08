@@ -1,3 +1,22 @@
-<p>recalculation-detail works!</p>
+<app-toolbar [buttonList]="buttons"></app-toolbar>
 <div class="window-container">
+    <div *ngIf="!loading">
+        <div fxLayout="column" fxLayoutAlign="space-around center">
+            <h3>{{jobName$ | async}}</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>Gesamtpreis [€]</mat-label>
+                <input type=number class="form-control" readonly [value]="recalculation.total_sum.toString()"
+                       matInput>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Preis Holz [€]</mat-label>
+                <input type=number class="form-control" readonly [value]="recalculation.wood_amount.toString()"
+                       matInput>
+            </mat-form-field>
+        </div>
+        <app-table-builder [dataSource]="expenseDataSource" title="Ausgaben"></app-table-builder>
+        <app-table-builder [dataSource]="orderDataSource" title="Bestellungen"></app-table-builder>
+        <app-table-builder [dataSource]="workloadDataSource" title="Arbeitszeit"></app-table-builder>
+    </div>
 </div>
+

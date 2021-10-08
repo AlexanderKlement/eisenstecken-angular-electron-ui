@@ -36,7 +36,7 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
     lockFunction = (api: DefaultService, id: number): Observable<Lock> =>
         api.islockedRecalculationRecalculationIslockedRecalculationIdGet(id);
     dataFunction = (api: DefaultService, id: number): Observable<Recalculation> =>
-        api.readRecalculationsRecalculationRecalculationIdGet(id);
+        api.readRecalculationRecalculationRecalculationIdGet(id);
     unlockFunction = (afterUnlockFunction: VoidFunction = () => {
     }): void => {
         this.api.unlockRecalculationRecalculationUnlockRecalculationIdPost(this.id).subscribe(() => {
@@ -77,7 +77,7 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
 
     fillFormGroup(recalculation: Recalculation): void {
         this.recalculationGroup.get('wood_amount').setValue(recalculation.wood_amount);
-        for (const expense of recalculation.expense) {
+        for (const expense of recalculation.expenses) {
             this.addExpense(expense);
         }
     }

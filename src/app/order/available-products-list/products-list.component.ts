@@ -178,6 +178,9 @@ export class ProductsListComponent implements OnInit {
         void {
         const dialogData = ProductsListComponent.createEmptyDialogData('Produkt kopieren und hinzufügen', article);
         const closeFunction = (result: any) => {
+            if (result === undefined) {
+                return;
+            }
             const orderedArticleCreate = ProductsListComponent.mapDialogData2OrderedArticleCreate(result, article.id);
             const articleUpdate = ProductsListComponent.mapDialogData2ArticleUpdate(result);
             this.api.copyArticleAndModifyArticleArticleIdPost(article.id, articleUpdate).pipe(first())
@@ -198,6 +201,9 @@ export class ProductsListComponent implements OnInit {
         void {
         const dialogData = ProductsListComponent.createEmptyDialogData('Produkt hinzufügen', article);
         const closeFunction = (result: any) => {
+            if (result === undefined) {
+                return;
+            }
             const orderedArticleCreate = ProductsListComponent.mapDialogData2OrderedArticleCreate(result, article.id);
             const articleUpdate = ProductsListComponent.mapDialogData2ArticleUpdate(result);
             this.api.patchArticleArticleArticleIdPatch(article.id, articleUpdate).pipe(first()).subscribe((patchArticle) => {
@@ -218,13 +224,16 @@ export class ProductsListComponent implements OnInit {
             width: '550px',
             data: dialogData
         });
-        dialogRef.afterClosed().subscribe(closeFunction);
+        dialogRef.afterClosed().pipe(first()).subscribe(closeFunction);
     }
 
     editButtonClicked(orderedArticle: OrderedArticle):
         void {
         const dialogData$ = this.createEditDialogData(orderedArticle, 'Produkt bearbeiten');
         const closeFunction = (result: any) => {
+            if (result === undefined) {
+                return;
+            }
             const orderedArticleCreate = ProductsListComponent
                 .mapDialogData2OrderedArticleCreate(result, orderedArticle.article.id);
             const articleUpdate = ProductsListComponent.mapDialogData2ArticleUpdate(result);
@@ -257,6 +266,9 @@ export class ProductsListComponent implements OnInit {
     addButtonClicked(): void {
         const dialogData = ProductsListComponent.createEmptyDialogData('Neuen Artikel hinzufügen');
         const closeFunction = (result: any) => {
+            if (result === undefined) {
+                return;
+            }
             const newArticle = ProductsListComponent.mapDialogData2ArticleCreate(result);
             this.api.createArticleArticlePost(newArticle).pipe(first()).subscribe(article => {
                 const orderedArticleCreate = ProductsListComponent.mapDialogData2OrderedArticleCreate(result, article.id);
