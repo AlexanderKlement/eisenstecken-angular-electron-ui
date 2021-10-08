@@ -5,44 +5,46 @@ export interface MenuTileDetail {
     title: string;
     icon: string;
     link: string;
+    requiredRights: string[];
 }
+
+export const availableMenuTiles: MenuTileDetail[] = [
+    {title: 'Kunden', icon: 'group', link: '/client', requiredRights: ['clients:all']},
+    {title: 'Aufträge', icon: 'domain', link: '/job', requiredRights: ['jobs:all']},
+    {title: 'Nachkalkulationen', icon: 'calculate', link: '/recalculation', requiredRights: ['recalculations:all']},
+    {title: 'Bestellungen', icon: 'local_grocery_store', link: '/order', requiredRights: ['orders:all']},
+    {title: 'Lieferanten', icon: 'local_shipping', link: '/supplier', requiredRights: ['suppliers:all']},
+    {title: 'Lieferscheine', icon: 'assignment', link: '/delivery_docket', requiredRights: ['delivery_notes:all']},
+    {
+        title: 'Rechnungen',
+        icon: 'money',
+        link: '/invoice',
+        requiredRights: ['ingoing_invoices:all', 'outgoing_invoices:all']
+    },
+    {title: 'Angestellte', icon: 'work', link: '/employee', requiredRights: ['hours:modify']},
+    {title: 'Benutzer', icon: 'person', link: '/user', requiredRights: ['users:all']},
+    {title: 'Einstellungen', icon: 'settings', link: '/settings', requiredRights: ['parameters:set']},
+    {title: 'Arbeitstag', icon: 'schedule', link: '/work_day', requiredRights: ['hours:insert']},
+];
 
 export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
     const menuTileArray: MenuTileDetail[] = [];
-    rights.forEach((right) => {
-        switch (right.key) {
-            case 'clients:all':
-                menuTileArray.push({title: 'Kunden', icon: 'group', link: '/client'});
-                return;
-            case 'jobs:all':
-                menuTileArray.push({title: 'Auftrag', icon: 'domain', link: '/job'});
-                return;
-            case 'users:all':
-                menuTileArray.push({title: 'Benutzer', icon: 'person', link: '/user'});
-                return;
-            case 'orders:all':
-                menuTileArray.push({title: 'Bestellungen', icon: 'local_grocery_store', link: '/order'});
-                return;
-            case 'ingoing_invoices:all':
-            case 'outgoing_invoices:all':
-                menuTileArray.push({title: 'Rechnungen', icon: 'money', link: '/invoice'});
-                return;
-            case 'parameters:set':
-                menuTileArray.push({title: 'Einstellungen', icon: 'settings', link: '/settings'});
-                return;
-            case 'suppliers:all':
-                menuTileArray.push({title: 'Lieferanten', icon: 'local_shipping', link: '/supplier'});
-                return;
-            case 'hours:insert':
-                menuTileArray.push({title: 'Arbeitstag', icon: 'schedule', link: '/work_day'});
-                return;
-            case 'recalculations:all':
-                menuTileArray.push({title: 'Nachkalkulation', icon: 'calculate', link: '/recalculation'});
-                return;
-            case 'hours:modify':
-                menuTileArray.push({title: 'Angestellte', icon: 'work', link: '/employee'});
+    for (const availableMenuTile of availableMenuTiles) {
+        for (const requiredRight of availableMenuTile.requiredRights) {
+            if (containsRight(requiredRight, rights)) {
+                menuTileArray.push(availableMenuTile);
+                break;
+            }
         }
-    });
-    // TODO: remove duplicates;
+    }
     return menuTileArray;
+}
+
+export function containsRight(rightString: string, rights: Right[]): boolean {
+    for (const right of rights) {
+        if (rightString === right.key) {
+            return true;
+        }
+    }
+    return false;
 }

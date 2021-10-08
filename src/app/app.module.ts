@@ -49,6 +49,7 @@ import {WorkDayModule} from './work-day/work-day.module';
 import {RecalculationModule} from './recalculation/recalculation.module';
 import {EmployeeModule} from './employee/employee.module';
 import {GlobalHttpInterceptorService} from './global-http-inceptor.service';
+import {DeliveryNoteModule} from './delivery-note/delivery-note.module';
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -85,6 +86,7 @@ export function apiConfigFactory(): Configuration {
         ApiModule.forRoot(apiConfigFactory),
         AppRoutingModule,
         FlexLayoutModule,
+        DeliveryNoteModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
