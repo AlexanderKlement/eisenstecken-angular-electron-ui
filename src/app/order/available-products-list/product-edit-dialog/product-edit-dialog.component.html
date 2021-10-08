@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>{{data.title}}</h1>
-<div mat-dialog-content fxLayout="column" fxLayoutAlign="start stretch">
+<div mat-dialog-content fxLayout="column" fxLayoutAlign="start stretch" class="dialog-content">
     <form (submit)="onAddClick()" [formGroup]="productEditGroup">
         <div fxLayout="row" fxLayoutAlign="space-between start">
             <mat-form-field appearance="fill">
@@ -59,4 +59,3 @@
         </div>
     </form>
 </div>
-
