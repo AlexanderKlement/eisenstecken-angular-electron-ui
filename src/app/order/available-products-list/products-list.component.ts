@@ -204,6 +204,7 @@ export class ProductsListComponent implements OnInit {
                 orderedArticleCreate.article_id = patchArticle.id;
                 this.api.addOrderedArticleToOrderOrderOrderedArticleOrderIdPut(this.orderId, orderedArticleCreate)
                     .pipe(first()).subscribe(() => {
+                    this.refreshAvailableOrderList();
                     this.refreshOrderedArticleList();
                 });
             });
@@ -233,6 +234,7 @@ export class ProductsListComponent implements OnInit {
                 this.api.updateOrderedArticleOrderedArticleOrderedArticleIdPut(orderedArticle.id, orderedArticleCreate)
                     .pipe(first()).subscribe(() => {
                     this.refreshOrderedArticleList();
+                    this.refreshAvailableOrderList();
                 });
             });
         };

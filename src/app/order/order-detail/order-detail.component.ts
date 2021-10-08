@@ -44,13 +44,13 @@ export class OrderDetailComponent implements OnInit {
                     name: 'Empfänger'
                 },
                 {
+                    property: 'user.fullname',
+                    name: 'Bestellung versendet:'
+                },
+                {
                     property: 'create_date',
                     name: 'Erstelldatum'
                 },
-                {
-                    property: 'user.fullname',
-                    name: 'Bestellung versendet:'
-                }
             ],
             '/order/' + this.orderId.toString(),
             undefined,
@@ -75,6 +75,7 @@ export class OrderDetailComponent implements OnInit {
                                 'article.name.translation_de': dataSource.article.name.translation_de,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 'article.description.translation_de': dataSource.article.description.translation_de,
+                                amount: dataSource.amount,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 'article.unit.name.translation_de': dataSource.article.unit.name.translation_de,
                             },
@@ -88,6 +89,7 @@ export class OrderDetailComponent implements OnInit {
             [
                 {name: 'article.name.translation_de', headerName: 'Name'},
                 {name: 'article.description.translation_de', headerName: 'Beschreibung'},
+                {name: 'amount', headerName: 'Menge'},
                 {name: 'article.unit.name.translation_de', headerName: 'Einheit'}
             ],
             (api) => api.readOrderedArticleCountByOrderOrderedArticleOrderOrderIdCountGet(this.orderId)
