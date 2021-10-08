@@ -1,0 +1,31 @@
+@use "../../shared/components/base-edit/base-edit.component";
+
+.orders {
+  .order {
+    .header {
+      .arrow {
+        height: calc(81px - 1.34375em);
+        font-size: calc(81px - 1.34375em);
+        width: auto;
+        padding-bottom: 1.34375em;
+      }
+    }
+    .articles {
+     .article {
+       .delete-btn {
+         width: 81px;
+         height: calc(81px - 1.34375em);
+         margin:0 0 1.34375em .34375em;
+         padding: .5em;
+         .delete-icon {
+           height: calc(81px - 2.34375em);
+           font-size: calc(81px - 2.34375em);
+           width: auto;
+           display:inline;
+         }
+       }
+     }
+    }
+
+  }
+}
