@@ -22,11 +22,11 @@
                         <mat-icon>arrow_downward</mat-icon>
                     </button>
                     <div fxLayout="row" fxLayoutAlign="space-between center" [formGroupName]="i">
-                        <mat-form-field appearance="fill" fxFlex="22">
+                        <mat-form-field appearance="fill" fxFlex="40">
                             <mat-label>Name</mat-label>
                             <input class="form-control" formControlName="description" matInput>
                         </mat-form-field>
-                        <mat-form-field appearance="fill" fxFlex="22">
+                        <mat-form-field appearance="fill" fxFlex="40">
                             <mat-label>Menge</mat-label>
                             <input class="form-control" type=number formControlName="amount" matInput>
                         </mat-form-field>
@@ -79,9 +79,11 @@
                     <mat-label>Gewicht:</mat-label>
                     <textarea class="form-control" formControlName="weight" matInput></textarea>
                 </mat-form-field>
+              <div fxLayout="column" fxLayoutAlign="start stretch" fxFlexFill>
                 <mat-checkbox formControlName="freight">Fracht</mat-checkbox>
                 <mat-checkbox formControlName="free">Frei</mat-checkbox>
                 <mat-checkbox formControlName="assigned">Z. L. Empfängers</mat-checkbox>
+              </div>
                 <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
             </div>
         </div>
