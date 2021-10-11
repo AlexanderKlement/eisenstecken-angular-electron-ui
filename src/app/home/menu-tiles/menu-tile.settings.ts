@@ -11,7 +11,7 @@ export interface MenuTileDetail {
 export const availableMenuTiles: MenuTileDetail[] = [
     {title: 'Kunden', icon: 'group', link: '/client', requiredRights: ['clients:all']},
     {title: 'Aufträge', icon: 'domain', link: '/job', requiredRights: ['jobs:all']},
-    {title: 'Nachkalkulationen', icon: 'calculate', link: '/recalculation', requiredRights: ['recalculations:all']},
+    {title: 'Nachkalkulation', icon: 'calculate', link: '/recalculation', requiredRights: ['recalculations:all']},
     {title: 'Bestellungen', icon: 'local_grocery_store', link: '/order', requiredRights: ['orders:all']},
     {title: 'Lieferanten', icon: 'local_shipping', link: '/supplier', requiredRights: ['suppliers:all']},
     {title: 'Lieferscheine', icon: 'assignment', link: '/delivery_note', requiredRights: ['delivery_notes:all']},
