@@ -1,0 +1,42 @@
+@use "../../shared/components/base-edit/base-edit.component";
+
+
+.descriptive-article {
+  box-shadow: 0 0 2px 0 #ddd;
+  padding: 5px 5px 25px 5px;
+  margin: 8px 0;
+  position: relative;
+  border-radius: 10px;
+
+  .position-control {
+    position: absolute;
+
+    &.mat-button-disabled {
+      visibility: hidden;
+      display: none;
+    }
+
+    &.new-position-btn {
+      left: 50%;
+      bottom: -15px;
+    }
+
+    &.position-down {
+      right: 0;
+      bottom: 0;
+      box-shadow: -0.5px -0.5px 1px 0 #ddd;
+      border-radius: 0 0 10px 0;
+    }
+
+    &.position-up {
+      right: 0;
+      top: 0;
+      box-shadow: -0.5px 0.5px 1px 0 #ddd;
+      border-radius: 0 10px 0 0;
+    }
+  }
+  mat-form-field {
+    margin-bottom: -1em;
+    margin-top: .34375em;
+  }
+}

@@ -47,9 +47,9 @@ export class DeliveryNoteComponent implements OnInit {
                             },
                             route: () => {
                                 this.locker.getLockAndTryNavigate(
-                                    this.api.islockedOutgoingInvoiceOutgoingInvoiceIslockedOutgoingInvoiceIdGet(dataSource.id),
-                                    this.api.lockOutgoingInvoiceOutgoingInvoiceLockOutgoingInvoiceIdPost(dataSource.id),
-                                    this.api.unlockOutgoingInvoiceOutgoingInvoiceUnlockOutgoingInvoiceIdPost(dataSource.id),
+                                    this.api.islockedDeliveryNoteDeliveryNoteIslockedDeliveryNoteIdGet(dataSource.id),
+                                    this.api.lockDeliveryNoteDeliveryNoteLockDeliveryNoteIdPost(dataSource.id),
+                                    this.api.unlockDeliveryNoteDeliveryNoteUnlockDeliveryNoteIdPost(dataSource.id),
                                     'delivery_note/' + dataSource.id.toString()
                                 );
                             }

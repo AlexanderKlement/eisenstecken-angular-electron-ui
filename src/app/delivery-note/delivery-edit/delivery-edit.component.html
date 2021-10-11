@@ -1,1 +1,92 @@
-<p>delivery-edit works!</p>
+<app-toolbar [beforeBackFunction]="unlockFunction"></app-toolbar>
+<div class="window-container">
+    <h1 *ngIf="createMode">Lieferschein erstellen</h1>
+    <h1 *ngIf="!createMode">Lieferschein bearbeiten</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="deliveryNoteGroup">
+        <div fxLayout="row" fxLayoutAlign="space-around start">
+            <div fxFlex="70" formArrayName="articles" fxLayout="column" fxLayoutAlign="space-around center">
+                <div *ngFor="let descriptiveArticle of getDescriptiveArticles().controls; let i = index"
+                     class="descriptive-article" fxFlexFill>
+                    <button type="button" mat-icon-button mat-raised-button (click)="addDescriptiveArticleAt(i)"
+                            class="position-control new-position-btn" title="Neue Position">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    <button type="button" mat-icon-button mat-raised-button (click)="moveDescriptiveArticleUp(i)"
+                            [disabled]="i === 0"
+                            class="position-control position-up" title="Nach oben schieben">
+                        <mat-icon>arrow_upward</mat-icon>
+                    </button>
+                    <button type="button" mat-icon-button mat-raised-button (click)="moveDescriptiveArticleDown(i)"
+                            [disabled]="i === getDescriptiveArticles().controls.length - 1"
+                            class="position-control position-down" title="Nach unten schieben">
+                        <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" [formGroupName]="i">
+                        <mat-form-field appearance="fill" fxFlex="22">
+                            <mat-label>Name</mat-label>
+                            <input class="form-control" formControlName="description" matInput>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" fxFlex="22">
+                            <mat-label>Menge</mat-label>
+                            <input class="form-control" type=number formControlName="amount" matInput>
+                        </mat-form-field>
+                        <div fxFlex="10" fxLayout="row" fxLayoutAlign="space-around center">
+                            <button type="button" mat-icon-button mat-raised-button
+                                    (click)="removeDescriptiveArticle(i)"
+                                    [disabled]="i === 0" class="position-delete">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="30" fxLayout="column" fxLayoutAlign="space-around center" fxFlexFill>
+                <mat-form-field appearance="fill">
+                    <mat-label>Von Job übernehmen:</mat-label>
+                    <mat-select formControlName="job_id" (selectionChange)="selectedJobChanged()">
+                        <mat-option *ngFor="let job of essentialJobList | async" [value]="job.id">
+                            {{job.displayable_name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Nummer</mat-label>
+                    <input class="form-control" formControlName="delivery_note_number" type=number matInput>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Datum</mat-label>
+                    <input formControlName="date" matInput [matDatepicker]="date_picker">
+                    <mat-datepicker-toggle matSuffix [for]="date_picker"></mat-datepicker-toggle>
+                    <mat-datepicker #date_picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Firma:</mat-label>
+                    <textarea class="form-control" formControlName="name" matInput></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Sitz oder Wohnort:</mat-label>
+                    <textarea class="form-control" formControlName="company_address" matInput></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Bestimmungsort:</mat-label>
+                    <textarea class="form-control" formControlName="delivery_address" matInput></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Änderungen:</mat-label>
+                    <textarea class="form-control" formControlName="variations" matInput></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Gewicht:</mat-label>
+                    <textarea class="form-control" formControlName="weight" matInput></textarea>
+                </mat-form-field>
+                <mat-checkbox formControlName="freight">Fracht</mat-checkbox>
+                <mat-checkbox formControlName="free">Frei</mat-checkbox>
+                <mat-checkbox formControlName="assigned">Z. L. Empfängers</mat-checkbox>
+                <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+            </div>
+        </div>
+    </form>
+
+    <pre> {{deliveryNoteGroup.value | json}} </pre>
+
+</div>

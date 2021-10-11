@@ -36,7 +36,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
         super(api, router, route, dialog);
     }
 
-    private static formatDateTransport(datetime: string): string { //TODO: move to some sort of util class or so
+   public static formatDateTransport(datetime: string): string { //TODO: move to some sort of util class or so
         return formatDate(datetime, 'yyyy-MM-dd', 'en-US');
     }
 
