@@ -79,6 +79,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
     }
 
     onSubmit() {
+        this.submitted = true;
         const descriptiveArticles: DescriptiveArticleCreate[] = [];
         for (const article of this.getDescriptiveArticles().controls) {
             descriptiveArticles.push({
@@ -113,8 +114,9 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
                 articles: descriptiveArticles
             };
             this.api.createDeliveryNoteDeliveryNotePost(deliveryNoteCreate).pipe(first()).subscribe(deliveryNote => {
+                this.submitted = false;
                 this.router.navigateByUrl('delivery_note');
-            });
+            }, this.onError);
         } else {
             const deliveryNoteUpdate: DeliveryNoteUpdate = {
                 // eslint-disable-next-line id-blacklist
@@ -135,8 +137,9 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
                 articles: descriptiveArticles
             };
             this.api.updateDeliveryNoteDeliveryNoteDeliveryNoteIdPut(this.id, deliveryNoteUpdate).pipe(first()).subscribe(deliveryNote => {
+                this.submitted = false;
                 this.router.navigateByUrl('delivery_note');
-            });
+            }, this.onError);
         }
     }
 
@@ -217,6 +220,10 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
                 amount: new FormControl(descriptiveArticle.amount)
             });
         }
+    }
+
+    private onError() {
+        this.submitted = true;
     }
 
     private initDeliveryNoteGroup(): void {

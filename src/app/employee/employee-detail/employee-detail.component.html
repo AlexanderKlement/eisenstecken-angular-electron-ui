@@ -2,30 +2,19 @@
 <div class="window-container">
     <mat-tab-group>
         <mat-tab label="Arbeitstag">
-            <mat-tab-group>
-                <mat-tab label="Geschlossener Arbeitstag">
-                    <div *ngIf="finishedWorkDayLoading">
-                        <mat-spinner></mat-spinner>
-                    </div>
-                    <div *ngIf="!finishedWorkDayLoading">
-                        <p *ngIf="!finishWorkDay">Keinen geschlossenen Arbeitstag gefunden</p>
-                        <div *ngIf="finishWorkDay">
-                            <app-work-day-general [admin]=true [workDay]="finishWorkDay"></app-work-day-general>
-                        </div>
-                    </div>
-                </mat-tab>
-                <mat-tab label="Offener Arbeitstag">
-                    <div *ngIf="todayWorkDayLoading">
-                        <mat-spinner></mat-spinner>
-                    </div>
-                    <div *ngIf="!todayWorkDayLoading">
-                        <p *ngIf="!todayWorkDay">Keinen offenen Arbeitstag gefunden</p>
-                        <div *ngIf="todayWorkDay">
-                            <app-work-day-general [admin]=true [workDay]="todayWorkDay"></app-work-day-general>
-                        </div>
-                    </div>
-                </mat-tab>
-            </mat-tab-group>
+            <div fxLayout="column" fxLayoutAlign="space-around center">
+                <mat-form-field appearance="fill">
+                    <mat-label>Arbeitstag</mat-label>
+                    <mat-select (selectionChange)="workDayChanged($event)">
+                        <mat-option *ngFor="let workDay of workDays$ | async" [value]="workDay.id">
+                            {{workDay.date | date}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="!workDayLoading">
+                    <app-work-day-general [admin]=true [workDay]="workDay"></app-work-day-general>
+                </div>
+            </div>
         </mat-tab>
         <mat-tab label="Spesen">
             <app-table-builder [dataSource]="feeDataSource"></app-table-builder>

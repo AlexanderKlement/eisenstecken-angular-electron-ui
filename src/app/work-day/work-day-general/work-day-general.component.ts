@@ -241,8 +241,8 @@ export class WorkDayGeneralComponent implements OnInit {
         } else {
             let checkout = workPhase.checkout;
             let checkin = workPhase.checkin;
-            if (checkout === undefined) {
-                checkout = checkin;
+            if (checkout === undefined || checkout === null) {
+                checkout = moment().format('LT');
             }
             if (checkin.length >= 5) {
                 checkin = checkin.substr(0, 5);

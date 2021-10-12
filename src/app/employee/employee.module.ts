@@ -9,6 +9,9 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {WorkDayModule} from '../work-day/work-day.module';
 import { WorkDayNewComponent } from './work-day-new/work-day-new.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {FlexModule} from '@angular/flex-layout';
 
 
 @NgModule({
@@ -23,7 +26,10 @@ import { WorkDayNewComponent } from './work-day-new/work-day-new.component';
         SharedModule,
         MatTabsModule,
         MatProgressSpinnerModule,
-        WorkDayModule
+        WorkDayModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        FlexModule
     ]
 })
 export class EmployeeModule { }

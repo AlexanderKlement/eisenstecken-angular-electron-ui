@@ -1,6 +1,7 @@
 <div class="window-container">
     <div fxLayout="column" fxLayoutAlign="space-around center">
         <h4 *ngIf="username.length > 0">Benutzer: {{username}}</h4>
+        <h5 *ngIf="admin">Abgeschlossen: {{workDay.finished ? 'Ja' : 'Nein'}}</h5>
         <p *ngIf="workDayError && !admin">Fehler: Bitte im Büro korrigieren lassen</p>
         <p *ngIf="!workDayError && lengthString">Länge Arbeitstag: {{lengthString}}</p>
         <div *ngIf="workDayStartable">
@@ -32,7 +33,7 @@
                             <mat-label>Start</mat-label>
                             <input formControlName="checkin" matInput [format]=24
                                    autocomplete="disabled" [ngxTimepicker]="checkin_picker">
-                            <ngx-material-timepicker (closed)="onWorkPhaseChange()" [minutesGap]="5"
+                            <ngx-material-timepicker (closed)="onWorkPhaseChange()"
                                                      [theme]="primaryTheme"
                                                      #checkin_picker></ngx-material-timepicker>
                         </mat-form-field>
@@ -40,7 +41,7 @@
                             <mat-label>Ende</mat-label>
                             <input formControlName="checkout" matInput [format]=24
                                    autocomplete="disabled" [ngxTimepicker]="checkout_picker">
-                            <ngx-material-timepicker (closed)="onWorkPhaseChange()" [minutesGap]="5"
+                            <ngx-material-timepicker (closed)="onWorkPhaseChange()"
                                                      [theme]="primaryTheme"
                                                      #checkout_picker></ngx-material-timepicker>
                         </mat-form-field>
