@@ -18,18 +18,20 @@
   </mat-list-item>
 </mat-list>
 <mat-list *ngIf="!available">
-  <mat-list-item *ngFor="let orderedArticle of searchOrderedArticles$| async">
-    <div fxLayout="row" fxLayoutAlign="space-between center" class="article">
-      <input matInput value="{{orderedArticle.article.name.translation}}"
-             matTooltip="{{orderedArticle.article.description.translation}}" readonly fxFlex="25">
-      <mat-form-field fxFlex="25">
-        <mat-label>Menge</mat-label>
-        <input type=number matInput value="{{orderedArticle.amount}}" readonly>
-      </mat-form-field>
-      <div fxFlex="23">
+  <mat-list-item *ngFor="let orderedArticle of searchOrderedArticles$| async" fxFlexFill>
+    <div fxLayout="column" fxLayoutAlign="start stretch" class="article" fxFlexFill>
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <input matInput value="{{orderedArticle.article.name.translation}}"
+               matTooltip="{{orderedArticle.article.description.translation}}" readonly>
         <button mat-button mat-icon-button (click)="editButtonClicked(orderedArticle)" title="Bearbeiten">
           <mat-icon>edit</mat-icon>
         </button>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-form-field>
+          <mat-label>Menge</mat-label>
+          <input type=number matInput value="{{orderedArticle.amount}}" readonly>
+        </mat-form-field>
         <button mat-button mat-icon-button (click)="removeButtonClicked(orderedArticle)" title="Entfernen">
           <mat-icon>delete</mat-icon>
         </button>
