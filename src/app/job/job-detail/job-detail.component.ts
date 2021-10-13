@@ -3,12 +3,10 @@ import {InfoDataSource} from '../../shared/components/info-builder/info-builder.
 import {Job, DefaultService, JobStatus, Offer, OutgoingInvoice, Order} from 'eisenstecken-openapi-angular-library';
 import {ActivatedRoute, Router} from '@angular/router';
 import {InfoBuilderComponent} from '../../shared/components/info-builder/info-builder.component';
-import {Observable} from 'rxjs';
 import {first, map} from 'rxjs/operators';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {LockService} from '../../shared/lock.service';
 import * as moment from 'moment';
-import {OrderStatusType} from 'eisenstecken-openapi-angular-library/model/orderStatusType';
 
 @Component({
     selector: 'app-job-detail',
@@ -43,6 +41,11 @@ export class JobDetailComponent implements OnInit {
             name: 'Neuer Unterauftrag',
             navigate: (): void => {
                 this.router.navigateByUrl('/job/edit/new/' + this.jobId.toString() + '/sub');
+            }
+        }, {
+            name: 'Stunden',
+            navigate: (): void => {
+                this.router.navigateByUrl('/work_hours/' + this.jobId.toString());
             }
         }
     ];

@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Arbeitsstunden bearbeiten</h1>
+<div mat-dialog-content>
+    <div fxLayout="column" fxLayoutAlign="space-around center">
+        <p>Arbeiter: {{data.user}}</p>
+        <p>Minuten zu der Arbeitszeit hinzügen oder entfernen (-)</p>
+        <mat-form-field appearance="fill">
+            <mat-label>Arbeitszeit [Minuten]</mat-label>
+            <input class="form-control" [(ngModel)]="minutes" matInput>
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <button mat-button (click)="onNoClick()">Abbrechen</button>
+            <button mat-button (click)="onSubmitClick()">Speichern</button>
+        </div>
+    </div>
+</div>

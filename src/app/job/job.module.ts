@@ -19,6 +19,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatIconModule} from '@angular/material/icon';
 import { OutgoingInvoiceEditComponent } from './outgoing-invoice-edit/outgoing-invoice-edit.component';
+import { WorkHoursComponent } from './work-hours/work-hours.component';
+import { WorkHourEditDialogComponent } from './work-hours/work-hour-edit-dialog/work-hour-edit-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
@@ -29,6 +32,8 @@ import { OutgoingInvoiceEditComponent } from './outgoing-invoice-edit/outgoing-i
         JobStatusBarComponent,
         OfferEditComponent,
         OutgoingInvoiceEditComponent,
+        WorkHoursComponent,
+        WorkHourEditDialogComponent,
     ],
     exports: [
         JobStatusBarComponent
@@ -46,7 +51,8 @@ import { OutgoingInvoiceEditComponent } from './outgoing-invoice-edit/outgoing-i
         MatToolbarModule,
         MatDatepickerModule,
         MatCheckboxModule,
-        MatIconModule
+        MatIconModule,
+        MatDialogModule
     ]
 })
 export class JobModule { }

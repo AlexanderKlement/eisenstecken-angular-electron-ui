@@ -220,7 +220,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         super.observableReady();
         if (!this.createMode) {
             this.data$.pipe(tap(offer => this.offerGroup.patchValue(offer))).subscribe((offer) => {
-                this.removeDescriptiveArticle(0);
+                this.getDescriptiveArticles().removeAt(0);
                 offer.descriptive_articles.forEach((descriptiveArticle) => {
                     this.getDescriptiveArticles().push(OfferEditComponent.initDescriptiveArticles(descriptiveArticle));
                 });

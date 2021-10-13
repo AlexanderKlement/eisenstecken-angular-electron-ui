@@ -230,7 +230,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
         super.observableReady();
         if (!this.createMode) {
             this.data$.pipe(tap(invoice => this.invoiceGroup.patchValue(invoice))).subscribe((invoice) => {
-                this.removeDescriptiveArticle(0);
+                this.getDescriptiveArticles().removeAt(0);
                 invoice.descriptive_articles.forEach((descriptiveArticle) => {
                     this.getDescriptiveArticles().push(this.initDescriptiveArticles(descriptiveArticle));
                 });

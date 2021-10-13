@@ -5,134 +5,141 @@
 
     <button type="button" mat-icon-button mat-raised-button (click)="toggleCollapseDescriptiveArticle(-1)"
             class="position-fold-all" title="{{isHidden(-1) ?  'Alle aufklappen':'Alle zusammenklappen'}}">
-      <mat-icon>{{isHidden(-1) ? 'unfold_more' : 'unfold_less'}}</mat-icon>
+        <mat-icon>{{isHidden(-1) ? 'unfold_more' : 'unfold_less'}}</mat-icon>
     </button>
-  <form (ngSubmit)="onSubmit()" [formGroup]="offerGroup">
-    <div fxLayout="row" fxLayoutAlign="space-between start">
-      <div fxFlex="70" formArrayName="descriptive_articles" fxLayout="column" fxLayoutAlign="space-around stretch"
-           fxFlexFill>
-        <div *ngFor="let descriptiveArticle of getDescriptiveArticles().controls; let i = index"
-             class="descriptive-article" fxLayout="column" fxLayoutAlign="start stretch" [formGroupName]="i">
+    <form (ngSubmit)="onSubmit()" [formGroup]="offerGroup">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+            <div fxFlex="70" formArrayName="descriptive_articles" fxLayout="column" fxLayoutAlign="space-around stretch"
+                 fxFlexFill>
+                <div *ngFor="let descriptiveArticle of getDescriptiveArticles().controls; let i = index"
+                     class="descriptive-article" fxLayout="column" fxLayoutAlign="start stretch" [formGroupName]="i">
 
-          <button type="button" mat-icon-button mat-raised-button (click)="addDescriptiveArticleAt(i)"
-                  class="position-control new-position-btn" title="Neue Position">
-            <mat-icon>add</mat-icon>
-          </button>
-          <button type="button" mat-icon-button mat-raised-button (click)="moveDescriptiveArticleUp(i)"
-                  [disabled]="i === 0"
-                  class="position-control position-up" title="Nach oben schieben">
-            <mat-icon>arrow_upward</mat-icon>
-          </button>
-          <button type="button" mat-icon-button mat-raised-button (click)="moveDescriptiveArticleDown(i)"
-                  [disabled]="i === getDescriptiveArticles().controls.length - 1"
-                  class="position-control position-down" title="Nach unten schieben">
-            <mat-icon>arrow_downward</mat-icon>
-          </button>
-          <div fxLayout="row" fxLayoutAlign="space-between center" class="descriptive-article-header">
-            <mat-form-field appearance="fill">
-              <mat-label>Name Position</mat-label>
-              <input class="form-control" formControlName="description" matInput>
-            </mat-form-field>
-            <button type="button" mat-icon-button mat-raised-button (click)="removeDescriptiveArticle(i)"
-                    [disabled]="i === 0" class="position-delete">
-              <mat-icon>delete</mat-icon>
-            </button>
-            <button type="button" mat-icon-button mat-raised-button (click)="toggleCollapseDescriptiveArticle(i)"
-                    class="position-fold" title="{{isHidden(i) ? 'Aufklappen': 'Zusammenklappen' }}">
-              <mat-icon>{{isHidden(i) ? 'unfold_more' : 'unfold_less'}}</mat-icon>
-            </button>
-          </div>
-          <div formArrayName="sub_descriptive_articles" class="descriptive-article-list" [class.hidden]="isHidden(i)">
-            <div fxLayout="row" fxLayoutAlign="space-between stretch" [formGroupName]="j"
-                 *ngFor="let sub_descriptive_article of getSubDescriptiveArticles(descriptiveArticle).controls; let j = index"
-                 class="descriptive-sub-article">
-              <mat-form-field appearance="fill" fxFlex="40">
-                <mat-label>Beschreibung</mat-label>
-                <textarea class="form-control description" formControlName="description" matInput></textarea>
-              </mat-form-field>
-              <div class="amount-price" fxLayout="column" fxLayoutAlign="start stretch" fxFlex="40">
-                <mat-form-field appearance="fill">
-                  <mat-label>Menge</mat-label>
-                  <input class="form-control" type=number formControlName="amount" matInput>
-                </mat-form-field>
-                <mat-form-field appearance="fill">
-                  <mat-label>Einzelpreis</mat-label>
-                  <input class="form-control" type=number formControlName="single_price"
-                         [value]="sub_descriptive_article.get('single_price').value | currency:'EUR'" matInput>
-                </mat-form-field>
-              </div>
-              <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15">
-                <mat-checkbox formControlName="alternative" fxFlex="50" class="alternative"
-                              title="Soll dies ein Alternativartikel sein">Alternative
-                </mat-checkbox>
-                <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
-                  <button type="button" mat-button (click)="addDescriptiveSubArticle(descriptiveArticle, j)"
-                          title="Neuer Unterartikel">
-                    <mat-icon>add</mat-icon>
-                  </button>
-                  <button type="button" mat-button (click)="removeDescriptiveSubArticle(descriptiveArticle, j)"
-                          title="Unterartikel entfernen">
-                    <mat-icon>remove</mat-icon>
-                  </button>
+                    <button type="button" mat-icon-button mat-raised-button (click)="addDescriptiveArticleAt(i)"
+                            class="position-control new-position-btn" title="Neue Position">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    <button type="button" mat-icon-button mat-raised-button (click)="moveDescriptiveArticleUp(i)"
+                            [disabled]="i === 0"
+                            class="position-control position-up" title="Nach oben schieben">
+                        <mat-icon>arrow_upward</mat-icon>
+                    </button>
+                    <button type="button" mat-icon-button mat-raised-button (click)="moveDescriptiveArticleDown(i)"
+                            [disabled]="i === getDescriptiveArticles().controls.length - 1"
+                            class="position-control position-down" title="Nach unten schieben">
+                        <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="descriptive-article-header">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Name Position</mat-label>
+                            <input class="form-control" formControlName="description" matInput>
+                        </mat-form-field>
+                        <button type="button" mat-icon-button mat-raised-button (click)="removeDescriptiveArticle(i)"
+                                [disabled]="i === 0" class="position-delete">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <button type="button" mat-icon-button mat-raised-button
+                                (click)="toggleCollapseDescriptiveArticle(i)"
+                                class="position-fold" title="{{isHidden(i) ? 'Aufklappen': 'Zusammenklappen' }}">
+                            <mat-icon>{{isHidden(i) ? 'unfold_more' : 'unfold_less'}}</mat-icon>
+                        </button>
+                    </div>
+                    <div formArrayName="sub_descriptive_articles" class="descriptive-article-list"
+                         [class.hidden]="isHidden(i)">
+                        <div fxLayout="row" fxLayoutAlign="space-between stretch" [formGroupName]="j"
+                             *ngFor="let sub_descriptive_article of getSubDescriptiveArticles(descriptiveArticle).controls; let j = index"
+                             class="descriptive-sub-article">
+                            <mat-form-field appearance="fill" fxFlex="40">
+                                <mat-label>Beschreibung</mat-label>
+                                <textarea class="form-control description" formControlName="description"
+                                          matInput></textarea>
+                            </mat-form-field>
+                            <div class="amount-price" fxLayout="column" fxLayoutAlign="start stretch" fxFlex="40">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Menge</mat-label>
+                                    <input class="form-control" type=number formControlName="amount" matInput>
+                                </mat-form-field>
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Einzelpreis</mat-label>
+                                    <input class="form-control" type=number formControlName="single_price"
+                                           [value]="sub_descriptive_article.get('single_price').value" matInput>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="15">
+                                <mat-checkbox formControlName="alternative" fxFlex="50" class="alternative"
+                                              title="Soll dies ein Alternativartikel sein">Alternative
+                                </mat-checkbox>
+                                <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
+                                    <button type="button" mat-button
+                                            (click)="addDescriptiveSubArticle(descriptiveArticle, j)"
+                                            title="Neuer Unterartikel">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                    <button type="button" mat-button
+                                            (click)="removeDescriptiveSubArticle(descriptiveArticle, j)"
+                                            title="Unterartikel entfernen">
+                                        <mat-icon>remove</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button *ngIf="getSubDescriptiveArticles(descriptiveArticle).controls.length === 0" type="button"
+                            mat-button
+                            (click)="addDescriptiveSubArticle(descriptiveArticle, 0)">
+                        <mat-icon>add</mat-icon>
+                    </button>
                 </div>
-              </div>
+
             </div>
-          </div>
-          <button *ngIf="getSubDescriptiveArticles(descriptiveArticle).controls.length === 0" type="button" mat-button
-                  (click)="addDescriptiveSubArticle(descriptiveArticle, 0)">
-            <mat-icon>add</mat-icon>
-          </button>
+            <div fxFlex="30" fxLayout="column" fxLayoutAlign="space-around center">
+                <mat-form-field appearance="fill">
+                    <mat-label>Allgemeine Materialbeschreibung:</mat-label>
+                    <textarea class="form-control" formControlName="material_description"
+                              placeholder="Wird weggelassen wenn leer"
+                              cdkTextareaAutosize cdkAutosizeMinRows="5" matInput></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Im Preis einbegriffen:</mat-label>
+                    <textarea class="form-control" formControlName="in_price_included" matInput cdkTextareaAutosize
+                              cdkAutosizeMinRows="3"></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Gültigkeit</mat-label>
+                    <textarea class="form-control" formControlName="validity" matInput cdkTextareaAutosize
+                              cdkAutosizeMinRows="2"></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Bezahlung:</mat-label>
+                    <textarea class="form-control" formControlName="payment" matInput cdkTextareaAutosize
+                              cdkAutosizeMinRows="3"></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Lieferung</mat-label>
+                    <textarea class="form-control" formControlName="delivery" matInput></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Mehrwertsteuer</mat-label>
+                    <mat-select formControlName="vat_id">
+                        <mat-option *ngFor="let vat of vatOptions$ | async" [value]="vat.id">
+                            {{vat.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Datum</mat-label>
+                    <input formControlName="date" matInput [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Rabatt</mat-label>
+                    <input class="form-control" type=number [value]="discountAmount.value | currency:'EUR'"
+                           placeholder="Wird weggelassen wenn leer" matInput>
+                </mat-form-field>
+                <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+            </div>
         </div>
+    </form>
 
-      </div>
-      <div fxFlex="30" fxLayout="column" fxLayoutAlign="space-around center">
-        <mat-form-field appearance="fill">
-          <mat-label>Allgemeine Materialbeschreibung:</mat-label>
-          <textarea class="form-control" formControlName="material_description" placeholder="Wird weggelassen wenn leer"
-                    cdkTextareaAutosize cdkAutosizeMinRows="5" matInput></textarea>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Im Preis einbegriffen:</mat-label>
-          <textarea class="form-control" formControlName="in_price_included" matInput cdkTextareaAutosize
-                    cdkAutosizeMinRows="3"></textarea>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Gültigkeit</mat-label>
-          <textarea class="form-control" formControlName="validity" matInput cdkTextareaAutosize
-                    cdkAutosizeMinRows="2"></textarea>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Bezahlung:</mat-label>
-          <textarea class="form-control" formControlName="payment" matInput cdkTextareaAutosize
-                    cdkAutosizeMinRows="3"></textarea>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Lieferung</mat-label>
-          <textarea class="form-control" formControlName="delivery" matInput></textarea>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Mehrwertsteuer</mat-label>
-          <mat-select formControlName="vat_id">
-            <mat-option *ngFor="let vat of vatOptions$ | async" [value]="vat.id">
-              {{vat.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Datum</mat-label>
-          <input formControlName="date" matInput [matDatepicker]="picker">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Rabatt</mat-label>
-          <input class="form-control" type=number [value]="discountAmount.value | currency:'EUR'"
-                 placeholder="Wird weggelassen wenn leer" matInput>
-        </mat-form-field>
-        <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
-      </div>
-    </div>
-  </form>
-
-  <pre> {{offerGroup.value | json}} </pre>
+    <pre> {{offerGroup.value | json}} </pre>
 </div>
