@@ -1,12 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {InfoDataSource} from '../../shared/components/info-builder/info-builder.datasource';
-import {Job, DefaultService, JobStatus, Offer, OutgoingInvoice, Order} from 'eisenstecken-openapi-angular-library';
+import {Job, DefaultService, Offer, OutgoingInvoice, Order} from 'eisenstecken-openapi-angular-library';
 import {ActivatedRoute, Router} from '@angular/router';
 import {InfoBuilderComponent} from '../../shared/components/info-builder/info-builder.component';
-import {first, map} from 'rxjs/operators';
+import {first} from 'rxjs/operators';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {LockService} from '../../shared/lock.service';
 import * as moment from 'moment';
+import {AuthService} from '../../shared/auth.service';
 
 @Component({
     selector: 'app-job-detail',
@@ -21,61 +22,21 @@ export class JobDetailComponent implements OnInit {
     public jobId: number;
     public isMainJob = true;
 
-    buttonsMain = [
-        {
-            name: 'Bearbeiten',
-            navigate: (): void => {
-                this.child.editButtonClicked();
-            }
-        }, {
-            name: 'Neues Angebot',
-            navigate: (): void => {
-                this.router.navigateByUrl('/offer/edit/new/' + this.jobId.toString());
-            }
-        }, {
-            name: 'Neue Rechnung',
-            navigate: (): void => {
-                this.router.navigateByUrl('/outgoing_invoice/edit/new/' + this.jobId.toString());
-            }
-        }, {
-            name: 'Neuer Unterauftrag',
-            navigate: (): void => {
-                this.router.navigateByUrl('/job/edit/new/' + this.jobId.toString() + '/sub');
-            }
-        }, {
-            name: 'Stunden',
-            navigate: (): void => {
-                this.router.navigateByUrl('/work_hours/' + this.jobId.toString());
-            }
-        }
-    ];
+    buttonsMain = [];
 
-    buttonsSub = [
-        {
-            name: 'Bearbeiten',
-            navigate: (): void => {
-                this.child.editButtonClicked();
-            }
-        }, {
-            name: 'Neues Angebot',
-            navigate: (): void => {
-                this.router.navigateByUrl('/offer/edit/new/' + this.jobId.toString());
-            }
-        }, {
-            name: 'Neue Rechnung',
-            navigate: (): void => {
-                this.router.navigateByUrl('/outgoing_invoice/edit/new/' + this.jobId.toString());
-            }
-        }
-    ];
+    buttonsSub = [];
 
 
     offerDataSource: TableDataSource<Offer>;
     outgoingInvoiceDataSource: TableDataSource<OutgoingInvoice>;
     subJobDataSource: TableDataSource<Job>;
     orderDataSource: TableDataSource<Order>;
+    ordersAllowed = false;
+    outgoingInvoicesAllowed = false;
+    offersAllowed = false;
 
-    constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute, private locker: LockService) {
+    constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute,
+                private locker: LockService, private authService: AuthService) {
     }
 
     ngOnInit(): void {
@@ -99,7 +60,11 @@ export class JobDetailComponent implements OnInit {
             this.initJobDetail(id);
             this.initOrderTable();
         });
+        this.initAccessRights();
     }
+
+    //TODO: add text, to which mainjob this is (if subjob)
+    //TODO: remove orderstatus change if subjob
 
     initSubJobTable() {
         this.subJobDataSource = new TableDataSource(
@@ -149,12 +114,16 @@ export class JobDetailComponent implements OnInit {
                                 full_price_with_vat: dataSource.full_price_with_vat
                             },
                             route: () => {
-                                this.locker.getLockAndTryNavigate(
-                                    this.api.islockedOfferOfferIslockedOfferIdGet(dataSource.id),
-                                    this.api.lockOfferOfferLockOfferIdPost(dataSource.id),
-                                    this.api.lockOfferOfferUnlockOfferIdPost(dataSource.id),
-                                    'offer/edit/' + dataSource.id.toString()
-                                );
+                                this.authService.currentUserHasRight('offers:modify').pipe(first()).subscribe(allowed => {
+                                    if (allowed) {
+                                        this.locker.getLockAndTryNavigate(
+                                            this.api.islockedOfferOfferIslockedOfferIdGet(dataSource.id),
+                                            this.api.lockOfferOfferLockOfferIdPost(dataSource.id),
+                                            this.api.lockOfferOfferUnlockOfferIdPost(dataSource.id),
+                                            'offer/edit/' + dataSource.id.toString()
+                                        );
+                                    }
+                                });
                             }
                         });
                 });
@@ -187,12 +156,17 @@ export class JobDetailComponent implements OnInit {
                                 full_price_with_vat: dataSource.date
                             },
                             route: () => {
-                                this.locker.getLockAndTryNavigate(
-                                    this.api.islockedOutgoingInvoiceOutgoingInvoiceIslockedOutgoingInvoiceIdGet(dataSource.id),
-                                    this.api.lockOutgoingInvoiceOutgoingInvoiceLockOutgoingInvoiceIdPost(dataSource.id),
-                                    this.api.unlockOutgoingInvoiceOutgoingInvoiceUnlockOutgoingInvoiceIdPost(dataSource.id),
-                                    'outgoing_invoice/edit/' + dataSource.id.toString()
-                                );
+                                this.authService.currentUserHasRight('outgoing_invoices:modify').pipe(first()).subscribe(allowed => {
+                                    if (allowed) {
+                                        this.locker.getLockAndTryNavigate(
+                                            this.api.islockedOutgoingInvoiceOutgoingInvoiceIslockedOutgoingInvoiceIdGet(dataSource.id),
+                                            this.api.lockOutgoingInvoiceOutgoingInvoiceLockOutgoingInvoiceIdPost(dataSource.id),
+                                            this.api.unlockOutgoingInvoiceOutgoingInvoiceUnlockOutgoingInvoiceIdPost(dataSource.id),
+                                            'outgoing_invoice/edit/' + dataSource.id.toString()
+                                        );
+                                    }
+                                });
+
                             }
                         });
                 });
@@ -207,10 +181,6 @@ export class JobDetailComponent implements OnInit {
         );
         this.outgoingInvoiceDataSource.loadData();
     }
-
-    //TODO: add text, to which mainjob this is (if subjob)
-    //TODO: remove orderstatus change if subjob
-    //TODO: change status of subjobs if mainjobstatus is changed
 
     initJobDetail(id: number) {
         this.infoDataSource = new InfoDataSource<Job>(
@@ -286,5 +256,92 @@ export class JobDetailComponent implements OnInit {
             (api) => api.readOrdersToCountOrderToOrderableToIdCountGet(this.jobId)
         );
         this.orderDataSource.loadData();
+    }
+
+    private initAccessRights() {
+        this.authService.currentUserHasRight('orders:all').pipe(first()).subscribe(allowed => {
+            this.ordersAllowed = allowed;
+        });
+        this.authService.currentUserHasRight('offers:all').pipe(first()).subscribe(allowed => {
+            this.offersAllowed = allowed;
+        });
+        this.authService.currentUserHasRight('outgoing_invoices:all').pipe(first()).subscribe(allowed => {
+            this.outgoingInvoicesAllowed = allowed;
+        });
+
+        this.authService.currentUserHasRight('jobs:modify').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttonsMain.push({
+                    name: 'Bearbeiten',
+                    navigate: (): void => {
+                        this.child.editButtonClicked();
+                    }
+                });
+                this.buttonsSub.push({
+                    name: 'Bearbeiten',
+                    navigate: (): void => {
+                        this.child.editButtonClicked();
+                    }
+                });
+            }
+        });
+
+        this.authService.currentUserHasRight('offers:create').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttonsMain.push({
+                    name: 'Neues Angebot',
+                    navigate: (): void => {
+                        this.router.navigateByUrl('/offer/edit/new/' + this.jobId.toString());
+                    }
+                });
+            }
+        });
+
+        this.authService.currentUserHasRight('outgoing_invoices:create').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttonsMain.push({
+                    name: 'Neue Rechnung',
+                    navigate: (): void => {
+                        this.router.navigateByUrl('/outgoing_invoice/edit/new/' + this.jobId.toString());
+                    }
+                });
+            }
+        });
+
+        this.authService.currentUserHasRight('work_hours:all').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttonsMain.push({
+                    name: 'Stunden',
+                    navigate: (): void => {
+                        this.router.navigateByUrl('/work_hours/' + this.jobId.toString());
+                    }
+                });
+            }
+        });
+
+
+        this.authService.currentUserHasRight('work_hours:all').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttonsMain.push({
+                    name: 'Stunden',
+                    navigate: (): void => {
+                        this.router.navigateByUrl('/work_hours/' + this.jobId.toString());
+                    }
+                });
+            }
+        });
+
+        this.authService.currentUserHasRight('work_hours:all').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttonsMain.push({
+                    name: 'Neuer Unterauftrag',
+                    navigate: (): void => {
+                        this.router.navigateByUrl('/job/edit/new/' + this.jobId.toString() + '/sub');
+                    }
+                });
+            }
+        });
+
+
     }
 }

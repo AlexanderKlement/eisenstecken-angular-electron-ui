@@ -1,4 +1,4 @@
-<app-toolbar></app-toolbar>
+<app-toolbar [buttonList]="buttons"></app-toolbar>
 <div class="window-container">
   <h1 *ngIf="createMode">Benutzer erstellen</h1>
   <h1 *ngIf="!createMode">Benutzer bearbeiten</h1>
@@ -48,7 +48,7 @@
         </div>
       </form>
     </mat-tab>
-    <mat-tab label="Rechte" *ngIf="!createMode">
+    <mat-tab label="Rechte" *ngIf="!createMode && grantRightsAvailable">
       <div fxLayout="column" fxLayoutAlign="space-around center">
         <div *ngIf="!rightsLoaded">
           <mat-spinner></mat-spinner>

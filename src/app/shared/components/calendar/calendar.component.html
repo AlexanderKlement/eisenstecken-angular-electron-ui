@@ -26,7 +26,7 @@
         </mat-form-field>
       </div>
       -->
-      <button mat-icon-button (click)="newMeetingClicked()" class="add-button" title="Neuer Termin">
+      <button *ngIf="createAllowed" mat-icon-button (click)="newMeetingClicked()" class="add-button" title="Neuer Termin">
         <mat-icon>add</mat-icon>
       </button>
     </div>

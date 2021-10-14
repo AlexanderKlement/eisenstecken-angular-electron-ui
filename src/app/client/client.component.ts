@@ -3,6 +3,8 @@ import {TableDataSource} from '../shared/components/table-builder/table-builder.
 import {DefaultService, Client} from 'eisenstecken-openapi-angular-library';
 import {Router} from '@angular/router';
 import {CustomButton} from '../shared/components/toolbar/toolbar.component';
+import {AuthService} from '../shared/auth.service';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-client',
@@ -14,16 +16,9 @@ export class ClientComponent implements OnInit {
 
     public clientDataSource: TableDataSource<Client>;
 
-    public buttons: CustomButton[] = [
-        {
-            name: 'Neuer Kunde',
-            navigate: (): void => {
-                this.router.navigateByUrl('/client/edit/new');
-            }
-        },
-    ];
+    public buttons: CustomButton[] = [];
 
-    constructor(private api: DefaultService, private router: Router) {
+    constructor(private api: DefaultService, private router: Router, private authService: AuthService) {
     }
 
     ngOnInit(): void {
@@ -55,6 +50,16 @@ export class ClientComponent implements OnInit {
             (api) => api.readClientCountClientCountGet()
         );
         this.clientDataSource.loadData();
+        this.authService.currentUserHasRight('clients:create').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Neuer Kunde',
+                    navigate: (): void => {
+                        this.router.navigateByUrl('/client/edit/new');
+                    }
+                });
+            }
+        });
     }
 
 }

@@ -1,5 +1,6 @@
 <app-toolbar [buttonList]="buttons"></app-toolbar>
 <div class="window-container">
-  <app-table-builder title="Lieferanten" [dataSource]="supplierTableDataSource"></app-table-builder>
-  <app-table-builder title="Lager" [dataSource]="stockTableDataSource"></app-table-builder>
+    <app-table-builder *ngIf="suppliersReadAllowed" title="Lieferanten"
+                       [dataSource]="supplierTableDataSource"></app-table-builder>
+    <app-table-builder *ngIf="stocksReadAllowed" title="Lager" [dataSource]="stockTableDataSource"></app-table-builder>
 </div>

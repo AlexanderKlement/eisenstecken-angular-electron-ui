@@ -7,6 +7,7 @@ import {CalendarData, CalendarEditComponent} from './calendar-edit/calendar-edit
 import {first} from 'rxjs/operators';
 import {CalendarService} from './calendar.service';
 import * as moment from 'moment';
+import {AuthService} from '../../auth.service';
 
 @Component({
     selector: 'app-calendar',
@@ -22,15 +23,18 @@ export class CalendarComponent implements OnInit {
     dayManager: DayManager;
 
     amountOfDays: string;
+    createAllowed = false;
 
 
-    constructor(public dialog: MatDialog, private calendar: CalendarService) {
+    constructor(public dialog: MatDialog, private calendar: CalendarService, private authService: AuthService) {
         this.dayManager = new DayManager(0, 7);
         this.amountOfDays = this.dayManager.amountOfDaysString;
     }
 
     ngOnInit(): void {
-
+        this.authService.currentUserHasRight('calendars:create').pipe(first()).subscribe(allowed => {
+            this.createAllowed = allowed;
+        });
     }
 
     previousWeekClicked(): void {

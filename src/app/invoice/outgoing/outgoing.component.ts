@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {DefaultService, OutgoingInvoice} from 'eisenstecken-openapi-angular-library';
-import {Router} from '@angular/router';
 import {LockService} from '../../shared/lock.service';
+import {first} from 'rxjs/operators';
+import {AuthService} from '../../shared/auth.service';
 
 @Component({
     selector: 'app-outgoing',
@@ -13,7 +14,7 @@ export class OutgoingComponent implements OnInit {
 
     outgoingInvoiceDataSource: TableDataSource<OutgoingInvoice>;
 
-    constructor(private api: DefaultService, private locker: LockService) {
+    constructor(private api: DefaultService, private locker: LockService, private authService: AuthService) {
     }
 
     ngOnInit(): void {
@@ -37,12 +38,16 @@ export class OutgoingComponent implements OnInit {
                                 full_price_with_vat: dataSource.date
                             },
                             route: () => {
-                                this.locker.getLockAndTryNavigate(
-                                    this.api.islockedOutgoingInvoiceOutgoingInvoiceIslockedOutgoingInvoiceIdGet(dataSource.id),
-                                    this.api.lockOutgoingInvoiceOutgoingInvoiceLockOutgoingInvoiceIdPost(dataSource.id),
-                                    this.api.unlockOutgoingInvoiceOutgoingInvoiceUnlockOutgoingInvoiceIdPost(dataSource.id),
-                                    'outgoing_invoice/edit/' + dataSource.id.toString()
-                                );
+                                this.authService.currentUserHasRight('outgoing_invoices:modify').pipe(first()).subscribe(allowed => {
+                                    if (allowed) {
+                                        this.locker.getLockAndTryNavigate(
+                                            this.api.islockedOutgoingInvoiceOutgoingInvoiceIslockedOutgoingInvoiceIdGet(dataSource.id),
+                                            this.api.lockOutgoingInvoiceOutgoingInvoiceLockOutgoingInvoiceIdPost(dataSource.id),
+                                            this.api.unlockOutgoingInvoiceOutgoingInvoiceUnlockOutgoingInvoiceIdPost(dataSource.id),
+                                            'outgoing_invoice/edit/' + dataSource.id.toString()
+                                        );
+                                    }
+                                });
                             }
                         });
                 });

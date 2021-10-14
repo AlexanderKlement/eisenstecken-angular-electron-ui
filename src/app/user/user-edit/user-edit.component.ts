@@ -16,6 +16,9 @@ import {Observable} from 'rxjs';
 import {first, tap} from 'rxjs/operators';
 import {MatSelectionList} from '@angular/material/list';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
+import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import {AuthService} from '../../shared/auth.service';
 
 const titles = {
     users: 'Benutzer',
@@ -58,11 +61,13 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
 
 
     navigationTarget = 'user';
+    buttons: CustomButton[] = [];
+    grantRightsAvailable = false;
 
-    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog, private snackBar: MatSnackBar) {
+    constructor(private snackBar: MatSnackBar, private authService: AuthService, api: DefaultService,
+                router: Router, route: ActivatedRoute, dialog: MatDialog) {
         super(api, router, route, dialog);
     }
-
 
     lockFunction = (api: DefaultService, id: number): Observable<Lock> => api.islockedUserUsersIslockedUserIdGet(id);
 
@@ -152,6 +157,44 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
                 });
             });
         }
+        this.authService.currentUserHasRight('users:delete').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Benutzer löschen',
+                    navigate: (): void => {
+                        this.userDeleteClicked();
+                    }
+                });
+            }
+        });
+        this.authService.currentUserHasRight('rights:grant').pipe(first()).subscribe(allowed => {
+            this.grantRightsAvailable = allowed;
+        });
+    }
+
+    userDeleteClicked(): void {
+        this.authService.getCurrentUser().pipe(first()).subscribe(user => {
+            if (user.id === this.id) {
+                this.snackBar.open('Der derzeit angemeldete Benutzer kann nicht gelöscht werden!'
+                    , 'Ok');
+                return;
+            }
+            const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+                width: '400px',
+                data: {
+                    title: 'Benutzer löschen?',
+                    text: 'Hinweis: Dieser Schritt KANN rückgängig gemacht werden.'
+                }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    this.api.deleteUserUsersUserIdDelete(this.id).pipe(first()).subscribe(
+                        () => {
+                            this.router.navigateByUrl(this.navigationTarget);
+                        });
+                }
+            });
+        });
     }
 
     userHasRight(rightKey: string): boolean {
@@ -220,7 +263,7 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
                 dial: this.userGroup.get('dial').value,
                 employee: this.userGroup.get('employee').value,
                 office: this.userGroup.get('office').value,
-                cost:this.userGroup.get('cost').value,
+                cost: this.userGroup.get('cost').value,
             };
             this.api.createUserUsersPost(userCreate).pipe(first()).subscribe((user) => {
                 this.createUpdateSuccess(user);

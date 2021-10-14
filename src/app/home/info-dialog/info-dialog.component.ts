@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Contact, DefaultService, Price, TechnicalData, User, Credential} from 'eisenstecken-openapi-angular-library';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {MatDialogRef} from '@angular/material/dialog';
+import {AuthService} from '../../shared/auth.service';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-info-dialog',
@@ -14,11 +16,10 @@ export class InfoDialogComponent implements OnInit {
     priceDataSource: TableDataSource<Price>;
     technicalDataDataSource: TableDataSource<TechnicalData>;
     credentialDataSource: TableDataSource<Credential>;
+    userCanViewPrice = false;
 
-    constructor(private api: DefaultService, public dialogRef: MatDialogRef<InfoDialogComponent>) {
+    constructor(private api: DefaultService, public dialogRef: MatDialogRef<InfoDialogComponent>, private authService: AuthService) {
     }
-
-    // TODO: add a parameter where they can add all they stuff they want and show it here
 
     ngOnInit():
         void {
@@ -27,6 +28,9 @@ export class InfoDialogComponent implements OnInit {
         this.initPriceDataSource();
         this.initTechnicalDataDataSource();
         this.initCredentialDataSource();
+        this.authService.currentUserHasRight('prices:all').pipe(first()).subscribe(allowed => {
+            this.userCanViewPrice = allowed;
+        });
     }
 
     initUserDataSource(): void {

@@ -5,6 +5,8 @@ import * as moment from 'moment';
 import {Router} from '@angular/router';
 import {LockService} from '../shared/lock.service';
 import {CustomButton} from '../shared/components/toolbar/toolbar.component';
+import {AuthService} from '../shared/auth.service';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-delivery-note',
@@ -12,20 +14,24 @@ import {CustomButton} from '../shared/components/toolbar/toolbar.component';
     styleUrls: ['./delivery-note.component.scss']
 })
 export class DeliveryNoteComponent implements OnInit {
-    buttons: CustomButton[] = [
-        {
-            name: 'Neuen Lieferschein',
-            navigate: () => {
-                this.router.navigateByUrl('delivery_note/new');
-            }
-        }];
+    buttons: CustomButton[] = [];
     deliveryNoteDataSource: TableDataSource<DeliveryNote>;
 
-    constructor(private api: DefaultService, private locker: LockService, private router: Router) {
+    constructor(private api: DefaultService, private locker: LockService, private router: Router, private authService: AuthService) {
     }
 
     ngOnInit(): void {
         this.initDeliveryNotes();
+        this.authService.currentUserHasRight('delivery_notes:modify').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Neuer Lieferschein',
+                    navigate: () => {
+                        this.router.navigateByUrl('delivery_note/new');
+                    }
+                });
+            }
+        });
     }
 
     private initDeliveryNotes(): void {
@@ -46,12 +52,16 @@ export class DeliveryNoteComponent implements OnInit {
                                 delivery_address: dataSource.delivery_address,
                             },
                             route: () => {
-                                this.locker.getLockAndTryNavigate(
-                                    this.api.islockedDeliveryNoteDeliveryNoteIslockedDeliveryNoteIdGet(dataSource.id),
-                                    this.api.lockDeliveryNoteDeliveryNoteLockDeliveryNoteIdPost(dataSource.id),
-                                    this.api.unlockDeliveryNoteDeliveryNoteUnlockDeliveryNoteIdPost(dataSource.id),
-                                    'delivery_note/' + dataSource.id.toString()
-                                );
+                                this.authService.currentUserHasRight('delivery_notes:modify').pipe(first()).subscribe(allowed => {
+                                    if (allowed) {
+                                        this.locker.getLockAndTryNavigate(
+                                            this.api.islockedDeliveryNoteDeliveryNoteIslockedDeliveryNoteIdGet(dataSource.id),
+                                            this.api.lockDeliveryNoteDeliveryNoteLockDeliveryNoteIdPost(dataSource.id),
+                                            this.api.unlockDeliveryNoteDeliveryNoteUnlockDeliveryNoteIdPost(dataSource.id),
+                                            'delivery_note/' + dataSource.id.toString()
+                                        );
+                                    }
+                                });
                             }
                         });
                 });

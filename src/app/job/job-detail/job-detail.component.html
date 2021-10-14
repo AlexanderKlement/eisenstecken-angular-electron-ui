@@ -3,9 +3,10 @@
 <div class="window-container">
     <app-info-builder [dataSource]="infoDataSource"></app-info-builder>
     <app-table-builder *ngIf="isMainJob" [dataSource]="subJobDataSource" title="Unteraufträge"></app-table-builder>
-    <app-table-builder *ngIf="isMainJob" [dataSource]="offerDataSource" title="Angebote"></app-table-builder>
-    <app-table-builder *ngIf="isMainJob" [dataSource]="outgoingInvoiceDataSource"
+    <app-table-builder *ngIf="isMainJob && offersAllowed" [dataSource]="offerDataSource"
+                       title="Angebote"></app-table-builder>
+    <app-table-builder *ngIf="isMainJob && outgoingInvoicesAllowed" [dataSource]="outgoingInvoiceDataSource"
                        title="Rechnungen"></app-table-builder>
-    <app-table-builder [dataSource]="orderDataSource" title="Bestellungen"></app-table-builder>
+    <app-table-builder *ngIf="ordersAllowed" [dataSource]="orderDataSource" title="Bestellungen"></app-table-builder>
 </div>
 

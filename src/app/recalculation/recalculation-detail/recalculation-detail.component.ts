@@ -7,6 +7,8 @@ import {first, map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {LockService} from '../../shared/lock.service';
+import {AuthService} from '../../shared/auth.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 @Component({
@@ -25,16 +27,10 @@ export class RecalculationDetailComponent implements OnInit {
     expenseDataSource: TableDataSource<Expense>;
     jobName$: Observable<string>;
 
-    buttons: CustomButton[] = [
-        {
-            name: 'Bearbeiten',
-            navigate: () => {
-                this.editButtonClicked();
-            }
-        }
-    ];
+    buttons: CustomButton[] = [];
 
-    constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute, private locker: LockService) {
+    constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute,
+                private locker: LockService, private authService: AuthService, private snackBar: MatSnackBar) {
     }
 
     ngOnInit(): void {
@@ -47,13 +43,32 @@ export class RecalculationDetailComponent implements OnInit {
             }
             this.api.readRecalculationByJobRecalculationJobJobIdGet(this.jobId).pipe().subscribe(recalculation => {
                 if (recalculation === undefined || recalculation === null) {
-                    this.router.navigateByUrl('recalculation/edit/new/' + this.jobId.toString());
+                    this.authService.currentUserHasRight('recalculations:create').pipe(first()).subscribe(allowed => {
+                        if (allowed) {
+                            this.router.navigateByUrl('recalculation/edit/new/' + this.jobId.toString());
+                        } else {
+                            this.snackBar.open('Sie sind nicht berechtigt Nachkalkulationen zu erstellen!'
+                                , 'Ok');
+                            this.router.navigateByUrl('recalculation');
+                        }
+                    });
+
                     return;
                 }
                 this.recalculation = recalculation;
                 this.initRecalculation();
                 this.loading = false;
             });
+        });
+        this.authService.currentUserHasRight('recalculations:modify').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Bearbeiten',
+                    navigate: () => {
+                        this.editButtonClicked();
+                    }
+                });
+            }
         });
     }
 

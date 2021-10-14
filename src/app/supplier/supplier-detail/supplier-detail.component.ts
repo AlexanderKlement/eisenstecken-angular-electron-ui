@@ -9,6 +9,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {OrderDateReturnData, OrderDialogComponent} from './order-dialog/order-dialog.component';
 import {first, map} from 'rxjs/operators';
 import * as moment from 'moment';
+import {AuthService} from '../../shared/auth.service';
 
 @Component({
     selector: 'app-supplier-detail',
@@ -23,23 +24,10 @@ export class SupplierDetailComponent implements OnInit {
     createdOrderDataSource: TableDataSource<Order>;
     orderedOrderDataSource: TableDataSource<OrderBundle>;
     deliveredOrderDataSource: TableDataSource<OrderBundle>;
-    buttons: CustomButton[] = [
-        {
-            name: 'Bearbeiten',
-            navigate: () => {
-                this.child.editButtonClicked();
-            }
-        },
-        {
-            name: 'Bestellung(en) senden',
-            navigate: () => {
-                this.sendOrderButtonClicked();
-            }
-        }
-    ];
+    buttons: CustomButton[] = [];
 
 
-    constructor(private api: DefaultService,
+    constructor(private api: DefaultService, private authService: AuthService,
                 private router: Router,
                 private route: ActivatedRoute,
                 public dialog: MatDialog) {
@@ -57,7 +45,26 @@ export class SupplierDetailComponent implements OnInit {
             this.initSupplierDetail(this.id);
             this.initOrderTable(this.id);
         });
-
+        this.authService.currentUserHasRight('suppliers:modify').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Bearbeiten',
+                    navigate: () => {
+                        this.child.editButtonClicked();
+                    }
+                });
+            }
+        });
+        this.authService.currentUserHasRight('orders:modify').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Bestellung(en) senden',
+                    navigate: () => {
+                        this.sendOrderButtonClicked();
+                    }
+                });
+            }
+        });
     }
 
     private initSupplierDetail(id: number): void {

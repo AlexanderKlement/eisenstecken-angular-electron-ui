@@ -1,4 +1,5 @@
 import {Right} from 'eisenstecken-openapi-angular-library';
+import {containsRight} from '../../shared/auth.service';
 
 
 export interface MenuTileDetail {
@@ -13,7 +14,7 @@ export const availableMenuTiles: MenuTileDetail[] = [
     {title: 'Aufträge', icon: 'domain', link: '/job', requiredRights: ['jobs:all']},
     {title: 'Nachkalkulation', icon: 'calculate', link: '/recalculation', requiredRights: ['recalculations:all']},
     {title: 'Bestellungen', icon: 'local_grocery_store', link: '/order', requiredRights: ['orders:all']},
-    {title: 'Lieferanten', icon: 'local_shipping', link: '/supplier', requiredRights: ['suppliers:all']},
+    {title: 'Lieferanten', icon: 'local_shipping', link: '/supplier', requiredRights: ['suppliers:all', 'stocks:all']},
     {title: 'Lieferscheine', icon: 'assignment', link: '/delivery_note', requiredRights: ['delivery_notes:all']},
     {
         title: 'Rechnungen',
@@ -40,11 +41,4 @@ export function matchRightsToMenuTiles(rights: Right[]): MenuTileDetail[] {
     return menuTileArray;
 }
 
-export function containsRight(rightString: string, rights: Right[]): boolean {
-    for (const right of rights) {
-        if (rightString === right.key) {
-            return true;
-        }
-    }
-    return false;
-}
+

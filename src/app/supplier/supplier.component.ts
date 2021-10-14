@@ -4,6 +4,8 @@ import {DefaultService, Stock, Supplier} from 'eisenstecken-openapi-angular-libr
 import {LockService} from '../shared/lock.service';
 import {CustomButton} from '../shared/components/toolbar/toolbar.component';
 import {Router} from '@angular/router';
+import {first} from 'rxjs/operators';
+import {AuthService} from '../shared/auth.service';
 
 @Component({
     selector: 'app-supplier',
@@ -13,23 +15,12 @@ import {Router} from '@angular/router';
 export class SupplierComponent implements OnInit {
     supplierTableDataSource: TableDataSource<Supplier>;
     stockTableDataSource: TableDataSource<Stock>;
-    buttons: CustomButton[] = [
-        {
-            name: 'Neuer Lieferant',
-            navigate: () => {
-                this.router.navigateByUrl('supplier/edit/new');
-            },
-        },
-        {
-            name: 'Neues Lager',
-            navigate: () => {
-                this.router.navigateByUrl('stock/edit/new');
-            },
-        }
-    ];
+    buttons: CustomButton[] = [];
+    suppliersReadAllowed = false;
+    stocksReadAllowed = false;
 
 
-    constructor(private api: DefaultService, private locker: LockService, private router: Router) {
+    constructor(private api: DefaultService, private locker: LockService, private router: Router, private authService: AuthService) {
     }
 
     ngOnInit(): void {
@@ -64,6 +55,32 @@ export class SupplierComponent implements OnInit {
             (api) => api.readSupplierCountSupplierCountGet()
         );
         this.supplierTableDataSource.loadData();
+        this.authService.currentUserHasRight('suppliers:create').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Neuer Lieferant',
+                    navigate: () => {
+                        this.router.navigateByUrl('supplier/edit/new');
+                    },
+                });
+            }
+        });
+        this.authService.currentUserHasRight('stocks:create').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Neues Lager',
+                    navigate: () => {
+                        this.router.navigateByUrl('stock/edit/new');
+                    },
+                });
+            }
+        });
+        this.authService.currentUserHasRight('stocks:all').pipe(first()).subscribe(allowed => {
+            this.stocksReadAllowed = true;
+        });
+        this.authService.currentUserHasRight('suppliers:all').pipe(first()).subscribe(allowed => {
+            this.suppliersReadAllowed = true;
+        });
     }
 
 

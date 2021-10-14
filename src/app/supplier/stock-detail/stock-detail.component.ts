@@ -7,6 +7,8 @@ import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import * as moment from 'moment';
+import {AuthService} from '../../shared/auth.service';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-stock-detail',
@@ -20,16 +22,9 @@ export class StockDetailComponent implements OnInit {
     public id: number;
     ingoingDataSource: TableDataSource<Order>;
     outgoingDataSource: TableDataSource<Order>;
-    buttons: CustomButton[] = [
-        {
-            name: 'Bearbeiten',
-            navigate: () => {
-                this.child.editButtonClicked();
-            }
-        }
-    ];
+    buttons: CustomButton[] = [];
 
-    constructor(private api: DefaultService,
+    constructor(private api: DefaultService, private authService: AuthService,
                 private router: Router,
                 private route: ActivatedRoute,
                 public dialog: MatDialog) {
@@ -46,6 +41,16 @@ export class StockDetailComponent implements OnInit {
             }
             this.initStockDetail(this.id);
             this.initOrderTable();
+        });
+        this.authService.currentUserHasRight('stocks:modify').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Bearbeiten',
+                    navigate: () => {
+                        this.child.editButtonClicked();
+                    }
+                });
+            }
         });
     }
 
