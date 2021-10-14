@@ -117,12 +117,7 @@ export class JobDetailComponent implements OnInit {
                                 description: dataSource.description
                             },
                             route: () => {
-                                this.locker.getLockAndTryNavigate(
-                                    this.api.islockedJobJobIslockedJobIdGet(dataSource.id),
-                                    this.api.unlockJobJobUnlockJobIdPost(dataSource.id),
-                                    this.api.lockJobJobLockJobIdPost(dataSource.id),
-                                    'job/' + dataSource.id.toString()
-                                );
+                                this.router.navigateByUrl('/job/' + dataSource.id.toString());
                             }
                         });
                 });

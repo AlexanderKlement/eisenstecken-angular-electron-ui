@@ -146,7 +146,7 @@ export class EmployeeComponent implements OnInit {
                     rows.push(
                         {
                             values: {
-                                date: moment(dataSource.date).format('L'),
+                                date: moment(dataSource.date).format('MMMM YYYY'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 'eating_place.name': dataSource.eating_place.name,
                                 sum: dataSource.sum
@@ -163,7 +163,7 @@ export class EmployeeComponent implements OnInit {
                 {name: 'date', headerName: 'Datum'},
                 {name: 'sum', headerName: 'Anzahl'}
             ],
-            (api) => api.readMealCountMealCountGet()
+            (api) => api.readMealSumsMealSumCountGet()
         );
         this.mealDataSource.loadData();
     }

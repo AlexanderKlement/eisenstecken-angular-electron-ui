@@ -11,7 +11,6 @@ import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {ApiModule, Configuration, ConfigurationParameters} from 'eisenstecken-openapi-angular-library';
 import {HomeModule} from './home/home.module';
-import {DetailModule} from './detail/detail.module';
 import {APP_CONFIG} from 'environments/environment';
 
 import {AppComponent} from './app.component';
@@ -71,7 +70,6 @@ export function apiConfigFactory(): Configuration {
         CoreModule,
         SharedModule,
         HomeModule,
-        DetailModule,
         JobModule,
         ClientModule,
         UserModule,

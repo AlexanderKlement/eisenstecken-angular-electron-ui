@@ -35,7 +35,7 @@ export class AccessGuard implements CanActivate {
             console.log('External Route');
             console.log(this.router.url);
             if (!this.router.url.startsWith('/work_day') || !this.router.url.startsWith('/login')) {
-                this.router.navigateByUrl('/work_day');
+                //this.router.navigateByUrl('/work_day');
             }
         } else {
             console.log('Internal Route');
