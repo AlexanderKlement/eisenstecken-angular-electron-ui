@@ -45,10 +45,8 @@ export class LockService {
         this.dialog.open(LockDialogComponent, {
             data: {
                 lock,
-                unlockFunction: unlockObservable
+                unlockObservable
             }
         });
     }
-
-
 }
