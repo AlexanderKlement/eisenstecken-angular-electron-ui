@@ -10,7 +10,9 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <p *ngIf="!create">Beschäftigter: {{(selectedUser$ | async).fullname}}</p>
+        <div *ngIf="!create">
+            <p>Beschäftigter: {{selectedUserName$ | async}}</p>
+        </div>
         <p>Minuten zu der Arbeitszeit hinzügen oder entfernen (-)</p>
         <mat-form-field appearance="fill">
             <mat-label>Arbeitszeit [Minuten]</mat-label>

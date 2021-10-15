@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {DefaultService, User, WorkloadCreate} from 'eisenstecken-openapi-angular-library';
 import {Observable} from 'rxjs';
-import {first} from 'rxjs/operators';
+import {first, map} from 'rxjs/operators';
 
 export interface WorkHourEditDialogData {
     userId: number;
@@ -20,7 +20,7 @@ export class WorkHourEditDialogComponent implements OnInit {
     userId: number;
     create: boolean;
     users$: Observable<User[]>;
-    selectedUser$: Observable<User>;
+    selectedUserName$: Observable<string>;
 
     constructor(
         public dialogRef: MatDialogRef<WorkHourEditDialogComponent>, private api: DefaultService,
@@ -32,7 +32,9 @@ export class WorkHourEditDialogComponent implements OnInit {
         this.users$ = this.api.readUsersUsersGet();
         this.userId = this.data.userId;
         if (!this.create) {
-            this.selectedUser$ = this.api.readUserUsersUserIdGet(this.userId);
+            this.selectedUserName$ = this.api.readUserUsersUserIdGet(this.userId).pipe(map(
+                user => user.fullname
+            ));
         }
     }
 

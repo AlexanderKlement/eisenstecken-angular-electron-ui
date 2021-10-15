@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from "@angular/forms";
-import {Country, DefaultService} from "eisenstecken-openapi-angular-library";
-import {Observable} from "rxjs";
+import {FormGroup} from '@angular/forms';
+import {Country, DefaultService} from 'eisenstecken-openapi-angular-library';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-address-form',
