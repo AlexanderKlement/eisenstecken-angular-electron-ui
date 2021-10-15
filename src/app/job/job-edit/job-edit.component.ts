@@ -39,12 +39,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
 
     lockFunction = (api: DefaultService, id: number): Observable<Lock> => api.islockedJobJobIslockedJobIdGet(id);
     dataFunction = (api: DefaultService, id: number): Observable<Job> => api.readJobJobJobIdGet(id);
-    unlockFunction = (afterUnlockFunction: VoidFunction = () => {
-    }): void => {
-        this.api.unlockJobJobUnlockJobIdPost(this.id).subscribe(() => {
-            afterUnlockFunction();
-        });
-    };
+    unlockFunction = (api: DefaultService, id: number): Observable<boolean> => api.unlockJobJobUnlockJobIdPost(id);
 
 
     ngOnInit(): void {
@@ -124,9 +119,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
 
     createUpdateSuccess(job: Job): void {
         this.id = job.id;
-        this.unlockFunction(() => {
-            this.router.navigateByUrl('job/' + job.id.toString());
-        });
+        this.router.navigateByUrl('job/' + job.id.toString());
     }
 
     observableReady(): void {

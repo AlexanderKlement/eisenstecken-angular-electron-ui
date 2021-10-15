@@ -17,6 +17,7 @@ export class NavigationService {
 
   back(): void {
     if(this.backEventInProgress){
+      // eslint-disable-next-line no-console
       console.info("back navigation once prevented");
       this.backEventInProgress = false;
       return;
@@ -29,7 +30,7 @@ export class NavigationService {
     }
   }
 
-  backEvent() : void {
+  backEvent(): void {
     this.backEventInProgress = true;
   }
 

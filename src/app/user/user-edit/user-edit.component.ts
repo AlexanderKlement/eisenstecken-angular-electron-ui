@@ -73,16 +73,7 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
 
     dataFunction = (api: DefaultService, id: number): Observable<User> => api.readUserUsersUserIdGet(id);
 
-    unlockFunction = (afterUnlockFunction: VoidFunction = () => {
-    }): void => {
-        if (this.createMode) {
-            afterUnlockFunction();
-            return;
-        }
-        this.api.unlockUserUsersUnlockUserIdGet(this.id).subscribe(() => {
-            afterUnlockFunction();
-        });
-    };
+    unlockFunction = (api: DefaultService, id: number): Observable<boolean> => api.unlockUserUsersUnlockUserIdGet(id);
 
     onCategoryClick(category: string): void {
         this.availableRightCats = this.availableRightCats.map((cat) => {
@@ -237,10 +228,8 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
     createUpdateSuccess(user: User): void {
         this.id = user.id;
         this.navigationTarget = 'user/edit/' + user.id.toString();
-        this.unlockFunction(() => {
-            this.userRights = user.rights;
-            this.router.navigateByUrl(this.navigationTarget);
-        });
+        this.userRights = user.rights;
+        this.router.navigateByUrl(this.navigationTarget);
         this.snackBar.open('Speichern erfolgreich!', 'Ok', {
             duration: 3000
         });

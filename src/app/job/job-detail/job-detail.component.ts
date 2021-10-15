@@ -151,9 +151,9 @@ export class JobDetailComponent implements OnInit {
                         {
                             values: {
                                 id: dataSource.id,
-                                date: dataSource.number,
-                                // eslint-disable-next-line @typescript-eslint/naming-convention
-                                full_price_with_vat: dataSource.date
+                                date: dataSource.date,
+                                // eslint-disable-next-line id-blacklist
+                                number: dataSource.number
                             },
                             route: () => {
                                 this.authService.currentUserHasRight('outgoing_invoices:modify').pipe(first()).subscribe(allowed => {
@@ -319,17 +319,6 @@ export class JobDetailComponent implements OnInit {
             }
         });
 
-
-        this.authService.currentUserHasRight('work_hours:all').pipe(first()).subscribe(allowed => {
-            if (allowed) {
-                this.buttonsMain.push({
-                    name: 'Stunden',
-                    navigate: (): void => {
-                        this.router.navigateByUrl('/work_hours/' + this.jobId.toString());
-                    }
-                });
-            }
-        });
 
         this.authService.currentUserHasRight('work_hours:all').pipe(first()).subscribe(allowed => {
             if (allowed) {

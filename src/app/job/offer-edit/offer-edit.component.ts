@@ -89,16 +89,8 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
 
     dataFunction = (api: DefaultService, id: number): Observable<Offer> => api.readOfferOfferOfferIdGet(id);
 
-    unlockFunction = (afterUnlockFunction: VoidFunction = () => {
-    }): void => {
-        if (this.createMode) {
-            afterUnlockFunction();
-            return;
-        }
-        this.api.lockOfferOfferUnlockOfferIdPost(this.id).subscribe(() => {
-            afterUnlockFunction();
-        });
-    };
+    unlockFunction = (api: DefaultService, id: number): Observable<boolean> => api.lockOfferOfferUnlockOfferIdPost(id);
+
 
     ngOnInit(): void {
         super.ngOnInit();
@@ -211,9 +203,8 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
 
     createUpdateSuccess(offer: Offer): void {
         this.id = offer.id;
-        this.unlockFunction(() => {
-            this.router.navigateByUrl('job/' + this.jobId.toString()); //TODO: change this to the detail view of the offer
-        });
+
+        this.router.navigateByUrl('job/' + this.jobId.toString()); //TODO: change this to the detail view of the offer
     }
 
     observableReady(): void {

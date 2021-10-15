@@ -1,4 +1,4 @@
-<app-toolbar [beforeBackFunction]="unlockFunction"></app-toolbar>
+<app-toolbar ></app-toolbar>
 <div class="window-container">
   <h1 *ngIf="createMode">Kunde erstellen</h1>
   <h1 *ngIf="!createMode">Kunde bearbeiten</h1>
@@ -9,7 +9,7 @@
         <mat-label>Name</mat-label>
         <input class="form-control" formControlName="name" matInput>
       </mat-form-field>
-      <mat-form-field *ngIf="!company">
+      <mat-form-field *ngIf="!company" appearance="fill">
         <mat-label>Nachname</mat-label>
         <input class="form-control" formControlName="lastname" matInput>
       </mat-form-field>
@@ -29,7 +29,7 @@
         <mat-label>Tel2</mat-label>
         <input class="form-control" formControlName="tel2" matInput>
       </mat-form-field>
-      <mat-form-field *ngIf="company">
+      <mat-form-field *ngIf="company" appearance="fill">
         <mat-label>P. IVA</mat-label>
         <input class="form-control" formControlName="vat_number" matInput>
       </mat-form-field>
@@ -37,15 +37,15 @@
         <mat-label>Steuernummer</mat-label>
         <input class="form-control" formControlName="fiscal_code" matInput>
       </mat-form-field>
-      <mat-form-field *ngIf="company">
+      <mat-form-field *ngIf="company" appearance="fill">
         <mat-label>PEC</mat-label>
         <input class="form-control" formControlName="pec" matInput>
       </mat-form-field>
-      <mat-form-field *ngIf="company">
+      <mat-form-field *ngIf="company" appearance="fill">
         <mat-label>Empfängerkodex</mat-label>
         <input class="form-control" formControlName="codice_destinatario" matInput>
       </mat-form-field>
-      <mat-form-field *ngIf="!company && genderOptions$ | async as genderOptions">
+      <mat-form-field *ngIf="!company && genderOptions$ | async as genderOptions" appearance="fill">
         <mat-label>Geschlecht</mat-label>
         <mat-select formControlName="gender">
           <mat-option *ngFor="let gender of genderOptions" [value]="gender.code">
@@ -53,7 +53,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field *ngIf="languageOptions$ | async as languageOptions">
+      <mat-form-field *ngIf="languageOptions$ | async as languageOptions" appearance="fill">
         <mat-label>Sprache</mat-label>
         <mat-select formControlName="language">
           <mat-option *ngFor="let language of languageOptions" [value]="language.code">

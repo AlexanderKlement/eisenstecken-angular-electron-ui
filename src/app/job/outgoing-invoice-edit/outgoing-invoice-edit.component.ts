@@ -17,6 +17,9 @@ import {AbstractControl, FormArray, FormControl, FormGroup} from '@angular/forms
 import {first, tap} from 'rxjs/operators';
 import {formatDate} from '@angular/common';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
+import {AuthService} from '../../shared/auth.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-outgoing-invoice-edit',
@@ -31,12 +34,14 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
     jobId: number;
     navigationTarget = 'job';
     hiddenDescriptives: number[];
+    buttons: CustomButton[] = [];
 
-    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
+    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog,
+                private authService: AuthService, private snackBar: MatSnackBar) {
         super(api, router, route, dialog);
     }
 
-   public static formatDateTransport(datetime: string): string { //TODO: move to some sort of util class or so
+    public static formatDateTransport(datetime: string): string { //TODO: move to some sort of util class or so
         return formatDate(datetime, 'yyyy-MM-dd', 'en-US');
     }
 
@@ -52,16 +57,8 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
     dataFunction = (api: DefaultService, id: number): Observable<OutgoingInvoice> =>
         api.readOutgoingInvoiceOutgoingInvoiceOutgoingInvoiceIdGet(id);
 
-    unlockFunction = (afterUnlockFunction: VoidFunction = () => {
-    }): void => {
-        if (this.createMode) {
-            afterUnlockFunction();
-            return;
-        }
-        this.api.unlockOutgoingInvoiceOutgoingInvoiceUnlockOutgoingInvoiceIdPost(this.id).subscribe(() => {
-            afterUnlockFunction();
-        });
-    };
+    unlockFunction = (api: DefaultService, id: number): Observable<boolean> =>
+        api.unlockOutgoingInvoiceOutgoingInvoiceUnlockOutgoingInvoiceIdPost(id);
 
     ngOnInit(): void {
         this.hiddenDescriptives = [];
@@ -81,6 +78,46 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
                 });
             });
         }
+        this.authService.currentUserHasRight('outgoing_invoices:delete').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Rechnung löschen',
+                    navigate: (): void => {
+                        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+                            width: '400px',
+                            data: {
+                                title: 'Rechnung löschen?',
+                                text: 'Dieser Schritt kann nicht rückgängig gemacht werden.'
+                            }
+                        });
+                        dialogRef.afterClosed().subscribe(result => {
+                            if (result) {
+                                this.api.deleteOutgoingInvoiceOutgoingInvoiceOutgoingInvoiceIdDelete(this.id)
+                                    .pipe(first()).subscribe((success) => {
+                                        if (success) {
+                                            this.router.navigateByUrl(this.navigationTarget);
+                                        } else {
+                                            this.invoiceDeleteFailed();
+                                        }
+                                    },
+                                    error => {
+                                        this.invoiceDeleteFailed(error);
+                                    });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    invoiceDeleteFailed(error?: any) {
+        if (error) {
+            console.error(error);
+        }
+        this.snackBar.open('Die Rechnung konnte leider nicht gelöscht werden.'
+            , 'Ok');
+        this.router.navigateByUrl(this.navigationTarget);
     }
 
     getDescriptiveArticles(): FormArray {
@@ -221,9 +258,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
 
     createUpdateSuccess(invoice: OutgoingInvoice): void {
         this.id = invoice.id;
-        this.unlockFunction(() => {
-            this.router.navigateByUrl('job/' + this.jobId.toString()); //TODO: change this to the detail view of the offer
-        });
+        this.router.navigateByUrl('job/' + this.jobId.toString()); //TODO: change this to the detail view of the offer
     }
 
     observableReady(): void {

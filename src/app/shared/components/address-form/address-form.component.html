@@ -12,11 +12,11 @@
       <mat-label>PLZ</mat-label>
       <input class="form-control" formControlName="cap" matInput>
     </mat-form-field>
-    <mat-form-field *ngIf="countryOptions$ | async as countryOptions">
+    <mat-form-field *ngIf="countryOptions$ | async as countryOptions" appearance="fill">
       <mat-label>Land</mat-label>
       <mat-select formControlName="country">
         <mat-option *ngFor="let country of countryOptions" [value]="country.code">
-          {{country.name}}
+          {{country.name.translation_de}}
         </mat-option>
       </mat-select>
     </mat-form-field>

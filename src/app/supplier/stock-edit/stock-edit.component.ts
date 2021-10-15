@@ -22,12 +22,7 @@ export class StockEditComponent extends BaseEditComponent<Stock> implements OnIn
 
     lockFunction = (api: DefaultService, id: number): Observable<Lock> => api.islockedStockStockIslockedStockIdGet(id);
     dataFunction = (api: DefaultService, id: number): Observable<Stock> => api.readStockStockStockIdGet(id);
-    unlockFunction = (afterUnlockFunction: VoidFunction = () => {
-    }): void => {
-        this.api.unlockStockStockUnlockStockIdPost(this.id).subscribe(() => {
-            afterUnlockFunction();
-        });
-    };
+    unlockFunction = (api: DefaultService, id: number): Observable<boolean> => api.unlockStockStockUnlockStockIdPost(id);
 
     ngOnInit(): void {
         super.ngOnInit();
@@ -76,9 +71,7 @@ export class StockEditComponent extends BaseEditComponent<Stock> implements OnIn
 
     createUpdateSuccess(stock: Stock): void {
         this.id = stock.id;
-        this.unlockFunction(() => {
-            this.router.navigateByUrl('stock/' + stock.id.toString());
-        });
+        this.router.navigateByUrl('stock/' + stock.id.toString());
     }
 
     private initStockGroup(): void {

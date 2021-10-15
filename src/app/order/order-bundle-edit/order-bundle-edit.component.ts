@@ -34,16 +34,7 @@ export class OrderBundleEditComponent extends BaseEditComponent<OrderBundle> imp
 
     dataFunction = (api: DefaultService, id: number): Observable<OrderBundle> => api.readOrderBundleOrderBundleOrderBundleIdGet(id);
 
-    unlockFunction = (afterUnlockFunction: VoidFunction = () => {
-    }): void => {
-        if (this.createMode) {
-            afterUnlockFunction();
-            return;
-        }
-        this.api.lockOrderBundleOrderBundleLockOrderBundleIdPost(this.id).subscribe(() => {
-            afterUnlockFunction();
-        });
-    };
+    unlockFunction = (api: DefaultService, id: number): Observable<boolean> => api.unlockOrderBundleOrderBundleUnlockOrderBundleIdPost(id);
 
     ngOnInit(): void {
         super.ngOnInit();

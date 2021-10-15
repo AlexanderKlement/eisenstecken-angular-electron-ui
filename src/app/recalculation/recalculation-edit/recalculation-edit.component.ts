@@ -37,12 +37,8 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
         api.islockedRecalculationRecalculationIslockedRecalculationIdGet(id);
     dataFunction = (api: DefaultService, id: number): Observable<Recalculation> =>
         api.readRecalculationRecalculationRecalculationIdGet(id);
-    unlockFunction = (afterUnlockFunction: VoidFunction = () => {
-    }): void => {
-        this.api.unlockRecalculationRecalculationUnlockRecalculationIdPost(this.id).subscribe(() => {
-            afterUnlockFunction();
-        });
-    };
+    unlockFunction = (api: DefaultService, id: number): Observable<boolean> =>
+        api.unlockRecalculationRecalculationUnlockRecalculationIdPost(id);
 
     ngOnInit(): void {
         super.ngOnInit();

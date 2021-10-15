@@ -44,16 +44,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
     dataFunction = (api: DefaultService, id: number): Observable<DeliveryNote> =>
         api.readDeliveryNoteDeliveryNoteDeliveryNoteIdGet(id);
 
-    unlockFunction = (afterUnlockFunction: VoidFunction = () => {
-    }): void => {
-        if (this.createMode) {
-            afterUnlockFunction();
-            return;
-        }
-        this.api.unlockDeliveryNoteDeliveryNoteUnlockDeliveryNoteIdPost(this.id).subscribe(() => {
-            afterUnlockFunction();
-        });
-    };
+    unlockFunction = (api: DefaultService, id: number): Observable<boolean> => api.unlockDeliveryNoteDeliveryNoteUnlockDeliveryNoteIdPost(id);
 
 
     ngOnInit(): void {

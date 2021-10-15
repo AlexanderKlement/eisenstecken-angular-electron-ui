@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AuthService} from './auth.service';
+import {ElectronService} from '../core/services';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ export class AccessGuard implements CanActivate {
         'localhost'
     ];
 
-    constructor(private authService: AuthService, private router: Router) {
+    constructor(private authService: AuthService, private router: Router, private electron: ElectronService) {
     }
 
     canActivate(
@@ -35,7 +36,9 @@ export class AccessGuard implements CanActivate {
             console.log('External Route');
             console.log(this.router.url);
             if (!this.router.url.startsWith('/work_day') || !this.router.url.startsWith('/login')) {
-                //this.router.navigateByUrl('/work_day');
+                if (!this.electron.isElectron) {
+                    this.router.navigateByUrl('/work_day'); //before introducing this again, s
+                }
             }
         } else {
             console.log('Internal Route');

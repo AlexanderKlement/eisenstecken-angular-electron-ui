@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../shared/auth.service';
 import {first} from 'rxjs/operators';
+import {CustomButton} from '../shared/components/toolbar/toolbar.component';
 
 @Component({
     selector: 'app-invoice',

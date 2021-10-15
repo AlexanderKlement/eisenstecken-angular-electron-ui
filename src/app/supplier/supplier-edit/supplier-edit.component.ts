@@ -30,12 +30,7 @@ export class SupplierEditComponent extends BaseEditComponent<Supplier> implement
 
     lockFunction = (api: DefaultService, id: number): Observable<Lock> => api.islockedSupplierSupplierIslockedSupplierIdGet(id);
     dataFunction = (api: DefaultService, id: number): Observable<Supplier> => api.readSupplierSupplierSupplierIdGet(id);
-    unlockFunction = (afterUnlockFunction: VoidFunction = () => {
-    }): void => {
-        this.api.unlockSupplierSupplierUnlockSupplierIdPost(this.id).subscribe(() => {
-            afterUnlockFunction();
-        });
-    };
+    unlockFunction = (api: DefaultService, id: number): Observable<boolean> => api.unlockSupplierSupplierUnlockSupplierIdPost(id);
 
     ngOnInit(): void {
         super.ngOnInit();
@@ -94,9 +89,7 @@ export class SupplierEditComponent extends BaseEditComponent<Supplier> implement
 
     createUpdateSuccess(supplier: Supplier): void {
         this.id = supplier.id;
-        this.unlockFunction(() => {
-            this.router.navigateByUrl('supplier/' + supplier.id.toString());
-        });
+        this.router.navigateByUrl('supplier/' + supplier.id.toString());
     }
 
     getAddressGroup(): FormGroup {

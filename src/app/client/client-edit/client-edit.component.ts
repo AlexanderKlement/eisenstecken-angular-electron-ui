@@ -27,13 +27,7 @@ export class ClientEditComponent extends BaseEditComponent<Client> implements On
     lockFunction = (api: DefaultService, id: number): Observable<Lock> => api.islockedClientClientIslockedClientIdGet(id);
 
     dataFunction = (api: DefaultService, id: number): Observable<Client> => api.readClientClientClientIdGet(id);
-
-    unlockFunction = (afterUnlockFunction: VoidFunction = () => {
-    }): void => {
-        this.api.unlockClientClientUnlockClientIdPost(this.id).pipe(first()).subscribe(() => {
-            afterUnlockFunction();
-        });
-    };
+    unlockFunction = (api: DefaultService, id: number): Observable<boolean> => api.unlockClientClientUnlockClientIdPost(id);
 
     ngOnInit(): void {
         super.ngOnInit();
@@ -136,9 +130,7 @@ export class ClientEditComponent extends BaseEditComponent<Client> implements On
 
     createUpdateSuccess(client: Client): void {
         this.id = client.id;
-        this.unlockFunction(() => {
-            this.router.navigateByUrl('client/' + this.id.toString());
-        });
+        this.router.navigateByUrl('client/' + this.id.toString());
     }
 
     companyCheckBoxClicked(): void {
