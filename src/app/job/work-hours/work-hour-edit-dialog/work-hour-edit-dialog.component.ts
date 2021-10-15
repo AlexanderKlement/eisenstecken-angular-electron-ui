@@ -17,27 +17,27 @@ export interface WorkHourEditDialogData {
 export class WorkHourEditDialogComponent implements OnInit {
 
   hours = '';
-    minutes = '';
-    userId: number;
-    create: boolean;
-    users$: Observable<User[]>;
-    selectedUserName$: Observable<string>;
+  minutes = '';
+  userId: number;
+  create: boolean;
+  users$: Observable<User[]>;
+  selectedUserName$: Observable<string>;
 
   constructor(
     public dialogRef: MatDialogRef<WorkHourEditDialogComponent>, private api: DefaultService,
     @Inject(MAT_DIALOG_DATA) public data: WorkHourEditDialogData) {
   }
 
-    ngOnInit(): void {
-        this.create = this.data.userId <= 0;
-        this.users$ = this.api.readUsersUsersGet();
-        this.userId = this.data.userId;
-        if (!this.create) {
-            this.selectedUserName$ = this.api.readUserUsersUserIdGet(this.userId).pipe(map(
-                user => user.fullname
-            ));
-        }
+  ngOnInit(): void {
+    this.create = this.data.userId <= 0;
+    this.users$ = this.api.readUsersUsersGet();
+    this.userId = this.data.userId;
+    if (!this.create) {
+      this.selectedUserName$ = this.api.readUserUsersUserIdGet(this.userId).pipe(map(
+        user => user.fullname
+      ));
     }
+  }
 
 
   onNoClick(): void {
