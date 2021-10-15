@@ -1,31 +1,26 @@
 <h1 *ngIf="create" mat-dialog-title>Arbeitsstunden hinzufügen</h1>
 <h1 *ngIf="!create" mat-dialog-title>Arbeitsstunden bearbeiten</h1>
 <div mat-dialog-content>
-  <div fxLayout="column" fxLayoutAlign="space-around center">
-    <mat-form-field *ngIf="create" appearance="fill">
-      <mat-label>Benutzer</mat-label>
-      <mat-select [(ngModel)]="userId" required>
-        <mat-option *ngFor="let user of users$ | async" [value]="user.id">
-          {{user.fullname}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <p *ngIf="!create">Beschäftigter: {{(selectedUser$ | async).fullname}}</p>
-    <p>Arbeitszeit hinzügen oder entfernen (-)</p>
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <mat-form-field appearance="fill">
-        <mat-label>Stunden</mat-label>
-        <input class="form-control" [(ngModel)]="hours" matInput type="number">
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Minuten</mat-label>
-        <input class="form-control" [(ngModel)]="minutes" matInput type="number">
-      </mat-form-field>
+    <div fxLayout="column" fxLayoutAlign="space-around center">
+        <mat-form-field *ngIf="create" appearance="fill">
+            <mat-label>Benutzer</mat-label>
+            <mat-select [(ngModel)]="userId" required>
+                <mat-option *ngFor="let user of users$ | async" [value]="user.id">
+                    {{user.fullname}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div *ngIf="!create">
+            <p>Beschäftigter: {{selectedUserName$ | async}}</p>
+        </div>
+        <p>Minuten zu der Arbeitszeit hinzügen oder entfernen (-)</p>
+        <mat-form-field appearance="fill">
+            <mat-label>Arbeitszeit [Minuten]</mat-label>
+            <input class="form-control" [(ngModel)]="minutes" matInput>
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <button mat-button (click)="onNoClick()">Abbrechen</button>
+            <button mat-button (click)="onSubmitClick()">Speichern</button>
+        </div>
     </div>
-    <div fxLayout="row" fxLayoutAlign="space-around center">
-      <button mat-button (click)="onNoClick()">Abbrechen</button>
-      <button mat-button (click)="onSubmitClick()">Speichern</button>
-    </div>
-  </div>
 </div>
-
