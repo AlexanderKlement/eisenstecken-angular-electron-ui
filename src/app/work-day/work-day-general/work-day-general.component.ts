@@ -576,6 +576,7 @@ export class WorkDayGeneralComponent implements OnInit {
     }
 
     private initWorkDay() {
+        this.submitted = false;
         this.initWorkDayFinishGroup();
         if (this.admin) {
             this.workDayStartable = false;
