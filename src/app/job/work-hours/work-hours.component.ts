@@ -4,7 +4,6 @@ import {TableDataSource} from '../../shared/components/table-builder/table-build
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {WorkHourEditDialogComponent} from './work-hour-edit-dialog/work-hour-edit-dialog.component';
-import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-work-hours',
@@ -32,20 +31,20 @@ export class WorkHoursComponent implements OnInit {
         });
     }
 
-    workHourClicked(workHourId: number, username: string): void {
+    workHourClicked(workHourId: number, userId: number): void {
         const dialogRef = this.dialog.open(WorkHourEditDialogComponent, {
             width: '600px',
             data: {
-                user: username,
-                minutes: 0
+                userId,
+                create: false
             }
         });
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.api.updateWorkloadWorkloadWorkloadIdPut(workHourId, result.minutes).pipe(first()).subscribe(workload => {
+                if (result.reload) {
                     window.location.reload();
-                });
+                }
             }
         });
     }
@@ -66,7 +65,7 @@ export class WorkHoursComponent implements OnInit {
                                 cost: dataSource.cost,
                             },
                             route: () => {
-                                this.workHourClicked(dataSource.id, dataSource.user.fullname);
+                                this.workHourClicked(dataSource.id, dataSource.user.id);
                             }
                         });
                 });

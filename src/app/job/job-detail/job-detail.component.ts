@@ -8,6 +8,9 @@ import {TableDataSource} from '../../shared/components/table-builder/table-build
 import {LockService} from '../../shared/lock.service';
 import * as moment from 'moment';
 import {AuthService} from '../../shared/auth.service';
+import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-job-detail',
@@ -35,8 +38,8 @@ export class JobDetailComponent implements OnInit {
     outgoingInvoicesAllowed = false;
     offersAllowed = false;
 
-    constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute,
-                private locker: LockService, private authService: AuthService) {
+    constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute, private snackBar: MatSnackBar,
+                private locker: LockService, private authService: AuthService, private dialog: MatDialog) {
     }
 
     ngOnInit(): void {
@@ -331,6 +334,50 @@ export class JobDetailComponent implements OnInit {
             }
         });
 
+        this.authService.currentUserHasRight('jobs:delete').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttonsMain.push({
+                    name: 'Auftrag löschen',
+                    navigate: (): void => {
+                        this.jobDeleteClicked();
+                    }
+                });
+            }
+        });
 
+
+    }
+
+    private jobDeleteClicked(): void {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Auftrag löschen?',
+                text: 'Auftrag wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden!'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                const secondDialogRef = this.dialog.open(ConfirmDialogComponent, {
+                    width: '400px',
+                    data: {
+                        title: 'Auftrag löschen?',
+                        text: 'Sind Sie sich sicher?'
+                    }
+                });
+                secondDialogRef.afterClosed().subscribe(secondResult => {
+                    if (secondResult) {
+                        this.api.deleteJobJobJobIdDelete(this.jobId).pipe(first()).subscribe(success => {
+                            if (success) {
+                                this.router.navigateByUrl('job');
+                            } else {
+                                this.snackBar.open('Der Auftrag konnte leider nicht gelöscht werden.'
+                                    , 'Ok');
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 }

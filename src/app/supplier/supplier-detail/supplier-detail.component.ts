@@ -10,6 +10,8 @@ import {OrderDateReturnData, OrderDialogComponent} from './order-dialog/order-di
 import {first, map} from 'rxjs/operators';
 import * as moment from 'moment';
 import {AuthService} from '../../shared/auth.service';
+import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-supplier-detail',
@@ -28,7 +30,7 @@ export class SupplierDetailComponent implements OnInit {
 
 
     constructor(private api: DefaultService, private authService: AuthService,
-                private router: Router,
+                private router: Router, private snackBar: MatSnackBar,
                 private route: ActivatedRoute,
                 public dialog: MatDialog) {
     }
@@ -61,6 +63,16 @@ export class SupplierDetailComponent implements OnInit {
                     name: 'Bestellung(en) senden',
                     navigate: () => {
                         this.sendOrderButtonClicked();
+                    }
+                });
+            }
+        });
+        this.authService.currentUserHasRight('suppliers:delete').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Lieferant ausblenden',
+                    navigate: () => {
+                        this.supplierDeleteClicked();
                     }
                 });
             }
@@ -239,5 +251,28 @@ export class SupplierDetailComponent implements OnInit {
             });
         });
 
+    }
+
+    private supplierDeleteClicked() {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Lieferant löschen?',
+                text: 'Den Lieferanten ausblenden? Diese Aktion KANN rückgängig gemacht werden?'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.api.deleteSupplierSupplierSupplierIdDelete(this.id).pipe(first()).subscribe(success => {
+                    if (success) {
+                        this.router.navigateByUrl('supplier');
+                    } else {
+                        this.snackBar.open('Beim Ausblenden ist ein Fehler aufgetreten', 'Ok');
+                        console.error('Could not delete order bundle');
+                    }
+                });
+
+            }
+        });
     }
 }

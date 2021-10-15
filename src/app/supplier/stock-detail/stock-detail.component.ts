@@ -9,6 +9,8 @@ import {MatDialog} from '@angular/material/dialog';
 import * as moment from 'moment';
 import {AuthService} from '../../shared/auth.service';
 import {first} from 'rxjs/operators';
+import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-stock-detail',
@@ -25,7 +27,7 @@ export class StockDetailComponent implements OnInit {
     buttons: CustomButton[] = [];
 
     constructor(private api: DefaultService, private authService: AuthService,
-                private router: Router,
+                private router: Router, private snackBar: MatSnackBar,
                 private route: ActivatedRoute,
                 public dialog: MatDialog) {
     }
@@ -48,6 +50,17 @@ export class StockDetailComponent implements OnInit {
                     name: 'Bearbeiten',
                     navigate: () => {
                         this.child.editButtonClicked();
+                    }
+                });
+            }
+        });
+
+        this.authService.currentUserHasRight('stocks:delete').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Lager ausblenden',
+                    navigate: () => {
+                        this.stockDeleteClicked()
                     }
                 });
             }
@@ -142,5 +155,28 @@ export class StockDetailComponent implements OnInit {
         this.outgoingDataSource.loadData();
     }
 
+    private stockDeleteClicked() {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Lager löschen?',
+                text: 'Das Lager ausblenden? Diese Aktion KANN rückgängig gemacht werden?'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.api.deleteStockStockStockIdDelete(this.id).pipe(first()).subscribe(success => {
+                    if (success) {
+                        this.router.navigateByUrl('supplier');
+                    } else {
+                        this.snackBar.open('Beim Ausblenden ist ein Fehler aufgetreten', 'Ok');
+                        console.error('Could not delete order bundle');
+                    }
+                });
 
+            }
+        });
+
+
+    }
 }

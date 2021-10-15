@@ -12,9 +12,12 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
 import {first, map} from 'rxjs/operators';
-import {FormArray, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {OutgoingInvoiceEditComponent} from '../../job/outgoing-invoice-edit/outgoing-invoice-edit.component';
+import {AuthService} from '../../shared/auth.service';
+import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 export interface JobMinimal {
@@ -33,8 +36,9 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
     submitted = false;
     navigationTarget = 'delivery_note';
     essentialJobList: Observable<JobMinimal[]>;
+    buttons: CustomButton[] = [];
 
-    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
+    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog, private authService: AuthService, private snackBar: MatSnackBar) {
         super(api, router, route, dialog);
     }
 
@@ -44,7 +48,8 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
     dataFunction = (api: DefaultService, id: number): Observable<DeliveryNote> =>
         api.readDeliveryNoteDeliveryNoteDeliveryNoteIdGet(id);
 
-    unlockFunction = (api: DefaultService, id: number): Observable<boolean> => api.unlockDeliveryNoteDeliveryNoteUnlockDeliveryNoteIdPost(id);
+    unlockFunction = (api: DefaultService, id: number): Observable<boolean> =>
+        api.unlockDeliveryNoteDeliveryNoteUnlockDeliveryNoteIdPost(id);
 
 
     ngOnInit(): void {
@@ -67,6 +72,16 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
             });
             this.addDescriptiveArticleAt(0);
         }
+        this.authService.currentUserHasRight('delivery_notes:delete').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Lieferschein löschen',
+                    navigate: () => {
+                        this.deliveryNoteDeleteClicked();
+                    }
+                });
+            }
+        });
     }
 
     onSubmit() {
@@ -107,7 +122,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
             this.api.createDeliveryNoteDeliveryNotePost(deliveryNoteCreate).pipe(first()).subscribe(deliveryNote => {
                 this.submitted = false;
                 this.router.navigateByUrl('delivery_note');
-            }, this.onError);
+            }, this.createUpdateError);
         } else {
             const deliveryNoteUpdate: DeliveryNoteUpdate = {
                 // eslint-disable-next-line id-blacklist
@@ -130,7 +145,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
             this.api.updateDeliveryNoteDeliveryNoteDeliveryNoteIdPut(this.id, deliveryNoteUpdate).pipe(first()).subscribe(deliveryNote => {
                 this.submitted = false;
                 this.router.navigateByUrl('delivery_note');
-            }, this.onError);
+            }, this.createUpdateError);
         }
     }
 
@@ -202,20 +217,17 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
     protected initDescriptiveArticles(descriptiveArticle?: DescriptiveArticle): FormGroup {
         if (descriptiveArticle === undefined) {
             return new FormGroup({
-                description: new FormControl(''),
-                amount: new FormControl('')
+                description: new FormControl('', Validators.required),
+                amount: new FormControl('', Validators.required)
             });
         } else {
             return new FormGroup({
-                description: new FormControl(descriptiveArticle.description),
-                amount: new FormControl(descriptiveArticle.amount)
+                description: new FormControl(descriptiveArticle.description, Validators.required),
+                amount: new FormControl(descriptiveArticle.amount, Validators.required)
             });
         }
     }
 
-    private onError() {
-        this.submitted = true;
-    }
 
     private initDeliveryNoteGroup(): void {
         const now = new Date();
@@ -238,5 +250,22 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
             // eslint-disable-next-line @typescript-eslint/naming-convention
             job_id: new FormControl(0),
         });
+    }
+
+    private deliveryNoteDeleteClicked() {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Lieferschein löschen?',
+                text: 'Den Lieferschein löschen? Diese Aktion kann NICHT rückgängig gemacht werden!'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+
+
+            }
+        });
+
     }
 }

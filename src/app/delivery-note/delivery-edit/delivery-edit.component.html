@@ -1,4 +1,4 @@
-<app-toolbar ></app-toolbar>
+<app-toolbar [buttonList]="buttons"></app-toolbar>
 <div class="window-container">
     <h1 *ngIf="createMode">Lieferschein erstellen</h1>
     <h1 *ngIf="!createMode">Lieferschein bearbeiten</h1>
@@ -79,11 +79,11 @@
                     <mat-label>Gewicht:</mat-label>
                     <textarea class="form-control" formControlName="weight" matInput></textarea>
                 </mat-form-field>
-              <div fxLayout="column" fxLayoutAlign="start stretch">
-                <mat-checkbox formControlName="freight">Fracht</mat-checkbox>
-                <mat-checkbox formControlName="free">Frei</mat-checkbox>
-                <mat-checkbox formControlName="assigned">Z. L. Empfängers</mat-checkbox>
-              </div>
+                <div fxLayout="column" fxLayoutAlign="start stretch">
+                    <mat-checkbox formControlName="freight">Fracht</mat-checkbox>
+                    <mat-checkbox formControlName="free">Frei</mat-checkbox>
+                    <mat-checkbox formControlName="assigned">Z. L. Empfängers</mat-checkbox>
+                </div>
                 <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
             </div>
         </div>

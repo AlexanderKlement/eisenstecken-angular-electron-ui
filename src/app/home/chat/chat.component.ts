@@ -15,7 +15,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('chatMsgBox') chatMsgBox: ElementRef;
 
   messages: ChatMessage[] = [];
-  recipients$: Observable<ChatRecipient[]>;
+  recipients$: Observable<ChatRecipient[]>; //This will fail if we have more than 1 chat component -> BehaviourSubject
   ivan: boolean;
   chatGroup: FormGroup = new FormGroup({
     messageInput: new FormControl(''),
@@ -41,7 +41,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       .subscribe((message: ChatMessage) => {
         this.messages.push(message);
       }));
-    this.recipients$ = this.chatService.getRecipients(); //unsubscribes automaticalco
+    this.recipients$ = this.chatService.getRecipients(); //unsubscribes automatically
     console.log('Chat component started');
   }
 

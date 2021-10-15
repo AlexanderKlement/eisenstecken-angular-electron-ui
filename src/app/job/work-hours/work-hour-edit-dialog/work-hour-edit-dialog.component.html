@@ -1,7 +1,16 @@
-<h1 mat-dialog-title>Arbeitsstunden bearbeiten</h1>
+<h1 *ngIf="create" mat-dialog-title>Arbeitsstunden hinzufügen</h1>
+<h1 *ngIf="!create" mat-dialog-title>Arbeitsstunden bearbeiten</h1>
 <div mat-dialog-content>
     <div fxLayout="column" fxLayoutAlign="space-around center">
-        <p>Arbeiter: {{data.user}}</p>
+        <mat-form-field *ngIf="create" appearance="fill">
+            <mat-label>Benutzer</mat-label>
+            <mat-select formControlName="country">
+                <mat-option *ngFor="let user of users$ | async" [(ngModel)]="minutes">
+                    user.fullname
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <p *ngIf="!create">Beschäftigter: {{(selectedUser$ | async).fullname}}</p>
         <p>Minuten zu der Arbeitszeit hinzügen oder entfernen (-)</p>
         <mat-form-field appearance="fill">
             <mat-label>Arbeitszeit [Minuten]</mat-label>
