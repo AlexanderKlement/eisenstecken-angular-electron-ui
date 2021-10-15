@@ -58,7 +58,7 @@ export class WorkHoursComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 if (result.reload) {
-                    window.location.reload();
+                    this.workloadDataSource.loadData();
                 }
             }
         });
