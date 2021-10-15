@@ -4,6 +4,9 @@ import {TableDataSource} from '../../shared/components/table-builder/table-build
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {WorkHourEditDialogComponent} from './work-hour-edit-dialog/work-hour-edit-dialog.component';
+import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
+import {AuthService} from '../../shared/auth.service';
+import {first} from 'rxjs/operators';
 
 @Component({
     selector: 'app-work-hours',
@@ -11,12 +14,13 @@ import {WorkHourEditDialogComponent} from './work-hour-edit-dialog/work-hour-edi
     styleUrls: ['./work-hours.component.scss']
 })
 export class WorkHoursComponent implements OnInit {
-    buttons: any;
+    buttons: CustomButton[] = [];
     workloadDataSource: TableDataSource<Workload>;
     jobId: number;
 
 
-    constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router, public dialog: MatDialog) {
+    constructor(private api: DefaultService, private route: ActivatedRoute,
+                private router: Router, public dialog: MatDialog, private authService: AuthService) {
     }
 
     ngOnInit(): void {
@@ -29,14 +33,25 @@ export class WorkHoursComponent implements OnInit {
             }
             this.initWorkloadTable();
         });
+
+        this.authService.currentUserHasRight('work_hours:create').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttons.push({
+                    name: 'Arbeitsstunden hinzufügen',
+                    navigate: () => {
+                        this.workHourClicked(0);
+                    }
+                });
+            }
+        });
     }
 
-    workHourClicked(workHourId: number, userId: number): void {
+    workHourClicked(userId: number): void {
         const dialogRef = this.dialog.open(WorkHourEditDialogComponent, {
             width: '600px',
             data: {
                 userId,
-                create: false
+                jobId: this.jobId,
             }
         });
 
@@ -65,7 +80,12 @@ export class WorkHoursComponent implements OnInit {
                                 cost: dataSource.cost,
                             },
                             route: () => {
-                                this.workHourClicked(dataSource.id, dataSource.user.id);
+                                this.authService.currentUserHasRight('work_hours:modify').pipe(first()).subscribe(allowed => {
+                                    if (allowed) {
+                                        this.workHourClicked(dataSource.user.id);
+                                    }
+                                });
+
                             }
                         });
                 });
@@ -80,6 +100,5 @@ export class WorkHoursComponent implements OnInit {
         );
         this.workloadDataSource.loadData();
     }
-
 
 }

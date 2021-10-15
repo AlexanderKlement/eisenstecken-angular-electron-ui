@@ -262,10 +262,15 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-
+                this.api.deleteDeliveryNoteDeliveryNoteDeliveryNoteIdDelete(this.id).pipe(first()).subscribe(success => {
+                    if (success) {
+                        this.router.navigateByUrl('delivery_docket');
+                    } else {
+                        this.snackBar.open('Lieferschein konnte nicht gelöscht werden', 'Ok');
+                    }
+                });
 
             }
         });
-
     }
 }

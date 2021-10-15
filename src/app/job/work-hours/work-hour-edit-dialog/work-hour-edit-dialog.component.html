@@ -4,9 +4,9 @@
     <div fxLayout="column" fxLayoutAlign="space-around center">
         <mat-form-field *ngIf="create" appearance="fill">
             <mat-label>Benutzer</mat-label>
-            <mat-select formControlName="country">
-                <mat-option *ngFor="let user of users$ | async" [(ngModel)]="minutes">
-                    user.fullname
+            <mat-select [(ngModel)]="userId" required>
+                <mat-option *ngFor="let user of users$ | async" [value]="user.id">
+                    {{user.fullname}}
                 </mat-option>
             </mat-select>
         </mat-form-field>

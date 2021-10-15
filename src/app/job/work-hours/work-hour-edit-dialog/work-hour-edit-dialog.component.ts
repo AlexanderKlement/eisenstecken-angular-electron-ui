@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {DefaultService, User} from 'eisenstecken-openapi-angular-library';
+import {DefaultService, User, WorkloadCreate} from 'eisenstecken-openapi-angular-library';
 import {Observable} from 'rxjs';
 import {first} from 'rxjs/operators';
 
@@ -31,7 +31,7 @@ export class WorkHourEditDialogComponent implements OnInit {
         this.create = this.data.userId <= 0;
         this.users$ = this.api.readUsersUsersGet();
         this.userId = this.data.userId;
-        if (this.create) {
+        if (!this.create) {
             this.selectedUser$ = this.api.readUserUsersUserIdGet(this.userId);
         }
     }
@@ -43,18 +43,24 @@ export class WorkHourEditDialogComponent implements OnInit {
 
 
     onSubmitClick() {
-        if (this.create) {
-            // TODO: createWorkload
-        } else {
-            this.api.updateWorkloadWorkloadWorkloadIdPut(this.data.jobId, parseInt(this.minutes, 10)).pipe(first()).subscribe(() => {
-                this.close();
-            });
-        }
+        const workload: WorkloadCreate = {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            user_id: this.userId,
+            minutes: parseInt(this.minutes, 10),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            job_id: this.data.jobId,
+        };
+        this.api.addWorkloadWorkloadPost(workload).pipe(first()).subscribe(() => {
+            this.closeDialog();
+        });
     }
 
-    close(): void {
+
+    closeDialog(): void {
         this.dialogRef.close({
             reload: true
         });
     }
+
 }
+
