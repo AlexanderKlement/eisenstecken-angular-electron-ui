@@ -30,7 +30,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.ivan = false;
+    const iv = localStorage.getItem('ivan');
+    if (iv) {
+      this.ivan = iv === '1';
+    } else {
+      this.ivan = false;
+    }
     this.subscription = new Subscription();
     this.subscription.add(this.chatService.getMessages()
       .subscribe((message: ChatMessage) => {
@@ -57,14 +62,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.chatGroup.value.messageInput == null || this.chatGroup.value.messageInput.length === 0) {
       return;
     }
-    if (this.chatGroup.value.messageInput.replace('\n','') === '!beautify' ||
-      this.chatGroup.value.messageInput.replace('\n','') === '!whatsapp') {
+    if (this.chatGroup.value.messageInput.replace('\n', '') === '!beautify' ||
+      this.chatGroup.value.messageInput.replace('\n', '') === '!whatsapp') {
       this.ivan = true;
+      localStorage.setItem('ivan', '1');
       this.resetChatControl();
       return;
     }
-    if (this.chatGroup.value.messageInput.replace('\n','') === '!uglify') {
+    if (this.chatGroup.value.messageInput.replace('\n', '') === '!uglify') {
       this.ivan = false;
+      localStorage.setItem('ivan', '0');
       this.resetChatControl();
       return;
     }
