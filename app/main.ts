@@ -11,6 +11,9 @@ const gotTheLock = app.requestSingleInstanceLock();
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
+// if needed: Solution to Persisting Electron windows state: https://medium.com/@hql287/persisting-windows-state-in-electron-using-javascript-closure-17fc0821d37
+
+
 function createWindow(): BrowserWindow {
 
   const electronScreen = screen;

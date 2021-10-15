@@ -40,7 +40,14 @@ const titles = {
     categories: 'Produkt-Kategorien',
     articles: 'Produkte',
     reminders: 'Mahnwesen',
-    payments: 'Zahlungen'
+    payments: 'Zahlungen',
+    hours: 'Stunden eintragen',
+    recalculations: 'Nachkalkulation',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    delivery_notes: 'Lieferscheine',
+    prices: 'Preise',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    work_hours: 'Arbeitsstunden',
 };
 
 @Component({
