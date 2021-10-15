@@ -62,14 +62,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.chatGroup.value.messageInput == null || this.chatGroup.value.messageInput.length === 0) {
       return;
     }
-    if (this.chatGroup.value.messageInput.replace('\n', '') === '!beautify' ||
-      this.chatGroup.value.messageInput.replace('\n', '') === '!whatsapp') {
+    if (this.chatGroup.value.messageInput.indexOf('!beautify') ||
+      this.chatGroup.value.messageInput.indexOf('!whatsapp')) {
       this.ivan = true;
       localStorage.setItem('ivan', '1');
       this.resetChatControl();
       return;
     }
-    if (this.chatGroup.value.messageInput.replace('\n', '') === '!uglify') {
+    if (this.chatGroup.value.messageInput.startsWith('!uglify')) {
       this.ivan = false;
       localStorage.setItem('ivan', '0');
       this.resetChatControl();

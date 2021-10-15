@@ -1,11 +1,11 @@
 {
   "name": "angular-electron",
   "version": "10.1.0",
-  "description": "Angular 12 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/angular-electron",
+  "description": "Eisenstecken EAP",
+  "homepage": "https://github.com/AlexanderKlement/eisenstecken-angular-electron-ui",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Alexander Klement; Ivan Waldboth",
+    "email": "alexander.klement@gmail.com; ivan@waldboth.com"
   },
   "keywords": [
     "angular",

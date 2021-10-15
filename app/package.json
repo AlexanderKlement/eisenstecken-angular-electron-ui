@@ -3,6 +3,12 @@
   "version": "12.1.0",
   "main": "main.js",
   "private": true,
+  "description": "Eisenstecken EAP",
+  "homepage": "https://github.com/AlexanderKlement/eisenstecken-angular-electron-ui",
+  "author": {
+    "name": "Alexander Klement; Ivan Waldboth",
+    "email": "alexander.klement@gmail.com; ivan@waldboth.com"
+  },
   "dependencies": {
     "@electron/remote": "1.2.0"
   }

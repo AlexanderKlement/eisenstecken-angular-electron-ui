@@ -21,6 +21,8 @@
   ],
   "exclude": [
     "node_modules",
+    "release",
+    "dist",
     "**/*.spec.ts"
   ]
 }

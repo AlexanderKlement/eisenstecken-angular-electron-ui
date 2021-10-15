@@ -31,7 +31,7 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center" class="descriptive-article-header">
                         <mat-form-field appearance="fill">
                             <mat-label>Name Position</mat-label>
-                            <input class="form-control" formControlName="description" matInput>
+                            <input class="form-control" formControlName="description" maxlength="10000" matInput>
                         </mat-form-field>
                         <button type="button" mat-icon-button mat-raised-button (click)="removeDescriptiveArticle(i)"
                                 [disabled]="i === 0" class="position-delete">
@@ -50,7 +50,7 @@
                              class="descriptive-sub-article">
                             <mat-form-field appearance="fill" fxFlex="40">
                                 <mat-label>Beschreibung</mat-label>
-                                <textarea class="form-control description" formControlName="description"
+                                <textarea class="form-control description" formControlName="description" maxlength="10000"
                                           matInput></textarea>
                             </mat-form-field>
                             <div class="amount-price" fxLayout="column" fxLayoutAlign="start stretch" fxFlex="40">
@@ -96,7 +96,7 @@
                     <mat-label>Allgemeine Materialbeschreibung:</mat-label>
                     <textarea class="form-control" formControlName="material_description"
                               placeholder="Wird weggelassen wenn leer"
-                              cdkTextareaAutosize cdkAutosizeMinRows="5" matInput></textarea>
+                              cdkTextareaAutosize cdkAutosizeMinRows="5" matInput maxlength="10000"></textarea>
                 </mat-form-field>
                 <mat-form-field appearance="fill">
                     <mat-label>Im Preis einbegriffen:</mat-label>
