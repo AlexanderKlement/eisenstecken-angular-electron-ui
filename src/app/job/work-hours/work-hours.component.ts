@@ -55,14 +55,14 @@ export class WorkHoursComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (result.reload) {
-          window.location.reload();
-        }
-      }
-    });
-  }
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                if (result.reload) {
+                    this.workloadDataSource.loadData();
+                }
+            }
+        });
+    }
 
   private initWorkloadTable(): void {
     this.workloadDataSource = new TableDataSource(
