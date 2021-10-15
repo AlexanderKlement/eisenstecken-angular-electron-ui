@@ -132,7 +132,7 @@ export class OrderBundleEditComponent extends BaseEditComponent<OrderBundle> imp
                 this.api.deleteOrderedArticleOrderedArticleOrderedArticleIdDelete(article.get('id').value).pipe(first())
                     .subscribe(success => {
                         if (success) {
-                            window.location.reload();
+                            articles.removeAt(j);
                         } else {
                             this.snackbar.open('Der Artikel konnte leider nicht gelöscht werden. Bitte probieren sie es später erneut'
                                 , 'Ok');

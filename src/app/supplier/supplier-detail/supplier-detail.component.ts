@@ -247,10 +247,11 @@ export class SupplierDetailComponent implements OnInit {
                 order_from_id: supplier.id
             };
             this.api.createOrderBundleOrderBundlePost(orderBundle).pipe(first()).subscribe(() => {
-                window.location.reload();
+                this.deliveredOrderDataSource.loadData();
+                this.orderedOrderDataSource.loadData();
+                this.createdOrderDataSource.loadData();
             });
         });
-
     }
 
     private supplierDeleteClicked() {

@@ -9,6 +9,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {first} from 'rxjs/operators';
 import {LockService} from '../../shared/lock.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-order-bundle-detail',
@@ -42,7 +43,8 @@ export class OrderBundleDetailComponent implements OnInit {
     ];
 
 
-    constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router, public dialog: MatDialog, private locker: LockService) {
+    constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router,
+                public dialog: MatDialog, private locker: LockService, private snackBar: MatSnackBar) {
 
     }
 
@@ -72,9 +74,9 @@ export class OrderBundleDetailComponent implements OnInit {
             if (result) {
                 this.api.deleteOrderBundleOrderBundleOrderBundleIdDelete(this.orderBundleId).pipe(first()).subscribe(success => {
                     if (success) {
-                        window.location.reload();
+                        this.orderDataSource.loadData();
                     } else {
-                        // TODO: show error snackbar here
+                        this.snackBar.open('Bestellung konnte nicht aufgelöst werden', 'Ok');
                         console.error('Could not delete order bundle');
                     }
                 });
