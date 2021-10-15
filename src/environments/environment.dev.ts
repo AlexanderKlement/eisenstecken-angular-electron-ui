@@ -1,5 +1,5 @@
 export const APP_CONFIG = {
   production: false,
   environment: 'DEV',
-  apiBasePath: 'https://eisenstecken.kivi.bz.it'
+  apiBasePath: 'https://api.eisenstecken.kivi.bz.it'
 };

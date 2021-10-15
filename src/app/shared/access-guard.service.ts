@@ -9,9 +9,8 @@ import {ElectronService} from '../core/services';
 })
 export class AccessGuard implements CanActivate {
 
-    fullAccessHosts: string[] = [
-        'gui.eisenstecken.kivi.bz.it',
-        'localhost'
+    limitAccessHosts: string[] = [
+        'stunden.eisenstecken.kivi.bz.it',
     ];
 
     constructor(private authService: AuthService, private router: Router, private electron: ElectronService) {
@@ -32,9 +31,7 @@ export class AccessGuard implements CanActivate {
 
     private redirectWorkHours(): void {
         console.log('Host is: ' + window.location.hostname);
-        if (!this.fullAccessHosts.includes(window.location.hostname)) {
-            console.log('External Route');
-            console.log(this.router.url);
+        if (this.limitAccessHosts.includes(window.location.hostname)) {
             if (!this.router.url.startsWith('/work_day') || !this.router.url.startsWith('/login')) {
                 if (!this.electron.isElectron) {
                     this.router.navigateByUrl('/work_day'); //before introducing this again, s

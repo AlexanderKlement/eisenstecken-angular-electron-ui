@@ -18,7 +18,6 @@ import {
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {NgxMaterialTimepickerTheme} from 'ngx-material-timepicker';
 import * as moment from 'moment';
-import {unwatchFile} from 'fs';
 import {Router} from '@angular/router';
 
 
@@ -92,52 +91,7 @@ export class WorkDayGeneralComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.initWorkDayFinishGroup();
-        if (this.admin) {
-            this.workDayStartable = false;
-            this.workDayFinishable = true;
-            this.workDayStopable = false;
-            this.workDayError = true;
-            this.workDayCompleted = false;
-            if (this.workDay === undefined) {
-                if (this.userId === undefined || this.userId === null) {
-                    console.error('WorkDayGeneral: Cannot create new workDay without user id');
-                    return;
-                }
-                this.createMode = true;
-                this.initWorkDayEditSection();
-            } else {
-                this.initWorkDayEditSection(this.workDay);
-            }
-            this.buttonText = 'Arbeitstag speichern';
-        } else {
-            this.api.getAvailableWorkDayActionsWorkDayAvailableActionsGet().pipe(first())
-                .subscribe((actions) => {
-                    if (actions.error) {
-                        this.workDayStartable = false;
-                        this.workDayFinishable = false;
-                        this.workDayStopable = false;
-                        this.workDayError = true;
-                        this.workDayCompleted = false;
-                    } else {
-                        this.workDayStartable = actions.startable;
-                        this.workDayStopable = actions.stopable;
-                        this.workDayFinishable = actions.finishable;
-                        this.workDayCompleted = actions.completed;
-                    }
-                    if (this.workDayCompleted) {
-                        this.api.getFinishedWorkDayWorkDayFinishedGet().pipe(first()).subscribe((workDay) => {
-                            this.workDay = workDay;
-                            this.initWorkDayEditSection(workDay);
-                        });
-                    } else if (this.workDayFinishable || this.workDayError) {
-                        this.api.getCurrentWorkDayWorkDayCurrentGet().pipe(first()).subscribe((workDay) => {
-                            this.workDay = workDay;
-                            this.initWorkDayEditSection(workDay);
-                        });
-                    }
-                });
-        }
+        this.initWorkDay();
     }
 
     initWorkDayEditSection(workDay?: WorkDay): void {
@@ -416,7 +370,8 @@ export class WorkDayGeneralComponent implements OnInit {
                 if (workDay === undefined) {
                     this.onError('Could not start workday, maybe it was already started elsewhere');
                 } else {
-                    window.location.reload();
+                    //this.router.navigate([this.router.url])
+                    this.initWorkDay();
                 }
             },
             (error) => {
@@ -427,7 +382,7 @@ export class WorkDayGeneralComponent implements OnInit {
     onError(error: any) {
         this.submitted = false;
         console.error(error);
-        this.snackBar.open('Fehler: Aktion konnte nicht ausgeführt werden');
+        this.snackBar.open('Fehler: Aktion konnte nicht ausgeführt werden', 'Ok');
     }
 
     onWorkDayStopClick() {
@@ -439,7 +394,8 @@ export class WorkDayGeneralComponent implements OnInit {
                 if (workDay === undefined) {
                     this.onError('Could not stop workday, maybe it was already stopped somewhere else');
                 } else {
-                    window.location.reload();
+                    //this.router.navigate([this.router.url])
+                    this.initWorkDay();
                 }
             },
             (error) => {
@@ -521,7 +477,8 @@ export class WorkDayGeneralComponent implements OnInit {
         if (!this.admin) {
             this.api.finishWorkDayWorkDayFinishPost(workDay).pipe(first()).subscribe((newWorkDay) => {
                 if (newWorkDay !== undefined) {
-                    window.location.reload();
+                    //this.router.navigate([this.router.url])
+                    this.initWorkDay();
                 } else {
                     this.onError(newWorkDay);
                 }
@@ -554,7 +511,8 @@ export class WorkDayGeneralComponent implements OnInit {
                 this.api.updateWorkDayWorkDayWorkDayIdPut(this.workDay.id, workDayUpdate).pipe(first()).subscribe(
                     (newWorkDay) => {
                         if (newWorkDay !== undefined) {
-                            window.location.reload();
+                            //this.router.navigate([this.router.url])
+                            this.initWorkDay();
                         } else {
                             this.onError(newWorkDay);
                         }
@@ -578,7 +536,8 @@ export class WorkDayGeneralComponent implements OnInit {
                 this.api.createWorkDayWorkDayUserIdPost(this.userId, workDayCreate).pipe(first()).subscribe(
                     (newWorkDay) => {
                         if (newWorkDay !== undefined) {
-                            this.router.navigateByUrl('/employee/' + this.userId.toString());
+                            //this.router.navigateByUrl('/employee/' + this.userId.toString());
+                            this.initWorkDay();
                         } else {
                             this.onError(newWorkDay);
                         }
@@ -614,5 +573,54 @@ export class WorkDayGeneralComponent implements OnInit {
     onWorkPhaseChange() {
         this.refreshMaxMinutes();
         this.onMinuteChange(this.getJobSections().length - 1);
+    }
+
+    private initWorkDay() {
+        this.initWorkDayFinishGroup();
+        if (this.admin) {
+            this.workDayStartable = false;
+            this.workDayFinishable = true;
+            this.workDayStopable = false;
+            this.workDayError = true;
+            this.workDayCompleted = false;
+            if (this.workDay === undefined) {
+                if (this.userId === undefined || this.userId === null) {
+                    console.error('WorkDayGeneral: Cannot create new workDay without user id');
+                    return;
+                }
+                this.createMode = true;
+                this.initWorkDayEditSection();
+            } else {
+                this.initWorkDayEditSection(this.workDay);
+            }
+            this.buttonText = 'Arbeitstag speichern';
+        } else {
+            this.api.getAvailableWorkDayActionsWorkDayAvailableActionsGet().pipe(first())
+                .subscribe((actions) => {
+                    if (actions.error) {
+                        this.workDayStartable = false;
+                        this.workDayFinishable = false;
+                        this.workDayStopable = false;
+                        this.workDayError = true;
+                        this.workDayCompleted = false;
+                    } else {
+                        this.workDayStartable = actions.startable;
+                        this.workDayStopable = actions.stopable;
+                        this.workDayFinishable = actions.finishable;
+                        this.workDayCompleted = actions.completed;
+                    }
+                    if (this.workDayCompleted) {
+                        this.api.getFinishedWorkDayWorkDayFinishedGet().pipe(first()).subscribe((workDay) => {
+                            this.workDay = workDay;
+                            this.initWorkDayEditSection(workDay);
+                        });
+                    } else if (this.workDayFinishable || this.workDayError) {
+                        this.api.getCurrentWorkDayWorkDayCurrentGet().pipe(first()).subscribe((workDay) => {
+                            this.workDay = workDay;
+                            this.initWorkDayEditSection(workDay);
+                        });
+                    }
+                });
+        }
     }
 }
