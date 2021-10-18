@@ -4,8 +4,8 @@
 .single-note {
 
   overflow: visible;
-  width: clamp(10px, calc(100% - 20px), 290px);
-  height: clamp(10px, calc(100% - 20px), 290px);
+  width: calc(100% - 20px); //clamp(10px, calc(100% - 20px), 290px);
+  height: calc(100% - 20px); //clamp(10px, calc(100% - 20px), 290px);
   background-color: #ffe992;
   margin: 10px;
 

@@ -57,6 +57,7 @@ export class JobDetailComponent implements OnInit {
             this.jobId = id;
             this.api.readJobJobJobIdGet(this.jobId).pipe(first()).subscribe((job) => {
                 this.isMainJob = job.is_main;
+
             });
             this.initOfferTable();
             this.initSubJobTable();
@@ -345,8 +346,6 @@ export class JobDetailComponent implements OnInit {
                 });
             }
         });
-
-
     }
 
     private jobDeleteClicked(): void {
@@ -373,7 +372,9 @@ export class JobDetailComponent implements OnInit {
                                 this.router.navigateByUrl('job');
                             } else {
                                 this.snackBar.open('Der Auftrag konnte leider nicht gelöscht werden.'
-                                    , 'Ok');
+                                    , 'Ok',{
+                                    duration: 10000
+                                  });
                             }
                         });
                     }

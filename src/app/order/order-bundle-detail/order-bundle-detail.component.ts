@@ -76,7 +76,9 @@ export class OrderBundleDetailComponent implements OnInit {
                     if (success) {
                         this.orderDataSource.loadData();
                     } else {
-                        this.snackBar.open('Bestellung konnte nicht aufgelöst werden', 'Ok');
+                        this.snackBar.open('Bestellung konnte nicht aufgelöst werden', 'Ok',{
+                          duration: 10000
+                        });
                         console.error('Could not delete order bundle');
                     }
                 });

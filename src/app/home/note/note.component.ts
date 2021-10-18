@@ -12,7 +12,7 @@ export class NoteComponent implements OnInit {
     @ViewChild('noteBox') noteBox: ElementRef;
 
     notes: Note[] = [];
-    maxNotes = 4;
+    maxNotes = 2;
 
     constructor(private api: DefaultService) {
 

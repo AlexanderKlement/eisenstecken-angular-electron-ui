@@ -42,7 +42,7 @@
             </div>
             <div fxFlex="30" fxLayout="column" fxLayoutAlign="space-around center" fxFlexFill>
                 <mat-form-field appearance="fill">
-                    <mat-label>Von Job übernehmen:</mat-label>
+                    <mat-label>Von Auftrag übernehmen:</mat-label>
                     <mat-select formControlName="job_id" (selectionChange)="selectedJobChanged()">
                         <mat-option *ngFor="let job of essentialJobList | async" [value]="job.id">
                             {{job.displayable_name}}

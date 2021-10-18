@@ -4,7 +4,6 @@ fieldset {
   border: 0 none;
 }
 
-
 .remove-button {
   height: calc(81px - 1.34375em);
   margin-bottom: 1.34375em;
@@ -14,7 +13,6 @@ fieldset {
   display: none;
   visibility: hidden;
 }
-
 
 @media (max-width: 600px) {
   mat-form-field {

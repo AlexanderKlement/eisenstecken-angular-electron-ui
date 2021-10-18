@@ -266,7 +266,9 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
                     if (success) {
                         this.router.navigateByUrl('delivery_docket');
                     } else {
-                        this.snackBar.open('Lieferschein konnte nicht gelöscht werden', 'Ok');
+                        this.snackBar.open('Lieferschein konnte nicht gelöscht werden', 'Ok',{
+                          duration: 10000
+                        });
                     }
                 });
 

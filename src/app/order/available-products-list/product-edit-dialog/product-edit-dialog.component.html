@@ -18,20 +18,24 @@
                 <mat-label>Menge</mat-label>
                 <input matInput type=number formControlName="amount">
             </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Preis</mat-label>
-                <input matInput type=number formControlName="price">
-            </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Einheit</mat-label>
+            <mat-select formControlName="unit_id">
+              <mat-option *ngFor="let unit of unitOptions$ | async" [value]="unit.id">
+                {{unit.name.translation}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between start">
 
+          <mat-form-field appearance="fill">
+            <mat-label>Preis</mat-label>
+            <input matInput type=number formControlName="price">
+          </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Rabatt</mat-label>
                 <input matInput type=number formControlName="discount">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Mod Nummer</mat-label>
-                <input matInput formControlName="mod_number">
             </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between start">
@@ -43,14 +47,10 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Einheit</mat-label>
-                <mat-select formControlName="unit_id">
-                    <mat-option *ngFor="let unit of unitOptions$ | async" [value]="unit.id">
-                        {{unit.name.translation}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Mod Nummer</mat-label>
+            <input matInput formControlName="mod_number">
+          </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between start">
             <button type="button"  mat-button (click)="onNoClick()">Abbrechen</button>

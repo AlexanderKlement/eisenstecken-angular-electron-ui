@@ -268,7 +268,9 @@ export class SupplierDetailComponent implements OnInit {
                     if (success) {
                         this.router.navigateByUrl('supplier');
                     } else {
-                        this.snackBar.open('Beim Ausblenden ist ein Fehler aufgetreten', 'Ok');
+                        this.snackBar.open('Beim Ausblenden ist ein Fehler aufgetreten', 'Ok',{
+                          duration: 10000
+                        });
                         console.error('Could not delete order bundle');
                     }
                 });

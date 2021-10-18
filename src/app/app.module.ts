@@ -12,6 +12,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {ApiModule, Configuration, ConfigurationParameters} from 'eisenstecken-openapi-angular-library';
 import {HomeModule} from './home/home.module';
 import {APP_CONFIG} from 'environments/environment';
+
 import {AppComponent} from './app.component';
 import {AuthService} from './shared/auth.service';
 import {AccessGuard} from './shared/access-guard.service';

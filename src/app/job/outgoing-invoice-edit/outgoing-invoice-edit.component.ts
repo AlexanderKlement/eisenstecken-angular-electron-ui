@@ -116,7 +116,9 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
             console.error(error);
         }
         this.snackBar.open('Die Rechnung konnte leider nicht gelöscht werden.'
-            , 'Ok');
+            , 'Ok',{
+            duration: 10000
+          });
         this.router.navigateByUrl(this.navigationTarget);
     }
 
