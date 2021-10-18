@@ -87,7 +87,7 @@ export class WorkDayGeneralComponent implements OnInit {
     username = '';
 
 
-    constructor(private api: DefaultService, private snackBar: MatSnackBar, private router: Router) {
+    constructor(private api: DefaultService, private snackBar: MatSnackBar) {
     }
 
     ngOnInit(): void {
@@ -370,7 +370,6 @@ export class WorkDayGeneralComponent implements OnInit {
                 if (workDay === undefined) {
                     this.onError('Could not start workday, maybe it was already started elsewhere');
                 } else {
-                    //this.router.navigate([this.router.url])
                     this.initWorkDay();
                 }
             },

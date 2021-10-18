@@ -12,7 +12,6 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {ApiModule, Configuration, ConfigurationParameters} from 'eisenstecken-openapi-angular-library';
 import {HomeModule} from './home/home.module';
 import {APP_CONFIG} from 'environments/environment';
-
 import {AppComponent} from './app.component';
 import {AuthService} from './shared/auth.service';
 import {AccessGuard} from './shared/access-guard.service';
@@ -49,6 +48,7 @@ import {RecalculationModule} from './recalculation/recalculation.module';
 import {EmployeeModule} from './employee/employee.module';
 import {GlobalHttpInterceptorService} from './global-http-inceptor.service';
 import {DeliveryNoteModule} from './delivery-note/delivery-note.module';
+import {ServiceWorkerModule} from '@angular/service-worker';
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -104,7 +104,13 @@ export function apiConfigFactory(): Configuration {
         MatButtonModule,
         MatToolbarModule,
         MatNativeDateModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: APP_CONFIG.production,
+            // Register the ServiceWorker as soon as the app is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000'
+        })
     ],
     providers:
         [{

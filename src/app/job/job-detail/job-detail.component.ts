@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, DEFAULT_CURRENCY_CODE, OnInit, ViewChild} from '@angular/core';
 import {InfoDataSource} from '../../shared/components/info-builder/info-builder.datasource';
 import {Job, DefaultService, Offer, OutgoingInvoice, Order} from 'eisenstecken-openapi-angular-library';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -11,6 +11,7 @@ import {AuthService} from '../../shared/auth.service';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {formatCurrency} from '@angular/common';
 
 @Component({
     selector: 'app-job-detail',
@@ -114,7 +115,7 @@ export class JobDetailComponent implements OnInit {
                                 id: dataSource.id,
                                 date: dataSource.date,
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                full_price_with_vat: dataSource.full_price_with_vat
+                                full_price_with_vat: formatCurrency(dataSource.full_price_with_vat, 'de-DE', 'EUR')
                             },
                             route: () => {
                                 this.authService.currentUserHasRight('offers:modify').pipe(first()).subscribe(allowed => {

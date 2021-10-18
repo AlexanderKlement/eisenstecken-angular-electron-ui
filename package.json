@@ -54,6 +54,7 @@
     "@angular/platform-browser": "12.1.2",
     "@angular/platform-browser-dynamic": "12.1.2",
     "@angular/router": "12.1.2",
+    "@angular/service-worker": "12.1.2",
     "@electron/remote": "1.2.0",
     "@sentry/angular": "6.11.0",
     "@sentry/electron": "2.5.3",
