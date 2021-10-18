@@ -371,7 +371,9 @@ export class JobDetailComponent implements OnInit {
                                 this.router.navigateByUrl('job');
                             } else {
                                 this.snackBar.open('Der Auftrag konnte leider nicht gelöscht werden.'
-                                    , 'Ok');
+                                    , 'Ok',{
+                                    duration: 10000
+                                  });
                             }
                         });
                     }

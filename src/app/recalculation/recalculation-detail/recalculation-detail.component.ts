@@ -48,7 +48,9 @@ export class RecalculationDetailComponent implements OnInit {
                             this.router.navigateByUrl('recalculation/edit/new/' + this.jobId.toString());
                         } else {
                             this.snackBar.open('Sie sind nicht berechtigt Nachkalkulationen zu erstellen!'
-                                , 'Ok');
+                                , 'Ok',{
+                                duration: 10000
+                              });
                             this.router.navigateByUrl('recalculation');
                         }
                     });

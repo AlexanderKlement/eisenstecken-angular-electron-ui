@@ -258,7 +258,9 @@ export class ProductsListComponent implements OnInit {
             if (success) {
                 this.refreshOrderedArticleList();
             } else {
-                this.snackBar.open('Artikel konnte nicht gelöscht werden. Bitte probieren sie es später erneut', 'Ok');
+                this.snackBar.open('Artikel konnte nicht gelöscht werden. Bitte probieren sie es später erneut', 'Ok',{
+                  duration: 10000
+                });
             }
         });
     }

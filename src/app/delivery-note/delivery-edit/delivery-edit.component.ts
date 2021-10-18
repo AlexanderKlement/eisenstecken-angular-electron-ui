@@ -17,7 +17,7 @@ import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/con
 import {OutgoingInvoiceEditComponent} from '../../job/outgoing-invoice-edit/outgoing-invoice-edit.component';
 import {AuthService} from '../../shared/auth.service';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
 
 
 export interface JobMinimal {
@@ -266,7 +266,9 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
                     if (success) {
                         this.router.navigateByUrl('delivery_docket');
                     } else {
-                        this.snackBar.open('Lieferschein konnte nicht gelöscht werden', 'Ok');
+                        this.snackBar.open('Lieferschein konnte nicht gelöscht werden', 'Ok',{
+                          duration: 10000
+                        });
                     }
                 });
 

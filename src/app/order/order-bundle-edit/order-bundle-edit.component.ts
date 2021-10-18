@@ -135,7 +135,9 @@ export class OrderBundleEditComponent extends BaseEditComponent<OrderBundle> imp
                             articles.removeAt(j);
                         } else {
                             this.snackbar.open('Der Artikel konnte leider nicht gelöscht werden. Bitte probieren sie es später erneut'
-                                , 'Ok');
+                                , 'Ok',{
+                                duration: 10000
+                              });
                         }
                     });
             }

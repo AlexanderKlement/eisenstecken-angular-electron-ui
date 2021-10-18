@@ -174,7 +174,9 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
         this.authService.getCurrentUser().pipe(first()).subscribe(user => {
             if (user.id === this.id) {
                 this.snackBar.open('Der derzeit angemeldete Benutzer kann nicht gelöscht werden!'
-                    , 'Ok');
+                    , 'Ok',{
+                    duration: 10000
+                  });
                 return;
             }
             const dialogRef = this.dialog.open(ConfirmDialogComponent, {

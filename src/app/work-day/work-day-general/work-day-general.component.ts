@@ -382,7 +382,9 @@ export class WorkDayGeneralComponent implements OnInit {
     onError(error: any) {
         this.submitted = false;
         console.error(error);
-        this.snackBar.open('Fehler: Aktion konnte nicht ausgeführt werden', 'Ok');
+        this.snackBar.open('Fehler: Aktion konnte nicht ausgeführt werden', 'Ok',{
+          duration: 10000
+        });
     }
 
     onWorkDayStopClick() {
