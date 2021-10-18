@@ -5,41 +5,43 @@ import {AuthService} from './auth.service';
 import {ElectronService} from '../core/services';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class AccessGuard implements CanActivate {
 
-    limitAccessHosts: string[] = [
-        'stunden.eisenstecken.kivi.bz.it',
-    ];
+  limitAccessHosts: string[] = [
+    'stunden.eisenstecken.kivi.bz.it',
+    '192.168.0.7:8080',
+    '127.0.0.1:8080'
+  ];
 
-    constructor(private authService: AuthService, private router: Router, private electron: ElectronService) {
+  constructor(private authService: AuthService, private router: Router, private electron: ElectronService) {
+  }
+
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    const requiresLogin = route.data.requiresLogin || true;
+    if (requiresLogin) {
+      if (!this.authService.isLoggedIn()) {
+        this.router.navigate(['login']);
+      }
     }
+    this.redirectWorkHours();
+    return true;
+  }
 
-    canActivate(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        const requiresLogin = route.data.requiresLogin || true;
-        if (requiresLogin) {
-            if (!this.authService.isLoggedIn()) {
-                this.router.navigate(['login']);
-            }
+  private redirectWorkHours(): void {
+    console.log('Host is: ' + window.location.hostname);
+    if (this.limitAccessHosts.includes(window.location.hostname)) {
+      if (!this.router.url.startsWith('/work_day') || !this.router.url.startsWith('/login')) {
+        if (!this.electron.isElectron) {
+          this.router.navigateByUrl('/work_day'); //before introducing this again, s
         }
-        this.redirectWorkHours();
-        return true;
+      }
+    } else {
+      console.log('Internal Route');
     }
-
-    private redirectWorkHours(): void {
-        console.log('Host is: ' + window.location.hostname);
-        if (this.limitAccessHosts.includes(window.location.hostname)) {
-            if (!this.router.url.startsWith('/work_day') || !this.router.url.startsWith('/login')) {
-                if (!this.electron.isElectron) {
-                    this.router.navigateByUrl('/work_day'); //before introducing this again, s
-                }
-            }
-        } else {
-            console.log('Internal Route');
-        }
-    }
+  }
 
 }
