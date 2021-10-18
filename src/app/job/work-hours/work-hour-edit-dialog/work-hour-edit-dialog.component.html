@@ -13,15 +13,15 @@
     <div *ngIf="!create">
       <p>Beschäftigter: {{selectedUserName$ | async}}</p>
     </div>
-    <p>Arbeitszeit hinzügen oder entfernen (-)</p>
+    <p>Arbeitszeit ändern</p>
     <div fxLayout="row" fxLayoutAlign="center center">
       <mat-form-field appearance="fill">
         <mat-label>Stunden</mat-label>
         <input class="form-control" [(ngModel)]="hours" matInput type="number">
       </mat-form-field>
       <mat-form-field appearance="fill">
-        <mat-label>Arbeitszeit [Minuten]</mat-label>
-        <input class="form-control" [(ngModel)]="minutes" matInput>
+        <mat-label>Minuten</mat-label>
+        <input class="form-control" [(ngModel)]="minutes" matInput type="number">
       </mat-form-field>
     </div>
     <div fxLayout="row" fxLayoutAlign="space-around center">

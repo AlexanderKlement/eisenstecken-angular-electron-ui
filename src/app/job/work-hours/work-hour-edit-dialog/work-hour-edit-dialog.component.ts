@@ -7,6 +7,7 @@ import {first, map} from 'rxjs/operators';
 export interface WorkHourEditDialogData {
   userId: number;
   jobId: number;
+  minutes: number;
 }
 
 @Component({
@@ -19,6 +20,7 @@ export class WorkHourEditDialogComponent implements OnInit {
   hours = '';
   minutes = '';
   userId: number;
+  jobId: number;
   create: boolean;
   users$: Observable<User[]>;
   selectedUserName$: Observable<string>;
@@ -32,10 +34,13 @@ export class WorkHourEditDialogComponent implements OnInit {
     this.create = this.data.userId <= 0;
     this.users$ = this.api.readUsersUsersGet();
     this.userId = this.data.userId;
+    this.jobId = this.data.jobId;
     if (!this.create) {
       this.selectedUserName$ = this.api.readUserUsersUserIdGet(this.userId).pipe(map(
         user => user.fullname
       ));
+      this.minutes = (this.data.minutes % 60).toString(10);
+      this.hours = Math.floor(this.data.minutes / 60).toString(10);
     }
   }
 

@@ -39,19 +39,20 @@ export class WorkHoursComponent implements OnInit {
         this.buttons.push({
           name: 'Arbeitsstunden hinzufügen',
           navigate: () => {
-            this.workHourClicked(0);
+            this.workHourClicked(0,0);
           }
         });
       }
     });
   }
 
-  workHourClicked(userId: number): void {
+  workHourClicked(userId: number,minutes: number): void {
     const dialogRef = this.dialog.open(WorkHourEditDialogComponent, {
       width: '600px',
       data: {
         userId,
         jobId: this.jobId,
+        minutes
       }
     });
 
@@ -82,7 +83,7 @@ export class WorkHoursComponent implements OnInit {
               route: () => {
                 this.authService.currentUserHasRight('work_hours:modify').pipe(first()).subscribe(allowed => {
                   if (allowed) {
-                    this.workHourClicked(dataSource.user.id);
+                    this.workHourClicked(dataSource.user.id,dataSource.minutes);
                   }
                 });
 
