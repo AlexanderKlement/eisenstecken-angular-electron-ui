@@ -11,8 +11,9 @@ export class AccessGuard implements CanActivate {
 
   limitAccessHosts: string[] = [
     'stunden.eisenstecken.kivi.bz.it',
-    '192.168.0.7:8080',
-    '127.0.0.1:8080'
+    '192.168.0.7',
+    '127.0.0.1',
+    'localhost'
   ];
 
   constructor(private authService: AuthService, private router: Router, private electron: ElectronService) {

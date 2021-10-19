@@ -4,8 +4,8 @@
   "theme_color": "#fdc400",
   "background_color": "#2c2c2c",
   "display": "standalone",
-  "scope": "./work_day",
-  "start_url": "./work_day",
+  "scope": "./",
+  "start_url": "./",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
