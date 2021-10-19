@@ -174,9 +174,9 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
         this.authService.getCurrentUser().pipe(first()).subscribe(user => {
             if (user.id === this.id) {
                 this.snackBar.open('Der derzeit angemeldete Benutzer kann nicht gelöscht werden!'
-                    , 'Ok',{
-                    duration: 10000
-                  });
+                    , 'Ok', {
+                        duration: 10000
+                    });
                 return;
             }
             const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -262,6 +262,8 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
                 employee: this.userGroup.get('employee').value,
                 office: this.userGroup.get('office').value,
                 cost: this.userGroup.get('cost').value,
+                chat: true, //TODO: finish
+                hours: true
             };
             this.api.createUserUsersPost(userCreate).pipe(first()).subscribe((user) => {
                 this.createUpdateSuccess(user);
@@ -281,6 +283,8 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
                 employee: this.userGroup.get('employee').value,
                 office: this.userGroup.get('office').value,
                 cost: this.userGroup.get('cost').value,
+                chat: true, //TODO: finish
+                hours: true
             };
             this.api.updateUserUsersUserIdPut(this.id, userUpdate).pipe(first()).subscribe((user) => {
                 this.createUpdateSuccess(user);

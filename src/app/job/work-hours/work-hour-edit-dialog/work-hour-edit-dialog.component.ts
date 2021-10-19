@@ -58,7 +58,7 @@ export class WorkHourEditDialogComponent implements OnInit {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       job_id: this.data.jobId,
     };
-    this.api.addWorkloadWorkloadPost(workload).pipe(first()).subscribe(() => {
+    this.api.setWorkloadWorkloadPost(workload).pipe(first()).subscribe(() => {
       this.closeDialog();
     });
   }

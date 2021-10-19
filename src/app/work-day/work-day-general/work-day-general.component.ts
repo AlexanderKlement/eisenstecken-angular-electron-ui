@@ -438,6 +438,8 @@ export class WorkDayGeneralComponent implements OnInit {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 job_id: jobSectionControl.get('job_id').value,
                 minutes: parseInt(jobSectionControl.get('minutes').value, 10),
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                minutes_direction: 0 //TODO: finish
             });
         });
 
