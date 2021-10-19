@@ -50,9 +50,9 @@ import {EmployeeModule} from './employee/employee.module';
 import {GlobalHttpInterceptorService} from './global-http-inceptor.service';
 import {DeliveryNoteModule} from './delivery-note/delivery-note.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { PwaDialogComponent } from './pwa-dialog/pwa-dialog.component';
+import { PwaDialogComponent } from './shared/components/pwa-dialog/pwa-dialog.component';
 import {MatIconModule} from '@angular/material/icon';
-import {PwaService} from './services/pwa.service';
+import {PwaService} from './shared/pwa.service';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -160,7 +160,7 @@ const initializer = (pwaService: PwaService) => () => pwaService.initPwaPrompt()
             },
             {provide: MatPaginatorIntl, useValue: getGermanPaginatorIntl()},
             {provide: HTTP_INTERCEPTORS, useClass: GlobalHttpInterceptorService, multi: true},
-          {provide: APP_INITIALIZER, useFactory: initializer, deps: [PwaService], multi: true},
+            {provide: APP_INITIALIZER, useFactory: initializer, deps: [PwaService], multi: true},
         ],
     bootstrap: [AppComponent]
 })
