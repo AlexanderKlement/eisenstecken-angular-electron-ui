@@ -1,8 +1,8 @@
 {
-  "name": "Eisenstecken Stunden",
-  "short_name": "Eisenstecken",
-  "theme_color": "#fdc400",
-  "background_color": "#2c2c2c",
+  "name": "angular-electron",
+  "short_name": "angular-electron",
+  "theme_color": "#1976d2",
+  "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",

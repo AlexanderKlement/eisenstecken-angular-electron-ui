@@ -66,6 +66,8 @@ export class BaseEditComponent<T extends DataSourceClass> implements OnInit, OnD
                         } else {   //now we talking
                             this.data$ = this.dataFunction(this.api, this.id);
                             this.observableReady();
+                            /*
+                            Removed this on because not needed anymore
                             this.timeouts.push(setTimeout(() => {
                                 this.showWarningDialog(lock.max_lock_time_minutes, lock.reminder_time_minutes);
                             }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes - lock.reminder_time_minutes)));
@@ -73,6 +75,7 @@ export class BaseEditComponent<T extends DataSourceClass> implements OnInit, OnD
                                 console.warn('BaseEditComponent: Going back, because maximum access time is over');
                                 this.goBack();
                             }, BaseEditComponent.minutesToMilliSeconds(lock.max_lock_time_minutes)));
+                             */
                         }
                     });
                 });
