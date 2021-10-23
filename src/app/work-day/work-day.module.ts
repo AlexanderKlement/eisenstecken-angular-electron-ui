@@ -14,12 +14,14 @@ import {MatSelectModule} from '@angular/material/select';
 import { WorkDayGeneralComponent } from './work-day-general/work-day-general.component';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { StopwatchComponent } from './work-day-general/stopwatch/stopwatch.component';
 
 
 @NgModule({
     declarations: [
         WorkDayComponent,
-        WorkDayGeneralComponent
+        WorkDayGeneralComponent,
+        StopwatchComponent
     ],
     exports: [
         WorkDayGeneralComponent

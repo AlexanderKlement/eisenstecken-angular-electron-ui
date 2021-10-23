@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
 import {
     Car,
     DefaultService,
@@ -18,7 +18,8 @@ import {
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {NgxMaterialTimepickerTheme} from 'ngx-material-timepicker';
 import * as moment from 'moment';
-import {Router} from '@angular/router';
+import * as confetti from 'canvas-confetti';
+import {StopwatchService} from './stopwatch/stopwatch.service';
 
 
 export const timeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -74,6 +75,8 @@ export class WorkDayGeneralComponent implements OnInit {
     editDisabled = false;
 
     buttonText = 'Arbeitstag abschließen';
+    canvas: any;
+    timerShowing = true;
 
 
     primaryTheme: NgxMaterialTimepickerTheme = { // TODO : move this and calendar thingy to more prominent location
@@ -87,11 +90,21 @@ export class WorkDayGeneralComponent implements OnInit {
     username = '';
 
 
-    constructor(private api: DefaultService, private snackBar: MatSnackBar) {
+    constructor(private api: DefaultService, private snackBar: MatSnackBar, private renderer2: Renderer2,
+                private elementRef: ElementRef, private stopwatchService: StopwatchService) {
+    }
+
+    startTimer(): void {
+        this.stopwatchService.start();
+    }
+
+    stopTimer(): void {
+        this.stopwatchService.stop();
     }
 
     ngOnInit(): void {
         this.initWorkDay();
+        this.initConfetti();
     }
 
     initWorkDayEditSection(workDay?: WorkDay): void {
@@ -182,7 +195,7 @@ export class WorkDayGeneralComponent implements OnInit {
             expenses: new FormArray([]),
             drives: new FormArray([]),
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            eating_place_id: new FormControl(1)
+            eating_place_id: new FormControl(0, Validators.required)
         }, {validators: timeValidator});
     }
 
@@ -371,6 +384,7 @@ export class WorkDayGeneralComponent implements OnInit {
                     this.onError('Could not start workday, maybe it was already started elsewhere');
                 } else {
                     this.initWorkDay();
+                    this.startTimer();
                 }
             },
             (error) => {
@@ -381,8 +395,8 @@ export class WorkDayGeneralComponent implements OnInit {
     onError(error: any) {
         this.submitted = false;
         console.error(error);
-        this.snackBar.open('Fehler: Aktion konnte nicht ausgeführt werden', 'Ok',{
-          duration: 10000
+        this.snackBar.open('Fehler: Aktion konnte nicht ausgeführt werden', 'Ok', {
+            duration: 10000
         });
     }
 
@@ -397,6 +411,7 @@ export class WorkDayGeneralComponent implements OnInit {
                 } else {
                     //this.router.navigate([this.router.url])
                     this.initWorkDay();
+                    this.stopTimer();
                 }
             },
             (error) => {
@@ -438,6 +453,8 @@ export class WorkDayGeneralComponent implements OnInit {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 job_id: jobSectionControl.get('job_id').value,
                 minutes: parseInt(jobSectionControl.get('minutes').value, 10),
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                minutes_direction: 0 //TODO: finish
             });
         });
 
@@ -480,6 +497,7 @@ export class WorkDayGeneralComponent implements OnInit {
                 if (newWorkDay !== undefined) {
                     //this.router.navigate([this.router.url])
                     this.initWorkDay();
+                    this.confetti();
                 } else {
                     this.onError(newWorkDay);
                 }
@@ -574,6 +592,28 @@ export class WorkDayGeneralComponent implements OnInit {
     onWorkPhaseChange() {
         this.refreshMaxMinutes();
         this.onMinuteChange(this.getJobSections().length - 1);
+    }
+
+    initConfetti() {
+        this.canvas = this.renderer2.createElement('canvas');
+        this.renderer2.appendChild(this.elementRef.nativeElement, this.canvas);
+
+    }
+
+    confetti() {
+        if (!this.canvas) {
+            console.error('Canvas not initialized');
+            return;
+        }
+
+        const myConfetti = confetti.create(this.canvas, {
+            particleCount: 150,
+            startVelocity: 30,
+            spread: 360,
+            resize: true,
+            disableForReducedMotion: true
+        });
+        myConfetti();
     }
 
     private initWorkDay() {

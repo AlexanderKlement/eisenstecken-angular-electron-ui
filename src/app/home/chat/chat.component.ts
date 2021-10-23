@@ -15,7 +15,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('chatMsgBox') chatMsgBox: ElementRef;
 
   messages: ChatMessage[] = [];
-  recipients$: Observable<ChatRecipient[]>; //This will fail if we have more than 1 chat component -> BehaviourSubject
+  recipients$: Observable<ChatRecipient[]>; //This will fail if we have more than 1 chat component -> ReplaySubject
   ivan: boolean;
   chatGroup: FormGroup = new FormGroup({
     messageInput: new FormControl(''),

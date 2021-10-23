@@ -1,6 +1,6 @@
 {
-  "name": "angular-electron",
-  "short_name": "angular-electron",
+  "name": "Eisenstecken Verwaltung: APP",
+  "short_name": "Eisenstecken",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

@@ -25,7 +25,8 @@ export class ChatService {
         this.messages$ = new Observable((messageSubscriber) => {
             this.messageSubscriber = messageSubscriber;
             this.check4Messages();
-            setInterval(() => { //this can go endlessly, because this service is a singleton -> maybe stop it if there are no active subscribers
+            setInterval(() => { //this can go endlessly, because this service is a singleton ->
+                // maybe stop it if there are no active subscribers
                 this.check4Messages();
             }, 1000 * this.secondsBetweenNewMessageCheck);
         });

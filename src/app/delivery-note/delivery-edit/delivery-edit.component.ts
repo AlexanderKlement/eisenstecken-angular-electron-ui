@@ -4,7 +4,6 @@ import {
     DeliveryNote, DeliveryNoteCreate, DeliveryNoteUpdate,
     DescriptiveArticle,
     DescriptiveArticleCreate,
-    Job,
     Lock
 } from 'eisenstecken-openapi-angular-library';
 import {BaseEditComponent} from '../../shared/components/base-edit/base-edit.component';
@@ -38,7 +37,8 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
     essentialJobList: Observable<JobMinimal[]>;
     buttons: CustomButton[] = [];
 
-    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog, private authService: AuthService, private snackBar: MatSnackBar) {
+    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog,
+                private authService: AuthService, private snackBar: MatSnackBar) {
         super(api, router, route, dialog);
     }
 
@@ -117,7 +117,9 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
                 assigned: this.deliveryNoteGroup.get('assigned').value,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 job_id: this.deliveryNoteGroup.get('job_id').value,
-                articles: descriptiveArticles
+                articles: descriptiveArticles,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                delivery_note_reason_id: 1, //TODO: finish
             };
             this.api.createDeliveryNoteDeliveryNotePost(deliveryNoteCreate).pipe(first()).subscribe(deliveryNote => {
                 this.submitted = false;
@@ -140,7 +142,9 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
                 assigned: this.deliveryNoteGroup.get('assigned').value,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 job_id: this.deliveryNoteGroup.get('job_id').value,
-                articles: descriptiveArticles
+                articles: descriptiveArticles,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                delivery_note_reason_id: 1, //TODO: finish
             };
             this.api.updateDeliveryNoteDeliveryNoteDeliveryNoteIdPut(this.id, deliveryNoteUpdate).pipe(first()).subscribe(deliveryNote => {
                 this.submitted = false;
@@ -266,8 +270,8 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
                     if (success) {
                         this.router.navigateByUrl('delivery_docket');
                     } else {
-                        this.snackBar.open('Lieferschein konnte nicht gelöscht werden', 'Ok',{
-                          duration: 10000
+                        this.snackBar.open('Lieferschein konnte nicht gelöscht werden', 'Ok', {
+                            duration: 10000
                         });
                     }
                 });

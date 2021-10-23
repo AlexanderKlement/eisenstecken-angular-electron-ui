@@ -14,7 +14,8 @@ export class LockService {
     constructor(private api: DefaultService, private router: Router, public dialog: MatDialog) {
     }
 
-    getLockAndTryNavigate(lock$: Observable<Lock>, lockObservable: Observable<boolean>, unlockObservable: Observable<boolean>, navigationTarget: string): void {
+    getLockAndTryNavigate(lock$: Observable<Lock>, lockObservable: Observable<boolean>,
+                          unlockObservable: Observable<boolean>, navigationTarget: string): void {
         lock$.pipe(first()).subscribe((lock) => {
             if (lock.locked) {
                 this.api.readUsersMeUsersMeGet().pipe(first()).subscribe((user) => {

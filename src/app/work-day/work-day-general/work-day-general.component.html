@@ -5,16 +5,18 @@
         <p *ngIf="workDayError && !admin">Fehler: Bitte im Büro korrigieren lassen</p>
         <p *ngIf="!workDayError && lengthString">Länge Arbeitstag: {{lengthString}}</p>
         <div *ngIf="workDayStartable">
-            <button mat-raised-button type="button" (click)="onWorkDayStartClick()">
-                Neuen Arbeitsabschnitt starten
+            <button type="button" class="control play" (click)="onWorkDayStartClick()">
+                <span class="play-icon"></span>
             </button>
         </div>
+        <div *ngIf="workDayStopable">
+            <button type="button" class="control pause" (click)="onWorkDayStopClick()">
+                <span class="pause-icon"></span>
+            </button>
+        </div>
+        <app-stopwatch *ngIf="workDayStartable || workDayStopable"></app-stopwatch>
     </div>
-    <div *ngIf="workDayStopable">
-        <button mat-raised-button type="button" (click)="onWorkDayStopClick()">
-            Derzeitigen Arbeitsabschnitt stoppen
-        </button>
-    </div>
+
     <form *ngIf="workDayFinishable || workDayCompleted" [formGroup]="workDayEditGroup"
           (submit)="onWorkDayFinishSubmit()">
         <div fxLayout="column" fxLayoutAlign="space-around center">

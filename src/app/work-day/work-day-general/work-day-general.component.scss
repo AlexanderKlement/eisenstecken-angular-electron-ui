@@ -1,4 +1,7 @@
 @use "../../shared/components/base-edit/base-edit.component";
+@use 'sass:map';
+@import "../../../theme";
+
 
 fieldset {
   border: 0 none;
@@ -12,6 +15,65 @@ fieldset {
 .remove-button-mobile {
   display: none;
   visibility: hidden;
+}
+
+canvas {
+  height: 100%;
+  width: 100%;
+}
+
+.control {
+  border-radius: 50%;
+  border: 2px solid map.get($mat-primary, 200);
+  height: 150px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+  cursor: pointer;
+  outline: none;
+
+  &.pause {
+    animation: pause-frame 2s infinite alternate;
+    @media (prefers-reduced-motion) {
+      animation: none
+    }
+  }
+
+  .play-icon {
+    height: 40px;
+    width: 50px;
+    position: relative;
+    left: 10px;
+    border-right: none;
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+    border-left: 50px solid map.get($mat-primary, 200);
+    box-sizing: border-box;
+  }
+
+  .pause-icon {
+    height: 50px;
+    width: 30px;
+    box-sizing: border-box;
+    border-left: 10px solid map.get($mat-primary, 200);
+    border-right: 10px solid map.get($mat-primary, 200);
+  }
+}
+
+@keyframes pause-frame {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 @media (max-width: 600px) {
