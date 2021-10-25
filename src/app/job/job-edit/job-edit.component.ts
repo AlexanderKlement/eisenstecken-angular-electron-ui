@@ -13,6 +13,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BaseEditComponent} from '../../shared/components/base-edit/base-edit.component';
 import {MatDialog} from '@angular/material/dialog';
 import {first, tap} from 'rxjs/operators';
+import {NavigationService} from '../../shared/navigation.service';
 
 @Component({
     selector: 'app-job-edit',
@@ -119,7 +120,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
 
     createUpdateSuccess(job: Job): void {
         this.id = job.id;
-        this.router.navigateByUrl('job/' + job.id.toString());
+        this.router.navigateByUrl('job/' + job.id.toString(), {replaceUrl: true});
     }
 
     observableReady(): void {

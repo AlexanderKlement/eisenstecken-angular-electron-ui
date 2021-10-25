@@ -22,7 +22,7 @@ export const availableMenuTiles: MenuTileDetail[] = [
         link: '/invoice',
         requiredRights: ['ingoing_invoices:all', 'outgoing_invoices:all']
     },
-    {title: 'Angestellte', icon: 'work', link: '/employee', requiredRights: ['hours:modify']},
+    {title: 'Stundenzettel', icon: 'work', link: '/employee', requiredRights: ['hours:modify']},
     {title: 'Benutzer', icon: 'person', link: '/user', requiredRights: ['users:all']},
     {title: 'Einstellungen', icon: 'settings', link: '/settings', requiredRights: ['parameters:set']},
     {title: 'Arbeitstag', icon: 'schedule', link: '/work_day', requiredRights: ['nobody:hours:insert']},

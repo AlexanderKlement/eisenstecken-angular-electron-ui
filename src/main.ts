@@ -4,6 +4,7 @@ import { AppModule } from './app/app.module';
 import * as moment from 'moment';
 import * as Sentry from '@sentry/angular';
 import {Integrations} from '@sentry/tracing';
+import { APP_CONFIG } from './environments/environment';
 
 Sentry.init({
   dsn: 'https://739b39d0b92749a485e48a80da87816e@sentry.kivi.bz.it/26',
@@ -25,7 +26,7 @@ platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .then(success => console.log(`Bootstrap success`))
   .catch(err => console.error(err));
-import { APP_CONFIG } from './environments/environment';
+
 
 if (APP_CONFIG.production) {
   enableProdMode();

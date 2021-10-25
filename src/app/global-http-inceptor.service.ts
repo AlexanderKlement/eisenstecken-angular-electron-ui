@@ -3,12 +3,10 @@ import {
     HttpEvent,
     HttpHandler,
     HttpInterceptor,
-    HttpRequest,
-    HttpResponse,
-    HttpErrorResponse
+    HttpRequest
 } from '@angular/common/http';
-import {Observable, of, throwError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {Observable, throwError} from 'rxjs';
+import {catchError,} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
@@ -25,9 +23,9 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
                 console.log('Intercepting error');
                 console.error(error);
                 if ('error' in error && 'body' in error.error) {
-                    this.snackBar.open(error.error.body, 'Ok',{
-                    duration: 10000
-                  });
+                    this.snackBar.open(error.error.body, 'Ok', {
+                        duration: 10000
+                    });
                 }
                 return throwError(error.message);
             })

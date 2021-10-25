@@ -1,41 +1,47 @@
-import { Injectable } from '@angular/core';
-import { Location } from '@angular/common';
-import { Router, NavigationEnd } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {Location} from '@angular/common';
+import {Router, NavigationEnd} from '@angular/router';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class NavigationService {
-  private history: string[] = [];
-  private backEventInProgress = false;
+    private history: string[] = [];
+    private backEventInProgress = false;
 
-  constructor(private router: Router, private location: Location) {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.history.push(event.urlAfterRedirects);
-      }
-    });
-  }
-
-  back(): void {
-    if(this.backEventInProgress){
-      // eslint-disable-next-line no-console
-      console.info("back navigation once prevented");
-      this.backEventInProgress = false;
-      return;
+    constructor(private router: Router, private location: Location) {
+        this.router.events.subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+                console.log('Adding site to history: ' + event.urlAfterRedirects);
+                this.history.push(event.urlAfterRedirects);
+            }
+        });
     }
-    this.history.pop();
-    if (this.history.length > 0) {
-      this.location.back();
-    } else {
-      this.router.navigateByUrl('/');
+
+    back(): void {
+        if (this.backEventInProgress) {
+            // eslint-disable-next-line no-console
+            console.info('back navigation once prevented');
+            this.backEventInProgress = false;
+            return;
+        }
+        this.history.pop();
+        if (this.history.length > 0) {
+            this.location.back();
+        } else {
+            this.router.navigateByUrl('/');
+        }
     }
-  }
 
-  backEvent(): void {
-    this.backEventInProgress = true;
-  }
+    removeCurrentFromHistory() {
+        console.log('Removing current site from history');
+        this.history.pop();
+    }
 
-  home(): void {
-    this.router.navigateByUrl('/');
-  }
+    backEvent(): void {
+        this.backEventInProgress = true;
+    }
+
+    home(): void {
+        this.router.navigateByUrl('/');
+    }
 
 }

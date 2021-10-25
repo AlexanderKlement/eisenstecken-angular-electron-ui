@@ -260,7 +260,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
 
     createUpdateSuccess(invoice: OutgoingInvoice): void {
         this.id = invoice.id;
-        this.router.navigateByUrl('job/' + this.jobId.toString()); //TODO: change this to the detail view of the offer
+        this.router.navigateByUrl('job/' + this.jobId.toString(), {replaceUrl: true});
     }
 
     observableReady(): void {

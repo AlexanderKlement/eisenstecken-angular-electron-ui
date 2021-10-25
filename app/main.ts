@@ -27,6 +27,7 @@ function createWindow(): BrowserWindow {
     height: size.height,
     icon: 'src/logo.ico',
     title: "Eisenstecken",
+    autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve) ? true : false,
@@ -97,7 +98,6 @@ try {
         win.focus()
       }
     })
-
 
     app.on('ready', () => setTimeout(createWindow, 400));
 

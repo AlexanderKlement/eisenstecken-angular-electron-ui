@@ -71,7 +71,7 @@ export class StockEditComponent extends BaseEditComponent<Stock> implements OnIn
 
     createUpdateSuccess(stock: Stock): void {
         this.id = stock.id;
-        this.router.navigateByUrl('stock/' + stock.id.toString());
+        this.router.navigateByUrl('stock/' + stock.id.toString(), {replaceUrl: true});
     }
 
     private initStockGroup(): void {

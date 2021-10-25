@@ -203,8 +203,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
 
     createUpdateSuccess(offer: Offer): void {
         this.id = offer.id;
-
-        this.router.navigateByUrl('job/' + this.jobId.toString()); //TODO: change this to the detail view of the offer
+        this.router.navigateByUrl('job/' + this.jobId.toString(), {replaceUrl: true});
     }
 
     observableReady(): void {

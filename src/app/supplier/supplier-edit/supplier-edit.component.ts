@@ -89,7 +89,7 @@ export class SupplierEditComponent extends BaseEditComponent<Supplier> implement
 
     createUpdateSuccess(supplier: Supplier): void {
         this.id = supplier.id;
-        this.router.navigateByUrl('supplier/' + supplier.id.toString());
+        this.router.navigateByUrl('supplier/' + supplier.id.toString(), {replaceUrl: true});
     }
 
     getAddressGroup(): FormGroup {

@@ -344,6 +344,12 @@ export class JobDetailComponent implements OnInit {
                         this.jobDeleteClicked();
                     }
                 });
+                this.buttonsSub.push({
+                    name: 'Auftrag löschen',
+                    navigate: (): void => {
+                        this.jobDeleteClicked();
+                    }
+                });
             }
         });
     }

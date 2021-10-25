@@ -126,7 +126,7 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
                 expenses
             };
             this.api.createRecalculationRecalculationJobIdPost(this.jobId, recalculationCreate).pipe(first()).subscribe(recalculation => {
-                this.router.navigateByUrl('recalculation/' + this.jobId);
+                this.router.navigateByUrl('recalculation/' + this.jobId, {replaceUrl: true});
             });
         } else {
             const recalculationUpdate: RecalculationUpdate = {
@@ -135,7 +135,7 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
                 expenses
             };
             this.api.updateRecalculationRecalculationJobIdPut(this.jobId, recalculationUpdate).pipe(first()).subscribe(recalculation => {
-                this.router.navigateByUrl('recalculation/' + this.jobId);
+                this.router.navigateByUrl('recalculation/' + this.jobId, {replaceUrl: true});
             });
         }
     }
