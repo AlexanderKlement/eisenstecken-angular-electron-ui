@@ -6,6 +6,8 @@ import {
 } from '../shared/components/filterable-clickable-list/filterable-clickable-list.types';
 import {Article, DefaultService, OrderableType, OrderedArticle} from 'eisenstecken-openapi-angular-library';
 import {first} from 'rxjs/operators';
+import {CustomButton} from '../shared/components/toolbar/toolbar.component';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-order',
@@ -36,8 +38,9 @@ export class OrderComponent implements OnInit {
     step = 0;
 
     lastOrderId: number;
+    buttons: CustomButton[] = [];
 
-    constructor(private api: DefaultService) {
+    constructor(private api: DefaultService, private router: Router) {
     }
 
     private static createListItems(supportedListElements: SupportedListElements[]): ListItem[] {
@@ -74,13 +77,15 @@ export class OrderComponent implements OnInit {
         this.decideWhichFromListToLoad(listItem);
         this.toListSelected = listItem;
         this.step = 1;
+        this.clearButtons();
     }
 
     fromListItemClicked(listItem: ListItem): void {
+        this.clearButtons();
         this.step = 2;
         this.resetProductWindows();
         this.fromListSelected = listItem;
-        this.loadAvailableArticles();
+        this.loadAvailableArticlesAndButtons();
         this.loadOrderedArticles();
     }
 
@@ -89,7 +94,55 @@ export class OrderComponent implements OnInit {
     }
 
     refreshAvailableProducts(): void {
-        this.loadAvailableArticles();
+        this.loadAvailableArticlesAndButtons();
+    }
+
+    loadOrderedArticles(): void {
+        this.api.readOrderFromToOrderFromOrderableFromIdToOrderableToIdGet(
+            this.fromListSelected.item.id, this.toListSelected.item.id).pipe(first())
+            .subscribe((order) => {
+                this.lastOrderId = order.id;
+                this.orderedProductsSubscriber.next(order.articles);
+            });
+    }
+
+    decideWhichFromListToLoad(listItem: ListItem):
+        void {
+        switch (listItem.type
+            ) {
+            case
+            OrderableType.Stock
+            : {
+                this.loadFromList(false);
+                break;
+            }
+            case
+            OrderableType.Job
+            : {
+                this.loadFromList(true);
+                break;
+            }
+            case
+            OrderableType.Supplier
+            : {
+                console.error('OrderComponent: an item with type SUPPLIER has been clicked in TO list');
+                break;
+            }
+        }
+    }
+
+    resetProductWindows(): void {
+        if (this.availableProductsSubscriber !== undefined
+        ) {
+            this.availableProductsSubscriber.next([]);
+        }
+        if (this.orderedProductsSubscriber !== undefined) {
+            this.orderedProductsSubscriber.next([]);
+        }
+    }
+
+    clearButtons() {
+        this.buttons = [];
     }
 
     private loadToList() {
@@ -123,64 +176,44 @@ export class OrderComponent implements OnInit {
 
     }
 
-
-    private loadAvailableArticles(): void {
+    private loadAvailableArticlesAndButtons(): void {
         switch (this.fromListSelected.type) {
             case OrderableType.Stock: {
                 this.api.readArticlesByStockArticleStockStockIdGet(this.fromListSelected.item.id).pipe(first())
                     .subscribe((articles) => {
                         this.availableProductsSubscriber.next(articles);
                     });
+                this.buttons.push(
+                    {
+                        name: 'Öffne Lager',
+                        navigate: () => {
+                            this.router.navigateByUrl('stock/' + this.fromListSelected.item.id);
+                        },
+                    });
                 break;
             }
-            case OrderableType.Job: {
+            case
+            OrderableType.Job
+            : {
                 console.error('OrderComponent: an item with type JOB has been clicked in FROM list');
                 break;
             }
-            case OrderableType.Supplier: {
+            case
+            OrderableType.Supplier
+            : {
                 this.api.readArticlesBySupplierArticleSupplierSupplierIdGet(this.fromListSelected.item.id).pipe(first())
                     .subscribe((articles) => {
                         this.availableProductsSubscriber.next(articles);
+                    });
+                this.buttons.push(
+                    {
+                        name: 'Öffne Lieferant',
+                        navigate: () => {
+                            this.router.navigateByUrl('supplier/' + this.fromListSelected.item.id);
+                        },
                     });
                 break;
             }
         }
     }
-
-
-    private loadOrderedArticles(): void {
-        this.api.readOrderFromToOrderFromOrderableFromIdToOrderableToIdGet(
-            this.fromListSelected.item.id, this.toListSelected.item.id).pipe(first())
-            .subscribe((order) => {
-                this.lastOrderId = order.id;
-                this.orderedProductsSubscriber.next(order.articles);
-            });
-    }
-
-    private decideWhichFromListToLoad(listItem: ListItem): void {
-        switch (listItem.type) {
-            case OrderableType.Stock: {
-                this.loadFromList(false);
-                break;
-            }
-            case OrderableType.Job: {
-                this.loadFromList(true);
-                break;
-            }
-            case OrderableType.Supplier: {
-                console.error('OrderComponent: an item with type SUPPLIER has been clicked in TO list');
-                break;
-            }
-        }
-    }
-
-    private resetProductWindows(): void {
-        if (this.availableProductsSubscriber !== undefined) {
-            this.availableProductsSubscriber.next([]);
-        }
-        if (this.orderedProductsSubscriber !== undefined) {
-            this.orderedProductsSubscriber.next([]);
-        }
-    }
-
 }

@@ -352,6 +352,23 @@ export class JobDetailComponent implements OnInit {
                 });
             }
         });
+
+        this.authService.currentUserHasRight('orders:all').pipe(first()).subscribe(allowed => {
+            if (allowed) {
+                this.buttonsMain.push({
+                    name: 'Bestellen',
+                    navigate: (): void => {
+                        this.router.navigateByUrl('order');
+                    }
+                });
+                this.buttonsSub.push({
+                    name: 'Bestellen',
+                    navigate: (): void => {
+                        this.router.navigateByUrl('order');
+                    }
+                });
+            }
+        });
     }
 
     private jobDeleteClicked(): void {
@@ -378,9 +395,9 @@ export class JobDetailComponent implements OnInit {
                                 this.router.navigateByUrl('job');
                             } else {
                                 this.snackBar.open('Der Auftrag konnte leider nicht gelöscht werden.'
-                                    , 'Ok',{
-                                    duration: 10000
-                                  });
+                                    , 'Ok', {
+                                        duration: 10000
+                                    });
                             }
                         });
                     }

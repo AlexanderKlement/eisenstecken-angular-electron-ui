@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {
     DefaultService,
-    DeliveryNote, DeliveryNoteCreate, DeliveryNoteUpdate,
+    DeliveryNote, DeliveryNoteCreate, DeliveryNoteReason, DeliveryNoteUpdate,
     DescriptiveArticle,
     DescriptiveArticleCreate,
     Lock
@@ -35,6 +35,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
     submitted = false;
     navigationTarget = 'delivery_note';
     essentialJobList: Observable<JobMinimal[]>;
+    deliveryNoteReasons: Observable<DeliveryNoteReason[]>;
     buttons: CustomButton[] = [];
 
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog,
@@ -66,22 +67,24 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
                 return minimalJobs;
             }
         ));
+        this.deliveryNoteReasons = this.api.readDeliveryNoteReasonsDeliveryNoteReasonsGet();
         if (this.createMode) {
             this.api.getNextDeliveryNoteNumberDeliveryNoteNumberGet().pipe(first()).subscribe(deliveryNoteNumber => {
                 this.deliveryNoteGroup.get('delivery_note_number').setValue(deliveryNoteNumber);
             });
             this.addDescriptiveArticleAt(0);
+        } else {
+            this.authService.currentUserHasRight('delivery_notes:delete').pipe(first()).subscribe(allowed => {
+                if (allowed) {
+                    this.buttons.push({
+                        name: 'Lieferschein löschen',
+                        navigate: () => {
+                            this.deliveryNoteDeleteClicked();
+                        }
+                    });
+                }
+            });
         }
-        this.authService.currentUserHasRight('delivery_notes:delete').pipe(first()).subscribe(allowed => {
-            if (allowed) {
-                this.buttons.push({
-                    name: 'Lieferschein löschen',
-                    navigate: () => {
-                        this.deliveryNoteDeleteClicked();
-                    }
-                });
-            }
-        });
     }
 
     onSubmit() {
@@ -119,7 +122,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
                 job_id: this.deliveryNoteGroup.get('job_id').value,
                 articles: descriptiveArticles,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                delivery_note_reason_id: 1, //TODO: finish
+                delivery_note_reason_id: this.deliveryNoteGroup.get('delivery_note_reason_id').value,
             };
             this.api.createDeliveryNoteDeliveryNotePost(deliveryNoteCreate).pipe(first()).subscribe(deliveryNote => {
                 this.submitted = false;
@@ -144,7 +147,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
                 job_id: this.deliveryNoteGroup.get('job_id').value,
                 articles: descriptiveArticles,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                delivery_note_reason_id: 1, //TODO: finish
+                delivery_note_reason_id: this.deliveryNoteGroup.get('delivery_note_reason_id').value,
             };
             this.api.updateDeliveryNoteDeliveryNoteDeliveryNoteIdPut(this.id, deliveryNoteUpdate).pipe(first()).subscribe(deliveryNote => {
                 this.submitted = false;
@@ -215,6 +218,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
             if (this.getDescriptiveArticles().controls.length === 0) {
                 this.getDescriptiveArticles().push(this.initDescriptiveArticles());
             }
+            this.deliveryNoteGroup.get('delivery_note_reason_id').setValue(deliveryNote.delivery_note_reason.id);
         });
     }
 
@@ -253,6 +257,8 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
             assigned: new FormControl(false),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             job_id: new FormControl(0),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            delivery_note_reason_id: new FormControl(1)
         });
     }
 

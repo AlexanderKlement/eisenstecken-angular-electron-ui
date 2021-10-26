@@ -76,6 +76,10 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
                 this.api.readJobJobJobIdGet(this.jobId).pipe(first()).subscribe((job) => {
                     this.fillRightSidebar(job.client.language.code);
                 });
+                this.api.getParameterParameterKeyGet('invoice_number').pipe(first()).subscribe((invoiceNumberString) => {
+                    this.invoiceGroup.get('number').setValue(invoiceNumberString);
+                });
+                this.addOtherInvoices();
             });
         }
         this.authService.currentUserHasRight('outgoing_invoices:delete').pipe(first()).subscribe(allowed => {
@@ -116,9 +120,9 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
             console.error(error);
         }
         this.snackBar.open('Die Rechnung konnte leider nicht gelöscht werden.'
-            , 'Ok',{
-            duration: 10000
-          });
+            , 'Ok', {
+                duration: 10000
+            });
         this.router.navigateByUrl(this.navigationTarget);
     }
 
@@ -149,6 +153,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
     addDescriptiveArticleAt(index: number): void {
         this.getDescriptiveArticles().insert(index + 1, this.initDescriptiveArticles());
     }
+
 
     toggleCollapseDescriptiveArticle(index: number | undefined): void {
         if (index === -1) {
@@ -260,7 +265,15 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
 
     createUpdateSuccess(invoice: OutgoingInvoice): void {
         this.id = invoice.id;
-        this.router.navigateByUrl('job/' + this.jobId.toString(), {replaceUrl: true});
+        this.api.getParameterParameterKeyGet('invoice_number').pipe(first()).subscribe((invoiceNumberString) => {
+            const invoiceNumber = parseInt(invoiceNumberString, 10) + 1;
+            this.api.setParameterParameterPost({
+                key: 'invoice_number',
+                value: invoiceNumber.toString()
+            }).pipe(first()).subscribe(() => {
+                this.router.navigateByUrl('job/' + this.jobId.toString(), {replaceUrl: true});
+            });
+        });
     }
 
     observableReady(): void {
@@ -312,6 +325,18 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
         return descriptiveArticleFormGroup;
     }
 
+    private addDescriptiveArticle(name: string, amount: string, singlePrice: string, totalPrice: string): void {
+        const descriptiveArticleFormGroup = new FormGroup({
+            description: new FormControl(name),
+            amount: new FormControl(amount),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            single_price: new FormControl(singlePrice),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            total_price: new FormControl(totalPrice)
+        });
+        this.getDescriptiveArticles().push(descriptiveArticleFormGroup);
+    }
+
     private initOutgoingInvoiceGroup() {
         const now = new Date();
         const now30gg = new Date();
@@ -343,6 +368,19 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
             this.invoiceGroup.patchValue({
                 [formControlName]: parameter,
             });
+        });
+    }
+
+    private addOtherInvoices() {
+        this.api.readOutgoingInvoicesByJobOutgoingInvoiceJobJobIdGet(this.jobId).pipe(first()).subscribe((outgoingInvoices) => {
+            for (const outgoingInvoice of outgoingInvoices) {
+                this.addDescriptiveArticle(
+                    'Rechung vom' + outgoingInvoice.date,
+                    '1',
+                    '5', //TODO: switch this to full price without iva
+                    '5'
+                );
+            }
         });
     }
 }

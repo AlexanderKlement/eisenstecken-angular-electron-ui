@@ -13,7 +13,6 @@ export class AccessGuard implements CanActivate {
     'stunden.eisenstecken.kivi.bz.it',
     '192.168.0.7',
     '127.0.0.1',
-    'localhost'
   ];
 
   constructor(private authService: AuthService, private router: Router, private electron: ElectronService) {
