@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TableDataSource} from '../shared/components/table-builder/table-builder.datasource';
-import {DefaultService, Fee, Journey, MealSum, User, WorkDay} from 'eisenstecken-openapi-angular-library';
+import {DefaultService, Fee, Journey, MealSum, User} from 'eisenstecken-openapi-angular-library';
 import {CustomButton} from '../shared/components/toolbar/toolbar.component';
 import {LockService} from '../shared/lock.service';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs';
 import * as moment from 'moment';
 import {ConfirmDialogComponent} from '../shared/components/confirm-dialog/confirm-dialog.component';
 import {first} from 'rxjs/operators';
@@ -157,7 +156,7 @@ export class EmployeeComponent implements OnInit {
                                 sum: dataSource.sum
                             },
                             route: () => {
-                                this.router.navigateByUrl('employee'); //TODO: make meal detail view and let them be deleted from there
+                                this.router.navigateByUrl('meal/' + dataSource.eating_place.id.toString());
                             }
                         });
                 });

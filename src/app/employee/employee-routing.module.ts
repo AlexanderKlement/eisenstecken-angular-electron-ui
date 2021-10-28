@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {EmployeeComponent} from './employee.component';
 import {EmployeeDetailComponent} from './employee-detail/employee-detail.component';
 import {WorkDayNewComponent} from './work-day-new/work-day-new.component';
+import {MealComponent} from './meal/meal.component';
 
 const routes: Routes = [
     {
@@ -18,6 +19,11 @@ const routes: Routes = [
     {
         path: 'work_day/new/:id',
         component: WorkDayNewComponent,
+        data: {requiresLogin: true}
+    },
+    {
+        path: 'meal/:id',
+        component: MealComponent,
         data: {requiresLogin: true}
     }
 ];

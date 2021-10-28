@@ -12,13 +12,15 @@ import { WorkDayNewComponent } from './work-day-new/work-day-new.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {FlexModule} from '@angular/flex-layout';
+import { MealComponent } from './meal/meal.component';
 
 
 @NgModule({
   declarations: [
     EmployeeComponent,
     EmployeeDetailComponent,
-    WorkDayNewComponent
+    WorkDayNewComponent,
+    MealComponent
   ],
     imports: [
         CommonModule,

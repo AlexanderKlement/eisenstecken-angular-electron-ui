@@ -61,6 +61,7 @@ export class WorkDayGeneralComponent implements OnInit {
     cars$: ReplaySubject<Car[]>;
 
     maxMinutes = 0;
+    remainingMinutes = 0;
 
     workDayStartable = false;
     workDayStopable = false;
@@ -106,9 +107,6 @@ export class WorkDayGeneralComponent implements OnInit {
     ngOnInit(): void {
         this.initWorkDay();
         this.initConfetti();
-        console.log(this.workDayFinishable);
-        console.log(this.workDayCompleted);
-        console.log(this.admin);
     }
 
     initWorkDayEditSection(workDay?: WorkDay): void {
@@ -122,15 +120,9 @@ export class WorkDayGeneralComponent implements OnInit {
         this.api.readJobsJobGet(0, 1000, '', undefined, 'JOBSTATUS_ACCEPTED', true).pipe(first())
             .subscribe((jobs) => {
                 for (const job of jobs) {
-                    if (job.is_main) { //TODO: change this to get only main from start
-                        this.getJobSections().push(this.initJobSectionManually(0, job.id, job.displayable_name));
-                    }
+                    this.getJobSections().push(this.initJobSectionManually(0, 0, job.id, job.displayable_name));
                 }
-                let length = 0;
-                if (workDay !== undefined) {
-                    length = workDay.length_minutes;
-                }
-                this.getJobSections().push(this.initJobSectionManually(length, 0, 'Instandhaltung'));
+                this.getJobSections().push(this.initJobSectionManually(0, 0, 0, 'Instandhaltung'));
             });
 
         if (workDay !== undefined) {
@@ -228,15 +220,12 @@ export class WorkDayGeneralComponent implements OnInit {
         }
     }
 
-    initJobSection(workSection: JobSection): FormGroup {
-        return this.initJobSectionManually(workSection.minutes,
-            workSection.job === undefined ? 0 : workSection.job.id,
-            workSection.job === undefined ? 'Instandhaltung' : workSection.job.displayable_name);
-    }
-
-    initJobSectionManually(minutes: number, jobId: number, name: string): FormGroup {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    initJobSectionManually(minutes: number, minutes_direction: number, jobId: number, name: string): FormGroup {
         return new FormGroup({
             minutes: new FormControl(minutes, Validators.pattern('^\\+?(0|[1-9]\\d*)$')),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            minutes_direction: new FormControl(minutes_direction, Validators.pattern('^\\+?(0|[1-9]\\d*)$')),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             job_id: new FormControl(jobId),
             name: new FormControl(name),
@@ -288,14 +277,28 @@ export class WorkDayGeneralComponent implements OnInit {
         return this.workDayEditGroup.get('job_sections') as FormArray;
     }
 
+    getJobSectionsMinutesAt(index: number): FormControl {
+        return this.getJobSections().at(index).get('minutes') as FormControl;
+    }
+
+    getJobSectionsDirectionMinutesAt(index: number): FormControl {
+        return this.getJobSections().at(index).get('minutes_direction') as FormControl;
+    }
+
     getWorkPhases(): FormArray {
         return this.workDayEditGroup.get('work_phases') as FormArray;
     }
 
-    onMinuteChange(index: number): void {
-        this.distributeMinutes(index);
-        this.checkMinutes();
-        this.refreshDisplayableMinutes();
+    onMinuteChange(index: number, direction: boolean): void {
+        this.refreshRemainingMinutes();
+        console.log('Remaining minutes: ' + this.remainingMinutes.toString());
+        console.log('Max minutes: ' + this.maxMinutes);
+        console.log('Minutes sum: ' + this.getMinutesSum());
+        if (this.remainingMinutes < 0) {
+            const currentMinutes = this.getMinutesAt(index, direction);
+            this.setMinutesAt(index, this.maxMinutes - this.getMinutesSum() + currentMinutes, direction);
+        }
+        this.refreshRemainingMinutes();
     }
 
     minutesToDisplayableString(minutes: number): string {
@@ -304,76 +307,30 @@ export class WorkDayGeneralComponent implements OnInit {
         return hours.toString() + ' Stunden und ' + remainingMinutes.toString() + ' Minuten';
     }
 
-    calculateTimeDisplay(index: number): void {
-        const currentMinutes = this.getMinutesAt(index);
-        const hourString = this.minutesToDisplayableString(currentMinutes);
-        this.getJobSections().at(index).get('readable_time').setValue(hourString);
-    }
 
-    distributeMinutes(index: number): void {
-        const actualTotalMinutes = this.getMinutesSum();
-
-        const minutesAvailable = this.maxMinutes - actualTotalMinutes;
-        if (this.getMinutesAtLast() + minutesAvailable > 0) {
-            this.setMinutesAtLast(this.getMinutesAtLast() + minutesAvailable);
-            return;
+    setMinutesAt(index: number, value: number, direction: boolean) {
+        let minuteString = 'minutes';
+        if (direction) {
+            minuteString = 'minute_direction';
         }
-        this.setMinutesAtLast(0);
-        this.setMinutesAt(index, this.maxMinutes - this.getMinutesSum(index));
+        this.getJobSections().at(index).get(minuteString).setValue(value.toString());
     }
 
-    checkMinutes(): void {
-        if (this.getMinutesSum() !== this.maxMinutes) {
-            console.error('WorkDayComponent: The distributed Minutes do not correspond with the total available minutes -> RESET');
-            this.resetMinutes();
+
+    getMinutesAt(index: number, direction: boolean): number {
+        let minuteString = 'minutes';
+        if (direction) {
+            minuteString = 'minute_direction';
         }
-        this.getJobSections().controls.forEach((_, index) => {
-            if (this.getMinutesAt(index) < 0) {
-                console.error('WorkDayComponent: There is at least 1 negative minute amount present -> RESET');
-                this.resetMinutes();
-            }
-        });
+        return parseInt(this.getJobSections().at(index).get(minuteString).value, 10);
     }
 
-    refreshDisplayableMinutes(): void {
-        this.getJobSections().controls.forEach((_, index) => {
-            this.calculateTimeDisplay(index);
-        });
-    }
-
-    resetMinutes(): void {
-        this.getJobSections().controls.forEach((_, index) => {
-            this.setMinutesAt(index, 0);
-        });
-        this.setMinutesAtLast(this.maxMinutes);
-    }
-
-    setMinutesAt(index: number, value: number) {
-        this.getJobSections().at(index).get('minutes').setValue(value.toString(), {emitEvent: false});
-    }
-
-    getMinutesAt(index: number):
-        number {
-        return parseInt(this.getJobSections().at(index).get('minutes').value, 10);
-    }
-
-    getMinutesAtLast(): number {
-        const length = this.getJobSections().controls.length;
-        return this.getMinutesAt(length - 1);
-    }
-
-    setMinutesAtLast(value: number): void {
-        const length = this.getJobSections().controls.length;
-        this.setMinutesAt(length - 1, value);
-    }
-
-    getMinutesSum(skipIndex?: number): number {
+    getMinutesSum(): number {
         let totalMinutes = 0;
         this.getJobSections().controls.forEach((element, index) => {
-            if (skipIndex !== undefined && skipIndex === index) {
-                return;
-            }
             totalMinutes += parseInt(element.get('minutes').value, 10);
+            totalMinutes += parseInt(element.get('minutes_direction').value, 10);
+
         });
         return totalMinutes;
     }
@@ -448,6 +405,9 @@ export class WorkDayGeneralComponent implements OnInit {
     }
 
     onWorkDayFinishSubmit(): void {
+        if (!this.minutesDistributed()) {
+            return;
+        }
         this.submitted = true;
 
         const jobSections: JobSectionCreate[] = [];
@@ -458,7 +418,7 @@ export class WorkDayGeneralComponent implements OnInit {
                 job_id: jobSectionControl.get('job_id').value,
                 minutes: parseInt(jobSectionControl.get('minutes').value, 10),
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                minutes_direction: 0 //TODO: finish
+                minutes_direction: jobSectionControl.get('minutes_direction').value
             });
         });
 
@@ -591,6 +551,10 @@ export class WorkDayGeneralComponent implements OnInit {
         this.maxMinutes = minutes;
     }
 
+    refreshRemainingMinutes(): void {
+        this.remainingMinutes = this.maxMinutes - this.getMinutesSum();
+    }
+
     onRemoveWorkPhaseClick(i: number) {
         this.getWorkPhases().removeAt(i);
     }
@@ -601,7 +565,7 @@ export class WorkDayGeneralComponent implements OnInit {
 
     onWorkPhaseChange() {
         this.refreshMaxMinutes();
-        this.onMinuteChange(this.getJobSections().length - 1);
+        this.refreshRemainingMinutes();
     }
 
     initConfetti() {
@@ -628,6 +592,24 @@ export class WorkDayGeneralComponent implements OnInit {
 
     finishWorkDayClicked() {
         this.showForm = true;
+    }
+
+    private minutesDistributed(): boolean {
+        this.refreshRemainingMinutes();
+        if (this.remainingMinutes > 0) {
+            this.snackBar.open('Achtung: Die Arbeitszeit muss bis auf die letzte Minute aufgeteilt werden', 'OK', {
+                duration: 10000
+            });
+            return false;
+        }
+        if (this.remainingMinutes < 0) {
+            this.snackBar.open('Fehler: Arbeitszeiten konnten nicht aufgeteilt werden', 'OK', {
+                duration: 10000
+            });
+            console.warn('WorkDayGeneral: Remaining minutes < 0 -> this should not be possible');
+            return false;
+        }
+        return true;
     }
 
     private initWorkDay() {

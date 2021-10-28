@@ -75,25 +75,25 @@
                 </div>
             </div>
             <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="job_sections" fxFlexFill>
-                <h4>Auf Auträge aufteilen: {{minutesToDisplayableString(maxMinutes)}}</h4>
+                <h4>Arbeitszeit aufteilen:</h4>
+                <h5>Gesamtzeit: {{minutesToDisplayableString(maxMinutes)}}</h5>
+                <h5>Noch aufzuteilen: {{minutesToDisplayableString(remainingMinutes)}}</h5>
                 <div *ngFor="let workSection of getJobSections().controls; let i = index">
                     <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i"
                          fxLayout.lt-sm="column">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Auftrag</mat-label>
-                            <input class="form-control" readonly formControlName="name" matInput>
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Minuten</mat-label>
-                            <input class="form-control" type="number" [readonly]="editDisabled"
-                                   formControlName="minutes"
-                                   (change)="onMinuteChange(i)"
-                                   matInput>
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Zeit</mat-label>
-                            <input class="form-control" formControlName="readable_time" readonly matInput>
-                        </mat-form-field>
+                        <div fxLayout="column" fxLayoutAlign="space-around center">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Auftrag</mat-label>
+                                <input class="form-control" readonly formControlName="name" matInput>
+                            </mat-form-field>
+                            <app-minute-hour [minuteControl]="getJobSectionsMinutesAt(i)"
+                                             [editDisabled]="editDisabled" title="Regulär:"
+                                             (minutesChanged)="onMinuteChange(i, false)"></app-minute-hour>
+                            <app-minute-hour *ngIf="i < (getJobSections().length - 1)"
+                                             [minuteControl]="getJobSectionsDirectionMinutesAt(i)"
+                                             [editDisabled]="editDisabled" title="Regie:"
+                                             (minutesChanged)="onMinuteChange(i, true)"></app-minute-hour>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -6,7 +6,6 @@ import {LoginRoutingModule} from './login/login-routing.module';
 import {HomeComponent} from './home/home.component';
 import {ClientRoutingModule} from './client/client-routing.module';
 import {JobRoutingModule} from './job/job-routing.module';
-import {CalendarEditComponent} from './shared/components/calendar/calendar-edit/calendar-edit.component';
 import {UserRoutingModule} from './user/user-routing.module';
 import {InvoiceRoutingModule} from './invoice/invoice-routing.module';
 import {SupplierRoutingModule} from './supplier/supplier-routing.module';
