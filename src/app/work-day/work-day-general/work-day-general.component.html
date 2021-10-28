@@ -4,20 +4,25 @@
         <h5 *ngIf="admin && workDay">Abgeschlossen: {{workDay.finished ? 'Ja' : 'Nein'}}</h5>
         <p *ngIf="workDayError && !admin">Fehler: Bitte im Büro korrigieren lassen</p>
         <p *ngIf="!workDayError && lengthString">Länge Arbeitstag: {{lengthString}}</p>
-        <div *ngIf="workDayStartable">
+        <div *ngIf="workDayStartable && !showForm">
             <button type="button" class="control play" (click)="onWorkDayStartClick()">
                 <span class="play-icon"></span>
             </button>
         </div>
-        <div *ngIf="workDayStopable">
+        <div *ngIf="workDayStopable && !showForm">
             <button type="button" class="control pause" (click)="onWorkDayStopClick()">
                 <span class="pause-icon"></span>
             </button>
         </div>
-        <app-stopwatch *ngIf="workDayStartable || workDayStopable"></app-stopwatch>
+        <app-stopwatch *ngIf="(workDayStartable || workDayStopable) && !showForm"></app-stopwatch>
+        <button *ngIf="workDayFinishable && !admin && !showForm" type="button"
+                (click)="finishWorkDayClicked()"
+                mat-raised-button>
+            Arbeitstag abschließen
+        </button>
     </div>
 
-    <form *ngIf="workDayFinishable || workDayCompleted" [formGroup]="workDayEditGroup"
+    <form *ngIf="showForm || admin || workDayCompleted" [formGroup]="workDayEditGroup"
           (submit)="onWorkDayFinishSubmit()">
         <div fxLayout="column" fxLayoutAlign="space-around center">
             <mat-form-field appearance="fill">
@@ -164,7 +169,7 @@
                 <h4>Essen eintragen</h4>
                 <mat-form-field appearance="fill">
                     <mat-label>Gasthaus</mat-label>
-                    <mat-select formControlName="eating_place_id">
+                    <mat-select formControlName="eating_place_id" required>
                         <mat-option *ngFor="let eatingPlace of eatingPlaces$ |  async" [value]="eatingPlace.id">
                             {{eatingPlace.name}}
                         </mat-option>
@@ -175,7 +180,6 @@
                     [disabled]="submitted || !workDayEditGroup.valid" mat-raised-button>
                 {{buttonText}}
             </button>
-
         </div>
     </form>
 </div>

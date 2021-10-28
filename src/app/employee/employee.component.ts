@@ -6,6 +6,10 @@ import {LockService} from '../shared/lock.service';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import * as moment from 'moment';
+import {ConfirmDialogComponent} from '../shared/components/confirm-dialog/confirm-dialog.component';
+import {first} from 'rxjs/operators';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-employee',
@@ -28,7 +32,8 @@ export class EmployeeComponent implements OnInit {
         }
     ];
 
-    constructor(private api: DefaultService, private locker: LockService, private router: Router) {
+    constructor(private api: DefaultService, private locker: LockService, private router: Router,
+                private dialog: MatDialog, private snackBar: MatSnackBar) {
     }
 
     ngOnInit(): void {
@@ -83,7 +88,7 @@ export class EmployeeComponent implements OnInit {
                                 date: moment(dataSource.date).format('L')
                             },
                             route: () => {
-                                this.router.navigateByUrl('employee');
+                                this.feeClicked(dataSource.id);
                             }
                         });
                 });
@@ -118,7 +123,7 @@ export class EmployeeComponent implements OnInit {
                                 distance_km: dataSource.distance_km,
                             },
                             route: () => {
-                                this.router.navigateByUrl('employee');
+                                this.journeyClicked(dataSource.id);
                             }
                         });
                 });
@@ -152,7 +157,7 @@ export class EmployeeComponent implements OnInit {
                                 sum: dataSource.sum
                             },
                             route: () => {
-                                this.router.navigateByUrl('employee');
+                                this.router.navigateByUrl('employee'); //TODO: make meal detail view and let them be deleted from there
                             }
                         });
                 });
@@ -168,4 +173,51 @@ export class EmployeeComponent implements OnInit {
         this.mealDataSource.loadData();
     }
 
+    private feeClicked(id: number) {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Spese löschen?',
+                text: 'Spese löschen? Diese Aktion kann nicht rückgängig gemacht werden!'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.api.deleteFeeFeeFeeIdDelete(id).pipe(first()).subscribe(success => {
+                    if (success) {
+                        this.feeDataSource.loadData();
+                    } else {
+                        this.snackBar.open('Spese konnte nicht gelöscht werden', 'Ok', {
+                            duration: 10000
+                        });
+                    }
+                });
+
+            }
+        });
+    }
+
+    private journeyClicked(id: number) {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Fahrt löschen?',
+                text: 'Fahrt löschen? Diese Aktion kann nicht rückgängig gemacht werden!'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.api.deleteFeeFeeFeeIdDelete(id).pipe(first()).subscribe(success => {
+                    if (success) {
+                        this.journeyDataSource.loadData();
+                    } else {
+                        this.snackBar.open('Fahrt konnte nicht gelöscht werden', 'Ok', {
+                            duration: 10000
+                        });
+                    }
+                });
+
+            }
+        });
+    }
 }

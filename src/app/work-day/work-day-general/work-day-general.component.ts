@@ -77,6 +77,7 @@ export class WorkDayGeneralComponent implements OnInit {
     buttonText = 'Arbeitstag abschließen';
     canvas: any;
     timerShowing = true;
+    showForm = false;
 
 
     primaryTheme: NgxMaterialTimepickerTheme = { // TODO : move this and calendar thingy to more prominent location
@@ -105,6 +106,9 @@ export class WorkDayGeneralComponent implements OnInit {
     ngOnInit(): void {
         this.initWorkDay();
         this.initConfetti();
+        console.log(this.workDayFinishable);
+        console.log(this.workDayCompleted);
+        console.log(this.admin);
     }
 
     initWorkDayEditSection(workDay?: WorkDay): void {
@@ -488,6 +492,8 @@ export class WorkDayGeneralComponent implements OnInit {
             job_sections: jobSections,
             expenses,
             drives,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            additional_workloads: [] //TODO: finish
         };
 
 
@@ -525,7 +531,9 @@ export class WorkDayGeneralComponent implements OnInit {
                     drives,
                     // eslint-disable-next-line @typescript-eslint/naming-convention
                     work_phases: workPhases,
-                    date: date.format('YYYY-MM-DD')
+                    date: date.format('YYYY-MM-DD'),
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    additional_workloads: [] //TODO: finish
                 };
                 this.api.updateWorkDayWorkDayWorkDayIdPut(this.workDay.id, workDayUpdate).pipe(first()).subscribe(
                     (newWorkDay) => {
@@ -550,7 +558,9 @@ export class WorkDayGeneralComponent implements OnInit {
                     work_phases: workPhases,
                     date: date.format('YYYY-MM-DD'),
                     // eslint-disable-next-line @typescript-eslint/naming-convention
-                    user_id: this.userId
+                    user_id: this.userId,
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    additional_workloads: [] //TODO: finish
                 };
                 this.api.createWorkDayWorkDayUserIdPost(this.userId, workDayCreate).pipe(first()).subscribe(
                     (newWorkDay) => {
@@ -614,6 +624,10 @@ export class WorkDayGeneralComponent implements OnInit {
             disableForReducedMotion: true
         });
         myConfetti();
+    }
+
+    finishWorkDayClicked() {
+        this.showForm = true;
     }
 
     private initWorkDay() {

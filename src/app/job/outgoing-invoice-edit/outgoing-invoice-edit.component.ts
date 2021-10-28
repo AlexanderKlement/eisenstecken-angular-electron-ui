@@ -20,6 +20,7 @@ import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/con
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {AuthService} from '../../shared/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-outgoing-invoice-edit',
@@ -373,14 +374,18 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
 
     private addOtherInvoices() {
         this.api.readOutgoingInvoicesByJobOutgoingInvoiceJobJobIdGet(this.jobId).pipe(first()).subscribe((outgoingInvoices) => {
+            if (outgoingInvoices.length > 0) {
+                this.getDescriptiveArticles().removeAt(0);
+            }
             for (const outgoingInvoice of outgoingInvoices) {
                 this.addDescriptiveArticle(
-                    'Rechung vom' + outgoingInvoice.date,
+                    'Rechnung Nr. ' +outgoingInvoice.number + ' vom ' + moment(outgoingInvoice.date, 'YYYY-MM-DD').format("DD.MM.YYYY"),
                     '1',
-                    '5', //TODO: switch this to full price without iva
-                    '5'
+                    (outgoingInvoice.full_price_without_vat * (-1)).toString(),
+                    (outgoingInvoice.full_price_without_vat * (-1)).toString(),
                 );
             }
+            this.addDescriptiveArticleAt(this.getDescriptiveArticles().length - 1);
         });
     }
 }

@@ -5323,10 +5323,10 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
-eisenstecken-openapi-angular-library@8.3.2:
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/eisenstecken-openapi-angular-library/-/eisenstecken-openapi-angular-library-8.3.2.tgz#f68e9048530cd2d32ec7f40a16b203b570588940"
-  integrity sha512-NvGRBUtWdJZ0oyYyZv4H1kCJTbUqdVaiAs5r/zdD5i/Jhtn/Q0DDFaKQ/1TjjvlZJtE2D5gnuV2Wgf9630ld/A==
+eisenstecken-openapi-angular-library@8.3.4:
+  version "8.3.4"
+  resolved "https://registry.yarnpkg.com/eisenstecken-openapi-angular-library/-/eisenstecken-openapi-angular-library-8.3.4.tgz#cfb290756626ce5235b12843826210498f0cda2b"
+  integrity sha512-9gttca/EDcyxSO6hgVRj8N4ey6WGvjTWhxg8zXK1c5OnE8NiOsL3jBt4YAL6dxIE684GgFH/zYszhNsNteUMwg==
   dependencies:
     tslib "^2.2.0"
 

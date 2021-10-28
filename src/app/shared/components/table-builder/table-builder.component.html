@@ -18,7 +18,6 @@
         {{ element.values[column.name] }}
       </mat-cell>
     </ng-container>
-
     <mat-header-row *matHeaderRowDef="dataSource.columnIdentifiers; sticky: true"></mat-header-row>
     <mat-row *matRowDef="let row; columns: dataSource.columnIdentifiers" (click)="rowClicked(row.route)" class="table-row"></mat-row>
   </mat-table>
