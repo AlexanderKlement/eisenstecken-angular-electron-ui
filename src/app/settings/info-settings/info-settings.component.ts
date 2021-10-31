@@ -148,7 +148,6 @@ export class InfoSettingsComponent implements OnInit {
     }
 
     updateCredentialsSuccess(credentials: Credential[]): void {
-        console.log(this.getCredentialFormArray());
         this.clearFormArray(this.getCredentialFormArray());
         this.addCredentialArrayToFormGroup(credentials);
         this.submitted = false;

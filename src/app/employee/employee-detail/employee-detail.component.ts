@@ -54,18 +54,13 @@ export class EmployeeDetailComponent implements OnInit {
         });
         this.workDays$ = this.api.getWorkDaysByUserWorkDayUserUserIdGet(this.userId);
         this.workDay$ = new Observable<WorkDay>(subscriber => {
-            console.log('hei');
-            console.log(subscriber);
             this.workDaySubscriber$ = subscriber;
         });
     }
 
     workDayChanged(event: MatSelectChange): void {
         this.workDayLoading = true;
-        console.log(event.value);
         this.api.getWorkDayWorkDayWorkDayIdGet(event.value).pipe(first()).subscribe(workDay => {
-            console.log(workDay);
-            console.log(this.workDaySubscriber$);
             this.workDay = workDay;
             //this.workDaySubscriber$.next(workDay);
             this.workDayLoading = false;

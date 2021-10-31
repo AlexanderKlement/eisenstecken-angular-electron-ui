@@ -82,7 +82,6 @@ export class ProductsListComponent implements OnInit {
     }
 
     private static mapDialogData2OrderedArticleCreate(dialogData: DialogData, articleId: number): OrderedArticleCreate {
-        console.log(dialogData);
         return {
             amount: dialogData.amount,
             discount: dialogData.discount,

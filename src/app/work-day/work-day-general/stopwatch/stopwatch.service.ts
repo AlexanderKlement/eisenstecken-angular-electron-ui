@@ -65,10 +65,8 @@ export class StopwatchService {
             if (!stop) {
                 stop = new Date().getTime();
             }
-            console.log(stop - period.start);
             totalMillis += stop - period.start;
         }
-        console.log(this.periods);
         return totalMillis;
     }
 
@@ -103,8 +101,6 @@ export class StopwatchService {
             //TODO: add sentry here, too track if and when this happens
             this.reset();
         }
-        console.log(this.day);
-        console.log(this.periods);
     }
 
     private getDay(): moment.Moment {

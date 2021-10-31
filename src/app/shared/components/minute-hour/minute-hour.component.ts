@@ -9,8 +9,8 @@ import {Subscription} from 'rxjs';
 })
 export class MinuteHourComponent implements OnInit, OnDestroy {
     @Input() minuteControl: FormControl;
-    @Input() editDisabled: boolean = false;
-    @Input() title: string = "";
+    @Input() editDisabled = false;
+    @Input() title = '';
     @Output() minutesChanged = new EventEmitter<number>();
     minuteHourGroup: FormGroup;
     private subscriptions: Subscription = new Subscription();
@@ -36,6 +36,7 @@ export class MinuteHourComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.minuteHourGroup.get('minutes').valueChanges.subscribe(() => {
             this.refreshExternalValues();
         }));
+        this.refreshInternalValues();
     }
 
     ngOnDestroy() {

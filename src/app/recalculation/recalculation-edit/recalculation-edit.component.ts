@@ -49,7 +49,6 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
                 console.error('RecalculationEdit: Cannot parse job id');
                 this.router.navigateByUrl(this.navigationTarget);
             }
-            console.log(this.jobId);
             this.initOrderTable();
             this.initWorkloadTable();
             this.jobName$ = this.api.readJobJobJobIdGet(this.jobId).pipe(

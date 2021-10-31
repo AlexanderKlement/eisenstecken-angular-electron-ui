@@ -97,6 +97,26 @@
                     </div>
                 </div>
             </div>
+            <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="additional_workloads" fxFlexFill>
+                <div *ngFor="let additionalWorkloads of getAdditionalWorkloads().controls; let i = index">
+                    <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i">
+                        <div fxLayout="column" fxLayoutAlign="space-around center">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Beschreibung</mat-label>
+                                <input class="form-control" formControlName="description" matInput>
+                            </mat-form-field>
+                            <app-minute-hour [minuteControl]="getAdditionalWorkloadsAt(i)"
+                                             [editDisabled]="editDisabled"
+                                             (minutesChanged)="onAdditionalMinuteChange(i)"></app-minute-hour>
+                        </div>
+                    </div>
+                </div>
+                <button *ngIf="!editDisabled" mat-fab type="button" (click)="onAddAdditionalMinutesClick()"
+                        title="Andere Aufgabe hinzufügen">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+
             <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="expenses" fxFlexFill>
                 <h4>Ausgaben eintragen</h4>
                 <div *ngFor="let expense of getExpenses().controls; let i = index">
@@ -183,3 +203,6 @@
         </div>
     </form>
 </div>
+
+
+<!--<pre> {{workDayEditGroup.value | json}}</pre>-->
