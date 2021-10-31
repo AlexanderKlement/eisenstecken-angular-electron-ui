@@ -13,7 +13,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BaseEditComponent} from '../../shared/components/base-edit/base-edit.component';
 import {MatDialog} from '@angular/material/dialog';
 import {first, tap} from 'rxjs/operators';
-import {NavigationService} from '../../shared/navigation.service';
 
 @Component({
     selector: 'app-job-edit',
@@ -32,6 +31,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
     navigationTarget = 'job';
 
     addressDeactivated = true;
+    title = 'Auftrag: Bearbeiten';
 
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
         super(api, router, route, dialog);
@@ -64,6 +64,12 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
                 }
 
             });
+        }
+        if (this.createMode && !this.subMode) {
+            this.title = 'Auftrag: Erstellen';
+        }
+        if(this.subMode) {
+            this.title = this.createMode ? 'Unterauftrag: Erstellen' : 'Unterauftrag: Bearbeiten'
         }
     }
 

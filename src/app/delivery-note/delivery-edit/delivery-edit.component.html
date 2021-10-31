@@ -1,7 +1,6 @@
-<app-toolbar [buttonList]="buttons"></app-toolbar>
+<app-toolbar [title]="title" [buttonList]="buttons"></app-toolbar>
 <div class="window-container">
-    <h1 *ngIf="createMode">Lieferschein erstellen</h1>
-    <h1 *ngIf="!createMode">Lieferschein bearbeiten</h1>
+    <h1>{{title}}</h1>
     <form (ngSubmit)="onSubmit()" [formGroup]="deliveryNoteGroup">
         <div fxLayout="row" fxLayoutAlign="space-around start">
             <div fxFlex="70" formArrayName="articles" fxLayout="column" fxLayoutAlign="space-around center">

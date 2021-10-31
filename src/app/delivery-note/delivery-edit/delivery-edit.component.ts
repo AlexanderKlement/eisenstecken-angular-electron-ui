@@ -37,6 +37,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
     essentialJobList: Observable<JobMinimal[]>;
     deliveryNoteReasons: Observable<DeliveryNoteReason[]>;
     buttons: CustomButton[] = [];
+    title = 'Lieferschein: Bearbeiten';
 
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog,
                 private authService: AuthService, private snackBar: MatSnackBar) {
@@ -84,6 +85,9 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
                     });
                 }
             });
+        }
+        if (this.createMode) {
+            this.title = 'Lieferschein: Erstellen';
         }
     }
 

@@ -28,6 +28,7 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
 
     orderDataSource: TableDataSource<Order>;
     workloadDataSource: TableDataSource<Workload>;
+    title = 'Nachkalkulation: Bearbeiten';
 
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
         super(api, router, route, dialog);
@@ -63,7 +64,9 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
                 });
             }
         });
-
+        if (this.createMode) {
+            this.title = 'Nachkalkulation: Erstellen';
+        }
     }
 
     initRecalculationsGroup(): void {

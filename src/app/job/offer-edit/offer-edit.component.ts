@@ -29,6 +29,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     submitted: boolean;
     vatOptions$: Observable<Vat[]>;
     hiddenDescriptives: number[];
+    title = "Angebot: Bearbeiten"
 
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
         super(api, router, route, dialog);
@@ -109,6 +110,9 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
                     this.fillRightSidebar(job.client.language.code);
                 });
             });
+        }
+        if (this.createMode) {
+            this.title = 'Angebot: Erstellen';
         }
     }
 

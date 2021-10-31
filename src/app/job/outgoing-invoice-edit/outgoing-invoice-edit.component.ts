@@ -36,6 +36,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
     navigationTarget = 'job';
     hiddenDescriptives: number[];
     buttons: CustomButton[] = [];
+    title = 'Ausgangsrechnung: Bearbeiten';
 
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog,
                 private authService: AuthService, private snackBar: MatSnackBar) {
@@ -114,6 +115,9 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
                 });
             }
         });
+        if (this.createMode) {
+            this.title = 'Ausgangsrechnung: Erstellen';
+        }
     }
 
     invoiceDeleteFailed(error?: any) {
@@ -379,7 +383,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
             }
             for (const outgoingInvoice of outgoingInvoices) {
                 this.addDescriptiveArticle(
-                    'Rechnung Nr. ' +outgoingInvoice.number + ' vom ' + moment(outgoingInvoice.date, 'YYYY-MM-DD').format("DD.MM.YYYY"),
+                    'Rechnung Nr. ' + outgoingInvoice.number + ' vom ' + moment(outgoingInvoice.date, 'YYYY-MM-DD').format("DD.MM.YYYY"),
                     '1',
                     (outgoingInvoice.full_price_without_vat * (-1)).toString(),
                     (outgoingInvoice.full_price_without_vat * (-1)).toString(),

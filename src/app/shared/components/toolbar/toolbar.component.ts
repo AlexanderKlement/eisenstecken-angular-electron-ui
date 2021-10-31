@@ -2,51 +2,55 @@ import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {NavigationService} from '../../navigation.service';
 
 export interface CustomButton {
-  name: string;
-  navigate: VoidFunction;
+    name: string;
+    navigate: VoidFunction;
 }
 
 @Component({
-  selector: 'app-toolbar',
-  templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.scss']
+    selector: 'app-toolbar',
+    templateUrl: './toolbar.component.html',
+    styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
 
-  @Input() buttonList?: CustomButton[];
-  @Input() beforeBackFunction?: (afterBackFunction: VoidFunction) => void;
+    @Input() buttonList?: CustomButton[];
+    @Input() beforeBackFunction?: (afterBackFunction: VoidFunction) => void;
+    @Input() title = '';
 
-  // @ts-ignore
-  @HostListener('window:popstate', ['$event'])
 
-  constructor(private navigation: NavigationService) { }
 
-  onBrowserBackBtnClose(event: Event): void {
-    event.preventDefault();
-    this.navigation.backEvent();
-    this.backClicked();
-  }
+    // @ts-ignore
+    @HostListener('window:popstate', ['$event'])
 
-  ngOnInit(): void {
-  }
-
-  backClicked(): void {
-    if(this.beforeBackFunction != null){
-      this.beforeBackFunction(() => {
-        this.navigation.back();
-      });
-    } else {
-      this.navigation.back();
+    constructor(private navigation: NavigationService) {
     }
-  }
 
-  homeClicked(): void {
-    this.navigation.home();
-  }
+    onBrowserBackBtnClose(event: Event): void {
+        event.preventDefault();
+        this.navigation.backEvent();
+        this.backClicked();
+    }
 
-  buttonClicked(button: CustomButton): void {
-    console.log('Toolbar: ' + button.name + ' clicked');
-    button.navigate();
-  }
+    ngOnInit(): void {
+    }
+
+    backClicked(): void {
+        if (this.beforeBackFunction != null) {
+            this.beforeBackFunction(() => {
+                this.navigation.back();
+            });
+        } else {
+            this.navigation.back();
+        }
+    }
+
+    homeClicked(): void {
+        this.navigation.home();
+    }
+
+    buttonClicked(button: CustomButton): void {
+        console.log('Toolbar: ' + button.name + ' clicked');
+        button.navigate();
+    }
 
 }

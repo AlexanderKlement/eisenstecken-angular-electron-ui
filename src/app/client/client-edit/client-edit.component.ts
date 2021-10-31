@@ -14,6 +14,7 @@ import {first, tap} from 'rxjs/operators';
 })
 export class ClientEditComponent extends BaseEditComponent<Client> implements OnInit, OnDestroy {
 
+    title = 'Kunde: Bearbeiten';
     navigationTarget = '/client';
     clientGroup: FormGroup;
     company = false;
@@ -58,6 +59,9 @@ export class ClientEditComponent extends BaseEditComponent<Client> implements On
         });
         this.genderOptions$ = this.api.readGendersGenderGet();
         this.languageOptions$ = this.api.readLanguagesLanguageGet();
+        if (this.createMode) {
+            this.title = 'Kunde: Erstellen';
+        }
     }
 
     ngOnDestroy(): void {

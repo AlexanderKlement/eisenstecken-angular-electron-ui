@@ -1,7 +1,6 @@
-<app-toolbar ></app-toolbar>
+<app-toolbar [title]="title" ></app-toolbar>
 <div class="window-container">
-  <h1 *ngIf="createMode">Kunde erstellen</h1>
-  <h1 *ngIf="!createMode">Kunde bearbeiten</h1>
+  <h1>{{title}}</h1>
   <form (ngSubmit)="onSubmit()" [formGroup]="clientGroup">
     <div fxLayout="column" fxLayoutAlign="space-around center">
       <mat-checkbox [checked]="company" (change)="companyCheckBoxClicked()">Firma</mat-checkbox>

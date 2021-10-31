@@ -1,6 +1,7 @@
 <mat-toolbar color="accent" class="toolbar">
   <img class="logo" src="assets/logos/ESS-Logo-RGB-Neg.png" alt="Eisenstecken-logo" (click)="homeClicked()">
-  <span class="example-spacer"></span>
+  <span>{{title}}</span>
+  <span class="toolbar-spacer"></span>
   <div>
     <a *ngFor="let button of buttonList" (click)="buttonClicked(button)" mat-button>{{button.name}}</a>
     <button mat-icon-button mat-raised-button (click)="backClicked()">
