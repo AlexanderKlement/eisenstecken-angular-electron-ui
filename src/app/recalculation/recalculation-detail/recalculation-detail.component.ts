@@ -6,8 +6,8 @@ import * as moment from 'moment';
 import {first, map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
-import {LockService} from '../../shared/lock.service';
-import {AuthService} from '../../shared/auth.service';
+import {LockService} from '../../shared/services/lock.service';
+import {AuthService} from '../../shared/services/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 

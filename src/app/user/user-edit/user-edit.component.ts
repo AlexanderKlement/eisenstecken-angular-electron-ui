@@ -18,7 +18,7 @@ import {MatSelectionList} from '@angular/material/list';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
-import {AuthService} from '../../shared/auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 
 const titles = {
     users: 'Benutzer',

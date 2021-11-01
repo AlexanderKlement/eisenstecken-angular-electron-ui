@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Contact, DefaultService, Price, TechnicalData, User, Credential} from 'eisenstecken-openapi-angular-library';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {MatDialogRef} from '@angular/material/dialog';
-import {AuthService} from '../../shared/auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 import {first} from 'rxjs/operators';
 
 @Component({

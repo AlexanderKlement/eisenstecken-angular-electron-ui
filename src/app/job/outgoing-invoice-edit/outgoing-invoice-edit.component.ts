@@ -18,7 +18,7 @@ import {first, tap} from 'rxjs/operators';
 import {formatDate} from '@angular/common';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
-import {AuthService} from '../../shared/auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import * as moment from 'moment';
 

@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import {InfoBuilderComponent} from '../../shared/components/info-builder/info-builder.component';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
-import {AuthService} from '../../shared/auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 import {first} from 'rxjs/operators';
 
 @Component({

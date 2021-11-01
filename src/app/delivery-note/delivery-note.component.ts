@@ -3,9 +3,9 @@ import {TableDataSource} from '../shared/components/table-builder/table-builder.
 import {DefaultService, DeliveryNote} from 'eisenstecken-openapi-angular-library';
 import * as moment from 'moment';
 import {Router} from '@angular/router';
-import {LockService} from '../shared/lock.service';
+import {LockService} from '../shared/services/lock.service';
 import {CustomButton} from '../shared/components/toolbar/toolbar.component';
-import {AuthService} from '../shared/auth.service';
+import {AuthService} from '../shared/services/auth.service';
 import {first} from 'rxjs/operators';
 
 @Component({

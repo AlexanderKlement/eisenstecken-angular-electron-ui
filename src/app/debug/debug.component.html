@@ -1,0 +1,23 @@
+<h2>Hello, my fellow programmer!</h2>
+<mat-tab-group>
+    <mat-tab label="Email">
+        <form [formGroup]="emailFormGroup" (ngSubmit)="onEmailSubmit()" class="login-form">
+            <div fxLayout="column" fxLayoutAlign="space-around center">
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input class="form-control" type="text" formControlName="email" matInput>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Betreff</mat-label>
+                    <input class="form-control" type="text" formControlName="subject" matInput>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Nachricht</mat-label>
+                    <textarea rows="10" class="form-control" formControlName="body" matInput></textarea>
+                </mat-form-field>
+                <button mat-raised-button type="submit">Senden</button>
+            </div>
+        </form>
+    </mat-tab>
+</mat-tab-group>
+

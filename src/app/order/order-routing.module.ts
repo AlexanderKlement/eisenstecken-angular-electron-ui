@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {AccessGuard} from '../shared/access-guard.service';
+import {AccessGuard} from '../shared/services/access-guard.service';
 import {OrderComponent} from './order.component';
 import {OrderDetailComponent} from './order-detail/order-detail.component';
 import {OrderBundleDetailComponent} from './order-bundle-detail/order-bundle-detail.component';

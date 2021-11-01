@@ -14,8 +14,9 @@ import {SettingsRoutingModule} from './settings/settings-routing.module';
 import {WorkDayRoutingModule} from './work-day/work-day-routing.module';
 import {RecalculationRoutingModule} from './recalculation/recalculation-routing.module';
 import {EmployeeRoutingModule} from './employee/employee-routing.module';
-import {AccessGuard} from './shared/access-guard.service';
+import {AccessGuard} from './shared/services/access-guard.service';
 import {DeliveryNoteRoutingModule} from './delivery-note/delivery-note-routing.module';
+import {DebugRoutingModule} from './debug/debug-routing.module';
 
 const routes: Routes = [
     {
@@ -45,6 +46,7 @@ const routes: Routes = [
         InvoiceRoutingModule,
         UserRoutingModule,
         SupplierRoutingModule,
+        DebugRoutingModule,
         WorkDayRoutingModule,
         EmployeeRoutingModule,
         DeliveryNoteRoutingModule

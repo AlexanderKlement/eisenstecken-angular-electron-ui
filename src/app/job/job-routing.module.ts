@@ -4,7 +4,7 @@ import {JobComponent} from './job.component';
 import {JobDetailComponent} from './job-detail/job-detail.component';
 import {JobEditComponent} from './job-edit/job-edit.component';
 import {OfferEditComponent} from './offer-edit/offer-edit.component';
-import {AccessGuard} from '../shared/access-guard.service';
+import {AccessGuard} from '../shared/services/access-guard.service';
 import {OutgoingInvoiceEditComponent} from './outgoing-invoice-edit/outgoing-invoice-edit.component';
 import {WorkHoursComponent} from './work-hours/work-hours.component';
 

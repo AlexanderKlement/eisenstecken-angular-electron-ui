@@ -21,7 +21,7 @@ import {NgxMaterialTimepickerTheme} from 'ngx-material-timepicker';
 import * as moment from 'moment';
 import * as confetti from 'canvas-confetti';
 import {StopwatchService} from './stopwatch/stopwatch.service';
-import {AuthService} from '../../shared/auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 
 
 export const timeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {

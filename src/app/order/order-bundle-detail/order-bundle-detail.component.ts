@@ -8,7 +8,7 @@ import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {first} from 'rxjs/operators';
-import {LockService} from '../../shared/lock.service';
+import {LockService} from '../../shared/services/lock.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({

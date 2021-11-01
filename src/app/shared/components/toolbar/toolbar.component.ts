@@ -1,5 +1,5 @@
 import {Component, HostListener, Input, OnInit} from '@angular/core';
-import {NavigationService} from '../../navigation.service';
+import {NavigationService} from '../../services/navigation.service';
 
 export interface CustomButton {
     name: string;

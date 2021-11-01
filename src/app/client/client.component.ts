@@ -3,7 +3,7 @@ import {TableDataSource} from '../shared/components/table-builder/table-builder.
 import {DefaultService, Client} from 'eisenstecken-openapi-angular-library';
 import {Router} from '@angular/router';
 import {CustomButton} from '../shared/components/toolbar/toolbar.component';
-import {AuthService} from '../shared/auth.service';
+import {AuthService} from '../shared/services/auth.service';
 import {first} from 'rxjs/operators';
 
 @Component({

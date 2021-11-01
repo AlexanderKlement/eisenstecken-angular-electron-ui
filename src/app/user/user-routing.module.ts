@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {UserComponent} from "./user.component";
-import {AccessGuard} from "../shared/access-guard.service";
+import {AccessGuard} from "../shared/services/access-guard.service";
 import {UserEditComponent} from "./user-edit/user-edit.component";
 
 const routes: Routes = [

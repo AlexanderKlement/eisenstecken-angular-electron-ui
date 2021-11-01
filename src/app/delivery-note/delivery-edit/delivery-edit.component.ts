@@ -14,7 +14,7 @@ import {first, map} from 'rxjs/operators';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {OutgoingInvoiceEditComponent} from '../../job/outgoing-invoice-edit/outgoing-invoice-edit.component';
-import {AuthService} from '../../shared/auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 

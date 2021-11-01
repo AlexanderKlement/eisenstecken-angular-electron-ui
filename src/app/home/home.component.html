@@ -3,11 +3,10 @@
     <button mat-raised-button mat-icon-button (click)="showInfoClicked()" title="Info">
       <mat-icon>info</mat-icon>
     </button>
-    <img class="logo" src="assets/logos/ESS-Logo-RGB-Pos.jpg" alt="Eisenstecken-logo">
+    <img (dblclick)="onLogoDoubleClick()" class="logo" src="assets/logos/ESS-Logo-RGB-Pos.jpg" alt="Eisenstecken-logo">
     <button mat-raised-button mat-icon-button (click)="logoutClicked()" title="Logout">
       <mat-icon>logout</mat-icon>
     </button>
-
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="85" class="window-container">
     <app-calendars-frame fxFlex="35" fxFlexFill></app-calendars-frame>

@@ -14,8 +14,8 @@ import {HomeModule} from './home/home.module';
 import {APP_CONFIG} from 'environments/environment';
 
 import {AppComponent} from './app.component';
-import {AuthService} from './shared/auth.service';
-import {AccessGuard} from './shared/access-guard.service';
+import {AuthService} from './shared/services/auth.service';
+import {AccessGuard} from './shared/services/access-guard.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -49,10 +49,11 @@ import {RecalculationModule} from './recalculation/recalculation.module';
 import {EmployeeModule} from './employee/employee.module';
 import {GlobalHttpInterceptorService} from './global-http-inceptor.service';
 import {DeliveryNoteModule} from './delivery-note/delivery-note.module';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { PwaDialogComponent } from './shared/components/pwa-dialog/pwa-dialog.component';
+import {ServiceWorkerModule} from '@angular/service-worker';
+import {PwaDialogComponent} from './shared/components/pwa-dialog/pwa-dialog.component';
 import {MatIconModule} from '@angular/material/icon';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {DebugModule} from './debug/debug.module';
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
@@ -64,6 +65,7 @@ export function apiConfigFactory(): Configuration {
     };
     return new Configuration(params);
 }
+
 @NgModule({
     declarations: [AppComponent, PwaDialogComponent],
     imports: [
@@ -80,8 +82,8 @@ export function apiConfigFactory(): Configuration {
         SupplierModule,
         OrderModule,
         LoginModule,
-      MatBottomSheetModule,
-      InvoiceModule,
+        MatBottomSheetModule,
+        InvoiceModule,
         EmployeeModule,
         WorkDayModule,
         RecalculationModule,
@@ -89,6 +91,7 @@ export function apiConfigFactory(): Configuration {
         AppRoutingModule,
         FlexLayoutModule,
         DeliveryNoteModule,
+        DebugModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

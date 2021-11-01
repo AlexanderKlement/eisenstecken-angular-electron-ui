@@ -9,7 +9,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {OrderDateReturnData, OrderDialogComponent} from './order-dialog/order-dialog.component';
 import {first, map} from 'rxjs/operators';
 import * as moment from 'moment';
-import {AuthService} from '../../shared/auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 

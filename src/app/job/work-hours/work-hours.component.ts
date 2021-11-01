@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {WorkHourEditDialogComponent} from './work-hour-edit-dialog/work-hour-edit-dialog.component';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
-import {AuthService} from '../../shared/auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 import {first} from 'rxjs/operators';
 
 @Component({

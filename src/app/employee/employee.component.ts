@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TableDataSource} from '../shared/components/table-builder/table-builder.datasource';
 import {DefaultService, Fee, Journey, MealSum, User} from 'eisenstecken-openapi-angular-library';
 import {CustomButton} from '../shared/components/toolbar/toolbar.component';
-import {LockService} from '../shared/lock.service';
+import {LockService} from '../shared/services/lock.service';
 import {Router} from '@angular/router';
 import * as moment from 'moment';
 import {ConfirmDialogComponent} from '../shared/components/confirm-dialog/confirm-dialog.component';

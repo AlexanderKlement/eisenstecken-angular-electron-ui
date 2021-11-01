@@ -7,7 +7,7 @@ import {CalendarData, CalendarEditComponent} from './calendar-edit/calendar-edit
 import {first} from 'rxjs/operators';
 import {CalendarService} from './calendar.service';
 import * as moment from 'moment';
-import {AuthService} from '../../auth.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
     selector: 'app-calendar',

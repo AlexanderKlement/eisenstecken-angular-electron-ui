@@ -4,7 +4,7 @@ import {ClientComponent} from "./client.component";
 import {CommonModule} from "@angular/common";
 import {ClientDetailComponent} from "./client-detail/client-detail.component";
 import {ClientEditComponent} from "./client-edit/client-edit.component";
-import {AccessGuard} from "../shared/access-guard.service";
+import {AccessGuard} from "../shared/services/access-guard.service";
 
 const routes: Routes = [
   {
