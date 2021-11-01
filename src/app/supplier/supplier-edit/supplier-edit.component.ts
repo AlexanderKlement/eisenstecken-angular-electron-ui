@@ -23,6 +23,7 @@ export class SupplierEditComponent extends BaseEditComponent<Supplier> implement
 
     navigationTarget = 'supplier';
     languageOptions$: Observable<Language[]>;
+    title = 'Lieferant: Bearbeiten';
 
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
         super(api, router, route, dialog);
@@ -36,6 +37,10 @@ export class SupplierEditComponent extends BaseEditComponent<Supplier> implement
         super.ngOnInit();
         this.initSupplierGroup();
         this.languageOptions$ = this.api.readLanguagesLanguageGet();
+
+        if (this.createMode) {
+            this.title = 'Lieferant: Erstellen';
+        }
     }
 
     ngOnDestroy() {

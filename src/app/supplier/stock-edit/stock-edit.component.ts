@@ -15,6 +15,7 @@ import {first} from 'rxjs/operators';
 export class StockEditComponent extends BaseEditComponent<Stock> implements OnInit, OnDestroy {
     stockGroup: FormGroup;
     navigationTarget = 'stock';
+    title = "Lager: Bearbeiten"
 
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
         super(api, router, route, dialog);
@@ -31,6 +32,9 @@ export class StockEditComponent extends BaseEditComponent<Stock> implements OnIn
             this.api.readStockStockStockIdGet(this.id).pipe(first()).subscribe(stock => {
                 this.stockGroup.get('name').setValue(stock.name);
             });
+        }
+        if (this.createMode) {
+            this.title = 'Lager: Erstellen';
         }
     }
 

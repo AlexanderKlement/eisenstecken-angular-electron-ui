@@ -1,7 +1,6 @@
-<app-toolbar title="Lieferant: Bearbeiten"></app-toolbar>
+<app-toolbar [title]="title"></app-toolbar>
 <div class="window-container">
-  <h1 *ngIf="createMode">Lieferant erstellen</h1>
-  <h1 *ngIf="!createMode">Lieferant bearbeiten</h1>
+  <h1>{{title}}</h1>
   <form (ngSubmit)="onSubmit()" [formGroup]="supplierGroup">
     <div fxLayout="column" fxLayoutAlign="space-around center">
       <mat-form-field appearance="fill">

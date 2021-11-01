@@ -70,6 +70,7 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
     navigationTarget = 'user';
     buttons: CustomButton[] = [];
     grantRightsAvailable = false;
+    title = 'Benutzer: Bearbeiten';
 
     constructor(private snackBar: MatSnackBar, private authService: AuthService, api: DefaultService,
                 router: Router, route: ActivatedRoute, dialog: MatDialog) {
@@ -168,6 +169,9 @@ export class UserEditComponent extends BaseEditComponent<User> implements OnInit
         this.authService.currentUserHasRight('rights:grant').pipe(first()).subscribe(allowed => {
             this.grantRightsAvailable = allowed;
         });
+        if (this.createMode) {
+            this.title = 'Benutzer: Erstellen';
+        }
     }
 
     userDeleteClicked(): void {
