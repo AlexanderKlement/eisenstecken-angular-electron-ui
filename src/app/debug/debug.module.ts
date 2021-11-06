@@ -9,6 +9,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatTabsModule} from '@angular/material/tabs';
+import {SharedModule} from '../shared/shared.module';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {MatTabsModule} from '@angular/material/tabs';
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
-        MatTabsModule
+        MatTabsModule,
+        SharedModule
     ]
 })
 export class DebugModule { }

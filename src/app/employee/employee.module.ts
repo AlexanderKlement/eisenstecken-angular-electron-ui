@@ -13,6 +13,14 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {FlexModule} from '@angular/flex-layout';
 import { MealComponent } from './meal/meal.component';
+import { ServiceComponent } from './service/service.component';
+import { ServiceDialogComponent } from './service/service-dialog/service-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import { ServiceCreateDialogComponent } from './service/service-create-dialog/service-create-dialog.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -20,7 +28,10 @@ import { MealComponent } from './meal/meal.component';
     EmployeeComponent,
     EmployeeDetailComponent,
     WorkDayNewComponent,
-    MealComponent
+    MealComponent,
+    ServiceComponent,
+    ServiceDialogComponent,
+    ServiceCreateDialogComponent
   ],
     imports: [
         CommonModule,
@@ -31,7 +42,12 @@ import { MealComponent } from './meal/meal.component';
         WorkDayModule,
         MatFormFieldModule,
         MatSelectModule,
-        FlexModule
+        FlexModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatDatepickerModule,
+        MatInputModule,
+        ReactiveFormsModule
     ]
 })
 export class EmployeeModule { }

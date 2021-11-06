@@ -1,0 +1,12 @@
+<h1 mat-dialog-title *ngIf="!loading">Wartung bearbeiten: {{service.user.fullname}}</h1>
+<div *ngIf="!loading" mat-dialog-content>
+    <div fxLayout="column" fxLayoutAlign="space-around center" *ngIf="!loading">
+        <button mat-button (click)="onDeleteClick()" type="button">Eintrag löschen</button>
+        <app-minute-hour [minuteControl]="getMinuteControl()" title="Neue Zeit: "></app-minute-hour>
+    </div>
+
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Abbrechen</button>
+    <button mat-button (click)="onYesClick()">Speichern</button>
+</div>

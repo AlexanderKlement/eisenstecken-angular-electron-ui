@@ -4,6 +4,7 @@ import {EmployeeComponent} from './employee.component';
 import {EmployeeDetailComponent} from './employee-detail/employee-detail.component';
 import {WorkDayNewComponent} from './work-day-new/work-day-new.component';
 import {MealComponent} from './meal/meal.component';
+import {ServiceComponent} from './service/service.component';
 
 const routes: Routes = [
     {
@@ -24,6 +25,11 @@ const routes: Routes = [
     {
         path: 'meal/:id',
         component: MealComponent,
+        data: {requiresLogin: true}
+    },
+    {
+        path: 'service/:id',
+        component: ServiceComponent,
         data: {requiresLogin: true}
     }
 ];

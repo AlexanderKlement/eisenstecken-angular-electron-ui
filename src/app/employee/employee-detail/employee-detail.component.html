@@ -1,6 +1,6 @@
-<app-toolbar title="Stundenzettel: Details" [buttonList]="buttons"></app-toolbar>
+<app-toolbar [title]="title" [buttonList]="buttons"></app-toolbar>
 <div class="window-container">
-    <mat-tab-group>
+    <mat-tab-group (selectedIndexChange)="selectedTabChanged($event)">
         <mat-tab label="Arbeitstag">
             <div fxLayout="column" fxLayoutAlign="space-around center">
                 <mat-form-field appearance="fill">
@@ -24,6 +24,9 @@
         </mat-tab>
         <mat-tab label="Essen">
             <app-table-builder [dataSource]="mealDataSource"></app-table-builder>
+        </mat-tab>
+        <mat-tab label="Wartung">
+            <app-table-builder [dataSource]="serviceDataSource"></app-table-builder>
         </mat-tab>
     </mat-tab-group>
 </div>

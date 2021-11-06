@@ -1,6 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {TableDataSource} from '../shared/components/table-builder/table-builder.datasource';
-import {DefaultService, Fee, Journey, MealSum, User} from 'eisenstecken-openapi-angular-library';
+import {
+    DefaultService,
+    Fee,
+    Journey,
+    Maintenance,
+    MealSum,
+    ServiceSum,
+    User
+} from 'eisenstecken-openapi-angular-library';
 import {CustomButton} from '../shared/components/toolbar/toolbar.component';
 import {LockService} from '../shared/services/lock.service';
 import {Router} from '@angular/router';
@@ -9,6 +17,7 @@ import {ConfirmDialogComponent} from '../shared/components/confirm-dialog/confir
 import {first} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {WorkDayGeneralComponent} from '../work-day/work-day-general/work-day-general.component';
 
 @Component({
     selector: 'app-employee',
@@ -21,7 +30,8 @@ export class EmployeeComponent implements OnInit {
     feeDataSource: TableDataSource<Fee>;
     journeyDataSource: TableDataSource<Journey>;
     mealDataSource: TableDataSource<MealSum>;
-
+    maintenanceDataSource: TableDataSource<Maintenance>;
+    serviceDataSource: TableDataSource<ServiceSum>;
     public buttons: CustomButton[] = [
         {
             name: 'Neuer Benutzer',
@@ -30,6 +40,7 @@ export class EmployeeComponent implements OnInit {
             }
         }
     ];
+
 
     constructor(private api: DefaultService, private locker: LockService, private router: Router,
                 private dialog: MatDialog, private snackBar: MatSnackBar) {
@@ -40,6 +51,8 @@ export class EmployeeComponent implements OnInit {
         this.initFeeDataSource();
         this.initJourneyDataSource();
         this.initMealDataSource();
+        this.initMaintenanceDataSource();
+        this.initServiceDataSource();
     }
 
     private initUserDataSource(): void {
@@ -218,5 +231,77 @@ export class EmployeeComponent implements OnInit {
 
             }
         });
+    }
+
+    private initMaintenanceDataSource(): void {
+        this.maintenanceDataSource = new TableDataSource(
+            this.api,
+            (api, filter, sortDirection, skip, limit) =>
+                api.readMaintenancesMaintenanceGet(skip, limit, filter),
+            (dataSourceClasses) => {
+                const rows = [];
+                dataSourceClasses.forEach((dataSource) => {
+                    rows.push(
+                        {
+                            values: {
+                                month: moment(dataSource.month).format('MMMM YYYY'),
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                'user.fullname': dataSource.user.fullname,
+                                minutes: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.minutes),
+                            },
+                            route: () => {
+                                this.maintenanceClicked();
+                            }
+                        });
+                });
+                return rows;
+            },
+            [
+                {name: 'month', headerName: 'Zeitraum'},
+                {name: 'user.fullname', headerName: 'Name'},
+                {name: 'minutes', headerName: 'Minutes'}
+            ],
+            (api) => api.readMaintenanceCountMaintenanceCountGet()
+        );
+        this.maintenanceDataSource.loadData();
+    }
+
+    private initServiceDataSource(): void {
+        this.serviceDataSource = new TableDataSource(
+            this.api,
+            (api, filter, sortDirection, skip, limit) =>
+                api.readServiceSumsServiceSumGet(skip, limit, filter),
+            (dataSourceClasses) => {
+                const rows = [];
+                dataSourceClasses.forEach((dataSource) => {
+                    rows.push(
+                        {
+                            values: {
+                                month: moment(dataSource.month).format('MMMM YYYY'),
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                'user.fullname': dataSource.user.fullname,
+                                internal: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.internal),
+                                external: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.external),
+                            },
+                            route: () => {
+                                this.router.navigateByUrl('service/' + dataSource.user.id.toString());
+                            }
+                        });
+                });
+                return rows;
+            },
+            [
+                {name: 'month', headerName: 'Zeitraum'},
+                {name: 'user.fullname', headerName: 'Name'},
+                {name: 'internal', headerName: 'Intern'},
+                {name: 'external', headerName: 'Extern'}
+            ],
+            (api) => api.readServiceSumCountServiceSumCountGet()
+        );
+        this.serviceDataSource.loadData();
+    }
+
+    private maintenanceClicked(): void {
+
     }
 }

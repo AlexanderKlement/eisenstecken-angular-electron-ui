@@ -15,6 +15,6 @@ export class EmailService {
             console.error('Cannot open mail client. This is only possible in native electron client');
             return;
         }
-        //require('shell').openExternal('mailto:' + mail + '?subject=' + subject + '&body=' + body);
+        const mailSchema = 'mailto:' + mail + '?subject=' + subject + '&body=' + body;
     }
 }

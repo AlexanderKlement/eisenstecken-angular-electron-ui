@@ -6,6 +6,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {first} from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'app-meal',
@@ -14,19 +15,30 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class MealComponent implements OnInit {
     mealDataSource: TableDataSource<Meal>;
+    eatingPlaceId: number;
+    title = '';
 
-    constructor(private api: DefaultService, private dialog: MatDialog, private snackBar: MatSnackBar) {
+    constructor(private api: DefaultService, private dialog: MatDialog, private snackBar: MatSnackBar, private route: ActivatedRoute) {
     }
 
     ngOnInit(): void {
-        this.initMealDataSource();
+        this.route.params.subscribe(params => {
+            this.eatingPlaceId = parseInt(params.id, 10);
+            if (isNaN(this.eatingPlaceId)) {
+                console.error('EmployeeDetailComponent: Could not parse userId');
+            }
+            this.api.getEatingPlacesEatingPlaceEatingPlaceIdGet(this.eatingPlaceId).pipe(first()).subscribe(eatingPlace => {
+                this.title = 'Mahlzeiten: ' + eatingPlace.name;
+            });
+            this.initMealDataSource();
+        });
     }
 
     private initMealDataSource(): void {
         this.mealDataSource = new TableDataSource(
             this.api,
             (api, filter, sortDirection, skip, limit) =>
-                api.readMealsMealGet(skip, limit, filter),
+                api.readMealsMealGet(skip, limit, filter, undefined, this.eatingPlaceId),
             (dataSourceClasses) => {
                 const rows = [];
                 dataSourceClasses.forEach((dataSource) => {
@@ -48,7 +60,7 @@ export class MealComponent implements OnInit {
                 {name: 'date', headerName: 'Datum'},
                 {name: 'user.fullname', headerName: 'Angestellter'},
             ],
-            (api) => api.readMealSumsMealSumCountGet()
+            (api) => api.readMealCountMealCountGet(undefined, this.eatingPlaceId)
         );
         this.mealDataSource.loadData();
     }

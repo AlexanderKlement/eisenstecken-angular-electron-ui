@@ -22,6 +22,7 @@ import * as moment from 'moment';
 import * as confetti from 'canvas-confetti';
 import {StopwatchService} from './stopwatch/stopwatch.service';
 import {AuthService} from '../../shared/services/auth.service';
+import {Router} from '@angular/router';
 
 
 export const timeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -94,8 +95,14 @@ export class WorkDayGeneralComponent implements OnInit {
     username = '';
 
 
-    constructor(private api: DefaultService, private snackBar: MatSnackBar, private renderer2: Renderer2,
+    constructor(private api: DefaultService, private snackBar: MatSnackBar, private renderer2: Renderer2, private router: Router,
                 private elementRef: ElementRef, private stopwatchService: StopwatchService, private authService: AuthService) {
+    }
+
+    public static minutesToDisplayableString(minutes: number): string { // TODO: move this to a more prominent location
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        return hours.toString() + ' Stunden und ' + remainingMinutes.toString() + ' Minuten';
     }
 
     startTimer(): void {
@@ -335,7 +342,6 @@ export class WorkDayGeneralComponent implements OnInit {
         this.refreshRemainingMinutes();
     }
 
-
     onAdditionalMinuteChange(index: number): void {
         this.refreshRemainingMinutes();
         if (this.remainingMinutes < 0) {
@@ -343,12 +349,6 @@ export class WorkDayGeneralComponent implements OnInit {
             this.setAdditionalMinutesAt(index, this.maxMinutes - this.getMinutesSum() + currentMinutes);
         }
         this.refreshRemainingMinutes();
-    }
-
-    minutesToDisplayableString(minutes: number): string {
-        const hours = Math.floor(minutes / 60);
-        const remainingMinutes = minutes % 60;
-        return hours.toString() + ' Stunden und ' + remainingMinutes.toString() + ' Minuten';
     }
 
     setMinutesAt(index: number, value: number, direction: boolean) {
@@ -505,9 +505,7 @@ export class WorkDayGeneralComponent implements OnInit {
         for (const additionalWorkload of this.getAdditionalWorkloads().controls) {
             additionalWorkloads.push({
                 minutes: parseInt(additionalWorkload.get('minutes').value, 10),
-                description: additionalWorkload.get('description').value,
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                user_id: 1
+                description: additionalWorkload.get('description').value
             });
         }
 
@@ -591,8 +589,7 @@ export class WorkDayGeneralComponent implements OnInit {
                 this.api.createWorkDayWorkDayUserIdPost(this.userId, workDayCreate).pipe(first()).subscribe(
                     (newWorkDay) => {
                         if (newWorkDay !== undefined) {
-                            //this.router.navigateByUrl('/employee/' + this.userId.toString());
-                            this.initWorkDay();
+                            this.router.navigateByUrl('/employee/' + this.userId.toString());
                         } else {
                             this.onError(newWorkDay);
                         }

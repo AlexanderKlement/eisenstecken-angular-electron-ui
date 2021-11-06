@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Wartung erstellen: {{user.fullname}}</h1>
+<div mat-dialog-content>
+    <div fxLayout="column" fxLayoutAlign="space-around center" *ngIf="!loading">
+        <mat-form-field appearance="fill">
+            <mat-label>Datum</mat-label>
+            <input [formControl]="getDateControl()" matInput [matDatepicker]="date_picker">
+            <mat-datepicker-toggle matSuffix [for]="date_picker"></mat-datepicker-toggle>
+            <mat-datepicker #date_picker></mat-datepicker>
+        </mat-form-field>
+        <app-minute-hour [minuteControl]="getMinuteControl()" title="Neue Zeit: "></app-minute-hour>
+    </div>
+
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Abbrechen</button>
+    <button mat-button (click)="onYesClick()">Speichern</button>
+</div>

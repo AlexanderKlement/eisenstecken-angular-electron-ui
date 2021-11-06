@@ -6,7 +6,7 @@ import {
     Job, Journey, Meal, MealSum,
     Offer, Order, OrderBundle, OrderedArticle,
     OutgoingInvoice, Price, Recalculation, Stock, Supplier, TechnicalData,
-    User, Workload
+    User, Workload, Service, Maintenance, ServiceSum
 } from 'eisenstecken-openapi-angular-library';
 
 
@@ -34,6 +34,9 @@ export type DataSourceClass =
     | Stock
     | Expense
     | Workload
+    | Service
+    | ServiceSum
+    | Maintenance
     | Journey;
 
 export type RecursiveKeyOf<T, Prefix extends string = never> =
