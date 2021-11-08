@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TableDataSource} from '../shared/components/table-builder/table-builder.datasource';
 import {
+    AdditionalWorkload,
     DefaultService,
     Fee,
     Journey,
@@ -32,6 +33,7 @@ export class EmployeeComponent implements OnInit {
     mealDataSource: TableDataSource<MealSum>;
     maintenanceDataSource: TableDataSource<Maintenance>;
     serviceDataSource: TableDataSource<ServiceSum>;
+    additionalWorkloadDataSource: TableDataSource<AdditionalWorkload>;
     public buttons: CustomButton[] = [
         {
             name: 'Neuer Benutzer',
@@ -53,6 +55,7 @@ export class EmployeeComponent implements OnInit {
         this.initMealDataSource();
         this.initMaintenanceDataSource();
         this.initServiceDataSource();
+        this.initAdditionalDataSource();
     }
 
     private initUserDataSource(): void {
@@ -303,5 +306,64 @@ export class EmployeeComponent implements OnInit {
 
     private maintenanceClicked(): void {
 
+    }
+
+    private initAdditionalDataSource() {
+        this.additionalWorkloadDataSource = new TableDataSource(
+            this.api,
+            (api, filter, sortDirection, skip, limit) =>
+                api.readAdditionalWorkloadsAdditionalWorkloadGet(skip, limit, filter),
+            (dataSourceClasses) => {
+                const rows = [];
+                dataSourceClasses.forEach((dataSource) => {
+                    rows.push(
+                        {
+                            values: {
+                                date: moment(dataSource.date).format('dddd, DD.MM.YYYY'),
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                'user.fullname': dataSource.user.fullname,
+                                minutes: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.minutes),
+                                description: dataSource.description,
+                            },
+                            route: () => {
+                                this.additionalWorkloadClicked(dataSource.id);
+                            }
+                        });
+                });
+                return rows;
+            },
+            [
+                {name: 'date', headerName: 'Datum'},
+                {name: 'user.fullname', headerName: 'Name'},
+                {name: 'description', headerName: 'Beschreibung'},
+                {name: 'minutes', headerName: 'Zeit'}
+            ],
+            (api) => api.readAdditionalWorkloadCountAdditionalWorkloadCountGet()
+        );
+        this.additionalWorkloadDataSource.loadData();
+    }
+
+    private additionalWorkloadClicked(id: number) {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Zusätzliche Arbeiten löschen?',
+                text: 'Zusätzliche Arbeiten löschen? Diese Aktion kann nicht rückgängig gemacht werden!'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.api.deleteAdditionalWorkloadAdditionalWorkloadAdditionalWorkloadIdDelete(id).pipe(first()).subscribe(success => {
+                    if (success) {
+                        this.additionalWorkloadDataSource.loadData();
+                    } else {
+                        this.snackBar.open('Zusätzliche Arbeiten konnten nicht gelöscht werden', 'Ok', {
+                            duration: 10000
+                        });
+                    }
+                });
+
+            }
+        });
     }
 }

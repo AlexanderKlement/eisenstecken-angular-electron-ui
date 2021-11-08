@@ -1,6 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
-import {Journey, Fee, Meal, DefaultService, WorkDay, Service} from 'eisenstecken-openapi-angular-library';
+import {
+    Journey,
+    Fee,
+    Meal,
+    DefaultService,
+    WorkDay,
+    Service,
+    AdditionalWorkload
+} from 'eisenstecken-openapi-angular-library';
 import {ActivatedRoute, Router} from '@angular/router';
 import {first} from 'rxjs/operators';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
@@ -11,6 +19,8 @@ import {WorkDayGeneralComponent} from '../../work-day/work-day-general/work-day-
 import {ServiceDialogComponent} from '../service/service-dialog/service-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ServiceCreateDialogComponent} from '../service/service-create-dialog/service-create-dialog.component';
+import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-employee-detail',
@@ -22,7 +32,7 @@ export class EmployeeDetailComponent implements OnInit {
     journeyDataSource: TableDataSource<Journey>;
     mealDataSource: TableDataSource<Meal>;
     serviceDataSource: TableDataSource<Service>;
-
+    additionalWorkloadDataSource: TableDataSource<AdditionalWorkload>;
     userId: number;
 
     finishedWorkDayLoading = true;
@@ -50,7 +60,7 @@ export class EmployeeDetailComponent implements OnInit {
     title = '';
 
 
-    constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router, private dialog: MatDialog) {
+    constructor(private api: DefaultService, private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private snackBar: MatSnackBar) {
     }
 
     ngOnInit(): void {
@@ -67,6 +77,7 @@ export class EmployeeDetailComponent implements OnInit {
             this.initJourneyDataSource();
             this.initMealDataSource();
             this.initServiceDataSource();
+            this.initAdditionalDataSource();
         });
         this.workDays$ = this.api.getWorkDaysByUserWorkDayUserUserIdGet(this.userId);
         this.workDay$ = new Observable<WorkDay>(subscriber => {
@@ -262,6 +273,63 @@ export class EmployeeDetailComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.serviceDataSource.loadData();
+            }
+        });
+    }
+
+    private initAdditionalDataSource() {
+        this.additionalWorkloadDataSource = new TableDataSource(
+            this.api,
+            (api, filter, sortDirection, skip, limit) =>
+                api.readAdditionalWorkloadsAdditionalWorkloadGet(skip, limit, filter, this.userId),
+            (dataSourceClasses) => {
+                const rows = [];
+                dataSourceClasses.forEach((dataSource) => {
+                    rows.push(
+                        {
+                            values: {
+                                date: moment(dataSource.date).format('dddd, DD.MM.YYYY'),
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                minutes: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.minutes),
+                                description: dataSource.description,
+                            },
+                            route: () => {
+                                this.additionalWorkloadClicked(dataSource.id);
+                            }
+                        });
+                });
+                return rows;
+            },
+            [
+                {name: 'date', headerName: 'Datum'},
+                {name: 'description', headerName: 'Beschreibung'},
+                {name: 'minutes', headerName: 'Zeit'}
+            ],
+            (api) => api.readAdditionalWorkloadCountAdditionalWorkloadCountGet(this.userId)
+        );
+        this.additionalWorkloadDataSource.loadData();
+    }
+
+    private additionalWorkloadClicked(id: number) {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Zusätzliche Arbeiten löschen?',
+                text: 'Zusätzliche Arbeiten löschen? Diese Aktion kann nicht rückgängig gemacht werden!'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.api.deleteAdditionalWorkloadAdditionalWorkloadAdditionalWorkloadIdDelete(id).pipe(first()).subscribe(success => {
+                    if (success) {
+                        this.additionalWorkloadDataSource.loadData();
+                    } else {
+                        this.snackBar.open('Zusätzliche Arbeiten konnten nicht gelöscht werden', 'Ok', {
+                            duration: 10000
+                        });
+                    }
+                });
+
             }
         });
     }
