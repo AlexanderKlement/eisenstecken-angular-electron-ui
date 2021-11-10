@@ -5,6 +5,9 @@ import * as url from 'url';
 
 // Initialize remote module
 require('@electron/remote/main').initialize();
+import * as Sentry from "@sentry/electron";
+
+Sentry.init({dsn: "https://60ac4754e4be476a82b10b0e597dfaa6@sentry.kivi.bz.it/25"});
 
 let win: BrowserWindow = null;
 const gotTheLock = app.requestSingleInstanceLock();

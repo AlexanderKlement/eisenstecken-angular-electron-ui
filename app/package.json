@@ -10,6 +10,7 @@
     "email": "alexander.klement@gmail.com; ivan@waldboth.com"
   },
   "dependencies": {
-    "@electron/remote": "1.2.0"
+    "@electron/remote": "1.2.0",
+    "@sentry/electron": "2.5.4"
   }
 }
