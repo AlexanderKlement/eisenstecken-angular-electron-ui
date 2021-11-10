@@ -59,13 +59,13 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new Transla
 
 registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 
-/*
+
 declare global { //This is used or the api to be usable in ts
     interface Window {
         api: any;
     }
 }
-*/
+
 
 export function apiConfigFactory(): Configuration {
     const params: ConfigurationParameters = {

@@ -20,7 +20,6 @@ export class DebugComponent implements OnInit {
         this.initEmailGroup();
         this.initOpenFileGroup();
         this.initShowFileGroup();
-        console.log(window);
     }
 
     onEmailSubmit(): void {
@@ -38,7 +37,7 @@ export class DebugComponent implements OnInit {
     }
 
     showFileSubmit() {
-        this.file.show(this.openFileFormGroup.get('path').value);
+        this.file.show(this.showFileFormGroup.get('path').value);
     }
 
     private initEmailGroup() {

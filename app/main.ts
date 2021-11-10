@@ -112,14 +112,16 @@ ipcMain.on('shell-item-request', (event, arg) => {
 ipcMain.on('shell-file-request', (event, arg) => {
     console.log('Main: Shell file: REQUEST');
     console.log(arg);
-    shell.openPath(arg).then((response) => {
+    try {
+        shell.showItemInFolder(arg);
         console.log('Main: Shell file: SUCCESS');
         event.reply('shell-file-reply', true);
-    }, (reason) => {
-        console.error('Main: Shell file: FAIL');
-        console.error(reason);
+    } catch (e) {
+        console.error("Main: Shell file: FAIL");
+        console.error(e);
         event.reply('shell-file-reply', false);
-    });
+    }
+
 });
 
 try {
