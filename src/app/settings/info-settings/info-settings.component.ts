@@ -326,7 +326,6 @@ export class InfoSettingsComponent implements OnInit {
         console.error('InfoSettingsComponent: Could not update');
         console.error(error);
         this.submitted = false;
-        // TODO: show snackbar here
     }
 
     private updateComplete(): void {

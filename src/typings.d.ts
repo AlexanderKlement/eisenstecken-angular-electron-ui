@@ -6,4 +6,5 @@ interface NodeModule {
 interface Window {
   process: any;
   require: any;
+  api: any;
 }

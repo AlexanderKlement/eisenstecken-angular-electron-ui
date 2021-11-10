@@ -5,12 +5,11 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import * as moment from 'moment';
 import {ActivatedRoute} from '@angular/router';
-import {WorkDayGeneralComponent} from '../../work-day/work-day-general/work-day-general.component';
 import {ServiceDialogComponent} from './service-dialog/service-dialog.component';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {ServiceCreateDialogComponent} from './service-create-dialog/service-create-dialog.component';
 import {first} from 'rxjs/operators';
-import {minutesToDisplayableString} from '../../shared/util';
+import {minutesToDisplayableString} from '../../shared/date.util';
 
 @Component({
     selector: 'app-service',

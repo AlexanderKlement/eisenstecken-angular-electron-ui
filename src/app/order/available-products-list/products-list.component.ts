@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Observable, of, Subscription} from 'rxjs';
 import {
     Article, ArticleCreate,
     ArticleUpdate,
@@ -19,7 +19,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     templateUrl: './products-list.component.html',
     styleUrls: ['./products-list.component.scss']
 })
-export class ProductsListComponent implements OnInit {
+export class ProductsListComponent implements OnInit, OnDestroy {
 
     @Input() availableProducts$: Observable<Article[]>;
     @Input() orderedProducts$: Observable<OrderedArticle[]>;
@@ -35,6 +35,7 @@ export class ProductsListComponent implements OnInit {
     searchOrderedArticles$: Observable<OrderedArticle[]>;
     orderedArticles: OrderedArticle[];
     articles: Article[];
+    subscription: Subscription;
 
     constructor(public dialog: MatDialog, private api: DefaultService, private snackBar: MatSnackBar) {
     }
@@ -139,10 +140,10 @@ export class ProductsListComponent implements OnInit {
         if (this.available
         ) {
             this.articles = [];
-            this.availableProducts$.subscribe((products) => { //TODO: unsubscribe here
+            this.subscription.add(this.availableProducts$.subscribe((products) => {
                 this.articles = products;
                 this.search.setValue('');
-            });
+            }));
             this.searchAvailableArticles$ = this.search.valueChanges.pipe(
                 startWith(null), //TODO: replace this deprecated element => someday we'll have to update
                 debounceTime(200),
@@ -155,10 +156,10 @@ export class ProductsListComponent implements OnInit {
                 }));
         } else {
             this.orderedArticles = [];
-            this.orderedProducts$.subscribe((products) => { //TODO: unsubscribe here
+            this.subscription.add(this.orderedProducts$.subscribe((products) => {
                 this.orderedArticles = products;
                 this.search.setValue('');
-            });
+            }));
             this.searchOrderedArticles$ = this.search.valueChanges.pipe(
                 startWith(null), //TODO: replace this deprecated element => someday we'll have to update
                 debounceTime(200),
@@ -171,6 +172,10 @@ export class ProductsListComponent implements OnInit {
                         element.article.name.translation.toLowerCase().indexOf(filterString) >= 0));
                 }));
         }
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
     copyButtonClicked(article: Article):
@@ -257,8 +262,8 @@ export class ProductsListComponent implements OnInit {
             if (success) {
                 this.refreshOrderedArticleList();
             } else {
-                this.snackBar.open('Artikel konnte nicht gelöscht werden. Bitte probieren sie es später erneut', 'Ok',{
-                  duration: 10000
+                this.snackBar.open('Artikel konnte nicht gelöscht werden. Bitte probieren sie es später erneut', 'Ok', {
+                    duration: 10000
                 });
             }
         });
@@ -308,3 +313,4 @@ export class ProductsListComponent implements OnInit {
 
 
 }
+

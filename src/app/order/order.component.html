@@ -2,11 +2,11 @@
 <div class="window-container order-container">
   <div fxLayout="row" fxLayoutAlign="space-between start" fxFlexFill class="container-group">
     <div fxFlex="24" class="order-column" [class.active]="step >= 0" fxFlexFill>
-      <app-filterable-clickable-list [listElements$]="toList$" (onClickEventEmitter)="toListItemClicked($event)"
+      <app-filterable-clickable-list [listElements$]="toList$" (clickEventEmitter)="toListItemClicked($event)"
                                      [name]="toListName"></app-filterable-clickable-list>
     </div>
     <div fxFlex="24" class="order-column" fxFlexFill [class.active]="step >= 1">
-      <app-filterable-clickable-list [listElements$]="fromList$" (onClickEventEmitter)="fromListItemClicked($event)"
+      <app-filterable-clickable-list [listElements$]="fromList$" (clickEventEmitter)="fromListItemClicked($event)"
                                      [name]="fromListName"></app-filterable-clickable-list>
     </div>
       <div fxFlex="24" class="order-column" fxFlexFill [class.active]="step >= 2">
@@ -22,4 +22,4 @@
       </div>
   </div>
 </div>
-<!-- TODO IVAN leste spolte schaug kakke aus -->
+

@@ -23,7 +23,8 @@ import * as confetti from 'canvas-confetti';
 import {StopwatchService} from './stopwatch/stopwatch.service';
 import {AuthService} from '../../shared/services/auth.service';
 import {Router} from '@angular/router';
-import {minutesToDisplayableString} from '../../shared/util';
+import {minutesToDisplayableString} from '../../shared/date.util';
+import {timepickerTheme} from '../../shared/themes/timepicker.theme';
 
 
 export const timeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -87,14 +88,7 @@ export class WorkDayGeneralComponent implements OnInit {
     showForm = false;
 
 
-    primaryTheme: NgxMaterialTimepickerTheme = { // TODO : move this and calendar thingy to more prominent location
-        dial: {
-            dialBackgroundColor: '#fdc400',
-        },
-        clockFace: {
-            clockHandColor: '#fdc400',
-        }
-    };
+    primaryTheme = timepickerTheme;
     username = '';
 
 
@@ -684,8 +678,14 @@ export class WorkDayGeneralComponent implements OnInit {
                     }
                 }
                 if (!found) {
-                    console.warn('Could not display job: '); //TODO: download job manually and display it
-                    console.warn(jobSection);
+                    this.api.readJobJobJobIdGet(jobSection.job.id).pipe(first()).subscribe((job) => {
+                        this.getJobSections().push(this.initJobSectionManually(
+                            jobSection.minutes,
+                            jobSection.minutes_direction,
+                            jobSection.job.id,
+                            job.displayable_name
+                        ));
+                    });
                 }
             }
         }

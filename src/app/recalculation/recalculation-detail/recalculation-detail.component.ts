@@ -9,6 +9,7 @@ import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {LockService} from '../../shared/services/lock.service';
 import {AuthService} from '../../shared/services/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {minutesToDisplayableString} from '../../shared/date.util';
 
 
 @Component({
@@ -48,9 +49,9 @@ export class RecalculationDetailComponent implements OnInit {
                             this.router.navigateByUrl('recalculation/edit/new/' + this.jobId.toString());
                         } else {
                             this.snackBar.open('Sie sind nicht berechtigt Nachkalkulationen zu erstellen!'
-                                , 'Ok',{
-                                duration: 10000
-                              });
+                                , 'Ok', {
+                                    duration: 10000
+                                });
                             this.router.navigateByUrl('recalculation');
                         }
                     });
@@ -136,7 +137,7 @@ export class RecalculationDetailComponent implements OnInit {
                         {
                             values: {
                                 'user.fullname': dataSource.user.fullname,
-                                minutes: dataSource.minutes, //TODO: parse to HR format
+                                minutes: minutesToDisplayableString(dataSource.minutes),
                                 cost: dataSource.cost,
                             },
                             route: () => {

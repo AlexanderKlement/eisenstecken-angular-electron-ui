@@ -39,6 +39,12 @@
           <mat-checkbox formControlName="office"
                         title="Arbeitet der Angestellte im Büro?">Büro
           </mat-checkbox>
+          <mat-checkbox formControlName="chat"
+                        title="Mitarbeiter über Chat erreichbar?">Chat empfangen
+          </mat-checkbox>
+          <mat-checkbox formControlName="hours"
+                        title="Mitarbeiter Stunden aufschreiben?">Stunden aufschreiben
+          </mat-checkbox>
           <mat-form-field *ngIf="createMode">
             <mat-label>Password</mat-label>
             <input class="form-control" formControlName="password" matInput>
@@ -61,7 +67,7 @@
                                    (click)="onCategoryCheck(cat.key,userHasRightCategory(cat.key))"></mat-pseudo-checkbox>
               <div class="category-title">{{cat.title}}</div>
             </div>
-            <mat-list-option *ngFor="let right of availableRights | rightsFilter: cat.key;"
+            <mat-list-option *ngFor="let right of availableRights | RightFilter: cat.key;"
                              [selected]="userHasRight(right.key)"
                              value="{{right.key}}" (click)="onRightCheck(right)">
               {{right.key}} : {{right.description}}

@@ -21,7 +21,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ServiceCreateDialogComponent} from '../service/service-create-dialog/service-create-dialog.component';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {minutesToDisplayableString} from '../../shared/util';
+import {minutesToDisplayableString} from '../../shared/date.util';
 
 @Component({
     selector: 'app-employee-detail',

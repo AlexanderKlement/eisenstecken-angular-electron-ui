@@ -53,7 +53,7 @@ export abstract class BaseSettingsComponent {
             if (success) {
                 this.snackBar.open('Speichern erfolgreich!', 'Ok', {
                     duration: 3000
-                }); //TODO: show a message if not
+                });
             } else {
                 console.error('Save did not work'); //This should not be possible atm
             }

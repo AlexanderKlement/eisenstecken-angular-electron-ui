@@ -36,16 +36,6 @@ export class CalendarDayComponent implements OnInit, OnDestroy {
         this.setTitle();
     }
 
-    formatDate = (date: string): string => moment(date).format('LT');
-
-    formatCalendarEntryDates(calendarEntries: CalendarEntry[]): CalendarEntry[] { //TODO check what this function is doing
-        calendarEntries.forEach((calendarEntry) => {
-            calendarEntry.start_time = this.formatDate(calendarEntry.start_time);
-            calendarEntry.end_time = this.formatDate(calendarEntry.end_time);
-        });
-        return calendarEntries;
-    }
-
     ngOnDestroy(): void {
         console.log('Calendar Day ' + this.day.toString() + ' getting destroyed');
     }

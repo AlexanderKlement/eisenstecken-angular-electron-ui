@@ -36,10 +36,6 @@ export class BaseEditComponent<T extends DataSourceClass> implements OnInit, OnD
         this.timeouts = [];
     }
 
-    private static minutesToMilliSeconds(minutes: number): number {
-        return minutes * 60 * 1000;
-    }
-
     ngOnInit(): void {
         this.me$ = this.api.readUsersMeUsersMeGet();
         this.routeParams.pipe(first()).subscribe((params) => {
@@ -104,7 +100,8 @@ export class BaseEditComponent<T extends DataSourceClass> implements OnInit, OnD
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     createUpdateError(error: any): void {
         this.submitted = false;
-        console.log(error); //TODO: make error handling here
+        console.log(error);
+        //an error handling should not be necessary, because it gets intercepted globally by a generic message
     }
 
     createUpdateComplete(): void {

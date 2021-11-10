@@ -18,8 +18,7 @@ import {ConfirmDialogComponent} from '../shared/components/confirm-dialog/confir
 import {first} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {WorkDayGeneralComponent} from '../work-day/work-day-general/work-day-general.component';
-import {minutesToDisplayableString} from '../shared/util';
+import {minutesToDisplayableString} from '../shared/date.util';
 
 @Component({
     selector: 'app-employee',

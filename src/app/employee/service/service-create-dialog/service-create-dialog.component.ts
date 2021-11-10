@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA,  MatDialogRef} from '@angular/material/dialog';
 import {DefaultService, ServiceCreate, User} from 'eisenstecken-openapi-angular-library';
 import {first} from 'rxjs/operators';
 import {FormControl, FormGroup} from '@angular/forms';
-import {OutgoingInvoiceEditComponent} from '../../../job/outgoing-invoice-edit/outgoing-invoice-edit.component';
+import {formatDateTransport} from '../../../shared/date.util';
 
 export interface ServiceCreateDialogData {
     userId: number;
@@ -51,7 +51,7 @@ export class ServiceCreateDialogComponent implements OnInit {
     onYesClick() {
         const serviceCreate: ServiceCreate = {
             minutes: parseInt(this.getMinuteControl().value, 10),
-            date: OutgoingInvoiceEditComponent.formatDateTransport(this.getDateControl().value),
+            date: formatDateTransport(this.getDateControl().value),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             user_id: this.user.id
         };

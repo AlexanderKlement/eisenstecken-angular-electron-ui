@@ -7,8 +7,7 @@ import {WorkHourEditDialogComponent} from './work-hour-edit-dialog/work-hour-edi
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {AuthService} from '../../shared/services/auth.service';
 import {first} from 'rxjs/operators';
-import {WorkDayGeneralComponent} from '../../work-day/work-day-general/work-day-general.component';
-import {minutesToDisplayableString} from '../../shared/util';
+import {minutesToDisplayableString} from '../../shared/date.util';
 
 @Component({
     selector: 'app-work-hours',

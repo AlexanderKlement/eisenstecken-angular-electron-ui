@@ -13,10 +13,10 @@ import {Observable} from 'rxjs';
 import {first, map} from 'rxjs/operators';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
-import {OutgoingInvoiceEditComponent} from '../../job/outgoing-invoice-edit/outgoing-invoice-edit.component';
 import {AuthService} from '../../shared/services/auth.service';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {formatDateTransport} from '../../shared/date.util';
 
 
 export interface JobMinimal {
@@ -111,7 +111,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
             const deliveryNoteCreate: DeliveryNoteCreate = {
                 // eslint-disable-next-line id-blacklist
                 number: this.deliveryNoteGroup.get('delivery_note_number').value,
-                date: OutgoingInvoiceEditComponent.formatDateTransport(this.deliveryNoteGroup.get('date').value),
+                date: formatDateTransport(this.deliveryNoteGroup.get('date').value),
                 name: this.deliveryNoteGroup.get('name').value,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 delivery_address: this.deliveryNoteGroup.get('delivery_address').value,
@@ -136,7 +136,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
             const deliveryNoteUpdate: DeliveryNoteUpdate = {
                 // eslint-disable-next-line id-blacklist
                 number: this.deliveryNoteGroup.get('delivery_note_number').value,
-                date: OutgoingInvoiceEditComponent.formatDateTransport(this.deliveryNoteGroup.get('date').value),
+                date: formatDateTransport(this.deliveryNoteGroup.get('date').value),
                 name: this.deliveryNoteGroup.get('name').value,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 delivery_address: this.deliveryNoteGroup.get('delivery_address').value,

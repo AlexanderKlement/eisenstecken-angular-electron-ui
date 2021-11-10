@@ -1,11 +1,10 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {first, tap} from 'rxjs/operators';
-import {Calendar, CalendarEntry, CalendarEntryCreate, DefaultService} from 'eisenstecken-openapi-angular-library';
-import {Observable} from 'rxjs';
+import {Component, Inject, OnInit} from '@angular/core';
+import {first} from 'rxjs/operators';
+import {CalendarEntry, CalendarEntryCreate, DefaultService} from 'eisenstecken-openapi-angular-library';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {NgxMaterialTimepickerTheme} from 'ngx-material-timepicker';
 import * as moment from 'moment';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {timepickerTheme} from '../../../themes/timepicker.theme';
 
 export const timeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const exampleDate = '07.07.1993';
@@ -44,14 +43,7 @@ export class CalendarEditComponent implements OnInit {
 
     ready = false;
 
-    primaryTheme: NgxMaterialTimepickerTheme = {
-        dial: {
-            dialBackgroundColor: '#fdc400',
-        },
-        clockFace: {
-            clockHandColor: '#fdc400',
-        }
-    };
+    primaryTheme = timepickerTheme;
 
     constructor(private api: DefaultService, public dialogRef: MatDialogRef<CalendarEditComponent>,
                 @Inject(MAT_DIALOG_DATA) public data: CalendarData) {

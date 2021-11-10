@@ -2,10 +2,10 @@ import {Pipe, PipeTransform} from '@angular/core';
 import {Right} from 'eisenstecken-openapi-angular-library';
 
 @Pipe({
-  name: 'rightsFilter',
+  name: 'RightFilter',
   pure: false
 })
-export class MyFilterPipe implements PipeTransform {
+export class RightFilterPipe implements PipeTransform {
   transform(items: Right[], filter: string): any {
     if (!items || !filter) {
       return items;
@@ -14,12 +14,3 @@ export class MyFilterPipe implements PipeTransform {
   }
 }
 
-@Pipe({
-  name: 'splitTextNewline',
-  pure: false
-})
-export class SplitTextNewlinePipe implements PipeTransform {
-  transform(item: string): any {
-    return item.split('\n');
-  }
-}

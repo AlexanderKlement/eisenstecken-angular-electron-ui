@@ -13,8 +13,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
 import {first, tap} from 'rxjs/operators';
-import {formatDate} from '@angular/common';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import {FileService} from '../../shared/services/file.service';
+import {formatDateTransport} from '../../shared/date.util'
 
 @Component({
     selector: 'app-offer-edit',
@@ -29,18 +30,14 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     submitted: boolean;
     vatOptions$: Observable<Vat[]>;
     hiddenDescriptives: number[];
-    title = "Angebot: Bearbeiten"
+    title = 'Angebot: Bearbeiten';
 
-    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog) {
+    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog, private file: FileService) {
         super(api, router, route, dialog);
     }
 
     get discountAmount(): FormControl {
         return this.offerGroup.get('discount_amount') as FormControl;
-    }
-
-    private static formatDate(datetime: string): string { //TODO: move to some sort of util class or so
-        return formatDate(datetime, 'yyyy-MM-dd', 'en-US');
     }
 
     private static initDescriptiveArticles(descriptiveArticle?: DescriptiveArticle): FormGroup {
@@ -154,7 +151,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
 
         if (this.createMode) {
             const offerCreate: OfferCreate = {
-                date: OfferEditComponent.formatDate(this.offerGroup.get('date').value),
+                date: formatDateTransport(this.offerGroup.get('date').value),
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 in_price_included: this.offerGroup.get('in_price_included').value,
                 validity: this.offerGroup.get('validity').value,
@@ -180,7 +177,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
             });
         } else {
             const offerUpdate: OfferUpdate = {
-                date: OfferEditComponent.formatDate(this.offerGroup.get('date').value),
+                date: formatDateTransport(this.offerGroup.get('date').value),
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 in_price_included: this.offerGroup.get('in_price_included').value,
                 validity: this.offerGroup.get('validity').value,

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import * as moment from 'moment';
 import {BehaviorSubject} from 'rxjs';
+import * as Sentry from '@sentry/angular';
 
 interface Period {
     start: number;
@@ -87,7 +88,7 @@ export class StopwatchService {
             this.saveTimes();
         } else {
             console.warn('Trying to save stopwatch on new day. Resetting before something happens');
-            //TODO: add sentry here, too track if and when this happens
+            Sentry.captureMessage('Trying to save stopwatch on new day. Resetting before something happens');
             this.reset();
         }
     }
@@ -97,8 +98,8 @@ export class StopwatchService {
             this.day = this.getDay();
             this.periods = this.getTimes();
         } else {
-            console.warn('Trying to save stopwatch on new day. Resetting before something happens');
-            //TODO: add sentry here, too track if and when this happens
+            console.warn('Trying to load stopwatch on new day. Resetting before something happens');
+            Sentry.captureMessage('Trying to load stopwatch on new day. Resetting before something happens');
             this.reset();
         }
     }

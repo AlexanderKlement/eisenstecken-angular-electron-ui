@@ -14,6 +14,7 @@ import {Observable} from 'rxjs';
 import {first, map} from 'rxjs/operators';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import * as moment from 'moment';
+import {minutesToDisplayableString} from '../../shared/date.util';
 
 @Component({
     selector: 'app-recalculation-edit',
@@ -194,7 +195,7 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
                         {
                             values: {
                                 'user.fullname': dataSource.user.fullname,
-                                minutes: dataSource.minutes, //TODO: parse to HR format
+                                minutes: minutesToDisplayableString(dataSource.minutes),
                                 cost: dataSource.cost,
                             },
                             route: () => {

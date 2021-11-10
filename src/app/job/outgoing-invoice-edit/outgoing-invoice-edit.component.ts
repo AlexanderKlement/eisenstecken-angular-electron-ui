@@ -13,14 +13,14 @@ import {BaseEditComponent} from '../../shared/components/base-edit/base-edit.com
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
-import {AbstractControl, FormArray, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormControl, FormGroup} from '@angular/forms';
 import {first, tap} from 'rxjs/operators';
-import {formatDate} from '@angular/common';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {AuthService} from '../../shared/services/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import * as moment from 'moment';
+import {formatDateTransport} from '../../shared/date.util';
 
 @Component({
     selector: 'app-outgoing-invoice-edit',
@@ -43,18 +43,13 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
         super(api, router, route, dialog);
     }
 
-    public static formatDateTransport(datetime: string): string { //TODO: move to some sort of util class or so
-        return formatDate(datetime, 'yyyy-MM-dd', 'en-US');
-    }
-
     calcTotalPrice(formGroup: FormGroup): void {
         const totalPrice = formGroup.get('single_price').value * formGroup.get('amount').value;
         formGroup.get('total_price').setValue(totalPrice);
     }
 
     lockFunction = (api: DefaultService, id: number): Observable<Lock> =>
-        api.islockedOutgoingInvoiceOutgoingInvoiceIslockedOutgoingInvoiceIdGet(id) //TODO: correct this after next update
-    ;
+        api.islockedOutgoingInvoiceOutgoingInvoiceIslockedOutgoingInvoiceIdGet(id);
 
     dataFunction = (api: DefaultService, id: number): Observable<OutgoingInvoice> =>
         api.readOutgoingInvoiceOutgoingInvoiceOutgoingInvoiceIdGet(id);
@@ -135,9 +130,6 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
         return this.invoiceGroup.get('descriptive_articles') as FormArray;
     }
 
-    getSubDescriptiveArticles(formGroup: AbstractControl): FormArray {
-        return formGroup.get('sub_descriptive_articles') as FormArray;
-    }
 
     removeDescriptiveArticle(index: number): void {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -225,11 +217,11 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
             const invoiceCreate: OutgoingInvoiceCreate = {
                 // eslint-disable-next-line id-blacklist
                 number: this.invoiceGroup.get('number').value,
-                date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get('date').value),
+                date: formatDateTransport(this.invoiceGroup.get('date').value),
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 payment_condition: this.invoiceGroup.get('payment_condition').value,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                payment_date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get('payment_date').value),
+                payment_date: formatDateTransport(this.invoiceGroup.get('payment_date').value),
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 vat_id: this.invoiceGroup.get('vat_id').value,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -248,11 +240,11 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
             const invoiceUpdate: OutgoingInvoiceUpdate = {
                 // eslint-disable-next-line id-blacklist
                 number: this.invoiceGroup.get('number').value,
-                date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get('date').value),
+                date: formatDateTransport(this.invoiceGroup.get('date').value),
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 payment_condition: this.invoiceGroup.get('payment_condition').value,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                payment_date: OutgoingInvoiceEditComponent.formatDateTransport(this.invoiceGroup.get('payment_date').value),
+                payment_date: formatDateTransport(this.invoiceGroup.get('payment_date').value),
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 vat_id: this.invoiceGroup.get('vat_id').value,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -346,10 +338,11 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
         const now = new Date();
         const now30gg = new Date();
         now30gg.setDate(now.getDate() + 30);
+
         this.invoiceGroup = new FormGroup({
             date: new FormControl(now.toISOString()),
             // eslint-disable-next-line id-blacklist
-            number: new FormControl(''), // TODO: init the next logical number here
+            number: new FormControl(''),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             vat_id: new FormControl(2),
             // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -360,6 +353,9 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
             descriptive_articles: new FormArray([
                 this.initDescriptiveArticles()
             ]),
+        });
+        this.api.getParameterParameterKeyGet('invoice_number').pipe(first()).subscribe(invoiceNumberString => {
+            this.invoiceGroup.get('number').setValue(invoiceNumberString);
         });
     }
 
@@ -383,7 +379,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
             }
             for (const outgoingInvoice of outgoingInvoices) {
                 this.addDescriptiveArticle(
-                    'Rechnung Nr. ' + outgoingInvoice.number + ' vom ' + moment(outgoingInvoice.date, 'YYYY-MM-DD').format("DD.MM.YYYY"),
+                    'Rechnung Nr. ' + outgoingInvoice.number + ' vom ' + moment(outgoingInvoice.date, 'YYYY-MM-DD').format('DD.MM.YYYY'),
                     '1',
                     (outgoingInvoice.full_price_without_vat * (-1)).toString(),
                     (outgoingInvoice.full_price_without_vat * (-1)).toString(),
