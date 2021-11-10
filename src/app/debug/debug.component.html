@@ -20,5 +20,31 @@
             </div>
         </form>
     </mat-tab>
+    <mat-tab label="Datei öffnen">
+        <form [formGroup]="openFileFormGroup" (ngSubmit)="openFileSubmit()" class="login-form">
+            <div fxLayout="column" fxLayoutAlign="space-around center">
+                <mat-form-field>
+                    <mat-label>Dateipfad</mat-label>
+                    <input class="form-control" type="text" formControlName="path" matInput>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Antwort</mat-label>
+                    <input class="form-control" type="text" formControlName="response" matInput>
+                </mat-form-field>
+                <button mat-raised-button type="submit">Öffnen</button>
+            </div>
+        </form>
+    </mat-tab>
+    <mat-tab label="Datei anzeigen">
+        <form [formGroup]="showFileFormGroup" (ngSubmit)="showFileSubmit()" class="login-form">
+            <div fxLayout="column" fxLayoutAlign="space-around center">
+                <mat-form-field>
+                    <mat-label>Dateipfad</mat-label>
+                    <input class="form-control" type="text" formControlName="path" matInput>
+                </mat-form-field>
+                <button mat-raised-button type="submit">Anzeigen</button>
+            </div>
+        </form>
+    </mat-tab>
 </mat-tab-group>
 

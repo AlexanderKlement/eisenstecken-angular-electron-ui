@@ -1,4 +1,4 @@
-import {app, BrowserWindow, dialog, screen} from 'electron';
+import {app, BrowserWindow, dialog, screen, shell} from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as url from 'url';
@@ -27,9 +27,11 @@ function createWindow(): BrowserWindow {
         title: "Eisenstecken",
         autoHideMenuBar: true,
         webPreferences: {
-            nodeIntegration: true,
+            nodeIntegration: false,
             allowRunningInsecureContent: (serve) ? true : false,
-            contextIsolation: false,  // false if you want to run e2e test with Spectron
+            contextIsolation: true,  // false if you want to run e2e test with Spectron
+            enableRemoteModule: false,
+            preload: path.join(__dirname, 'preload.js')
         },
     });
     win.maximize();
@@ -77,8 +79,48 @@ function createWindow(): BrowserWindow {
         win = null;
     });
 
+
     return win;
 }
+
+// Im Hauptprozess.
+const {ipcMain} = require('electron')
+ipcMain.on('shell-external-request', (event, arg) => {
+    console.log('Main: Shell external: REQUEST');
+    console.log(arg);
+    shell.openExternal(arg).then(() => {
+        console.log('Main: Shell external: SUCCESS');
+        event.reply('shell-external-reply', true);
+    }, (reason) => {
+        console.error('Main: Shell external: FAIL');
+        console.error(reason);
+        event.reply('shell-external-reply', false);
+    });
+});
+ipcMain.on('shell-item-request', (event, arg) => {
+    console.log('Main: Shell item: REQUEST');
+    console.log(arg);
+    shell.openPath(arg).then((response) => {
+        console.log('Main: Shell item: SUCCESS');
+        event.reply('shell-item-reply', response);
+    }, (reason) => {
+        console.error('Main: Shell item: FAIL');
+        console.error(reason);
+        event.reply('shell-item-reply', reason.toString());
+    });
+});
+ipcMain.on('shell-file-request', (event, arg) => {
+    console.log('Main: Shell file: REQUEST');
+    console.log(arg);
+    shell.openPath(arg).then((response) => {
+        console.log('Main: Shell file: SUCCESS');
+        event.reply('shell-file-reply', true);
+    }, (reason) => {
+        console.error('Main: Shell file: FAIL');
+        console.error(reason);
+        event.reply('shell-file-reply', false);
+    });
+});
 
 try {
     // This method will be called when Electron has finished

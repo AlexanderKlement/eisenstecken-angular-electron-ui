@@ -23,6 +23,7 @@ import * as confetti from 'canvas-confetti';
 import {StopwatchService} from './stopwatch/stopwatch.service';
 import {AuthService} from '../../shared/services/auth.service';
 import {Router} from '@angular/router';
+import {minutesToDisplayableString} from '../../shared/util';
 
 
 export const timeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -63,6 +64,8 @@ export class WorkDayGeneralComponent implements OnInit {
 
     cars$: ReplaySubject<Car[]>;
 
+    minuteFormatFunction = minutesToDisplayableString;
+
     maxMinutes = 0;
     remainingMinutes = 0;
 
@@ -97,12 +100,6 @@ export class WorkDayGeneralComponent implements OnInit {
 
     constructor(private api: DefaultService, private snackBar: MatSnackBar, private renderer2: Renderer2, private router: Router,
                 private elementRef: ElementRef, private stopwatchService: StopwatchService, private authService: AuthService) {
-    }
-
-    public static minutesToDisplayableString(minutes: number): string { // TODO: move this to a more prominent location
-        const hours = Math.floor(minutes / 60);
-        const remainingMinutes = minutes % 60;
-        return hours.toString() + ' Stunden und ' + remainingMinutes.toString() + ' Minuten';
     }
 
     startTimer(): void {

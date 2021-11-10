@@ -21,6 +21,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ServiceCreateDialogComponent} from '../service/service-create-dialog/service-create-dialog.component';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {minutesToDisplayableString} from '../../shared/util';
 
 @Component({
     selector: 'app-employee-detail',
@@ -170,7 +171,7 @@ export class EmployeeDetailComponent implements OnInit {
                                 date: moment(dataSource.date).format('dddd, DD.MM.YYYY'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 'user.fullname': dataSource.user.fullname,
-                                minutes: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.minutes),
+                                minutes: minutesToDisplayableString(dataSource.minutes),
                             },
                             route: () => {
                                 this.serviceClicked(dataSource.id);
@@ -290,7 +291,7 @@ export class EmployeeDetailComponent implements OnInit {
                             values: {
                                 date: moment(dataSource.date).format('dddd, DD.MM.YYYY'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                minutes: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.minutes),
+                                minutes: minutesToDisplayableString(dataSource.minutes),
                                 description: dataSource.description,
                             },
                             route: () => {

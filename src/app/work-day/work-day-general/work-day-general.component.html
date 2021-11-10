@@ -76,8 +76,8 @@
             </div>
             <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="job_sections" fxFlexFill>
                 <h4>Arbeitszeit aufteilen:</h4>
-                <h5>Gesamtzeit: {{minutesToDisplayableString(maxMinutes)}}</h5>
-                <h5>Noch aufzuteilen: {{minutesToDisplayableString(remainingMinutes)}}</h5>
+                <h5>Gesamtzeit: {{minuteFormatFunction(maxMinutes)}}</h5>
+                <h5>Noch aufzuteilen: {{minuteFormatFunction(remainingMinutes)}}</h5>
                 <div *ngFor="let workSection of getJobSections().controls; let i = index">
                     <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i"
                          fxLayout.lt-sm="column">

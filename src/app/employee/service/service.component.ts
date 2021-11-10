@@ -10,6 +10,7 @@ import {ServiceDialogComponent} from './service-dialog/service-dialog.component'
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {ServiceCreateDialogComponent} from './service-create-dialog/service-create-dialog.component';
 import {first} from 'rxjs/operators';
+import {minutesToDisplayableString} from '../../shared/util';
 
 @Component({
     selector: 'app-service',
@@ -60,7 +61,7 @@ export class ServiceComponent implements OnInit {
                                 date: moment(dataSource.date).format('dddd, DD.MM.YYYY'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 'user.fullname': dataSource.user.fullname,
-                                minutes: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.minutes),
+                                minutes: minutesToDisplayableString(dataSource.minutes),
                             },
                             route: () => {
                                 this.serviceClicked(dataSource.id);

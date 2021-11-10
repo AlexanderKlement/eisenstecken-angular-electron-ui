@@ -8,6 +8,7 @@ import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {AuthService} from '../../shared/services/auth.service';
 import {first} from 'rxjs/operators';
 import {WorkDayGeneralComponent} from '../../work-day/work-day-general/work-day-general.component';
+import {minutesToDisplayableString} from '../../shared/util';
 
 @Component({
     selector: 'app-work-hours',
@@ -75,9 +76,9 @@ export class WorkHoursComponent implements OnInit {
                         {
                             values: {
                                 'user.fullname': dataSource.user.fullname,
-                                minutes: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.minutes),
+                                minutes: minutesToDisplayableString(dataSource.minutes),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                                minutes_direction: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.minutes_direction),
+                                minutes_direction: minutesToDisplayableString(dataSource.minutes_direction),
                                 cost: dataSource.cost,
                             },
                             route: () => {

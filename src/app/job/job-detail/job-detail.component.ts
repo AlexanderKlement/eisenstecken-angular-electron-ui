@@ -38,6 +38,7 @@ export class JobDetailComponent implements OnInit {
     ordersAllowed = false;
     outgoingInvoicesAllowed = false;
     offersAllowed = false;
+    title = '';
 
     constructor(private api: DefaultService, private router: Router, private route: ActivatedRoute, private snackBar: MatSnackBar,
                 private locker: LockService, private authService: AuthService, private dialog: MatDialog) {
@@ -57,7 +58,7 @@ export class JobDetailComponent implements OnInit {
             this.jobId = id;
             this.api.readJobJobJobIdGet(this.jobId).pipe(first()).subscribe((job) => {
                 this.isMainJob = job.is_main;
-
+                this.title = 'Auftrag: ' + job.displayable_name;
             });
             this.initOfferTable();
             this.initSubJobTable();
@@ -67,9 +68,6 @@ export class JobDetailComponent implements OnInit {
         });
         this.initAccessRights();
     }
-
-    //TODO: add text, to which mainjob this is (if subjob)
-    //TODO: remove orderstatus change if subjob
 
     initSubJobTable() {
         this.subJobDataSource = new TableDataSource(

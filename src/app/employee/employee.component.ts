@@ -19,6 +19,7 @@ import {first} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {WorkDayGeneralComponent} from '../work-day/work-day-general/work-day-general.component';
+import {minutesToDisplayableString} from '../shared/util';
 
 @Component({
     selector: 'app-employee',
@@ -250,7 +251,7 @@ export class EmployeeComponent implements OnInit {
                                 month: moment(dataSource.month).format('MMMM YYYY'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 'user.fullname': dataSource.user.fullname,
-                                minutes: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.minutes),
+                                minutes: minutesToDisplayableString(dataSource.minutes),
                             },
                             route: () => {
                                 this.maintenanceClicked();
@@ -283,8 +284,8 @@ export class EmployeeComponent implements OnInit {
                                 month: moment(dataSource.month).format('MMMM YYYY'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 'user.fullname': dataSource.user.fullname,
-                                internal: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.internal),
-                                external: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.external),
+                                internal: minutesToDisplayableString(dataSource.internal),
+                                external: minutesToDisplayableString(dataSource.external),
                             },
                             route: () => {
                                 this.router.navigateByUrl('service/' + dataSource.user.id.toString());
@@ -322,7 +323,7 @@ export class EmployeeComponent implements OnInit {
                                 date: moment(dataSource.date).format('dddd, DD.MM.YYYY'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 'user.fullname': dataSource.user.fullname,
-                                minutes: WorkDayGeneralComponent.minutesToDisplayableString(dataSource.minutes),
+                                minutes: minutesToDisplayableString(dataSource.minutes),
                                 description: dataSource.description,
                             },
                             route: () => {

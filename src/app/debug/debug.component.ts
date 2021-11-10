@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {EmailService} from '../shared/services/email.service';
+import {FileService} from '../shared/services/file.service';
 
 @Component({
     selector: 'app-debug',
@@ -9,12 +10,17 @@ import {EmailService} from '../shared/services/email.service';
 })
 export class DebugComponent implements OnInit {
     emailFormGroup: FormGroup;
+    openFileFormGroup: FormGroup;
+    showFileFormGroup: FormGroup;
 
-    constructor(private email: EmailService) {
+    constructor(private email: EmailService, private file: FileService) {
     }
 
     ngOnInit(): void {
         this.initEmailGroup();
+        this.initOpenFileGroup();
+        this.initShowFileGroup();
+        console.log(window);
     }
 
     onEmailSubmit(): void {
@@ -25,11 +31,34 @@ export class DebugComponent implements OnInit {
         );
     }
 
+    openFileSubmit() {
+        this.file.open(this.openFileFormGroup.get('path').value).then((response) => {
+            this.openFileFormGroup.get('response').setValue(response);
+        });
+    }
+
+    showFileSubmit() {
+        this.file.show(this.openFileFormGroup.get('path').value);
+    }
+
     private initEmailGroup() {
         this.emailFormGroup = new FormGroup({
             email: new FormControl(''),
             subject: new FormControl(''),
             body: new FormControl(''),
+        });
+    }
+
+    private initOpenFileGroup() {
+        this.openFileFormGroup = new FormGroup({
+            path: new FormControl(''),
+            response: new FormControl('')
+        });
+    }
+
+    private initShowFileGroup() {
+        this.showFileFormGroup = new FormGroup({
+            path: new FormControl('')
         });
     }
 }
