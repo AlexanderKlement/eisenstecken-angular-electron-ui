@@ -17,6 +17,7 @@ import {AuthService} from '../../shared/services/auth.service';
 import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {formatDateTransport} from '../../shared/date.util';
+import {FileService} from '../../shared/services/file.service';
 
 
 export interface JobMinimal {
@@ -40,7 +41,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
     title = 'Lieferschein: Bearbeiten';
 
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog,
-                private authService: AuthService, private snackBar: MatSnackBar) {
+                private authService: AuthService, private snackBar: MatSnackBar, private file: FileService) {
         super(api, router, route, dialog);
     }
 
@@ -130,6 +131,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
             };
             this.api.createDeliveryNoteDeliveryNotePost(deliveryNoteCreate).pipe(first()).subscribe(deliveryNote => {
                 this.submitted = false;
+                this.file.open(deliveryNote.pdf);
                 this.router.navigateByUrl('delivery_note');
             }, this.createUpdateError);
         } else {
@@ -155,6 +157,7 @@ export class DeliveryEditComponent extends BaseEditComponent<DeliveryNote> imple
             };
             this.api.updateDeliveryNoteDeliveryNoteDeliveryNoteIdPut(this.id, deliveryNoteUpdate).pipe(first()).subscribe(deliveryNote => {
                 this.submitted = false;
+                this.file.open(deliveryNote.pdf);
                 this.router.navigateByUrl('delivery_note');
             }, this.createUpdateError);
         }

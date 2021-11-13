@@ -6,10 +6,15 @@ import {ElectronService} from '../../core/services';
 })
 export class FileService {
 
-    constructor() {
+    constructor(private electronService: ElectronService) {
     }
 
     open(path: string): Promise<string> {
+        if (!this.electronService.isElectron) {
+            return new Promise((resolve, reject) => {
+                reject();
+            });
+        }
         return new Promise<string>((resolve, reject) => {
             try {
                 window.api.receive('shell-item-reply', (data) => {
@@ -29,6 +34,11 @@ export class FileService {
     }
 
     show(path: string): Promise<void> {
+        if (!this.electronService.isElectron) {
+            return new Promise((resolve, reject) => {
+                reject();
+            });
+        }
         return new Promise<void>((resolve, reject) => {
             try {
                 window.api.receive('shell-file-reply', (data) => {

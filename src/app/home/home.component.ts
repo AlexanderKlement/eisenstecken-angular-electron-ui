@@ -2,7 +2,6 @@ import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../shared/services/auth.service';
 import {InfoDialogComponent} from './info-dialog/info-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
-import {FormArray, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 
 @Component({

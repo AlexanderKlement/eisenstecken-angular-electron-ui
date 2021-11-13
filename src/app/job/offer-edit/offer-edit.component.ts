@@ -204,6 +204,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
 
     createUpdateSuccess(offer: Offer): void {
         this.id = offer.id;
+        this.file.open(offer.pdf);
         this.router.navigateByUrl('job/' + this.jobId.toString(), {replaceUrl: true});
     }
 

@@ -21,6 +21,7 @@ import {AuthService} from '../../shared/services/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import * as moment from 'moment';
 import {formatDateTransport} from '../../shared/date.util';
+import {FileService} from '../../shared/services/file.service';
 
 @Component({
     selector: 'app-outgoing-invoice-edit',
@@ -39,7 +40,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
     title = 'Ausgangsrechnung: Bearbeiten';
 
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog,
-                private authService: AuthService, private snackBar: MatSnackBar) {
+                private authService: AuthService, private snackBar: MatSnackBar, private file: FileService) {
         super(api, router, route, dialog);
     }
 
@@ -268,6 +269,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
                 key: 'invoice_number',
                 value: invoiceNumber.toString()
             }).pipe(first()).subscribe(() => {
+                this.file.open(invoice.pdf);
                 this.router.navigateByUrl('job/' + this.jobId.toString(), {replaceUrl: true});
             });
         });

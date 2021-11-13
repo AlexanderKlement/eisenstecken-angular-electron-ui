@@ -27,6 +27,7 @@ export class FilterableClickableListComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.subscription = new Subscription();
         this.listElements = [];
         this.search = new FormControl('');
         this.subscription.add(this.listElements$.subscribe((listElements) => {

@@ -6,12 +6,20 @@
   height: 90%;
   cursor: pointer;
   padding: 10px;
-  &:hover{
+
+  &:hover {
     box-shadow: 0 -3px 5px #3e3d3d;
     transform: scale(1.1);
   }
 }
 
-.toolbar{
+.title {
+  margin-left: 1em;
+  font-weight: 500;
+  letter-spacing: .1ch;
+
+}
+
+.toolbar {
   overflow: hidden;
 }

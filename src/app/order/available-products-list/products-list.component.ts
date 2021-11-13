@@ -136,6 +136,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.subscription = new Subscription();
         this.search = new FormControl('');
         if (this.available
         ) {
