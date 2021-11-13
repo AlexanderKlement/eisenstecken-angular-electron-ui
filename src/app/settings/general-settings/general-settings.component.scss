@@ -1,1 +1,5 @@
 @use "../../shared/components/base-edit/base-edit.component";
+
+button[type=submit]{
+  margin-bottom: 5em;
+}

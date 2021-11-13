@@ -1,6 +1,6 @@
 <mat-tab-group>
   <mat-tab label="Kontakte">
-    <form (ngSubmit)="onSubmitContacts()" [formGroup]="contactGroup">
+    <form (ngSubmit)="onSubmitContacts()" [formGroup]="contactGroup" class="settings-container">
       <div fxLayout="column" fxLayoutAlign="space-around center">
         <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="contacts">
           <div fxLayout="row" fxLayoutAlign="space-around start"
@@ -37,7 +37,7 @@
     </form>
   </mat-tab>
   <mat-tab label="Preise">
-    <form (ngSubmit)="onSubmitPrices()" [formGroup]="priceGroup">
+    <form (ngSubmit)="onSubmitPrices()" [formGroup]="priceGroup" class="settings-container">
       <div fxLayout="column" fxLayoutAlign="space-around center">
         <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="prices">
           <div fxLayout="row" fxLayoutAlign="space-around start"
@@ -70,7 +70,7 @@
     </form>
   </mat-tab>
   <mat-tab label="Zugangsdaten">
-    <form (ngSubmit)="onSubmitCredentials()" [formGroup]="credentialGroup">
+    <form (ngSubmit)="onSubmitCredentials()" [formGroup]="credentialGroup" class="settings-container">
       <div fxLayout="column" fxLayoutAlign="space-around center">
         <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="credentials">
           <div fxLayout="row" fxLayoutAlign="space-around start"
@@ -107,7 +107,7 @@
     </form>
   </mat-tab>
   <mat-tab label="Technische Daten">
-    <form (ngSubmit)="onSubmitTechnicalData()" [formGroup]="technicalDataGroup">
+    <form (ngSubmit)="onSubmitTechnicalData()" [formGroup]="technicalDataGroup" class="settings-container">
       <div fxLayout="column" fxLayoutAlign="space-around center">
         <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="technicalData">
           <div fxLayout="row" fxLayoutAlign="space-around start"

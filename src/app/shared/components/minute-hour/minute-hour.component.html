@@ -1,13 +1,13 @@
 <form [formGroup]="minuteHourGroup" fxFlexFill>
-    <div fxLayout="row" fxLayoutAlign="space-around center" fxFlexFill>
-        <p>{{title}}</p>
-        <mat-form-field appearance="fill">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxFlexFill>
+        <p fxFlex="20">{{title}}</p>
+        <mat-form-field appearance="fill" fxFlex="39">
             <mat-label>Stunden</mat-label>
             <input class="form-control" type="number" [readonly]="editDisabled"
                    formControlName="hours" (focusout)="focusLost()"
                    matInput>
         </mat-form-field>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" fxFlex="39">
             <mat-label>Minuten</mat-label>
             <input class="form-control" type="number" [readonly]="editDisabled"
                    formControlName="minutes" (focusout)="focusLost()"

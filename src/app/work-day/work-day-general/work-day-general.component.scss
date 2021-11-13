@@ -18,8 +18,11 @@ fieldset {
 }
 
 canvas {
+  position: absolute;
+  inset: 0;
   height: 100%;
   width: 100%;
+  pointer-events: none;
 }
 
 .control {
@@ -88,4 +91,12 @@ canvas {
     display: inline-block;
     visibility: visible;
   }
+}
+
+app-minute-hour{
+  width: 100%;
+}
+
+button[type=submit]{
+  margin-bottom: 3em;
 }
