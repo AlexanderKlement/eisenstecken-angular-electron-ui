@@ -80,16 +80,35 @@ canvas {
 }
 
 @media (max-width: 600px) {
-  mat-form-field {
-    margin-bottom: -1.34375em;
+  .window-container{
+    padding: 0;
+    width: 100vw;
+    position: relative;
   }
-  .remove-button {
-    display: none;
-    visibility: hidden;
+  .small-containers{
+    width: 100% !important;
+    padding: 0 2em;
   }
-  .remove-button-mobile {
-    display: inline-block;
-    visibility: visible;
+  .big-containers{
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+  form {
+    mat-form-field {
+      margin-bottom: -1.34375em;
+      min-width: 100%;
+      max-width: unset;
+    }
+
+    .remove-button {
+      display: none;
+      visibility: hidden;
+    }
+
+    .remove-button-mobile {
+      display: inline-block;
+      visibility: visible;
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-<div class="window-container">
+<div>
     <div fxLayout="column" fxLayoutAlign="space-around center">
         <h4 *ngIf="username.length > 0">Benutzer: {{username}}</h4>
         <h5 *ngIf="admin && workDay">Abgeschlossen: {{workDay.finished ? 'Ja' : 'Nein'}}</h5>
@@ -78,29 +78,25 @@
                 <h4>Arbeitszeit aufteilen:</h4>
                 <h5>Gesamtzeit: {{minuteFormatFunction(maxMinutes)}}</h5>
                 <h5>Noch aufzuteilen: {{minuteFormatFunction(remainingMinutes)}}</h5>
-                <div *ngFor="let workSection of getJobSections().controls; let i = index">
-                    <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i"
-                         fxLayout.lt-sm="column">
-                        <div fxLayout="column" fxLayoutAlign="space-around center">
-                            <mat-form-field appearance="fill">
-                                <mat-label>Auftrag</mat-label>
-                                <input class="form-control" readonly formControlName="name" matInput>
-                            </mat-form-field>
-                            <app-minute-hour [minuteControl]="getJobSectionsMinutesAt(i)"
-                                             [editDisabled]="editDisabled" title="Regulär:"
-                                             (minutesChanged)="onMinuteChange(i, false)"></app-minute-hour>
-                            <app-minute-hour *ngIf="i < (getJobSections().length - 1)"
-                                             [minuteControl]="getJobSectionsDirectionMinutesAt(i)"
-                                             [editDisabled]="editDisabled" title="Regie:"
-                                             (minutesChanged)="onMinuteChange(i, true)"></app-minute-hour>
-                        </div>
-                    </div>
+                <div *ngFor="let workSection of getJobSections().controls; let i = index" [formGroupName]="i" class="big-containers">
+                      <div fxLayout="column" fxLayoutAlign="space-around center"  class="small-containers">
+                          <mat-form-field appearance="fill">
+                              <mat-label>Auftrag</mat-label>
+                              <input class="form-control" readonly formControlName="name" matInput>
+                          </mat-form-field>
+                          <app-minute-hour [minuteControl]="getJobSectionsMinutesAt(i)"
+                                           [editDisabled]="editDisabled" title="Regulär:"
+                                           (minutesChanged)="onMinuteChange(i, false)"></app-minute-hour>
+                          <app-minute-hour *ngIf="i < (getJobSections().length - 1)"
+                                           [minuteControl]="getJobSectionsDirectionMinutesAt(i)"
+                                           [editDisabled]="editDisabled" title="Regie:"
+                                           (minutesChanged)="onMinuteChange(i, true)"></app-minute-hour>
+                      </div>
                 </div>
             </div>
             <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="additional_workloads" fxFlexFill>
-                <div *ngFor="let additionalWorkloads of getAdditionalWorkloads().controls; let i = index">
-                    <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i">
-                        <div fxLayout="column" fxLayoutAlign="space-around center">
+                <div *ngFor="let additionalWorkloads of getAdditionalWorkloads().controls; let i = index" [formGroupName]="i"  class="big-containers">
+                        <div fxLayout="column" fxLayoutAlign="space-around center" class="small-containers">
                             <mat-form-field appearance="fill">
                                 <mat-label>Beschreibung</mat-label>
                                 <input class="form-control" formControlName="description" matInput>
@@ -109,7 +105,6 @@
                                              [editDisabled]="editDisabled"
                                              (minutesChanged)="onAdditionalMinuteChange(i)"></app-minute-hour>
                         </div>
-                    </div>
                 </div>
                 <button *ngIf="!editDisabled" mat-fab type="button" (click)="onAddAdditionalMinutesClick()"
                         title="Andere Aufgabe hinzufügen">
@@ -119,7 +114,7 @@
 
             <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="expenses" fxFlexFill>
                 <h4>Ausgaben eintragen</h4>
-                <div *ngFor="let expense of getExpenses().controls; let i = index">
+                <div *ngFor="let expense of getExpenses().controls; let i = index" >
                     <div fxLayout="row" fxLayoutAlign="space-around center" [formGroupName]="i"
                          fxLayout.lt-sm="column">
                         <mat-form-field appearance="fill">
