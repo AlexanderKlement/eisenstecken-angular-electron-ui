@@ -10,6 +10,10 @@
                 <mat-label>Preis Holz [€]</mat-label>
                 <input type=number class="form-control" formControlName="wood_amount" matInput>
             </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Materialkostenaufschlag [%]</mat-label>
+                <input type=number class="form-control" formControlName="material_charge_percent" matInput>
+            </mat-form-field>
         </div>
         <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="expenses">
             <div *ngFor="let expense of getExpenses().controls; let i = index" [formGroupName]="i" fxLayout="row"

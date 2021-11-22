@@ -61,7 +61,7 @@
     "@sentry/tracing": "6.11.0",
     "canvas-confetti": "1.4.0",
     "core-js": "3.6.5",
-    "eisenstecken-openapi-angular-library": "8.3.14",
+    "eisenstecken-openapi-angular-library": "8.3.15",
     "material-design-icons": "3.0.1",
     "moment": "^2.29.1",
     "ngx-material-timepicker": "5.5.3",

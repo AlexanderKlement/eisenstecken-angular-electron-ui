@@ -183,6 +183,7 @@ export class OrderComponent implements OnInit {
                     .subscribe((articles) => {
                         this.availableProductsSubscriber.next(articles);
                     });
+                this.buttons = [];
                 this.buttons.push(
                     {
                         name: 'Öffne Lager',
@@ -205,6 +206,7 @@ export class OrderComponent implements OnInit {
                     .subscribe((articles) => {
                         this.availableProductsSubscriber.next(articles);
                     });
+                this.buttons = [];
                 this.buttons.push(
                     {
                         name: 'Öffne Lieferant',

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormArray, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {BaseEditComponent} from '../../shared/components/base-edit/base-edit.component';
 import {
     DefaultService,
@@ -75,6 +75,11 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
             // eslint-disable-next-line @typescript-eslint/naming-convention
             wood_amount: new FormControl(''),
             expenses: new FormArray([]),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            material_charge_percent: new FormControl(30, Validators.compose([Validators.min(0), Validators.max(100)]))
+        });
+        this.api.getParameterParameterKeyGet('recalculation_percent').pipe(first()).subscribe((paramter) => {
+            this.recalculationGroup.get('material_charge_percent').setValue(parseFloat(paramter));
         });
     }
 
@@ -126,7 +131,9 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
             const recalculationCreate: RecalculationCreate = {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 wood_amount: this.recalculationGroup.get('wood_amount').value,
-                expenses
+                expenses,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                material_charge_percent: this.recalculationGroup.get('material_charge_percent').value,
             };
             this.api.createRecalculationRecalculationJobIdPost(this.jobId, recalculationCreate).pipe(first()).subscribe(recalculation => {
                 this.router.navigateByUrl('recalculation/' + this.jobId, {replaceUrl: true});
@@ -135,7 +142,9 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
             const recalculationUpdate: RecalculationUpdate = {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 wood_amount: this.recalculationGroup.get('wood_amount').value,
-                expenses
+                expenses,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                material_charge_percent: this.recalculationGroup.get('material_charge_percent').value,
             };
             this.api.updateRecalculationRecalculationJobIdPut(this.jobId, recalculationUpdate).pipe(first()).subscribe(recalculation => {
                 this.router.navigateByUrl('recalculation/' + this.jobId, {replaceUrl: true});

@@ -5,43 +5,43 @@ import {AuthService} from './auth.service';
 import {ElectronService} from '../../core/services';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AccessGuard implements CanActivate {
 
-  limitAccessHosts: string[] = [
-    'stunden.eisenstecken.kivi.bz.it',
-    '192.168.0.7',
-    '127.0.0.1',
-  ];
+    limitAccessHosts: string[] = [
+        'stunden.eisenstecken.kivi.bz.it',
+        'timedev.app.eisenstecken.it',
+        'time.app.eisenstecken.it'
+    ];
 
-  constructor(private authService: AuthService, private router: Router, private electron: ElectronService) {
-  }
-
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const requiresLogin = route.data.requiresLogin || true;
-    if (requiresLogin) {
-      if (!this.authService.isLoggedIn()) {
-        this.router.navigate(['login']);
-      }
+    constructor(private authService: AuthService, private router: Router, private electron: ElectronService) {
     }
-    this.redirectWorkHours();
-    return true;
-  }
 
-  private redirectWorkHours(): void {
-    console.log('Host is: ' + window.location.hostname);
-    if (this.limitAccessHosts.includes(window.location.hostname)) {
-      if (!this.router.url.startsWith('/work_day') || !this.router.url.startsWith('/login')) {
-        if (!this.electron.isElectron) {
-          this.router.navigateByUrl('/work_day'); //before introducing this again, s
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        const requiresLogin = route.data.requiresLogin || true;
+        if (requiresLogin) {
+            if (!this.authService.isLoggedIn()) {
+                this.router.navigate(['login']);
+            }
         }
-      }
-    } else {
-      console.log('Internal Route');
+        this.redirectWorkHours();
+        return true;
     }
-  }
+
+    private redirectWorkHours(): void {
+        console.log('Host is: ' + window.location.hostname);
+        if (this.limitAccessHosts.includes(window.location.hostname)) {
+            if (!this.router.url.startsWith('/work_day') || !this.router.url.startsWith('/login')) {
+                if (!this.electron.isElectron) {
+                    this.router.navigateByUrl('/work_day'); //before introducing this again, s
+                }
+            }
+        } else {
+            console.log('Internal Route');
+        }
+    }
 
 }
