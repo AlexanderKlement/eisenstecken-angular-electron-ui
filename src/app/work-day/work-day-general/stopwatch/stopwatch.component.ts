@@ -51,7 +51,7 @@ export class StopwatchComponent implements OnInit, OnDestroy {
     private startTimer() {
         this.counterTimeout = setInterval(
             () => {
-                this.count();
+                this.fillWithMillis();
             }, 10
         );
     }
@@ -59,24 +59,6 @@ export class StopwatchComponent implements OnInit, OnDestroy {
 
     private stopTimer() {
         clearInterval(this.counterTimeout);
-    }
-
-    private count() {
-        this.ms++;
-        this.silentMS++;
-
-        if (this.ms >= 100) {
-            this.ss++;
-            this.ms = 0;
-        }
-        if (this.ss >= 60) {
-            this.mm++;
-            this.ss = 0;
-        }
-        if (this.mm >= 60) {
-            this.hh++;
-            this.mm = 0;
-        }
     }
 
     private fillWithMillis() {

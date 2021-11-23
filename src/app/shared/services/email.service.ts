@@ -19,14 +19,14 @@ export class EmailService {
 
         return new Promise<void>((resolve, reject) => {
             try {
-                window.api.receive('shell-external-reply', (data) => {
+                this.electronService.ipcRenderer.on('shell-external-reply', (_, data) => {
                     if (data) {
                         resolve();
                     } else {
                         reject();
                     }
                 });
-                window.api.send('shell-external-request', mailSchema);
+                this.electronService.ipcRenderer.send('shell-external-request', mailSchema);
             } catch (e) {
                 console.warn(e);
                 console.warn('Cannot send request to api');

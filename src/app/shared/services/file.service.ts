@@ -17,14 +17,14 @@ export class FileService {
         }
         return new Promise<string>((resolve, reject) => {
             try {
-                window.api.receive('shell-item-reply', (data) => {
+                this.electronService.ipcRenderer.on('shell-item-reply', (_, data) => {
                     if (data) {
                         resolve(data);
                     } else {
                         reject();
                     }
                 });
-                window.api.send('shell-item-request', path);
+                this.electronService.ipcRenderer.send('shell-item-request', path);
             } catch (e) {
                 console.warn(e);
                 console.warn('Cannot send request to api');
@@ -41,14 +41,14 @@ export class FileService {
         }
         return new Promise<void>((resolve, reject) => {
             try {
-                window.api.receive('shell-file-reply', (data) => {
+                this.electronService.ipcRenderer.on('shell-file-reply', (_, data) => {
                     if (data) {
                         resolve();
                     } else {
                         reject();
                     }
                 });
-                window.api.send('shell-file-request', path);
+                this.electronService.ipcRenderer.send('shell-file-request', path);
             } catch (e) {
                 console.warn(e);
                 console.warn('Cannot send request to api');
