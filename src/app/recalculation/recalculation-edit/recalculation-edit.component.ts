@@ -15,6 +15,7 @@ import {first, map} from 'rxjs/operators';
 import {TableDataSource} from '../../shared/components/table-builder/table-builder.datasource';
 import * as moment from 'moment';
 import {minutesToDisplayableString} from '../../shared/date.util';
+import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-recalculation-edit',
@@ -174,7 +175,22 @@ export class RecalculationEditComponent extends BaseEditComponent<Recalculation>
                                 status: dataSource.status_translation,
                             },
                             route: () => {
-                                this.router.navigateByUrl('/order/' + dataSource.id.toString());
+                                if(this.recalculationGroup.pristine) {
+                                    this.router.navigateByUrl('/order/' + dataSource.id.toString());
+                                } else {
+                                    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+                                        width: '400px',
+                                        data: {
+                                            title: 'Nachkalkulation verlassen?',
+                                            text: 'Nicht gespeicherte Änderungen gehen eventuell verloren!'
+                                        }
+                                    });
+                                    dialogRef.afterClosed().subscribe(result => {
+                                        if (result) {
+                                            this.router.navigateByUrl('/order/' + dataSource.id.toString());
+                                        }
+                                    });
+                                }
                             }
                         });
                 });

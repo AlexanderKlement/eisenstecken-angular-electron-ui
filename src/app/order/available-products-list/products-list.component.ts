@@ -112,7 +112,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 mod_number: '',
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                vat_id: 1,
+                vat_id: 3,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 unit_id: 1
             };
