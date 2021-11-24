@@ -1,4 +1,4 @@
-import {Component, DEFAULT_CURRENCY_CODE, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {InfoDataSource} from '../../shared/components/info-builder/info-builder.datasource';
 import {Job, DefaultService, Offer, OutgoingInvoice, Order} from 'eisenstecken-openapi-angular-library';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -154,7 +154,7 @@ export class JobDetailComponent implements OnInit {
                         {
                             values: {
                                 id: dataSource.id,
-                                date: dataSource.date,
+                                date: moment(dataSource.date).format('L'),
                                 // eslint-disable-next-line id-blacklist
                                 number: dataSource.number
                             },

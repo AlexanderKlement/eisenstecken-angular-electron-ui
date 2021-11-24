@@ -22,6 +22,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import * as moment from 'moment';
 import {formatDateTransport} from '../../shared/date.util';
 import {FileService} from '../../shared/services/file.service';
+import {CurrencyPipe, getLocaleCurrencyCode} from '@angular/common';
 
 @Component({
     selector: 'app-outgoing-invoice-edit',
@@ -39,14 +40,15 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
     buttons: CustomButton[] = [];
     title = 'Ausgangsrechnung: Bearbeiten';
 
-    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog,
+    constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog, private currency: CurrencyPipe,
                 private authService: AuthService, private snackBar: MatSnackBar, private file: FileService) {
         super(api, router, route, dialog);
     }
 
     calcTotalPrice(formGroup: FormGroup): void {
         const totalPrice = formGroup.get('single_price').value * formGroup.get('amount').value;
-        formGroup.get('total_price').setValue(totalPrice);
+        formGroup.get('total_price').setValue(this.currency.transform(totalPrice, getLocaleCurrencyCode('de_DE')));
+        this.recalculateInvoicePrice();
     }
 
     lockFunction = (api: DefaultService, id: number): Observable<Lock> =>
@@ -212,7 +214,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 descriptive_articles: [],
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                vat_id: 1,
+                vat_id: 1
             };
             descriptiveArticles.push(descriptiveArticle);
         });
@@ -232,7 +234,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 job_id: this.jobId,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                descriptive_articles: descriptiveArticles
+                descriptive_articles: descriptiveArticles,
             };
             this.api.createOutgoingInvoiceOutgoingInvoicePost(invoiceCreate).pipe(first()).subscribe((invoice) => {
                 this.createUpdateSuccess(invoice);
@@ -292,9 +294,11 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
                     vat_id: invoice.vat.id
                 });
                 this.jobId = invoice.job_id;
+                this.recalculateInvoicePrice();
             });
 
         }
+
     }
 
     protected initDescriptiveArticles(descriptiveArticle?: DescriptiveArticle): FormGroup {
@@ -359,10 +363,21 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
             descriptive_articles: new FormArray([
                 this.initDescriptiveArticles()
             ]),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            invoice_price: new FormControl(),
         });
         this.api.getParameterParameterKeyGet('invoice_number').pipe(first()).subscribe(invoiceNumberString => {
             this.invoiceGroup.get('number').setValue(invoiceNumberString);
         });
+    }
+
+    private recalculateInvoicePrice() {
+        let invoicePrice = 0.0;
+        this.getDescriptiveArticles().controls.forEach((descriptiveArticleControl) => {
+            invoicePrice += parseFloat(descriptiveArticleControl.get('single_price').value) *
+                parseFloat(descriptiveArticleControl.get('amount').value);
+        });
+        this.invoiceGroup.get('invoice_price').setValue(this.currency.transform(invoicePrice, getLocaleCurrencyCode('de_DE')));
     }
 
     private fillRightSidebar(langCode: string): void {
@@ -380,18 +395,16 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
 
     private addOtherInvoices() {
         this.api.readOutgoingInvoicesByJobOutgoingInvoiceJobJobIdGet(this.jobId).pipe(first()).subscribe((outgoingInvoices) => {
-            if (outgoingInvoices.length > 0) {
-                this.getDescriptiveArticles().removeAt(0);
-            }
             for (const outgoingInvoice of outgoingInvoices) {
                 this.addDescriptiveArticle(
-                    'Rechnung Nr. ' + outgoingInvoice.number + ' vom ' + moment(outgoingInvoice.date, 'YYYY-MM-DD').format('DD.MM.YYYY'),
+                    'Abzüglich Rechnung Nr. ' + outgoingInvoice.number + ' vom '
+                    + moment(outgoingInvoice.date, 'YYYY-MM-DD').format('DD.MM.YYYY'),
                     '1',
                     (outgoingInvoice.full_price_without_vat * (-1)).toString(),
                     (outgoingInvoice.full_price_without_vat * (-1)).toString(),
                 );
             }
-            this.addDescriptiveArticleAt(this.getDescriptiveArticles().length - 1);
+            //this.addDescriptiveArticleAt(this.getDescriptiveArticles().length - 1);
         });
     }
 }

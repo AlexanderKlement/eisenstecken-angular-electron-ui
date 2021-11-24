@@ -7,7 +7,7 @@
     <form [formGroup]="recalculationGroup" (submit)="onSubmit()">
         <div fxLayout="column" fxLayoutAlign="space-around center">
             <mat-form-field appearance="fill">
-                <mat-label>Preis Holz [€]</mat-label>
+                <mat-label>Preis Holzliste [€]</mat-label>
                 <input type=number class="form-control" formControlName="wood_amount" matInput>
             </mat-form-field>
             <mat-form-field appearance="fill">
@@ -16,6 +16,7 @@
             </mat-form-field>
         </div>
         <div fxLayout="column" fxLayoutAlign="space-around center" formArrayName="expenses">
+            <h3>Zusatzkosten</h3>
             <div *ngFor="let expense of getExpenses().controls; let i = index" [formGroupName]="i" fxLayout="row"
                  fxLayoutAlign="space-around center">
                 <mat-form-field appearance="fill">

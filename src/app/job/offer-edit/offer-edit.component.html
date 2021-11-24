@@ -134,6 +134,10 @@
                     <input class="form-control" type=number [value]="discountAmount.value | currency:'EUR'"
                            placeholder="Wird weggelassen wenn leer" matInput>
                 </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Gesamtsumme</mat-label>
+                    <input class="form-control" readonly formControlName="offer_price" matInput>
+                </mat-form-field>
                 <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
             </div>
         </div>

@@ -30,7 +30,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
-import {DatePipe, registerLocaleData} from '@angular/common';
+import {CurrencyPipe, DatePipe, registerLocaleData} from '@angular/common';
 import {SettingsModule} from './settings/settings.module';
 import {OrderModule} from './order/order.module';
 import {LoginModule} from './login/login.module';
@@ -151,6 +151,7 @@ export function apiConfigFactory(): Configuration {
             },
             AccessGuard,
             ChatService,
+            CurrencyPipe,
             DatePipe,
             {
                 provide: MAT_DATE_LOCALE, useValue: 'de-DE'
