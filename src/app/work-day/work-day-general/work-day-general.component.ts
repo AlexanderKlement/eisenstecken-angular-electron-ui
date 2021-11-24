@@ -427,6 +427,10 @@ export class WorkDayGeneralComponent implements OnInit {
         this.getExpenses().removeAt(index);
     }
 
+    onRemoveAdditionalWorkloadClick(index: number): void {
+        this.getAdditionalWorkloads().removeAt(index);
+    }
+
     onAddExpenseClick(): void {
         this.getExpenses().push(this.initExpense());
     }
@@ -510,6 +514,14 @@ export class WorkDayGeneralComponent implements OnInit {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             additional_workloads: additionalWorkloads
         };
+
+        if (workDay.eating_place_id === 0) {
+            this.snackBar.open('Bitte Essen eintragen', 'OK', {
+                duration: 10000
+            });
+            this.submitted = false;
+            return;
+        }
 
 
         //workday

@@ -68,7 +68,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
         if (this.createMode && !this.subMode) {
             this.title = 'Auftrag: Erstellen';
         }
-        if(this.subMode) {
+        if (this.subMode) {
             this.title = this.createMode ? 'Unterauftrag: Erstellen' : 'Unterauftrag: Bearbeiten'
         }
     }
@@ -124,8 +124,11 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
         }
     }
 
-    createUpdateSuccess(job: Job): void {
+    createUpdateSuccess(job: Job, redirectMain = false): void {
         this.id = job.id;
+        if (redirectMain) {
+            job.id = this.mainJobId;
+        }
         this.router.navigateByUrl('job/' + job.id.toString(), {replaceUrl: true});
     }
 
@@ -181,7 +184,7 @@ export class JobEditComponent extends BaseEditComponent<Job> implements OnInit, 
             name: this.jobGroup.get('name').value,
         };
         this.api.addSubjobToJobJobSubJobJobIdPost(this.mainJobId, subJobCreate).subscribe((job) => {
-            this.createUpdateSuccess(job);
+            this.createUpdateSuccess(job, true);
         }, (error) => {
             this.createUpdateError(error);
         }, () => {

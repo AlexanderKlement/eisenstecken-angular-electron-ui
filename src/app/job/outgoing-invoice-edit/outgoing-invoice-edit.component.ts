@@ -94,17 +94,21 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
                         });
                         dialogRef.afterClosed().subscribe(result => {
                             if (result) {
-                                this.api.deleteOutgoingInvoiceOutgoingInvoiceOutgoingInvoiceIdDelete(this.id)
-                                    .pipe(first()).subscribe((success) => {
-                                        if (success) {
-                                            this.router.navigateByUrl(this.navigationTarget);
-                                        } else {
-                                            this.invoiceDeleteFailed();
-                                        }
-                                    },
-                                    error => {
-                                        this.invoiceDeleteFailed(error);
-                                    });
+                                if (this.createMode) {
+                                    this.router.navigateByUrl(this.navigationTarget);
+                                } else {
+                                    this.api.deleteOutgoingInvoiceOutgoingInvoiceOutgoingInvoiceIdDelete(this.id)
+                                        .pipe(first()).subscribe((success) => {
+                                            if (success) {
+                                                this.router.navigateByUrl(this.navigationTarget);
+                                            } else {
+                                                this.invoiceDeleteFailed();
+                                            }
+                                        },
+                                        error => {
+                                            this.invoiceDeleteFailed(error);
+                                        });
+                                }
                             }
                         });
                     }
@@ -346,7 +350,7 @@ export class OutgoingInvoiceEditComponent extends BaseEditComponent<OutgoingInvo
             // eslint-disable-next-line id-blacklist
             number: new FormControl(''),
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            vat_id: new FormControl(2),
+            vat_id: new FormControl(3),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             payment_condition: new FormControl(''),
             // eslint-disable-next-line @typescript-eslint/naming-convention

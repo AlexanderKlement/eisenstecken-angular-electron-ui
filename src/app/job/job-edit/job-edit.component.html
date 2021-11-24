@@ -10,10 +10,6 @@
                 <mat-label>Name</mat-label>
                 <input class="form-control" formControlName="name" matInput>
             </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Beschreibung</mat-label>
-                <input class="form-control" formControlName="description" matInput>
-            </mat-form-field>
             <app-address-form *ngIf="!subMode && !addressDeactivated" [address]="getAddressGroup()"
                               fxFlexFill></app-address-form>
             <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>

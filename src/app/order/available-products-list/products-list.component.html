@@ -27,6 +27,12 @@
           <mat-icon>edit</mat-icon>
         </button>
       </div>
+      <div class="description">
+        <mat-form-field fxFlexFill>
+          <mat-label>Beschreibung</mat-label>
+          <textarea readonly value="{{orderedArticle.custom_description}}" matInput></textarea>
+        </mat-form-field>
+      </div>
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <mat-form-field>
           <mat-label>Menge</mat-label>

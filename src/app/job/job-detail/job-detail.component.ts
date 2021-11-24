@@ -112,7 +112,7 @@ export class JobDetailComponent implements OnInit {
                         {
                             values: {
                                 id: dataSource.id,
-                                date: dataSource.date,
+                                date: moment(dataSource.date).format('L'),
                                 // eslint-disable-next-line @typescript-eslint/naming-convention
                                 full_price_with_vat: formatCurrency(dataSource.full_price_with_vat, 'de-DE', 'EUR')
                             },
@@ -194,24 +194,12 @@ export class JobDetailComponent implements OnInit {
                     name: 'Name'
                 },
                 {
-                    property: 'description',
-                    name: 'Beschreibung'
-                },
-                {
-                    property: 'year',
-                    name: 'Jahr'
+                    property: 'code',
+                    name: 'Kodex'
                 },
                 {
                     property: 'client.fullname',
                     name: 'Kunde'
-                },
-                {
-                    property: 'address.street_number',
-                    name: 'Adresse'
-                },
-                {
-                    property: 'address.city',
-                    name: 'Gemeinde'
                 }
             ],
             '/job/edit/' + this.jobId.toString(),

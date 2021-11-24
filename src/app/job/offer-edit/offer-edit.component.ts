@@ -16,6 +16,7 @@ import {first, tap} from 'rxjs/operators';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {FileService} from '../../shared/services/file.service';
 import {formatDateTransport} from '../../shared/date.util'
+import {CustomButton} from '../../shared/components/toolbar/toolbar.component';
 
 @Component({
     selector: 'app-offer-edit',
@@ -31,6 +32,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
     vatOptions$: Observable<Vat[]>;
     hiddenDescriptives: number[];
     title = 'Angebot: Bearbeiten';
+    buttons: CustomButton[] = [];
 
     constructor(api: DefaultService, router: Router, route: ActivatedRoute, dialog: MatDialog, private file: FileService) {
         super(api, router, route, dialog);
@@ -111,6 +113,13 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         if (this.createMode) {
             this.title = 'Angebot: Erstellen';
         }
+
+        this.buttons.push({
+            name: 'Angebot löschen',
+            navigate: (): void => {
+                this.onOfferDeleteClicked();
+            }
+        });
     }
 
     onSubmit(): void {
@@ -321,6 +330,29 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
         this.getSubDescriptiveArticles(descriptiveArticleControl).insert(j + 1, OfferEditComponent.initSubDescriptiveArticles());
     }
 
+    private onOfferDeleteClicked() {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px',
+            data: {
+                title: 'Angebot löschen?',
+                text: 'Dieser Schritt kann nicht rückgängig gemacht werden.'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                if (!this.createMode) {
+                    this.api.deleteOfferOfferOfferIdDelete(this.id).pipe(first()).subscribe(success => {
+                        if (success) {
+                            this.router.navigateByUrl('job/' + this.jobId.toString());
+                        }
+                    });
+                } else {
+                    this.router.navigateByUrl('job/' + this.jobId.toString());
+                }
+            }
+        });
+    }
+
     private fillRightSidebar(langCode: string): void {
         const langCodeLower = langCode.toLowerCase();
         this.getAndFillParameters('in_price_included', 'offer_in_price_included_' + langCodeLower);
@@ -346,7 +378,7 @@ export class OfferEditComponent extends BaseEditComponent<Offer> implements OnIn
             delivery: new FormControl(''),
             date: new FormControl((new Date()).toISOString()),
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            vat_id: new FormControl(2),
+            vat_id: new FormControl(3),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             discount_amount: new FormControl(0),
             // eslint-disable-next-line @typescript-eslint/naming-convention
