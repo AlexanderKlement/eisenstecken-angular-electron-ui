@@ -80,11 +80,11 @@ export class ClientDetailComponent implements OnInit {
                 },
                 {
                     property: 'tel1',
-                    name: 'tel'
+                    name: 'Telefon'
                 },
                 {
                     property: 'tel2',
-                    name: 'tel'
+                    name: 'Telefon'
                 },
                 {
                     property: 'fiscal_code',

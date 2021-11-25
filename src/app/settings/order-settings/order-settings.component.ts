@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {BaseSettingsComponent} from '../base-settings.component';
+import {DefaultService} from 'eisenstecken-openapi-angular-library';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-order-settings',
-  templateUrl: './order-settings.component.html',
-  styleUrls: ['./order-settings.component.scss']
+    selector: 'app-order-settings',
+    templateUrl: './order-settings.component.html',
+    styleUrls: ['./order-settings.component.scss']
 })
-export class OrderSettingsComponent implements OnInit {
+export class OrderSettingsComponent extends BaseSettingsComponent implements OnInit {
 
-  constructor() { }
+    keyList = [
+        'order_text',
+        'order_mail',
+        'order_subject'
+    ];
 
-  ngOnInit(): void {
-  }
+    constructor(protected api: DefaultService, protected snackBar: MatSnackBar) {
+        super(api, snackBar);
+    }
+
+    ngOnInit(): void {
+        super.ngOnInit();
+    }
 
 }

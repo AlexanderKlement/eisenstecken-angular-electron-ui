@@ -14,6 +14,10 @@ const gotTheLock = app.requestSingleInstanceLock();
 const args = process.argv.slice(1),
     serve = args.some(val => val === '--serve');
 
+process.on('uncaughtException', function (err) {
+    console.log(err);
+})
+
 
 function createWindow(): BrowserWindow {
 

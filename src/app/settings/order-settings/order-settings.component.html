@@ -1,1 +1,17 @@
-<p>Hier könnte Ihre Werbung stehen</p>
+<form (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+    <div fxLayout="column" fxLayoutAlign="space-around center">
+        <mat-form-field appearance="fill">
+            <mat-label>PDF Text</mat-label>
+            <textarea rows="10" class="form-control" formControlName="order_text" matInput></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Mail Betreff</mat-label>
+            <input class="form-control" formControlName="order_subject" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Mail Inhalt</mat-label>
+            <textarea rows="10" class="form-control" formControlName="order_mail" matInput></textarea>
+        </mat-form-field>
+        <button [disabled]="submitted" mat-raised-button type="submit">Speichern</button>
+    </div>
+</form>

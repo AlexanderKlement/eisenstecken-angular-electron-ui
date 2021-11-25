@@ -12,6 +12,9 @@ import * as moment from 'moment';
 import {AuthService} from '../../shared/services/auth.service';
 import {ConfirmDialogComponent} from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {FileService} from '../../shared/services/file.service';
+import {EmailService} from '../../shared/services/email.service';
+import {combineLatest} from 'rxjs';
 
 @Component({
     selector: 'app-supplier-detail',
@@ -31,7 +34,7 @@ export class SupplierDetailComponent implements OnInit {
 
     constructor(private api: DefaultService, private authService: AuthService,
                 private router: Router, private snackBar: MatSnackBar,
-                private route: ActivatedRoute,
+                private route: ActivatedRoute, private file: FileService, private email: EmailService,
                 public dialog: MatDialog) {
     }
 
@@ -246,10 +249,16 @@ export class SupplierDetailComponent implements OnInit {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 order_from_id: supplier.id
             };
-            this.api.createOrderBundleOrderBundlePost(orderBundle).pipe(first()).subscribe(() => {
+            this.api.createOrderBundleOrderBundlePost(orderBundle).pipe(first()).subscribe((newOrderBundle) => {
                 this.deliveredOrderDataSource.loadData();
                 this.orderedOrderDataSource.loadData();
                 this.createdOrderDataSource.loadData();
+                const subject$ = this.api.getParameterParameterKeyGet('order_subject');
+                const body$ = this.api.getParameterParameterKeyGet('order_mail');
+                combineLatest([subject$, body$]).pipe(first()).subscribe(([subject, body]) => {
+                    this.email.sendMail(supplier.mail1, subject, body);
+                });
+                this.file.show(newOrderBundle.pdf);
             });
         });
     }
@@ -268,8 +277,8 @@ export class SupplierDetailComponent implements OnInit {
                     if (success) {
                         this.router.navigateByUrl('supplier');
                     } else {
-                        this.snackBar.open('Beim Ausblenden ist ein Fehler aufgetreten', 'Ok',{
-                          duration: 10000
+                        this.snackBar.open('Beim Ausblenden ist ein Fehler aufgetreten', 'Ok', {
+                            duration: 10000
                         });
                         console.error('Could not delete order bundle');
                     }
