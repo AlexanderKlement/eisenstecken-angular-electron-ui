@@ -4,7 +4,6 @@
 
   box-shadow: 0 0 2px 0 #ddd;
   padding: 5px 5px 25px 5px;
-  margin: 8px 0;
   position: relative;
   border-radius: 10px;
 
@@ -84,7 +83,5 @@
 }
 
 .position-fold-all {
-  position: absolute;
-  right: calc(30% + 63px);
-  top: 100px
+  margin: 10px 0 10px calc(70% - 95px);
 }

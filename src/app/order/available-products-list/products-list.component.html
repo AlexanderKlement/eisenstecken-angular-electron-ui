@@ -18,20 +18,16 @@
   </mat-list-item>
 </mat-list>
 <mat-list *ngIf="!available">
-  <mat-list-item *ngFor="let orderedArticle of searchOrderedArticles$| async" fxFlexFill>
-    <div fxLayout="column" fxLayoutAlign="start stretch" class="article" fxFlexFill>
+  <mat-list-item *ngFor="let orderedArticle of searchOrderedArticles$| async" fxFlexFill  class="article">
+    <div fxLayout="column" fxLayoutAlign="start stretch" fxFlexFill>
       <div fxLayout="row" fxLayoutAlign="space-between center">
-        <input matInput value="{{orderedArticle.article.name.translation}}"
-               matTooltip="{{orderedArticle.article.description.translation}}" readonly>
+        <input matInput value="{{orderedArticle.article.name.translation}}" class="title" readonly>
         <button mat-button mat-icon-button (click)="editButtonClicked(orderedArticle)" title="Bearbeiten">
           <mat-icon>edit</mat-icon>
         </button>
       </div>
       <div class="description">
-        <mat-form-field fxFlexFill>
-          <mat-label>Beschreibung</mat-label>
-          <textarea readonly value="{{orderedArticle.custom_description}}" matInput></textarea>
-        </mat-form-field>
+          <small>{{orderedArticle.custom_description}}</small>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <mat-form-field>

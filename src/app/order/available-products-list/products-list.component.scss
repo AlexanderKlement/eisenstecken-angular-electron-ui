@@ -9,9 +9,15 @@ mat-form-field {
 }
 
 .article {
+  box-shadow: 0 1px 0.5px 0px rgb(0 0 0 / 30%);
+
+
+
   &:hover {
     background: rgba(44, 44, 44, 0.04)
   }
+
+  .title{font-weight: 600;}
 
   mat-form-field {
     cursor: pointer;
@@ -20,6 +26,9 @@ mat-form-field {
 
   input {
     cursor: pointer;
+  }
+  .description{
+    margin-bottom: 1em;
   }
 }
 
