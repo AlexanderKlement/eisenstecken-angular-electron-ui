@@ -3,7 +3,7 @@ import {Observable, of, Subscription} from 'rxjs';
 import {
     Article, ArticleCreate,
     ArticleUpdate,
-    DefaultService,
+    DefaultService, OrderableType,
     OrderedArticle,
     OrderedArticleCreate
 } from 'eisenstecken-openapi-angular-library';
@@ -60,7 +60,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
         };
     }
 
-    private static mapDialogData2ArticleCreate(dialogData: DialogData): ArticleCreate {
+    private static mapDialogData2ArticleCreate(dialogData: DialogData, supplierId: number): ArticleCreate {
         return {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             mod_number: dialogData.mod_number,
@@ -78,7 +78,9 @@ export class ProductsListComponent implements OnInit, OnDestroy {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             vat_id: dialogData.vat_id,
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            category_ids: []
+            category_ids: [],
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            supplier_id: supplierId
         };
     }
 
@@ -276,13 +278,16 @@ export class ProductsListComponent implements OnInit, OnDestroy {
             if (result === undefined) {
                 return;
             }
-            const newArticle = ProductsListComponent.mapDialogData2ArticleCreate(result);
-            this.api.createArticleArticlePost(newArticle).pipe(first()).subscribe(article => {
-                const orderedArticleCreate = ProductsListComponent.mapDialogData2OrderedArticleCreate(result, article.id);
-                this.api.addOrderedArticleToOrderOrderOrderedArticleOrderIdPut(this.orderId, orderedArticleCreate)
-                    .pipe(first()).subscribe(() => {
-                    this.refreshAvailableOrderList();
-                    this.refreshOrderedArticleList();
+            this.api.readOrdersOrderOrderIdGet(this.orderId).pipe(first()).subscribe((order) => {
+                const newArticle = ProductsListComponent.mapDialogData2ArticleCreate(result,
+                    order.order_from.type === OrderableType.Supplier ? order.order_from.id : undefined);
+                this.api.createArticleArticlePost(newArticle).pipe(first()).subscribe(article => {
+                    const orderedArticleCreate = ProductsListComponent.mapDialogData2OrderedArticleCreate(result, article.id);
+                    this.api.addOrderedArticleToOrderOrderOrderedArticleOrderIdPut(this.orderId, orderedArticleCreate)
+                        .pipe(first()).subscribe(() => {
+                        this.refreshAvailableOrderList();
+                        this.refreshOrderedArticleList();
+                    });
                 });
             });
         };
