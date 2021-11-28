@@ -1,5 +1,5 @@
 {
-  "asar": true,
+  "asar": false,
   "directories": {
     "output": "release/"
   },
@@ -8,11 +8,7 @@
     "!**/*.ts",
     "!*.map",
     "!package.json",
-    "!package-lock.json",
-    {
-      "from": "../dist",
-      "filter": ["**/*"]
-    }
+    "!package-lock.json"
   ],
   "extraResources": [
     {

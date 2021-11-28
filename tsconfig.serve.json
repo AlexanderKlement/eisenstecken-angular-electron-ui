@@ -17,13 +17,10 @@
     ]
   },
   "files": [
-    "app/main.ts",
-    "app/preload.ts"
+    "app/main.ts"
   ],
   "exclude": [
     "node_modules",
-    "release",
-    "dist",
     "**/*.spec.ts"
   ]
 }
